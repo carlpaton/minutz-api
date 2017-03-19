@@ -6,7 +6,6 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<title>@ViewData["Title"] - tzatziki.minutz</title>
-
 	<environment names="Development">
 		<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -270,7 +269,6 @@
 							</ul>
 						</li>
 						<!-- User Account: style can be found in dropdown.less -->
-					
 							@if (User.Identity.IsAuthenticated)
 							{
 								<li><a asp-controller="Account" asp-action="Logout">@Model.Name</a></li>
@@ -282,9 +280,7 @@
 									<i class="fa fa-sign-in fa-lg"></i>
 								</a>
 								</li>
-							}
-
-							
+							}						
 						<!-- Control Sidebar Toggle Button -->
 						<li id="settings" style="display:none;" class="dropdown tasks-menu">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gears"></i></a>
@@ -300,7 +296,7 @@
 			<!-- sidebar: style can be found in sidebar.less -->
 			<section class="sidebar">
 				<!-- search form -->
-				<form action="#" method="get" class="sidebar-form">
+				<form action="#" method="get" class="sidebar-form hide">
 					<div class="input-group">
 						<input type="text" name="q" class="form-control" placeholder="Search...">
 						<span class="input-group-btn">
@@ -315,7 +311,7 @@
 				<ul class="sidebar-menu">
 					<li class="header">MAIN NAVIGATION</li>
 					<li class="active treeview">
-						<a href="#home">
+						<a asp-controller="Dashboard" asp-action="Index">
 							<i class="fa fa-dashboard"></i>
 							<span>Dashboard</span>
 							<span class="pull-right-container">
@@ -324,9 +320,9 @@
 						</a>
 					</li>
 					<li class="treeview">
-						<a href="#meeting">
+						<a asp-controller="Meeting" asp-action="Index">
 							<i class="fa fa-files-o"></i>
-							<span>Create Meeting</span>
+							<span>Meeting</span>
 							<span class="pull-right-container">
 								<span class="label label-primary pull-right hide">4</span>
 							</span>
@@ -338,18 +334,26 @@
 							<li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
 						</ul>
 					</li>
-					<li class="hide">
-						<a href="pages/widgets.html">
-							<i class="fa fa-th"></i> <span>Widgets</span>
+					<li class="treeview">
+						<a asp-controller="Home" asp-action="Index">
+							<i class="fa fa-calendar"></i> <span>Calender</span>
 							<span class="pull-right-container">
-								<small class="label pull-right bg-green">new</small>
+								<small class="label pull-right bg-green hide">new</small>
+							</span>
+						</a>
+					</li>
+					<li class="treeview">
+						<a asp-controller="Home" asp-action="Index">
+							<i class="fa fa-user"></i> <span>Profile</span>
+							<span class="pull-right-container">
+								<small class="label pull-right bg-green hide">new</small>
 							</span>
 						</a>
 					</li>
 					<li class="treeview hide">
 						<a href="#">
-							<i class="fa fa-pie-chart"></i>
-							<span>Charts</span>
+							<i class="fa fa-user-circle"></i>
+							<span>Profile</span>
 							<span class="pull-right-container">
 								<i class="fa fa-angle-left pull-right"></i>
 							</span>
