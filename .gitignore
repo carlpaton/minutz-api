@@ -1,8 +1,25 @@
 ﻿################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
-
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
 /tzatziki.minutz/bin
 /tzatziki.minutz/obj
 /tzatziki.minutz/obj/Debug/netcoreapp1.1
 /tzatziki.minutz/obj
+/tzatziki.minutz.core/bin/Debug/netcoreapp1.1
+/tzatziki.minutz.core/bin/Debug/netcoreapp1.1
+/tzatziki.minutz.core/obj
+/tzatziki.minutz.interfaces/bin/Debug/netcoreapp1.1
+/tzatziki.minutz.interfaces/obj
+/tzatziki.minutz.models/bin/Debug/netcoreapp1.1
+/tzatziki.minutz.models/obj
