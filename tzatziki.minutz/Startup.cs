@@ -10,7 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using tzatziki.minutz.Models.Auth;
+using tzatziki.minutz.core;
+using tzatziki.minutz.interfaces;
+using tzatziki.minutz.models.Auth;
 
 namespace tzatziki.minutz
 {
@@ -34,6 +36,9 @@ namespace tzatziki.minutz
 			services.AddMvc();
 			services.AddOptions();
 			services.Configure<Auth0Settings>(Configuration.GetSection("Auth0"));
+
+			services.AddTransient<ITokenStringHelper, TokenStringHelper>();
+			services.AddTransient<IProfileService, ProfileService>();
 		}
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IOptions<Auth0Settings> auth0Settings)
@@ -142,7 +147,12 @@ namespace tzatziki.minutz
 			options.Scope.Add("openid");
 			options.Scope.Add("name");
 			options.Scope.Add("email");
-			options.Scope.Add("picture");
+			options.Scope.Add("clientID");
+			options.Scope.Add("updated_at");
+			options.Scope.Add("created_at");
+			options.Scope.Add("user_id");
+			options.Scope.Add("nickname");
+
 			app.UseOpenIdConnectAuthentication(options);
 
 			app.UseMvc(routes =>
