@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -55,7 +56,7 @@ namespace tzatziki.minutz
 			app.UseCookieAuthentication(new CookieAuthenticationOptions
 			{
 				AutomaticAuthenticate = true,
-				AutomaticChallenge = true
+				AutomaticChallenge = true,
 			});
 
 			// Add the OIDC middleware
@@ -67,7 +68,6 @@ namespace tzatziki.minutz
 				// Configure the Auth0 Client ID and Client Secret
 				ClientId = auth0Settings.Value.ClientId,
 				ClientSecret = auth0Settings.Value.ClientSecret,
-
 				// Do not automatically authenticate and challenge
 				AutomaticAuthenticate = false,
 				AutomaticChallenge = false,
@@ -84,6 +84,36 @@ namespace tzatziki.minutz
 
 				Events = new OpenIdConnectEvents
 				{
+					OnTicketReceived = context =>
+					{
+						// Get the ClaimsIdentity
+						var identity = context.Principal.Identity as ClaimsIdentity;
+						if (identity != null)
+						{
+							// Add the Name ClaimType. This is required if we want User.Identity.Name to actually return something!
+							if (!context.Principal.HasClaim(c => c.Type == ClaimTypes.Name) &&
+									identity.HasClaim(c => c.Type == "name"))
+								identity.AddClaim(new Claim(ClaimTypes.Name, identity.FindFirst("name").Value));
+
+							// Check if token names are stored in Properties
+							if (context.Properties.Items.ContainsKey(".TokenNames"))
+							{
+								// Token names a semicolon separated
+								string[] tokenNames = context.Properties.Items[".TokenNames"].Split(';');
+
+								// Add each token value as Claim
+								foreach (var tokenName in tokenNames)
+								{
+									// Tokens are stored in a Dictionary with the Key ".Token.<token name>"
+									string tokenValue = context.Properties.Items[$".Token.{tokenName}"];
+
+									identity.AddClaim(new Claim(tokenName, tokenValue));
+								}
+							}
+						}
+
+						return Task.CompletedTask;
+					},
 					// handle the logout redirection 
 					OnRedirectToIdentityProviderForSignOut = (context) =>
 					{
@@ -110,6 +140,9 @@ namespace tzatziki.minutz
 			};
 			options.Scope.Clear();
 			options.Scope.Add("openid");
+			options.Scope.Add("name");
+			options.Scope.Add("email");
+			options.Scope.Add("picture");
 			app.UseOpenIdConnectAuthentication(options);
 
 			app.UseMvc(routes =>
