@@ -12,7 +12,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using tzatziki.minutz.core;
 using tzatziki.minutz.interfaces;
+using tzatziki.minutz.interfaces.Repositories;
+using tzatziki.minutz.models;
 using tzatziki.minutz.models.Auth;
+using tzatziki.minutz.mysqlrepository;
 
 namespace tzatziki.minutz
 {
@@ -36,6 +39,12 @@ namespace tzatziki.minutz
 			services.AddMvc();
 			services.AddOptions();
 			services.Configure<Auth0Settings>(Configuration.GetSection("Auth0"));
+			services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+			//db
+			services.AddTransient<IInstanceRepository, InstanceRepository>();
+
+			//services
 
 			services.AddTransient<ITokenStringHelper, TokenStringHelper>();
 			services.AddTransient<IProfileService, ProfileService>();
