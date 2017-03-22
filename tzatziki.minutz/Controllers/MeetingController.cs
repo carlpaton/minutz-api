@@ -1,26 +1,24 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using tzatziki.minutz.interfaces;
+using tzatziki.minutz.models;
 
 namespace tzatziki.minutz.Controllers
 {
-	public class MeetingController : Controller
+	public class MeetingController : BaseController
 	{
-		private readonly ITokenStringHelper _tokenStringHelper;
-		private readonly IProfileService _profileService;
-		public MeetingController(ITokenStringHelper tokenStringHelper, IProfileService profileService) 
-		{
-			_tokenStringHelper = tokenStringHelper;
-			_profileService = profileService;
-		}
+    public MeetingController(
+                             ITokenStringHelper tokenStringHelper, 
+                             IProfileService profileService, 
+                             IOptions<AppSettings> settings) : base(settings, profileService, tokenStringHelper)
+    {
+    }
 
 		public IActionResult Index()
 		{
-
-			var claims = User.Claims.ToList();
-			var model = _profileService.GetFromClaims(claims, _tokenStringHelper);
-
-			return View(model);
+      
+      return View(new CalenderModel { User =  User.ToProfile(ProfileService, TokenStringHelper, AppSettings) });
 		}
 	}
 }

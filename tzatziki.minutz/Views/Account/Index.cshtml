@@ -1,11 +1,12 @@
-
+@model tzatziki.minutz.models.CalenderModel
 @{
 		ViewData["Title"] = "Profile";
 }
 <div class="container-fluid">
 	<div class="pull-left">
 		<h1>Profile</h1>
-		<p>Welcome to Minutz calender, here you can view your meetings and quickly create new appointments.</p>
+    <img src="@Model.User.ProfileImage" />
+		<h3>@Model.User.Name</h3>
 	</div>
 	<div class="pull-right">
 		<h1><a href="#meeting" class="btn btn-success">Create Meeting</a></h1>

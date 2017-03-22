@@ -1,17 +1,43 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using tzatziki.minutz.interfaces;
+using tzatziki.minutz.models;
 
 namespace tzatziki.minutz.Controllers
 {
 	public class AccountController : Controller
 	{
-		public IActionResult Index()
+    private readonly ITokenStringHelper _tokenStringHelper;
+    private readonly IProfileService _profileService;
+    private AppSettings AppSettings { get; set; }
+
+    public AccountController(
+      ITokenStringHelper tokenStringHelper,
+      IProfileService profileService, 
+      IOptions<AppSettings> settings)
+    {
+      AppSettings = settings.Value;
+      _tokenStringHelper = tokenStringHelper;
+      _profileService = profileService;
+    }
+    
+    [Authorize]
+    public IActionResult Index()
 		{
-			return View();
-		}
+      var claims = User.Claims.ToList();
+
+      var model = new CalenderModel
+      {
+        //Instances = _instanceRepository.GetInstances(AppSettings.ConnectionStrings.LiveConnection),
+        User = _profileService.GetFromClaims(claims, _tokenStringHelper,AppSettings)
+      };
+      return View(model);
+    }
 
 		public IActionResult Login(string returnUrl = "/")
 		{

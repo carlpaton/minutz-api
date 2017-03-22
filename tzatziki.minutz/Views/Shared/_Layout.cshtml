@@ -1,5 +1,4 @@
 ﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
-@model tzatziki.minutz.models.CalenderModel
 <!DOCTYPE html>
 <html>
 <head>
@@ -275,7 +274,7 @@
 						<!-- User Account: style can be found in dropdown.less -->
 							@if (User.Identity.IsAuthenticated)
 							{
-								<li><a asp-controller="Account" asp-action="Logout">@Model.User.Name</a></li>
+								<li><a asp-controller="Account" asp-action="Logout">@User.ToProfile().Name</a></li>
 							}
 							else
 							{
@@ -347,7 +346,7 @@
 						</a>
 					</li>
 					<li class="treeview">
-						<a asp-controller="Home" asp-action="Index">
+						<a asp-controller="Account" asp-action="Index">
 							<i class="fa fa-user"></i> <span>Profile</span>
 							<span class="pull-right-container">
 								<small class="label pull-right bg-green hide">new</small>

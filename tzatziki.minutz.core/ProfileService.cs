@@ -3,12 +3,16 @@ using System.Linq;
 using tzatziki.minutz.interfaces;
 using tzatziki.minutz.models.Auth;
 using System.Security.Claims;
+using tzatziki.minutz.models;
 
 namespace tzatziki.minutz.core
 {
 	public class ProfileService : IProfileService
 	{
-		public UserProfile GetFromClaims(IEnumerable<Claim> claims, ITokenStringHelper tokenStringHelper)
+		public UserProfile GetFromClaims(
+																		 IEnumerable<Claim> claims, 
+																		 ITokenStringHelper tokenStringHelper, 
+																		 AppSettings appsettings)
 		{
 			var model = new UserProfile
 			{
@@ -20,6 +24,10 @@ namespace tzatziki.minutz.core
 				Created_At = tokenStringHelper.ConvertTokenStringToDate(claims.FirstOrDefault(c => c.Type == "created_at")?.Value),
 				Updated_At = tokenStringHelper.ConvertTokenStringToDate(claims.FirstOrDefault(c => c.Type == "updated_at")?.Value)
 			};
+			if (model.ProfileImage == null)
+			{
+				model.ProfileImage = appsettings.DefaultProfilePicture;
+			}
 			return model;
 		}
 	}
