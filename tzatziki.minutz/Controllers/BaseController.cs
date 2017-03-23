@@ -8,7 +8,7 @@ using tzatziki.minutz.models.Auth;
 
 namespace tzatziki.minutz.Controllers
 {
-  [Authorize]
+ 
   public class BaseController : Controller
   {
     public AppSettings AppSettings { get; set; }

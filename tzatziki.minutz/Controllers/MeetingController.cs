@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using tzatziki.minutz.interfaces;
@@ -6,6 +7,7 @@ using tzatziki.minutz.models;
 
 namespace tzatziki.minutz.Controllers
 {
+  [Authorize]
 	public class MeetingController : BaseController
 	{
     public MeetingController(
@@ -17,8 +19,8 @@ namespace tzatziki.minutz.Controllers
 
 		public IActionResult Index()
 		{
-      
-      return View(new CalenderModel { User =  User.ToProfile(ProfileService, TokenStringHelper, AppSettings) });
+      this.UserProfile = User.ToProfile(ProfileService, TokenStringHelper, AppSettings);
+      return View(new MeetngModel {   });
 		}
 	}
 }

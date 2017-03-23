@@ -25,7 +25,7 @@ namespace tzatziki.minutz.Controllers
 		public IActionResult Index()
 		{
 			this.UserProfile = User.ToProfile(ProfileService, TokenStringHelper, AppSettings);
-			return View(new CalenderModel { User = this.UserProfile });
+			return View(new DashboardModel {  });
 		}
 	}
 }

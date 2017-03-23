@@ -2,11 +2,18 @@
 @{
 		ViewData["Title"] = "Profile";
 }
+<style>
+  .profilePictre {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+  }
+</style>
 <div class="container-fluid">
 	<div class="pull-left">
 		<h1>Profile</h1>
-    <img src="@Model.User.ProfileImage" />
-		<h3>@Model.User.Name</h3>
+    <img class="profilePictre" src="@User.ToProfile().ProfileImage" />
+		<h3>@User.ToProfile().Name</h3>
 	</div>
 	<div class="pull-right">
 		<h1><a href="#meeting" class="btn btn-success">Create Meeting</a></h1>

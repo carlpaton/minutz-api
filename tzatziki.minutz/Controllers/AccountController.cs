@@ -10,31 +10,27 @@ using tzatziki.minutz.models;
 
 namespace tzatziki.minutz.Controllers
 {
-	public class AccountController : Controller
+	public class AccountController : BaseController
 	{
-    private readonly ITokenStringHelper _tokenStringHelper;
-    private readonly IProfileService _profileService;
-    private AppSettings AppSettings { get; set; }
+ 
 
     public AccountController(
       ITokenStringHelper tokenStringHelper,
       IProfileService profileService, 
-      IOptions<AppSettings> settings)
+      IOptions<AppSettings> settings) : base(settings, profileService, tokenStringHelper)
     {
-      AppSettings = settings.Value;
-      _tokenStringHelper = tokenStringHelper;
-      _profileService = profileService;
+   
     }
     
     [Authorize]
     public IActionResult Index()
 		{
-      var claims = User.Claims.ToList();
+      this.UserProfile = User.ToProfile(ProfileService, TokenStringHelper, AppSettings);
 
       var model = new CalenderModel
       {
         //Instances = _instanceRepository.GetInstances(AppSettings.ConnectionStrings.LiveConnection),
-        User = _profileService.GetFromClaims(claims, _tokenStringHelper,AppSettings)
+        
       };
       return View(model);
     }

@@ -27,12 +27,10 @@ namespace tzatziki.minutz.Controllers
 	
 		public IActionResult Index()
 		{
+      this.UserProfile = User.ToProfile(ProfileService, TokenStringHelper, AppSettings);
 
-			var model = new CalenderModel
-			{
-				//Instances = _instanceRepository.GetInstances(AppSettings.ConnectionStrings.LiveConnection),
-				User = User.ToProfile(ProfileService,TokenStringHelper,AppSettings)
-			};
+      var model = new CalenderModel { };
+			
 			return View(model);
 		}
 

@@ -672,9 +672,9 @@
 	<script>
 		window.intercomSettings = {
 			app_id: "oili1ns3",
-			name: "@Model.User.Name", 	// Full name
-			email: "@Model.User.EmailAddress}", 		// Email address
-			created_at: "@Model.User.Created_At",			// Signup date as a Unix timestamp (When Person was created in Minutz)
+			name: "@User.ToProfile().Name", 	// Full name
+			email: "@User.ToProfile().EmailAddress}", 		// Email address
+			created_at: "@User.ToProfile().Created_At",			// Signup date as a Unix timestamp (When Person was created in Minutz)
 			"VFPage": window.location			// VisualForce page
 		};
 	</script>
