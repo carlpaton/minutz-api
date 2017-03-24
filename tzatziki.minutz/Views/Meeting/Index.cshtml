@@ -3,6 +3,11 @@
 	ViewData["Title"] = "Meeting";
 }
 <style>
+  .row-item {
+    background-color: #dcdcdc;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
 	.round-button-circle {
 		width: 50px;
 		height: 0;
@@ -91,13 +96,17 @@
   pointer-events:none;
   opacity:0.5;
 }
+  .dropdown-padding {
+    padding-left: 10px;
+    font-weight: bold;
+  }
 
 /* active state */
 input:focus ~ .highlight {
   animation:inputHighlighter 0.3s ease;
 }
 
-
+ 
 
 </style>
 <div class="container-fluid">
@@ -125,16 +134,16 @@ input:focus ~ .highlight {
       <div id="meetingNameGroup" class="group">
         <input type="text" required>
         <span class="highlight"></span>
-        
         <label>Meeting Name</label>
       </div>
 		</div>
     <div class="col-md-2 pull-right">
-      <div class="dropdown pull-right">
-        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-          project
+      <div class="dropdown pull-right" style="padding-top:25px;">
+        <div class=" dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          <i class="fa fa-briefcase"></i>
+          <span class="dropdown-padding">Project</span>
           <span class="caret"></span>
-        </button>
+        </div>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
           <li><a href="#">Action</a></li>
           <li><a href="#">Another action</a></li>
@@ -146,7 +155,7 @@ input:focus ~ .highlight {
     </div>
 	</div>
 </div>
-  <br />
+ 
   @*This is meeting time controler row*@
 	<div class="row">
 		<div class="container-fluid">
@@ -158,7 +167,8 @@ input:focus ~ .highlight {
 			</div>
 			<div class="col-md-2">
         <div class="input-group date">
-          <input type="text" id="date" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+          <input type="text" id="date" class="form-control"><span class="input-group-addon">
+          <i class="fa fa-calendar"></i></span>
         </div>
 			</div>
 			<div class="col-md-2">
@@ -176,11 +186,11 @@ input:focus ~ .highlight {
         </div>
 			</div>
 			<div class="col-md-1">
-        <div class="dropdown">
-          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            Repeat
+        <div class="dropdown" style="padding-top:5px;">
+          <div class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+           <span class="dropdown-padding">Repeat</span> 
             <span class="caret"></span>
-          </button>
+          </div>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
             <li><a href="#">Action</a></li>
             <li><a href="#">Another action</a></li>
@@ -192,16 +202,17 @@ input:focus ~ .highlight {
 			</div>
 			<div class="col-md-2">
         <div class="input-group">
-          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-map-marker"></i></span>
+          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-cubes"></i></span>
           <input type="text" class="form-control" placeholder="Create Series" aria-describedby="basic-addon1">
         </div>
 			</div>
 			<div class="col-md-1">
-        <div class="dropdown">
-          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            Role
+        <div class="dropdown" style="padding-top:5px;">
+          <div class=" dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <i class="fa fa-user"></i>
+            <span class="dropdown-padding">Role</span> 
             <span class="caret"></span>
-          </button>
+          </div>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
             <li><a href="#">Action</a></li>
             <li><a href="#">Another action</a></li>
@@ -216,33 +227,33 @@ input:focus ~ .highlight {
 </div>
 <br/>
 @*This is invations row*@
-<div class="row">
+<div class="row row-item" >
   <div class="container-fluid">
     <div class="col-lg-5">
       <div class="col-md-3">
-        <a class="btn btn-info">Send Invatations</a>
+        <a class="btn btn-info" ><i class="fa fa-paper-plane-o"></i><span style="padding-left:5px;">Send Invatations</span></a>
       </div>
       <div class="col-md-3">
-        <a class="btn btn-info">Preview Invite</a>
+        <a class="btn " style="background-color:white; color:black;">
+        <i class="fa fa-eye"></i>
+        <span>Preview Invite</span></a>
       </div>
     </div>
-    <div class="col-lg-3 pull-right">
-      <div class="col-md-5">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox"> private meeting
-          </label>
-        </div>
+    <div class="col-lg-5 ">
+      <div class="hide" >
+       
+
+        <input type="checkbox" class="hide" name="private" value="private" /><span>Private meeting</span>
       </div>
-      <div class="col-md-5">
-        <div class="checkbox ">
-          <label>
-            <input type="checkbox">  audited meeting
-          </label>
-        </div>
+      <div class="hide" >
+        <input type="checkbox" class="checkbox hide" name="audit" value="audit" /><span>Audited meeting</span>
       </div>
     </div>
   </div>
+</div>
+
+<div class="checkbox hide">
+  <label><input type="checkbox" value="">Option 1</label>
 </div>
 
 <script type="text/javascript">
