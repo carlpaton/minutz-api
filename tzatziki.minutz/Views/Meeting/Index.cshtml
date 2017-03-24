@@ -33,50 +33,250 @@
 		border-bottom: solid #000 1px;
 		padding: 3px 10px;
 	}
+
+
+  /* form starting stylings ------------------------------- */
+  .group {
+    position: relative;
+    margin-bottom: 45px;
+  }
+
+  input {
+    font-size: 18px;
+    padding: 10px 10px 10px 5px;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #757575;
+  }
+
+    input:focus {
+      outline: none;
+    }
+
+  /* LABEL ======================================= */
+  label {
+    color: #999;
+    font-size: 18px;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: 5px;
+    top: 10px;
+    transition: 0.2s ease all;
+  }
+
+  /* active state */
+  input:focus ~ label, input:valid ~ label {
+    top: -20px;
+    font-size: 14px;
+    color: #5264AE;
+  }
+
+  
+
+  /* active state */
+  input:focus ~ .bar:before, input:focus ~ .bar:after {
+    width: 50%;
+  }
+  /* HIGHLIGHTER ================================== */
+.highlight {
+  position:absolute;
+  height:60%;
+  width:100px;
+  top:25%;
+  left:0;
+  pointer-events:none;
+  opacity:0.5;
+}
+
+/* active state */
+input:focus ~ .highlight {
+  animation:inputHighlighter 0.3s ease;
+}
+
+
+
 </style>
 <div class="container-fluid">
 <br />
 <div class="row">
 <div class="container-fluid">
-	<div class="pull-left">
-		<h3>My Organisation Name</h3> <span>Create Meeting</span>
+	<div class="pull-left col-lg-10">
+		<div class="col-md-3 ">
+      <h3>My Organisation Name</h3> 
+    </div>
+    <div class="col-md-6 pull-left">
+      <h4 class="pull-left" style="padding-top: 10px;">Create Meeting</h4>
+    </div>
 	</div>
 	<div class="pull-right">
-		
 		<div class="round-button-circle"><i class="fa fa-cogs fa-2x"></i></div>
 	</div>
 </div>
 </div>
+  @*This is top heading row row*@
+  <br/>
 <div class="row">
 	<div class="container-fluid">
-		<div class="col-md-5">
-			<input type="text" class="text-line" />
+		<div class="col-md-10">
+      <div id="meetingNameGroup" class="group">
+        <input type="text" required>
+        <span class="highlight"></span>
+        
+        <label>Meeting Name</label>
+      </div>
 		</div>
+    <div class="col-md-2 pull-right">
+      <div class="dropdown pull-right">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          project
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li role="separator" class="divider"></li>
+          <li><a href="#">Separated link</a></li>
+        </ul>
+      </div>
+    </div>
 	</div>
 </div>
+  <br />
+  @*This is meeting time controler row*@
 	<div class="row">
 		<div class="container-fluid">
 			<div class="col-md-2">
-				
+        <div class="input-group">
+          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-map-marker"></i></span>
+          <input type="text" class="form-control" placeholder="Location" aria-describedby="basic-addon1">
+        </div>
 			</div>
 			<div class="col-md-2">
-
+        <div class="input-group date">
+          <input type="text" id="date" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+        </div>
 			</div>
 			<div class="col-md-2">
-
+        <div class="input-group bootstrap-timepicker timepicker">
+          <input id="meetingTime" type="text" class="form-control input-small">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+        </div>
 			</div>
 			<div class="col-md-2">
-
+        <div class="input-group bootstrap-timepicker timepicker">
+          <input id="duration" type="text" class="form-control input-small">
+          <span class="input-group-addon">
+            <i class="glyphicon glyphicon-time"></i>
+          </span>
+        </div>
+			</div>
+			<div class="col-md-1">
+        <div class="dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Repeat
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+          </ul>
+        </div>
 			</div>
 			<div class="col-md-2">
-
+        <div class="input-group">
+          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-map-marker"></i></span>
+          <input type="text" class="form-control" placeholder="Create Series" aria-describedby="basic-addon1">
+        </div>
 			</div>
-			<div class="col-md-2">
-
-			</div>
-			<div class="col-md-2">
-
+			<div class="col-md-1">
+        <div class="dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Role
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+          </ul>
+        </div>
 			</div>
 		</div>
 	</div>
 </div>
+<br/>
+@*This is invations row*@
+<div class="row">
+  <div class="container-fluid">
+    <div class="col-lg-5">
+      <div class="col-md-3">
+        <a class="btn btn-info">Send Invatations</a>
+      </div>
+      <div class="col-md-3">
+        <a class="btn btn-info">Preview Invite</a>
+      </div>
+    </div>
+    <div class="col-lg-3 pull-right">
+      <div class="col-md-5">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox"> private meeting
+          </label>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="checkbox ">
+          <label>
+            <input type="checkbox">  audited meeting
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+  $(function () {
+    $('#meetingTime').timepicker();
+
+    $('#duration').timepicker({
+      minuteStep: 1,
+      template: 'modal',
+      appendWidgetTo: 'body',
+      showSeconds: true,
+      showMeridian: false,
+      defaultTime: false
+    });
+
+    $('#date').datepicker({
+      daysOfWeekDisabled: "0,6",
+      calendarWeeks: true,
+      autoclose: true,
+      todayHighlight: true,
+      datesDisabled: ['03/06/2017', '03/21/2017'],
+      toggleActive: true,
+      defaultViewDate: { year: 1977, month: 04, day: 25 }
+    });
+
+
+    $('#meetingNameGroup input').blur(function () {
+
+      // check if the input has any value (if we've typed into it)
+      if ($(this).val())
+        $(this).addClass('used');
+      else
+        $(this).removeClass('used');
+    });
+   });
+</script>

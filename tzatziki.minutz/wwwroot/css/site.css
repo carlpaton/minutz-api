@@ -39,7 +39,7 @@ textarea {
 	box-shadow: 0 0 3px gray;
 }
 
-	.round-button-circle:hover {
+.round-button-circle:hover {
 		background: #30588e;
 	}
 
@@ -57,4 +57,16 @@ textarea {
 	font-size: 1.2em;
 	font-weight: bold;
 	text-decoration: none;
+}
+
+/* ANIMATIONS ================ */
+@keyframes inputHighlighter {
+  from {
+    background: #5264AE;
+  }
+
+  to {
+    width: 0;
+    background: transparent;
+  }
 }
