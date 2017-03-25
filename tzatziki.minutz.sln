@@ -17,6 +17,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tzatziki.minutz.mysqlreposi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tzatziki.minutz.core.tests", "tzatziki.minutz.core.tests\tzatziki.minutz.core.tests\tzatziki.minutz.core.tests.csproj", "{9E0FA105-0E8C-442D-9CA8-A2BAD663639F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wiki", "wiki", "{2EC46B1F-41F2-43B1-8C7B-BAAF9B2E9829}"
+	ProjectSection(SolutionItems) = preProject
+		_wiki\Home.md = _wiki\Home.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentation", "{FD6FE248-0C70-4AE8-8159-9B81EF1A37A2}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
