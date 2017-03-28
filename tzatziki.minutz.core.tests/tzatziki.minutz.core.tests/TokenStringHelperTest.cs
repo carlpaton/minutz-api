@@ -14,15 +14,21 @@ namespace tzatziki.minutz.core.tests
 		{
 			_tokenStringHelper = new TokenStringHelper();
 		}
-
-		[TestMethod]
+    
+    [TestMethod]
 		public void ConvertTokenStringToDate_ShouldReturnDateTimeType()
 		{
-			var result = _tokenStringHelper.ConvertTokenStringToDate("someDate");
+			var result = _tokenStringHelper.ConvertTokenStringToDate("2017-03-18T08:41:51.9Z");
 			Assert.IsInstanceOfType(result, typeof(DateTime));
 		}
-
-		[TestMethod]
+    [TestMethod]
+    [ExpectedException(typeof(BadImageFormatException))]
+    public void ConvertTokenStringToDate_ShouldThrowBadImageFormatExceptionIfStringIsInvalid()
+    {
+      var result = _tokenStringHelper.ConvertTokenStringToDate("someDate");
+      Assert.IsInstanceOfType(result, typeof(DateTime));
+    }
+    [TestMethod]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void ConvertTokenStringToDate_ShouldThrowErrorExceptionIfEmptyStringSupplied() 
 		{

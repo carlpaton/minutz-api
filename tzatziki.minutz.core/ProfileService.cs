@@ -14,7 +14,16 @@ namespace tzatziki.minutz.core
 																		 ITokenStringHelper tokenStringHelper, 
 																		 AppSettings appsettings)
 		{
-			var model = new UserProfile
+      var app_data = claims.FirstOrDefault(c => c.Type == "app_metadata").Value;
+      if (app_data == null)
+      {
+        //create attendee role into the user
+      }
+      else
+      {
+      }
+
+      var model = new UserProfile
 			{
 				Name = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value,
 				EmailAddress = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value,
