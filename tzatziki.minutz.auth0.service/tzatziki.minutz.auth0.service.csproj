@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\minutz\tzatziki.minutz.interfaces\tzatziki.minutz.interfaces.csproj" />
-    <ProjectReference Include="..\minutz\tzatziki.minutz.models\tzatziki.minutz.models.csproj" />
+    <ProjectReference Include="..\tzatziki.minutz.interfaces\tzatziki.minutz.interfaces.csproj" />
+    <ProjectReference Include="..\tzatziki.minutz.models\tzatziki.minutz.models.csproj" />
   </ItemGroup>
 
 </Project>
