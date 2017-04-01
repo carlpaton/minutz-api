@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26228.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tzatziki.minutz", "tzatziki.minutz\tzatziki.minutz.csproj", "{FFCC9EF9-EF26-43CD-812B-D4EC70197670}"
 EndProject
@@ -26,6 +26,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentat
 	ProjectSection(SolutionItems) = preProject
 		readme.md = readme.md
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tzatziki.minutz.auth0.service", "tzatziki.minutz.auth0.service\tzatziki.minutz.auth0.service.csproj", "{3EE045DC-832A-4BD1-A731-90AD5A230428}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tzatziki.minutz.auth0.repository.tests", "tzatziki.minutz.auth0.repository.tests\tzatziki.minutz.auth0.repository.tests.csproj", "{7B1F1E2E-7B35-40F6-B7C8-559819E18CFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +65,14 @@ Global
 		{9E0FA105-0E8C-442D-9CA8-A2BAD663639F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E0FA105-0E8C-442D-9CA8-A2BAD663639F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E0FA105-0E8C-442D-9CA8-A2BAD663639F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EE045DC-832A-4BD1-A731-90AD5A230428}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EE045DC-832A-4BD1-A731-90AD5A230428}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EE045DC-832A-4BD1-A731-90AD5A230428}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EE045DC-832A-4BD1-A731-90AD5A230428}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B1F1E2E-7B35-40F6-B7C8-559819E18CFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B1F1E2E-7B35-40F6-B7C8-559819E18CFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B1F1E2E-7B35-40F6-B7C8-559819E18CFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B1F1E2E-7B35-40F6-B7C8-559819E18CFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

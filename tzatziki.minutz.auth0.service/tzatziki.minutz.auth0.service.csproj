@@ -5,12 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Auth0" Version="3.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="1.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="1.1.1" />
-    <PackageReference Include="System.Security.Claims" Version="4.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\tzatziki.minutz.interfaces\tzatziki.minutz.interfaces.csproj" />
     <ProjectReference Include="..\tzatziki.minutz.models\tzatziki.minutz.models.csproj" />
   </ItemGroup>
 
