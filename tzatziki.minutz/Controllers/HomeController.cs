@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -27,6 +28,10 @@ namespace tzatziki.minutz.Controllers
 	
 		public IActionResult Index()
 		{
+      
+      //var identity = User.Identity as ClaimsIdentity;
+     // identity.AddClaim(new Claim("role", "user"));
+
       this.UserProfile = User.ToProfile(ProfileService, TokenStringHelper, AppSettings);
 
       var model = new CalenderModel { };
@@ -39,4 +44,6 @@ namespace tzatziki.minutz.Controllers
 			return View();
 		}
 	}
+
+  
 }

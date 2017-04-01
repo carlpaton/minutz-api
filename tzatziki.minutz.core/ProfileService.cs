@@ -4,6 +4,7 @@ using tzatziki.minutz.interfaces;
 using tzatziki.minutz.models.Auth;
 using System.Security.Claims;
 using tzatziki.minutz.models;
+using Newtonsoft.Json;
 
 namespace tzatziki.minutz.core
 {
@@ -12,16 +13,10 @@ namespace tzatziki.minutz.core
 		public UserProfile GetFromClaims(
 																		 IEnumerable<Claim> claims, 
 																		 ITokenStringHelper tokenStringHelper, 
-																		 AppSettings appsettings)
+																		 AppSettings appsettings
+                                     )
 		{
-      var app_data = claims.FirstOrDefault(c => c.Type == "app_metadata").Value;
-      if (app_data == null)
-      {
-        //create attendee role into the user
-      }
-      else
-      {
-      }
+    
 
       var model = new UserProfile
 			{
@@ -33,7 +28,19 @@ namespace tzatziki.minutz.core
 				Created_At = tokenStringHelper.ConvertTokenStringToDate(claims.FirstOrDefault(c => c.Type == "created_at")?.Value),
 				Updated_At = tokenStringHelper.ConvertTokenStringToDate(claims.FirstOrDefault(c => c.Type == "updated_at")?.Value)
 			};
-			if (model.ProfileImage == null)
+
+      if (claims.FirstOrDefault(c => c.Type == "app_metadata") != null)
+      {
+        var app_data = claims.FirstOrDefault(c => c.Type == "app_metadata").Value;
+        var app_metaData = JsonConvert.DeserializeObject<AppMetadata>(app_data);
+        model.App_Metadata = app_metaData;
+      }
+      else
+      {
+        //create
+      }
+
+      if (model.ProfileImage == null)
 			{
 				model.ProfileImage = appsettings.DefaultProfilePicture;
 			}

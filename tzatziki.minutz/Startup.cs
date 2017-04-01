@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using tzatziki.minutz.auth0.service;
 using tzatziki.minutz.core;
 using tzatziki.minutz.interfaces;
 using tzatziki.minutz.interfaces.Repositories;
@@ -48,9 +49,15 @@ namespace tzatziki.minutz
 
       services.AddTransient<ITokenStringHelper, TokenStringHelper>();
       services.AddTransient<IProfileService, ProfileService>();
+
+      services.AddTransient<IAuth0Repository, Repository>();
     }
 
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IOptions<Auth0Settings> auth0Settings)
+    public void Configure(IApplicationBuilder app, 
+                          IHostingEnvironment env, 
+                          ILoggerFactory loggerFactory, 
+                          IOptions<Auth0Settings> auth0Settings, 
+                          IAuth0Repository auth0Repository)
     {
       loggerFactory.AddConsole(Configuration.GetSection("Logging"));
       loggerFactory.AddDebug();
@@ -109,6 +116,11 @@ namespace tzatziki.minutz
                   identity.HasClaim(c => c.Type == "name"))
                 identity.AddClaim(new Claim(ClaimTypes.Name, identity.FindFirst("name").Value));
 
+              if (!context.Principal.HasClaim(c => c.Type == ClaimTypes.Role))
+              {
+                identity.AddClaim(new Claim(ClaimTypes.Role, auth0Repository.Getrole(context)));
+              }
+
               // Check if token names are stored in Properties
               if (context.Properties.Items.ContainsKey(".TokenNames"))
               {
@@ -161,6 +173,7 @@ namespace tzatziki.minutz
       options.Scope.Add("created_at");
       options.Scope.Add("user_id");
       options.Scope.Add("nickname");
+      options.Scope.Add("roles");
       options.Scope.Add("app_metadata");
       options.Scope.Add("user_metadata");
 
