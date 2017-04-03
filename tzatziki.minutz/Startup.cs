@@ -44,7 +44,7 @@ namespace tzatziki.minutz
 
       //db
       services.AddTransient<IInstanceRepository, InstanceRepository>();
-
+      services.AddTransient<IPersonRepository, PersonRepository>();
       //services
 
       services.AddTransient<ITokenStringHelper, TokenStringHelper>();
@@ -53,11 +53,12 @@ namespace tzatziki.minutz
       services.AddTransient<IAuth0Repository, Repository>();
     }
 
-    public void Configure(IApplicationBuilder app, 
-                          IHostingEnvironment env, 
-                          ILoggerFactory loggerFactory, 
-                          IOptions<Auth0Settings> auth0Settings, 
-                          IAuth0Repository auth0Repository)
+    public void Configure(IApplicationBuilder app,
+                          IHostingEnvironment env,
+                          ILoggerFactory loggerFactory,
+                          IOptions<Auth0Settings> auth0Settings,
+                          IAuth0Repository auth0Repository,
+                          IPersonRepository personRepository)
     {
       loggerFactory.AddConsole(Configuration.GetSection("Logging"));
       loggerFactory.AddDebug();
@@ -116,10 +117,11 @@ namespace tzatziki.minutz
                   identity.HasClaim(c => c.Type == "name"))
                 identity.AddClaim(new Claim(ClaimTypes.Name, identity.FindFirst("name").Value));
 
-              if (!context.Principal.HasClaim(c => c.Type == ClaimTypes.Role))
-              {
-                identity.AddClaim(new Claim(ClaimTypes.Role, auth0Repository.Getrole(context)));
-              }
+              context = auth0Repository.Getrole(context, personRepository);
+              //if (!context.Principal.HasClaim(c => c.Type == ClaimTypes.Role))
+              //{
+              //  identity.AddClaim(new Claim(ClaimTypes.Role, ));
+              //}
 
               // Check if token names are stored in Properties
               if (context.Properties.Items.ContainsKey(".TokenNames"))

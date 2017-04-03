@@ -4,6 +4,6 @@ namespace tzatziki.minutz.interfaces.Repositories
 {
   public interface IAuth0Repository
   {
-    string Getrole(TicketReceivedContext context);
+    TicketReceivedContext Getrole(TicketReceivedContext context, IPersonRepository personRepository);
   }
 }
