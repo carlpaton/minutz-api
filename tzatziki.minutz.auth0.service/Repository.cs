@@ -26,10 +26,6 @@ namespace tzatziki.minutz.auth0.service
                                                                                 userProfile).ToString()));
         }
       }
-      else
-      {
-
-      }
       return context;
     }
 
