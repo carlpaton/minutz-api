@@ -167,6 +167,7 @@ namespace tzatziki.minutz
       };
       options.Scope.Clear();
       options.Scope.Add("openid");
+      options.Scope.Add("picture");
       options.Scope.Add("name");
       options.Scope.Add("email");
       options.Scope.Add("clientID");
