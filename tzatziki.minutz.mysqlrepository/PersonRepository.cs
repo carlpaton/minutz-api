@@ -19,7 +19,7 @@ namespace tzatziki.minutz.mysqlrepository
       {
         return new UserProfile
         {
-          InstanceId = string.IsNullOrEmpty(user.InstanceId.ToString()) ? Guid.Empty : Guid.Parse(user.InstanceId),
+          InstanceId = string.IsNullOrEmpty(user.InstanceId) ? Guid.Empty : Guid.Parse(user.InstanceId),
           UserId = user.Identityid,
           Name = user.FirstName,
           EmailAddress = user.Email
@@ -71,7 +71,7 @@ namespace tzatziki.minutz.mysqlrepository
           FirstName = profile.Name,
           Email = profile.EmailAddress,
           Identityid = profile.UserId,
-          InstanceId = Guid.NewGuid().ToString(),
+          //InstanceId = Guid.NewGuid().ToString(),
           Role = RoleEnum.Attendee.ToString()
         });
         context.SaveChanges();
