@@ -21,5 +21,7 @@ namespace tzatziki.minutz.models.Auth
     public string ProfileImage { get; set; }
 
     public AppMetadata App_Metadata { get; set; }
+
+    public string Role { get; set; }
   }
 }
