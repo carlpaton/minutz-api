@@ -36,7 +36,7 @@ namespace tzatziki.minutz.Controllers
       return View(user);
     }
 
-		public IActionResult Login(string returnUrl = "/")
+		public IActionResult Login(string returnUrl = "/signin-auth0")
 		{
 			return new ChallengeResult("Auth0", new AuthenticationProperties() { RedirectUri = returnUrl });
 		}

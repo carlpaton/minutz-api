@@ -57,11 +57,12 @@ namespace tzatziki.minutz
                           IHostingEnvironment env,
                           ILoggerFactory loggerFactory,
                           IOptions<Auth0Settings> auth0Settings,
-                          IOptions<AppSettings> appsettings,
-                          IAuth0Repository auth0Repository,
-                          IPersonRepository personRepository, 
-                          IProfileService profileService, 
-                          ITokenStringHelper tokenStringHelper)
+                          IOptions<AppSettings> appsettings
+                          //IAuth0Repository auth0Repository,
+                          //IPersonRepository personRepository, 
+                          //IProfileService profileService, 
+                          //ITokenStringHelper tokenStringHelper
+      )
     {
       loggerFactory.AddConsole(Configuration.GetSection("Logging"));
       loggerFactory.AddDebug();
@@ -116,11 +117,11 @@ namespace tzatziki.minutz
             if (identity != null)
             {
               // Add the Name ClaimType. This is required if we want User.Identity.Name to actually return something!
-              if (!context.Principal.HasClaim(c => c.Type == ClaimTypes.Name) &&
-                  identity.HasClaim(c => c.Type == "name"))
-                identity.AddClaim(new Claim(ClaimTypes.Name, identity.FindFirst("name").Value));
+              //if (!context.Principal.HasClaim(c => c.Type == ClaimTypes.Name) &&
+              //    identity.HasClaim(c => c.Type == "name"))
+              //  identity.AddClaim(new Claim(ClaimTypes.Name, identity.FindFirst("name").Value));
 
-              context = auth0Repository.Getrole(context, personRepository, appsettings, profileService, tokenStringHelper);
+              //context = auth0Repository.Getrole(context, personRepository, appsettings, profileService, tokenStringHelper);
 
               // Check if token names are stored in Properties
               if (context.Properties.Items.ContainsKey(".TokenNames"))
@@ -166,18 +167,18 @@ namespace tzatziki.minutz
         }
       };
       options.Scope.Clear();
-      options.Scope.Add("openid");
-      options.Scope.Add("picture");
+     // options.Scope.Add("openid");
+    //  options.Scope.Add("picture");
       options.Scope.Add("name");
       options.Scope.Add("email");
-      options.Scope.Add("clientID");
-      options.Scope.Add("updated_at");
-      options.Scope.Add("created_at");
+    //  options.Scope.Add("clientID");
+     // options.Scope.Add("updated_at");
+     // options.Scope.Add("created_at");
       options.Scope.Add("user_id");
-      options.Scope.Add("nickname");
-      options.Scope.Add("roles");
-      options.Scope.Add("app_metadata");
-      options.Scope.Add("user_metadata");
+     // options.Scope.Add("nickname");
+      //options.Scope.Add("roles");
+      //options.Scope.Add("app_metadata");
+      //options.Scope.Add("user_metadata");
 
       app.UseOpenIdConnectAuthentication(options);
 
