@@ -1,6 +1,6 @@
-@model tzatziki.minutz.models.CalenderModel
+@model tzatziki.minutz.models.Auth.UserProfile
 @{
-		ViewData["Title"] = "Profile";
+  ViewData["Title"] = "Profile";
 }
 <style>
   .profilePictre {
@@ -8,41 +8,74 @@
     width: 150px;
     height: 150px;
   }
+
 </style>
-<div class="container-fluid">
-	<div class="pull-left">
-		<h1>Profile</h1>
-    <img class="profilePictre" src="@User.ToProfile().ProfileImage" />
-		<h3>@User.ToProfile().Name</h3>
-	</div>
-	<div class="pull-right">
-		<h1><a href="#meeting" class="btn btn-success">Create Meeting</a></h1>
-	</div>
+<div class="page">
+  <div class="container-fluid">
+    <div class="pull-left">
+      <h1 class="col-lg-offset-10">Profile</h1>
+      <img class="profilePictre col-sm-offset-10" src="@Model.ProfileImage" />
+    </div>
+    <div class="pull-right">
+      <h1><a href="#meeting" class="btn btn-success">Create Meeting</a></h1>
+    </div>
+  </div>
+  <br />
+
+  <div class="container-fluid">
+    <form class="form-horizontal">
+      <div class="form-group">
+        <label class="control-label col-sm-1" for="firstName">Name:</label>
+        <input type="text" class="form-control" disabled id="firstName" value="@Model.Name">
+      </div>
+    </form>
+    <form class="form-horizontal">
+      <div class="form-group">
+        <label class="control-label col-sm-1" for="role">Role:</label>
+        <input type="text" class="form-control" disabled id="role" value="@User.Claims.FirstOrDefault(i => i.Type == System.Security.Claims.ClaimTypes.Role).Value">
+      </div>
+    </form>
+    <form class="form-horizontal">
+      <div class="form-group">
+        <label class="control-label col-sm-1" for="role">Email:</label>
+        <input type="text" class="form-control" disabled id="role" value="@Model.EmailAddress">
+      </div>
+    </form>
+    @if (Model.InstanceId == Guid.Empty)
+    {
+      <form class="form-horizontal">
+        <div class="form-group">
+          <a class="btn btn-info col-sm-1 col-sm-offset-1" asp-controller="Account" asp-action="Login" id="btn-login">Start full Version</a>
+        </div>
+      </form>
+    }
+  </div>
+
 </div>
-<div class="row">
-	<div class="col-md-12">
-		<h3>Claims associated with current User</h3>
-		<p>This page displays all the claims associated the the current User. This is useful when debugging to see which claims are being populated from the Auth0 ID Token.</p>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>
-						Claim
-					</th>
-					<th>
-						Value
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach (var claim in User.Claims)
-				{
-				<tr>
-					<td>@claim.Type</td>
-					<td>@claim.Value</td>
-				</tr>
-				}
-			</tbody>
-		</table>
-	</div>
+<div class="row hide">
+  <div class="col-md-12">
+    <h3>Claims associated with current User</h3>
+    <p>This page displays all the claims associated the the current User. This is useful when debugging to see which claims are being populated from the Auth0 ID Token.</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>
+            Claim
+          </th>
+          <th>
+            Value
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var claim in User.Claims)
+        {
+        <tr>
+          <td>@claim.Type</td>
+          <td>@claim.Value</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
 </div>

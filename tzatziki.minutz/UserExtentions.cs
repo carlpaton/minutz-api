@@ -21,6 +21,7 @@ namespace tzatziki.minutz
     public static UserProfile ToProfile(this ClaimsPrincipal User)
     {
       var claims = User.Claims.ToList();
+
       var tokenStringHelper = new TokenStringHelper();
       var model = new UserProfile
       {
@@ -30,7 +31,8 @@ namespace tzatziki.minutz
         UserId = claims.FirstOrDefault(c => c.Type == "user_id")?.Value,
         ClientID = claims.FirstOrDefault(c => c.Type == "clientID")?.Value,
         Created_At = tokenStringHelper.ConvertTokenStringToDate(claims.FirstOrDefault(c => c.Type == "created_at")?.Value),
-        Updated_At = tokenStringHelper.ConvertTokenStringToDate(claims.FirstOrDefault(c => c.Type == "updated_at")?.Value)
+        Updated_At = tokenStringHelper.ConvertTokenStringToDate(claims.FirstOrDefault(c => c.Type == "updated_at")?.Value),
+        Role = @User.Claims.FirstOrDefault(i => i.Type == System.Security.Claims.ClaimTypes.Role).Value
       };
       if (model.ProfileImage == null)
       {

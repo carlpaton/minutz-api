@@ -26,13 +26,14 @@ namespace tzatziki.minutz.Controllers
     public IActionResult Index()
 		{
       this.UserProfile = User.ToProfile(ProfileService, TokenStringHelper, AppSettings);
+      var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
 
       var model = new CalenderModel
       {
         //Instances = _instanceRepository.GetInstances(AppSettings.ConnectionStrings.LiveConnection),
         
       };
-      return View(model);
+      return View(user);
     }
 
 		public IActionResult Login(string returnUrl = "/")
@@ -63,5 +64,7 @@ namespace tzatziki.minutz.Controllers
 		{
 			return View();
 		}
+
+
 	}
 }
