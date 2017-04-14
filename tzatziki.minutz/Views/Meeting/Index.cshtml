@@ -1,6 +1,6 @@
 @model tzatziki.minutz.models.MeetngModel
 @{
-	ViewData["Title"] = "Meeting";
+  ViewData["Title"] = "Meeting";
 }
 <style>
   .row-item {
@@ -8,37 +8,37 @@
     padding-top: 15px;
     padding-bottom: 15px;
   }
-	.round-button-circle {
-		width: 50px;
-		height: 0;
-		padding-bottom: 50px;
-		border-radius: 50px;
-		border: 0px solid #cfdcec;
-		overflow: hidden;
-		background: #4679BD;
-		box-shadow: 0 0 3px gray;
-		cursor: pointer;
-		color:white;
-	}
 
-		.round-button-circle i {
-			padding-top: 12px;
-			padding-left: 9px;
-		}
+  .round-button-circle {
+    width: 50px;
+    height: 0;
+    padding-bottom: 50px;
+    border-radius: 50px;
+    border: 0px solid #cfdcec;
+    overflow: hidden;
+    background: #4679BD;
+    box-shadow: 0 0 3px gray;
+    cursor: pointer;
+    color: white;
+  }
 
-	.text-line {
-		background-color: transparent;
-		color: #000000;
-		outline: none;
-		outline-style: none;
-		outline-offset: 0;
-		border-top: none;
-		border-left: none;
-		border-right: none;
-		border-bottom: solid #000 1px;
-		padding: 3px 10px;
-	}
+  .round-button-circle i {
+    padding-top: 12px;
+    padding-left: 9px;
+  }
 
+  .text-line {
+    background-color: transparent;
+    color: #000000;
+    outline: none;
+    outline-style: none;
+    outline-offset: 0;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: solid #000 1px;
+    padding: 3px 10px;
+  }
 
   /* form starting stylings ------------------------------- */
   .group {
@@ -57,9 +57,9 @@
     border-bottom: 1px solid #757575;
   }
 
-    input:focus {
-      outline: none;
-    }
+  input:focus {
+    outline: none;
+  }
 
   /* LABEL ======================================= */
   label {
@@ -80,115 +80,112 @@
     color: #5264AE;
   }
 
-  
-
   /* active state */
-  input:focus ~ .bar:before, input:focus ~ .bar:after {
-    width: 50%;
-  }
+  /*input:focus ~ .bar:before, input:focus ~ .bar:after {
+    /*width: 50%;*/
+  }*/
   /* HIGHLIGHTER ================================== */
-.highlight {
-  position:absolute;
-  height:60%;
-  width:100px;
-  top:25%;
-  left:0;
-  pointer-events:none;
-  opacity:0.5;
-}
+  .highlight {
+    position: absolute;
+    height: 60%;
+    width: 100px;
+    top: 25%;
+    left: 0;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
   .dropdown-padding {
     padding-left: 10px;
     font-weight: bold;
   }
 
-/* active state */
-input:focus ~ .highlight {
-  animation:inputHighlighter 0.3s ease;
-}
+  /* active state */
+  input:focus ~ .highlight {
+    /*animation: inputHighlighter 0.3s ease;*/
+  }
 
- 
-
+  .row-white {
+    background-color: #fff;
+  }
 </style>
 <div class="container-fluid">
-<br />
-<div class="row">
-<div class="container-fluid">
-	<div class="pull-left col-lg-10">
-		<div class="col-md-3 ">
-      <h3>My Organisation Name</h3> 
-    </div>
-    <div class="col-md-6 pull-left">
-      <h4 class="pull-left" style="padding-top: 10px;">Create Meeting</h4>
-    </div>
-	</div>
-	<div class="pull-right">
-		<div class="round-button-circle"><i class="fa fa-cogs fa-2x"></i></div>
-	</div>
-</div>
-</div>
-  @*This is top heading row row*@
-  <br/>
-<div class="row">
-	<div class="container-fluid">
-		<div class="col-md-10">
-      <div id="meetingNameGroup" class="group">
-        <input type="text" required>
-        <span class="highlight"></span>
-        <label>Meeting Name</label>
-      </div>
-		</div>
-    <div class="col-md-2 pull-right">
-      <div class="dropdown pull-right" style="padding-top:25px;">
-        <div class=" dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-          <i class="fa fa-briefcase"></i>
-          <span class="dropdown-padding">Project</span>
-          <span class="caret"></span>
+
+  <div class="row hide">
+    <div class="container-fluid">
+      <div class="pull-left col-lg-10">
+        <div class="col-md-3 ">
+          <h3>My Organisation Name</h3>
         </div>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-          <li><a href="#">Action</a></li>
-          <li><a href="#">Another action</a></li>
-          <li><a href="#">Something else here</a></li>
-          <li role="separator" class="divider"></li>
-          <li><a href="#">Separated link</a></li>
-        </ul>
+        <div class="col-md-6 pull-left">
+          <h4 class="pull-left" style="padding-top: 10px;">Create Meeting</h4>
+        </div>
+      </div>
+      <div class="pull-right">
+        <div class="round-button-circle"><i class="fa fa-cogs fa-2x"></i></div>
       </div>
     </div>
-	</div>
-</div>
- 
+  </div>
+  @*This is top heading row row*@
+  <div class="row row-white">
+    <div class="container-fluid">
+      <div class="col-md-12">
+        <input type="text" style="font-size: 30px; font-weight: bold;" placeholder="Meeting Name"/>
+       
+      </div>
+      <div class="col-md-2 pull-right hide">
+        <div class="dropdown pull-right" style="padding-top:25px;">
+          <div class=" dropdown-toggle" type="button" id="projectSelection" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <i class="fa fa-briefcase"></i>
+            <span class="dropdown-padding">Project</span>
+            <span class="caret"></span>
+          </div>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row row-white"><br /></div>
   @*This is meeting time controler row*@
-	<div class="row">
-		<div class="container-fluid">
-			<div class="col-md-2">
+  <div class="row row-white">
+    <div class="container-fluid">
+      <div class="col-md-2">
         <div class="input-group">
           <span class="input-group-addon" id="basic-addon1"><i class="fa fa-map-marker"></i></span>
           <input type="text" class="form-control" placeholder="Location" aria-describedby="basic-addon1">
         </div>
-			</div>
-			<div class="col-md-2">
+      </div>
+      <div class="col-md-2">
         <div class="input-group date">
           <input type="text" id="date" class="form-control"><span class="input-group-addon">
-          <i class="fa fa-calendar"></i></span>
+            <i class="fa fa-calendar"></i>
+          </span>
         </div>
-			</div>
-			<div class="col-md-2">
+      </div>
+      <div class="col-md-2">
         <div class="input-group bootstrap-timepicker timepicker">
           <input id="meetingTime" type="text" class="form-control input-small">
           <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
         </div>
-			</div>
-			<div class="col-md-2">
+      </div>
+      <div class="col-md-2">
         <div class="input-group bootstrap-timepicker timepicker">
           <input id="duration" type="text" class="form-control input-small">
           <span class="input-group-addon">
             <i class="glyphicon glyphicon-time"></i>
           </span>
         </div>
-			</div>
-			<div class="col-md-1">
+      </div>
+      <div class="col-md-1">
         <div class="dropdown" style="padding-top:5px;">
           <div class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-           <span class="dropdown-padding">Repeat</span> 
+            <span class="dropdown-padding">Repeat</span>
             <span class="caret"></span>
           </div>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
@@ -199,18 +196,18 @@ input:focus ~ .highlight {
             <li><a href="#">Separated link</a></li>
           </ul>
         </div>
-			</div>
-			<div class="col-md-2">
+      </div>
+      <div class="col-md-2">
         <div class="input-group">
           <span class="input-group-addon" id="basic-addon1"><i class="fa fa-cubes"></i></span>
           <input type="text" class="form-control" placeholder="Create Series" aria-describedby="basic-addon1">
         </div>
-			</div>
-			<div class="col-md-1">
+      </div>
+      <div class="col-md-1">
         <div class="dropdown" style="padding-top:5px;">
           <div class=" dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             <i class="fa fa-user"></i>
-            <span class="dropdown-padding">Role</span> 
+            <span class="dropdown-padding">Role</span>
             <span class="caret"></span>
           </div>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
@@ -221,31 +218,33 @@ input:focus ~ .highlight {
             <li><a href="#">Separated link</a></li>
           </ul>
         </div>
-			</div>
-		</div>
-	</div>
+      </div>
+    </div>
+  </div>
+  <div class="row row-white"><br /></div>
 </div>
-<br/>
+<br />
 @*This is invations row*@
-<div class="row row-item" >
+<div class="row row-item">
   <div class="container-fluid">
     <div class="col-lg-5">
       <div class="col-md-3">
-        <a class="btn btn-info" ><i class="fa fa-paper-plane-o"></i><span style="padding-left:5px;">Send Invatations</span></a>
+        <a class="btn btn-info"><i class="fa fa-paper-plane-o"></i><span style="padding-left:5px;">Send Invatations</span></a>
       </div>
       <div class="col-md-3">
         <a class="btn " style="background-color:white; color:black;">
-        <i class="fa fa-eye"></i>
-        <span>Preview Invite</span></a>
+          <i class="fa fa-eye"></i>
+          <span>Preview Invite</span>
+        </a>
       </div>
     </div>
     <div class="col-lg-5 ">
-      <div class="hide" >
-       
+      <div class="hide">
+
 
         <input type="checkbox" class="hide" name="private" value="private" /><span>Private meeting</span>
       </div>
-      <div class="hide" >
+      <div class="hide">
         <input type="checkbox" class="checkbox hide" name="audit" value="audit" /><span>Audited meeting</span>
       </div>
     </div>
@@ -294,5 +293,5 @@ input:focus ~ .highlight {
       else
         $(this).removeClass('used');
     });
-   });
+  });
 </script>
