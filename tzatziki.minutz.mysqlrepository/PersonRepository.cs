@@ -35,12 +35,32 @@ namespace tzatziki.minutz.mysqlrepository
       return newUserObject;
     }
 
+    public UserProfile InsertInstanceIdForUser(UserProfile user, string connectionString)
+    {
+      using (var context = new DBConnectorContext(connectionString))
+      {
+        context.Database.EnsureCreated();
+
+        var dbUser = context.person.FirstOrDefault(i => i.Identityid == user.UserId);
+        dbUser.InstanceId = user.InstanceId.ToString();
+        try
+        {
+          context.SaveChanges();
+        }
+        catch (Exception ex)
+        {
+          throw (ex);
+        }
+        return user;
+      }
+    }
+
     /// <summary>
     /// Get the role for a user from the connector database
     /// </summary>
-    /// <param name="identifier">Auth0 identifier</param>
+    /// <param name="identifier">      Auth0 identifier</param>
     /// <param name="connectionString">database connection string</param>
-    /// <param name="profile">Auth0 populated UserProfile instance</param>
+    /// <param name="profile">         Auth0 populated UserProfile instance</param>
     /// <returns>Enum.RoleEnum</returns>
     public RoleEnum GetRole(string identifier, string connectionString, UserProfile profile)
     {

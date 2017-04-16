@@ -5,30 +5,27 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using tzatziki.minutz.interfaces;
 using tzatziki.minutz.models;
+using tzatziki.minutz.core;
 
 namespace tzatziki.minutz.Controllers
 {
   [Authorize]
   public class HomeController : BaseController
   {
-
     //private readonly IInstanceRepository _instanceRepository;
 
     public HomeController(
       ITokenStringHelper tokenStringHelper,
       IProfileService profileService,
-      //IInstanceRepository instanceRepository, 
-      IOptions<AppSettings> settings) : base(settings, profileService, tokenStringHelper)
+      IInstanceService instanceService,
+      IOptions<AppSettings> settings,
+      IUserService userService) : base(settings, profileService, tokenStringHelper, instanceService, userService)
     {
-
       //_instanceRepository = instanceRepository;
     }
 
-
-
     public IActionResult Index()
     {
-
       //var identity = User.Identity as ClaimsIdentity;
       // identity.AddClaim(new Claim("role", "user"));
 

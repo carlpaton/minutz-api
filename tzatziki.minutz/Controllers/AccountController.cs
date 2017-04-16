@@ -8,6 +8,8 @@ using Microsoft.Extensions.Options;
 using tzatziki.minutz.interfaces;
 using tzatziki.minutz.models;
 using tzatziki.minutz.models.Auth;
+using System;
+using tzatziki.minutz.core;
 
 namespace tzatziki.minutz.Controllers
 {
@@ -16,7 +18,9 @@ namespace tzatziki.minutz.Controllers
     public AccountController(
       ITokenStringHelper tokenStringHelper,
       IProfileService profileService,
-      IOptions<AppSettings> settings) : base(settings, profileService, tokenStringHelper)
+      IInstanceService instanceService,
+      IOptions<AppSettings> settings,
+      IUserService userService) : base(settings, profileService, tokenStringHelper, instanceService, userService)
     {
     }
 
@@ -33,7 +37,7 @@ namespace tzatziki.minutz.Controllers
       return View(user);
     }
 
-    public IActionResult Login(string returnUrl = "/")
+    public IActionResult Login(string returnUrl = "/Home")
     {
       return new ChallengeResult("Auth0", new AuthenticationProperties() { RedirectUri = returnUrl });
     }
@@ -84,6 +88,17 @@ namespace tzatziki.minutz.Controllers
     public ActionResult _userProfileActivityLog()
     {
       return PartialView("~/Views/Account/_userProfileActivityLog.cshtml");
+    }
+
+    [Authorize]
+    public ActionResult StartFullVersion()
+    {
+      var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
+      user.InstanceId = Guid.NewGuid();
+      user = this.ProfileService.Update(user, AppSettings);
+      var instance = this.Instanceservice.Get(user, AppSettings.ConnectionStrings.AzureConnection);
+      var instanceUser = this.UserService.CopyPersonToUser(user, AppSettings);
+      return View("Index", user);
     }
   }
 }

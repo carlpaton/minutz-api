@@ -1,5 +1,4 @@
-﻿
-using tzatziki.minutz.models.Auth;
+﻿using tzatziki.minutz.models.Auth;
 
 namespace tzatziki.minutz.interfaces.Repositories
 {
@@ -8,6 +7,8 @@ namespace tzatziki.minutz.interfaces.Repositories
     bool IsPerson(string email);
 
     UserProfile Get(string identifier, string email, string name, string connectionString);
+
+    UserProfile InsertInstanceIdForUser(UserProfile user, string connectionString);
 
     RoleEnum GetRole(string identifier, string connectionString, UserProfile profile);
   }

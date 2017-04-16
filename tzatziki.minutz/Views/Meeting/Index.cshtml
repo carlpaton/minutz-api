@@ -4,7 +4,7 @@
 }
 <style>
   .row-item {
-    background-color: #dcdcdc;
+    background-color: #F7F7F7;
     padding-top: 15px;
     padding-bottom: 15px;
   }
@@ -22,10 +22,10 @@
     color: white;
   }
 
-  .round-button-circle i {
-    padding-top: 12px;
-    padding-left: 9px;
-  }
+    .round-button-circle i {
+      padding-top: 12px;
+      padding-left: 9px;
+    }
 
   .text-line {
     background-color: transparent;
@@ -57,9 +57,9 @@
     border-bottom: 1px solid #757575;
   }
 
-  input:focus {
-    outline: none;
-  }
+    input:focus {
+      outline: none;
+    }
 
   /* LABEL ======================================= */
   label {
@@ -81,9 +81,7 @@
   }
 
   /* active state */
-  /*input:focus ~ .bar:before, input:focus ~ .bar:after {
-    /*width: 50%;*/
-  }*/
+
   /* HIGHLIGHTER ================================== */
   .highlight {
     position: absolute;
@@ -109,6 +107,7 @@
     background-color: #fff;
   }
 </style>
+
 <div class="container-fluid">
 
   <div class="row hide">
@@ -130,8 +129,7 @@
   <div class="row row-white">
     <div class="container-fluid">
       <div class="col-md-12">
-        <input type="text" style="font-size: 30px; font-weight: bold;" placeholder="Meeting Name"/>
-       
+        <input type="text" style="font-size: 30px; font-weight: bold;" placeholder="Meeting Name" />
       </div>
       <div class="col-md-2 pull-right hide">
         <div class="dropdown pull-right" style="padding-top:25px;">
@@ -223,9 +221,9 @@
   </div>
   <div class="row row-white"><br /></div>
 </div>
-<br />
+
 @*This is invations row*@
-<div class="row row-item">
+<div class="row row-item row-grey">
   <div class="container-fluid">
     <div class="col-lg-5">
       <div class="col-md-3">
@@ -240,7 +238,6 @@
     </div>
     <div class="col-lg-5 ">
       <div class="hide">
-
 
         <input type="checkbox" class="hide" name="private" value="private" /><span>Private meeting</span>
       </div>
@@ -258,7 +255,6 @@
 <div>
   @Html.Partial("~/Views/Shared/_wysihtml.cshtml")
 </div>
-
 
 <script type="text/javascript">
 
@@ -283,7 +279,6 @@
       toggleActive: true,
       defaultViewDate: { year: 1977, month: 04, day: 25 }
     });
-
 
     $('#meetingNameGroup input').blur(function () {
 

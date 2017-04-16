@@ -9,9 +9,9 @@ namespace tzatziki.minutz
 {
   public static class UserExtentions
   {
-    public static UserProfile ToProfile(this ClaimsPrincipal User, 
-                              IProfileService profileService, 
-                              ITokenStringHelper tokenStringHelper, 
+    public static UserProfile ToProfile(this ClaimsPrincipal User,
+                              IProfileService profileService,
+                              ITokenStringHelper tokenStringHelper,
                               AppSettings settings)
     {
       var claims = User.Claims.ToList();
@@ -32,7 +32,7 @@ namespace tzatziki.minutz
         ClientID = claims.FirstOrDefault(c => c.Type == "clientID")?.Value,
         Created_At = tokenStringHelper.ConvertTokenStringToDate(claims.FirstOrDefault(c => c.Type == "created_at")?.Value),
         Updated_At = tokenStringHelper.ConvertTokenStringToDate(claims.FirstOrDefault(c => c.Type == "updated_at")?.Value),
-        Role = @User.Claims.FirstOrDefault(i => i.Type == System.Security.Claims.ClaimTypes.Role).Value
+        Role = User.Claims.FirstOrDefault(i => i.Type == System.Security.Claims.ClaimTypes.Role).Value
       };
       if (model.ProfileImage == null)
       {

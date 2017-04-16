@@ -46,7 +46,7 @@
     <ProjectReference Include="..\tzatziki.minutz.core\tzatziki.minutz.core.csproj" />
     <ProjectReference Include="..\tzatziki.minutz.interfaces\tzatziki.minutz.interfaces.csproj" />
     <ProjectReference Include="..\tzatziki.minutz.models\tzatziki.minutz.models.csproj" />
-    <ProjectReference Include="..\tzatziki.minutz.mysqlrepository\tzatziki.minutz.mysqlrepository.csproj" />
+    <ProjectReference Include="..\tzatziki.minutz.sqlrepository\tzatziki.minutz.sqlrepository.csproj" />
   </ItemGroup>
 
 </Project>
