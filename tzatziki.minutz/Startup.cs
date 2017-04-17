@@ -104,7 +104,7 @@ namespace tzatziki.minutz
 
         // Set the callback path, so Auth0 will call back to http://localhost:5000/signin-auth0 Also
         // ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard
-        CallbackPath = new PathString("/Home"),
+        CallbackPath = new PathString("/Dashboard"),
 
         // Configure the Claims Issuer to be Auth0
         ClaimsIssuer = "Auth0",
@@ -188,7 +188,7 @@ namespace tzatziki.minutz
       {
         routes.MapRoute(
                   name: "default",
-                  template: "{controller=Home}/{action=Index}/{id?}");
+                  template: "{controller=Dashboard}/{action=Index}/{id?}");
       });
     }
   }
