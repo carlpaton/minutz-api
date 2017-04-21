@@ -143,3 +143,14 @@
 .input-group-addon {
   color: #999 !important;
 }
+
+.input-group-addon {
+  padding: 11px 18px !important;
+}
+
+.form-control {
+  height: 40px !important;
+}
+.btn {
+  padding: 11px 14px !important;
+}

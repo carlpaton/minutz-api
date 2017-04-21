@@ -4,6 +4,54 @@
 }
 <link rel="stylesheet" href="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 <style>
+  .material-switch > input[type="checkbox"] {
+    display: none;
+  }
+
+  .material-switch > label {
+    cursor: pointer;
+    height: 0px;
+    position: relative;
+    width: 40px;
+  }
+
+    .material-switch > label::before {
+      background: rgb(0, 0, 0);
+      box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+      border-radius: 8px;
+      content: '';
+      height: 16px;
+      margin-top: -8px;
+      position: absolute;
+      opacity: 0.3;
+      transition: all 0.4s ease-in-out;
+      width: 40px;
+    }
+
+    .material-switch > label::after {
+      background: rgb(255, 255, 255);
+      border-radius: 16px;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+      content: '';
+      height: 24px;
+      left: -4px;
+      margin-top: -8px;
+      position: absolute;
+      top: -4px;
+      transition: all 0.3s ease-in-out;
+      width: 24px;
+    }
+
+  .material-switch > input[type="checkbox"]:checked + label::before {
+    background: inherit;
+    opacity: 0.5;
+  }
+
+  .material-switch > input[type="checkbox"]:checked + label::after {
+    background: inherit;
+    left: 20px;
+  }
+ 
   .row-item {
     background-color: #F7F7F7;
     padding-top: 15px;
@@ -25,7 +73,7 @@
 
     .round-button-circle i {
       padding-top: 12px;
-      padding-left: 9px;
+      padding-left: 12px;
     }
 
   .text-line {
@@ -154,68 +202,61 @@
   @*This is meeting time controler row*@
   <div class="row row-white">
     <div class="container-fluid">
-      <div class="col-md-2">
-        <div class="input-group">
-          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-map-marker"></i></span>
-          <input type="text" class="form-control" placeholder="Location" aria-describedby="basic-addon1">
-        </div>
-      </div>
-      <div class="col-md-2">
-        <div class="input-group date">
-          <input type="text" id="date" class="form-control"><span class="input-group-addon">
-            <i class="fa fa-calendar"></i>
-          </span>
-        </div>
-      </div>
-      <div class="col-md-2">
-        <div class="input-group bootstrap-timepicker timepicker">
-          <input id="meetingTime" type="text" class="form-control input-small">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-        </div>
-      </div>
-      <div class="col-md-2">
-        <div class="input-group bootstrap-timepicker timepicker">
-          <input id="duration" type="text" class="form-control input-small">
-          <span class="input-group-addon">
-            <i class="glyphicon glyphicon-time"></i>
-          </span>
-        </div>
-      </div>
-      <div class="col-md-1">
-        <div class="dropdown" style="padding-top:5px;">
-          <div class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <span class="dropdown-padding">Repeat</span>
-            <span class="caret"></span>
+      <div class="col-sm-5">
+        <div class="col-md-4">
+          <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-map-marker"></i></span>
+            <input type="text" class="form-control" placeholder="Location" aria-describedby="basic-addon1">
           </div>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-          </ul>
         </div>
-      </div>
-      <div class="col-md-2">
-        <div class="input-group">
-          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-cubes"></i></span>
-          <input type="text" class="form-control" placeholder="Create Series" aria-describedby="basic-addon1">
-        </div>
-      </div>
-      <div class="col-md-1">
-        <div class="dropdown" style="padding-top:5px;">
-          <div class=" dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <i class="fa fa-user"></i>
-            <span class="dropdown-padding">Role</span>
-            <span class="caret"></span>
+        <div class="col-md-4">
+          <div class="input-group date">
+            <input type="text" id="date" class="form-control"><span class="input-group-addon">
+              <i class="fa fa-calendar"></i>
+            </span>
           </div>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-          </ul>
+        </div>
+        <div class="col-md-4">
+          <div class="input-group bootstrap-timepicker timepicker">
+            <input id="meetingTime" type="text" class="form-control input-small">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-5">
+        <div class="col-md-4">
+          <div class="input-group bootstrap-timepicker timepicker">
+            <input id="duration" type="text" class="form-control input-small">
+            <span class="input-group-addon">
+              <i class="fa fa-hourglass-half"></i>
+            </span>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="input-group bootstrap-timepicker timepicker">
+            <span class="input-group-addon"><i class="fa fa-refresh"></i></span>
+            <div class="btn-group">
+              <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span style="padding-left:5px; padding-right:5px;"> Set Recurrence  </span> <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                ...
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-tags"></i></span>
+            <input type="text" class="form-control" placeholder="Add a tag" aria-describedby="basic-addon1">
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="checkbox">
+          <label style="pointer-events: auto; padding-left: 0px; top: -2px; ">
+            <input type="checkbox" style="margin-left: -70px;">Private Meeting
+          </label>
         </div>
       </div>
     </div>
@@ -263,7 +304,7 @@
         </div>
         <!-- /.widget-user-image -->
         <h3 class="widget-user-username">@User.ToProfile().Name</h3>
-        <h5 class="widget-user-desc">Organiser</h5>
+        <h5 class="widget-user-desc"><b>Role :</b> Organiser</h5>
       </div>
     </div>
   </div>
@@ -271,8 +312,11 @@
     <div class="panel-group" style="padding:10px; background-color:#ecf0f5; ">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h4 class="panel-title">
-            <a data-toggle="collapse" href="#attendeeCollapse"><span>Attendee</span></a>
+          <h4 class="panel-title" style="padding: 10px; ">
+            <span>Attendee</span>
+            <a data-toggle="collapse" href="#attendeeCollapse">
+              <div class="round-button-circle pull-right" style="margin-top: -16px;"><i class="fa fa-plus fa-2x"></i></div>
+            </a>
           </h4>
           <div id="attendeeCollapse" class="panel-collapse collapse">
             <div class="input-group">
@@ -354,8 +398,11 @@
     <div class="panel-group" style="padding:10px;">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h4 class="panel-title">
-            <a data-toggle="collapse" href="#purposeCollapse"><span>Purpose</span></a>
+          <h4 class="panel-title" style="padding: 10px; ">
+            <span>Purpose</span>
+            <a data-toggle="collapse" href="#purposeCollapse">
+              <div class="round-button-circle pull-right" style="margin-top: -16px;"><i class="fa fa-plus fa-2x"></i></div>
+            </a>
           </h4>
         </div>
         <div id="purposeCollapse" class="panel-collapse collapse">
@@ -391,9 +438,12 @@
     <div class="panel-group" style="padding:10px;">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h4 class="panel-title">
-            <a data-toggle="collapse" href="#outcomeCollapse"><span>Outcome</span></a>
-          </h4>
+          <h4 class="panel-title" style="padding: 10px; ">
+            <span>Outcome</span>
+              <a data-toggle="collapse" href="#outcomeCollapse">
+                <div class="round-button-circle pull-right" style="margin-top: -16px;"><i class="fa fa-plus fa-2x"></i></div>
+              </a>
+            </h4>
         </div>
         <div id="outcomeCollapse" class="panel-collapse collapse">
           <div class="box box-info">
@@ -428,8 +478,11 @@
     <div class="panel-group" style="padding:10px;">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h4 class="panel-title">
-            <a data-toggle="collapse" href="#agendaCollapse"><span>Agenda</span></a>
+          <h4 class="panel-title" style="padding: 10px; ">
+            <span>Agenda</span>
+            <a data-toggle="collapse" href="#agendaCollapse">
+              <div class="round-button-circle pull-right" style="margin-top: -16px;"><i class="fa fa-plus fa-2x"></i></div>
+            </a>
           </h4>
         </div>
         <div id="agendaCollapse" class="panel-collapse collapse">
