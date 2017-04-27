@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using tzatziki.minutz.interfaces;
 using tzatziki.minutz.models;
 using tzatziki.minutz.core;
+using tzatziki.minutz.models.Entities;
 
 namespace tzatziki.minutz.Controllers
 {
@@ -23,7 +24,7 @@ namespace tzatziki.minutz.Controllers
     public IActionResult Index()
     {
       this.UserProfile = User.ToProfile(ProfileService, TokenStringHelper, AppSettings);
-      return View(new MeetngModel { });
+      return View(new Meeting { });
     }
   }
 }
