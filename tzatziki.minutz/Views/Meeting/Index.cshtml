@@ -574,83 +574,105 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title" style="padding: 20px; ">
-            <span>Agenda</span>
-            <a data-toggle="collapse">
-              <div class="round-button-circle pull-right" style="margin-top: -16px;"><i class="fa fa-plus fa-2x"></i></div>
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#agendaCollapse">
+              Agenda
             </a>
-          </h4>
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#agendaCollapse">
+              <i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>
+            </a>
+         </h4>
         </div>
         <div id="agendaCollapse" class="panel-collapse ">
-          <div class="box box-info">
-            <div class="box-header">
-              <h3 class="box-title hide">
-                Bootstrap WYSIHTML5
-                <small>Simple and fast</small>
-              </h3>
-              <!-- tools box -->
-              <div class="pull-right box-tools">
-                <button type="button" class="btn btn-default btn-sm hide" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-                  <i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-default btn-sm hide" data-widget="remove" data-toggle="tooltip" title="Remove">
-                  <i class="fa fa-times"></i>
-                </button>
+          <ul id="agendaListControl" style="list-style: none;">
+            <li>
+              <div class="box box-info hide">
+                <div class="box-header">
+                  <h3 class="box-title hide">
+                    Bootstrap WYSIHTML5
+                    <small>Simple and fast</small>
+                  </h3>
+                  <!-- tools box -->
+                  <div class="pull-right box-tools">
+                    <button type="button" class="btn btn-default btn-sm hide" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                      <i class="fa fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-default btn-sm hide" data-widget="remove" data-toggle="tooltip" title="Remove">
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </div>
+                  <!-- /. tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body pad">
+                  <form>
+                    <textarea id="agendaText1" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                  </form>
+                </div>
               </div>
-              <!-- /. tools -->
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body pad">
-              <form>
-                <textarea id="agendaText1" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-              </form>
-            </div>
-          </div>
-          <div class="box box-info">
-            <div class="box-header">
-              <h3 class="box-title hide">
-                Bootstrap WYSIHTML5
-                <small>Simple and fast</small>
-              </h3>
-              <!-- tools box -->
-              <div class="pull-right box-tools">
-                <button type="button" class="btn btn-default btn-sm hide" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-                  <i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-default btn-sm hide" data-widget="remove" data-toggle="tooltip" title="Remove">
-                  <i class="fa fa-times"></i>
-                </button>
+            </li>
+            <li>
+              <div class="box box-info hide">
+                <div class="box-header">
+                  <h3 class="box-title hide">
+                    Bootstrap WYSIHTML5
+                    <small>Simple and fast</small>
+                  </h3>
+                  <!-- tools box -->
+                  <div class="pull-right box-tools">
+                    <button type="button" class="btn btn-default btn-sm hide" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                      <i class="fa fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-default btn-sm hide" data-widget="remove" data-toggle="tooltip" title="Remove">
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </div>
+                  <!-- /. tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body pad">
+                  <form>
+                    <textarea id="agendaText2" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                  </form>
+                </div>
               </div>
-              <!-- /. tools -->
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body pad">
-              <form>
-                <textarea id="agendaText2" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-              </form>
-            </div>
-          </div>
-          <div class="box box-info">
-            <div class="box-header">
-              <h3 class="box-title hide">
-                Bootstrap WYSIHTML5
-                <small>Simple and fast</small>
-              </h3>
-              <!-- tools box -->
-              <div class="pull-right box-tools">
-                <button type="button" class="btn btn-default btn-sm hide" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-                  <i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-default btn-sm hide" data-widget="remove" data-toggle="tooltip" title="Remove">
-                  <i class="fa fa-times"></i>
-                </button>
+            </li>
+            <li>
+              <div class="box box-info hide">
+                <div class="box-header">
+                  <h3 class="box-title hide">
+                    Bootstrap WYSIHTML5
+                    <small>Simple and fast</small>
+                  </h3>
+                  <!-- tools box -->
+                  <div class="pull-right box-tools">
+                    <button type="button" class="btn btn-default btn-sm hide" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                      <i class="fa fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-default btn-sm hide" data-widget="remove" data-toggle="tooltip" title="Remove">
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </div>
+                  <!-- /. tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body pad">
+                  <form>
+                    <textarea id="agendaText3" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                  </form>
+                </div>
               </div>
-              <!-- /. tools -->
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body pad">
-              <form>
-                <textarea id="agendaText3" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-              </form>
+            </li>
+          </ul>
+          <div class="pull-right">
+            <div style="padding-top:20px; padding-bottom:5px;">
+              <div class="row">
+                <div class="col-sm-1">
+                  <div id="btnAddAgenda" class="round-button-circle" style="margin-top: -35px; margin-left:-160px;"><i class="fa fa-plus fa-2x"></i></div>
+                </div>
+                <div class="col-sm-1">
+                  <div id="btnRemoveAgenda" class="round-button-circle" style="margin-top: -35px; margin-left:-120px; background-color:red"><i class="fa fa-minus fa-2x"></i></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -658,7 +680,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- FastClick -->
 <script src="~/plugins/fastclick/fastclick.js"></script>
@@ -685,9 +706,8 @@
     MeetingAgendaCollection: [],
     MeetingActionCollection: [],
     MeetingNoteCollection: [],
-    MeetingAttachmentCollection:[]
+    MeetingAttachmentCollection: []
   };
-
 
   $(function () {
     $('#meetingTime').timepicker();
@@ -722,9 +742,9 @@
 
     $("#purposeText").wysihtml5();
     $("#outcomeText").wysihtml5();
-    $("#agendaText1").wysihtml5();
-    $("#agendaText2").wysihtml5();
-    $("#agendaText3").wysihtml5();
+    //$("#agendaText1").wysihtml5();
+    //$("#agendaText2").wysihtml5();
+    //$("#agendaText3").wysihtml5();
 
     var x = document.getElementById("demo");
     function getLocation() {
@@ -738,29 +758,77 @@
       x.innerHTML = "Latitude: " + position.coords.latitude +
         "<br>Longitude: " + position.coords.longitude;
     }
-
-
-
+    $("#btnAddAgenda").click(function () { CreateAgendaItem(); });
+    if (meeting.MeetingAgendaCollection.length < 1) { CreateAgendaItem(); }
   });
 
-  function Save()
+
+  function CreateAgendaItem()
   {
+    var id = meeting.MeetingAgendaCollection.length;
+    var controlName = "agenda" + id;
+    meeting.MeetingAgendaCollection.push(MeetingAgendaItem(id, 'refId', 'agendaText', 'meetingattendeeId', 'createdDate', false));
+
+    $('#agendaListControl').append('<li>' + getAgenda(controlName) + '</li>');
+    $("#" + controlName).wysihtml5();
+    console.log(meeting);
+   };
+
+  function Save() {
+    updateAgendaTextToModel();
+
     if (CallSave()) {
       notifyMe(MinutzTitle, "The updates were saved successfully.", "fa fa-info");
 
     } else {
-      notifyMe(MinutzTitle, "Oops something went wrong.","fa fa-info")
+      notifyMe(MinutzTitle, "Oops something went wrong.", "fa fa-info")
     }
     console.log('log');
   };
 
-  function CallSave()
-  {
+  function CallSave() {
     return true;
   };
 
+  function getAgenda(controlName) {
+   return '<div class="box box-info">'+
+      '<div class="box-header">'+
+        '<h3 class="box-title hide">'+
+          'Bootstrap WYSIHTML5'+
+          '<small>Simple and fast</small>'+
+        '</h3>'+
+          '<div class="pull-right box-tools">'+
+          '<button type="button" class="btn btn-default btn-sm hide" data-widget="collapse" data-toggle="tooltip" title="Collapse">'+
+            '<i class="fa fa-minus"></i>'+
+          '</button>'+
+          '<button type="button" class="btn btn-default btn-sm hide" data-widget="remove" data-toggle="tooltip" title="Remove">'+
+            '<i class="fa fa-times"></i>'+
+          '</button>'+
+        '</div>'+
+      '</div>'+
+      '<div class="box-body pad" > '+
+        '<form>'+
+     '<textarea id="' + controlName+'" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>' +
+         '</form > ' +
+      ' </div > ' +
+    '</div>';
+   };
 
+  function MeetingAgendaItem(id, referanceId, agendaText, meetingAttendeeId, createdDate, isComplete)
+  {
+     return { Id: id, ReferanceId: referanceId, AgendaText: agendaText, MeetingAttendeeId: meetingAttendeeId, CreatedDate: createdDate, IsComplete: isComplete};
+  };
 
+  function updateAgendaTextToModel()
+  {
+    for (var i = 0; i < meeting.MeetingAgendaCollection.length  ; i++)
+    {
+      var currentAgenda = meeting.MeetingAgendaCollection[i];
+      var controlName = "agenda" + currentAgenda.Id;
+      var currentAgendaText = $("#" + controlName).val();
+      currentAgenda.AgendaText = currentAgendaText;
+    }
+   };
 
   window.setInterval(function () { Save(); }, 60000);
 </script>
