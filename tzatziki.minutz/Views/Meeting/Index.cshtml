@@ -658,7 +658,8 @@
     </div>
   </div>
 </div>
-<button onclick="notifyMe()">Notify me!</button>
+
+
 <!-- FastClick -->
 <script src="~/plugins/fastclick/fastclick.js"></script>
 <script src="https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
@@ -666,6 +667,27 @@
 <script src="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 
 <script type="text/javascript">
+  var MinutzTitle = "Minutz : Meeting Creator";
+  var meeting = {
+    IsLocked: false,
+    Location: "",
+    Date: "",
+    Time: "",
+    Duration: "",
+    IsReacurance: false,
+    IsPrivate: false,
+    IsFormal: false,
+    TimeZone: "",
+    Tag: [],
+    MeetingAttendeeCollection: {},
+    Purpose: "",
+    Outcome: "",
+    MeetingAgendaCollection: [],
+    MeetingActionCollection: [],
+    MeetingNoteCollection: [],
+    MeetingAttachmentCollection:[]
+  };
+
 
   $(function () {
     $('#meetingTime').timepicker();
@@ -716,31 +738,29 @@
       x.innerHTML = "Latitude: " + position.coords.latitude +
         "<br>Longitude: " + position.coords.longitude;
     }
+
+
+
   });
 
-  function notifyMe() {
-    // Let's check if the browser supports notifications
-    if (!("Notification" in window)) {
-      alert("This browser does not support desktop notification");
-    }
+  function Save()
+  {
+    if (CallSave()) {
+      notifyMe(MinutzTitle, "The updates were saved successfully.", "fa fa-info");
 
-    // Let's check whether notification permissions have already been granted
-    else if (Notification.permission === "granted") {
-      // If it's okay let's create a notification
-      var notification = new Notification("Hi there!");
+    } else {
+      notifyMe(MinutzTitle, "Oops something went wrong.","fa fa-info")
     }
+    console.log('log');
+  };
 
-    // Otherwise, we need to ask the user for permission
-    else if (Notification.permission !== "denied") {
-      Notification.requestPermission(function (permission) {
-        // If the user accepts, let's create a notification
-        if (permission === "granted") {
-          var notification = new Notification("Hi there!");
-        }
-      });
-    }
+  function CallSave()
+  {
+    return true;
+  };
 
-    // At last, if the user has denied notifications, and you
-    // want to be respectful there is no need to bother them any more.
-  }
+
+
+
+  window.setInterval(function () { Save(); }, 60000);
 </script>
