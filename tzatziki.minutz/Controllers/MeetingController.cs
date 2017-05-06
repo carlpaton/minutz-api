@@ -6,6 +6,7 @@ using tzatziki.minutz.interfaces;
 using tzatziki.minutz.models;
 using tzatziki.minutz.core;
 using tzatziki.minutz.models.Entities;
+using System;
 
 namespace tzatziki.minutz.Controllers
 {
@@ -25,6 +26,27 @@ namespace tzatziki.minutz.Controllers
     {
       this.UserProfile = User.ToProfile(ProfileService, TokenStringHelper, AppSettings);
       return View(new Meeting { });
+    }
+
+    [HttpPost]
+    public JsonResult Save(Meeting meeting)
+    {
+      if (string.IsNullOrEmpty(meeting.Name))
+        meeting.Name = GetName();
+      if (meeting.Id < 1)
+        meeting.Id = GetId();
+
+      return Json(meeting);
+    }
+
+    private string GetName()
+    {
+      return "MeetingName" + new Random().Next();
+    }
+
+    private int GetId()
+    {
+      return new Random().Next();
     }
   }
 }

@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="~/css/AdminLTE.css" />
   <link rel="stylesheet" href="~/css/skins/skin-blue.css">
   <link rel="stylesheet" href="~/lib/fullcalendar.min.css">
+  <link rel="stylesheet" href="~/plugins/select2/select2.css" />
   <script src="~/lib/jquery/dist/jquery.js"></script>
   <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
   <link href="~/plugins/timepicker/bootstrap-timepicker.css" rel="stylesheet" />
@@ -22,6 +23,7 @@
   <link href="~/plugins/datepicker/datepicker3.css" rel="stylesheet" />
   <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
   <script src="~/lib/moment.min.js" asp-append-version="true"></script>
+  <script src="~/plugins/select2/select2.full.js"></script>
   <script src="~/lib/fullcalendar.min.js" asp-append-version="true"></script>
   @Html.Raw(JavaScriptSnippet.FullScript)
   <style>
@@ -40,7 +42,7 @@
     }
   </style>
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
   <div class="wrapper">
     <header class="main-header">
       <!-- Logo -->
@@ -413,6 +415,27 @@
 
   @RenderSection("Scripts", required: false)
   <script>
+    (function (g) {
+      var h = { en: { day: "day", hour: "hour", minute: "minute", second: "second", days: "days", hours: "hours", minutes: "minutes", seconds: "seconds" }, es: { day: "d&iacute;a", hour: "hora", minute: "minuto", second: "segundo", days: "d&iacute;s", hours: "horas", minutes: "minutos", seconds: "segundos" } }; g.fn.durationPicker = function (m) {
+        var a = 0, b = g.extend({}, { lang: "en", max: 59, checkRanges: !1, totalMax: 31556952E3, totalMin: 6E4, showSeconds: !1, showDays: !0 }, m); this.each(function (m, q) {
+          function e(a, b) {
+            return '<div class="bdp-block ' + (b ?
+              "hidden" : "") + '"><span id="bdp-' + a + '"></span><br><span class="bdp-label" id="' + a + '_label"></span></div>'
+          } function n() { $mainInput.val() || $mainInput.val(0); moment.locale(b.lang); a = moment.duration(parseInt($mainInput.val(), 10)); p(); l || (d.days.val(a.days()), d.hours.val(a.hours()), d.minutes.val(a.minutes()), d.seconds.val(a.seconds())) } function r() {
+            a = moment.duration({ seconds: parseInt(d.seconds.val()), minutes: parseInt(d.minutes.val()), hours: parseInt(d.hours.val()), days: parseInt(d.days.val()) }); p(); $mainInput.val(a.asMilliseconds());
+            $mainInput.change()
+          } function k(a, c, f) { var e = g('<input class="form-control input-sm" type="number" min="0" value="0">').change(r); f && e.attr("max", f); d[a] = e; a = g("<div> " + h[b.lang][a] + "</div>"); c && a.addClass("hidden"); return a.prepend(e) } function p() {
+          b.checkRanges && (a = a.asMilliseconds() > b.totalMax ? moment.duration(b.totalMax) : a, a = a.asMilliseconds() < b.totalMin ? moment.duration(b.totalMin) : a); c.find("#bdp-days").text(a.days()); c.find("#bdp-hours").text(a.hours()); c.find("#bdp-minutes").text(a.minutes());
+            c.find("#bdp-seconds").text(a.seconds()); c.find("#days_label").text(h[b.lang][1 == a.days() ? "day" : "days"]); c.find("#hours_label").text(h[b.lang][1 == a.hours() ? "hour" : "hours"]); c.find("#minutes_label").text(h[b.lang][1 == a.minutes() ? "minute" : "minutes"]); c.find("#seconds_label").text(h[b.lang][1 == a.seconds() ? "second" : "seconds"])
+          } $mainInput = g(q); if ("1" !== $mainInput.data("bdp")) {
+            var c = g('<div class="bdp-input"></div>'); c.append(e("days", !b.showDays)); c.append(e("hours")); c.append(e("minutes")); c.append(e("seconds",
+              !b.showSeconds)); $mainInput.after(c).hide().data("bdp", "1"); var d = [], l = !1; if ($mainInput.hasClass("disabled") || "disabled" == $mainInput.attr("disabled")) l = !0, c.addClass("disabled"); if (!l) { var f = g('<div class="bdp-popover"></div>'); k("days", !b.showDays).appendTo(f); k("hours", !1, 23).appendTo(f); k("minutes", !1, 59).appendTo(f); k("seconds", !b.showSeconds, 59).appendTo(f); c.popover({ placement: "bottom", trigger: "click", html: !0, content: f }) } n(); $mainInput.change(n)
+          }
+        })
+      }
+    })(jQuery);
+  </script>
+  <script>
     $.AdminLTE = {};
     $.AdminLTE.options = {
       //Add slimscroll to navbar menus
@@ -513,7 +536,6 @@
         lg: 1200
       }
     };
-
   </script>
   <script>
 		window.intercomSettings = {
@@ -1167,7 +1189,6 @@
 
   <script>
 
-
     (function () {
       "use strict";
 
@@ -1188,7 +1209,7 @@
         } if (w.attachEvent) { w.attachEvent('onload', l); } else { w.addEventListener('load', l, false); }
       }
 
-      $('#notificationsSection').load('/Home/Notifications'); 
+      $('#notificationsSection').load('/Home/Notifications');
       $('#userSection').load('/Home/UserSwitcher');
       $('#sideMenuSection').load('/Home/MainMenu');
 

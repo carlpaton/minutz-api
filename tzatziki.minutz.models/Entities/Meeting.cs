@@ -10,11 +10,14 @@ namespace tzatziki.minutz.models.Entities
     /// </summary>
     public bool IsLocked { get; set; }
 
+    public int Id { get; set; }
+    public string Name { get; set; }
     public string Location { get; set; }
     public DateTime Date { get; set; }
     public string Time { get; set; }
     public int Duration { get; set; }
     public bool IsReacurance { get; set; }
+    public string ReacuranceType { get; set; }
     public bool IsPrivate { get; set; }
     public bool IsFormal { get; set; }
     public string TimeZone { get; set; }

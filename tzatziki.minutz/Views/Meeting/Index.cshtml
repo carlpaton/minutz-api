@@ -4,6 +4,70 @@
 }
 <link rel="stylesheet" href="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 <style>
+  .btn {
+    padding: 9px 14px !important;
+  }
+
+  /* layout.css Style */
+  .select2-container--default .select2-selection--single {
+    border-radius: 0px !important;
+    
+  } 
+  .select2-container .select2-selection--single {
+    height: 40px !important;
+  }
+  .upload-drop-zone {
+    height: 200px;
+    border-width: 2px;
+    margin-bottom: 20px;
+  }
+
+  /* skin.css Style*/
+  .upload-drop-zone {
+    color: #ccc;
+    border-style: dashed;
+    border-color: #ccc;
+    line-height: 200px;
+    text-align: center
+  }
+
+    .upload-drop-zone.drop {
+      color: #222;
+      border-color: #222;
+    }
+
+  .bdp-input {
+    border-radius: 2px;
+    padding: 0 3px;
+    border: 1px solid rgba(34, 36, 38, .15);
+    cursor: pointer;
+  }
+
+    .bdp-input.disabled {
+      color: #AAA;
+      cursor: default;
+    }
+
+  .bdp-popover {
+    min-width: 110px;
+  }
+
+    .bdp-popover input {
+      display: inline;
+      margin-bottom: 3px;
+      width: 60px;
+    }
+
+  .bdp-block {
+    display: inline-block;
+    line-height: 1;
+    text-align: center;
+    padding: 5px 3px;
+  }
+
+  .bdp-label {
+    font-size: 70%;
+  }
   .material-switch > input[type="checkbox"] {
     display: none;
   }
@@ -185,9 +249,7 @@
       }
     }
 </style>
-
 <div class="container-fluid">
-
   <div class="row hide">
     <div class="container-fluid">
       <div class="pull-left col-lg-10">
@@ -207,23 +269,7 @@
   <div class="row row-white">
     <div class="container-fluid">
       <div class="col-md-12">
-        <input type="text" style="font-size: 30px; font-weight: bold;" placeholder="Meeting Name" />
-      </div>
-      <div class="col-md-2 pull-right hide">
-        <div class="dropdown pull-right" style="padding-top:25px;">
-          <div class=" dropdown-toggle" type="button" id="projectSelection" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <i class="fa fa-briefcase"></i>
-            <span class="dropdown-padding">Project</span>
-            <span class="caret"></span>
-          </div>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-          </ul>
-        </div>
+        <input id="txtMeetingName" type="text" style="font-size: 30px; font-weight: bold;" placeholder="Meeting Name" data-toggle="tooltip" title="Give your meeting a logical name." />
       </div>
     </div>
   </div>
@@ -231,70 +277,66 @@
   @*This is meeting time controler row*@
   <div class="row row-white">
     <div class="container-fluid">
-      <div class="col-sm-5">
-        <div class="col-md-4 row-padding">
-          <div class="input-group">
-            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-map-marker"></i></span>
-            <input type="text" class="form-control" placeholder="Location" aria-describedby="basic-addon1">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-4 row-padding">
+            <div class="input-group" data-toggle="tooltip" title="The location of the meeting i.e. meeting room name or address.">
+              <span class="input-group-addon" id="basic-addon1"><i class="fa fa-map-marker"></i></span>
+              <input id="txtLocation" type="text" class="form-control" placeholder="Location" aria-describedby="basic-addon1">
+            </div>
           </div>
-        </div>
-        <div class="col-md-4 row-padding">
-          <div class="input-group date">
-            <input type="text" id="date" class="form-control"><span class="input-group-addon">
-              <i class="fa fa-calendar"></i>
-            </span>
+          <div class="col-md-4 row-padding">
+            <div class="input-group date" data-toggle="tooltip" title="The date of the meeting.">
+              <input type="text" id="txtDate" class="form-control"><span class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+              </span>
+            </div>
           </div>
-        </div>
-        <div class="col-md-4 row-padding">
-          <div class="input-group bootstrap-timepicker timepicker">
-            <input id="meetingTime" type="text" class="form-control input-small">
-            <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-5 w" >
-        <div class="col-md-4 row-padding">
-          <div class="input-group bootstrap-timepicker timepicker">
-            <input id="duration" type="text" class="form-control input-small">
-            <span class="input-group-addon"><i class="fa fa-hourglass-half"></i></span>
-          </div>
-        </div>
-        <div class="col-md-4 row-padding">
-          <div class="input-group bootstrap-timepicker timepicker">
-            <span class="input-group-addon"><i class="fa fa-refresh"></i></span>
-            <div class="btn-group">
-              <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span style="padding-left:5px; padding-right:5px;"> Set Recurrence  </span> <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu products-list product-list-in-box">
-                <li class="item" style="text-align: center;">Daily</li>
-                <li class="item" style="text-align: center;">Weekly</li>
-                <li class="item" style="text-align: center;">Monthly</li>
-                <li class="item" style="text-align: center;">Yearly</li>
-                <li class="item" style="text-align: center;">None</li>
-              </ul>
+          <div class="col-md-4 row-padding" data-toggle="tooltip" title="The time the meeting is required to begin.">
+            <div class="input-group bootstrap-timepicker timepicker">
+              <input id="meetingTime" type="text" class="form-control input-small">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
             </div>
           </div>
         </div>
-        <div class="col-md-4 row-padding">
-          <div class="input-group">
-            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-tags"></i></span>
-            <input type="text" class="form-control" placeholder="Add a tag" aria-describedby="basic-addon1">
-          </div>
-        </div>
       </div>
-      <div class="col-sm-2">
-        <div class="checkbox">
-          <label style="pointer-events: auto; padding-left: 0px; top: -2px; ">
-            <input type="checkbox" style="margin-left: -70px;">Private Meeting
-          </label>
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-4 row-padding">
+            <div class="input-group bootstrap-timepicker timepicker" data-toggle="tooltip" title="The duration of the meeting.">
+              <input id="txtDuration" type="text" class="form-control input-small">
+              <span class="input-group-addon"><i class="fa fa-hourglass-half"></i></span>
+            </div>
+          </div>
+          <div class="col-md-4 row-padding">
+            <div class="input-group bootstrap-timepicker timepicker"  data-toggle="tooltip" title="How often will the meeting be held?">
+              <span class="input-group-addon"><i class="fa fa-refresh"></i></span>
+              <div class="btn-group">
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span id="repeatTypeText" style="padding-left:5px; padding-right:5px;"> Set Recurrence  </span> <span class="caret"></span>
+                </button>
+                <ul id="repeatType" class="dropdown-menu products-list product-list-in-box">
+                  <li class="item" style="text-align: center;"><a href="#">Daily</a></li>
+                  <li class="item" style="text-align: center;"><a href="#">Weekly</a></li>
+                  <li class="item" style="text-align: center;"><a href="#">Monthly</a></li>
+                  <li class="item" style="text-align: center;"><a href="#">Yearly</a></li>
+                  <li class="item" style="text-align: center;"><a href="#">None</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 row-padding">
+            <div class="input-group" data-toggle="tooltip" title="Give your meeting tags, separated by ';' ">
+              <span class="input-group-addon" id="basic-addon1"><i class="fa fa-tags"></i></span>
+              <input id="txtTags" type="text" class="form-control" placeholder="Add a tag" aria-describedby="basic-addon1">
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
   <div class="row row-white"><br /></div>
 </div>
-
 @*This is invations row*@
 <div class="row row-item row-grey">
   <div class="container-fluid">
@@ -309,20 +351,21 @@
         </a>
       </div>
     </div>
-    <div class="col-lg-5 ">
-      <div class="hide">
-
-        <input type="checkbox" class="hide" name="private" value="private" /><span>Private meeting</span>
+    <div class="col-sm-2">
+      <div class="checkbox" data-toggle="tooltip" title="Set if this is a private meeting. ">
+        <label style="pointer-events: auto; padding-left: 0px; top: -2px; ">
+          <input id="cbIsPrivate" type="checkbox" style="margin-left: -70px;">Private Meeting
+        </label>
       </div>
-      <div class="hide">
-        <input type="checkbox" class="checkbox hide" name="audit" value="audit" /><span>Audited meeting</span>
+    </div>
+    <div class="col-md-2 ">
+      <div class="checkbox" data-toggle="tooltip" title="Set if this is a formal meeting. ">
+        <label style="pointer-events: auto; padding-left: 0px; top: -2px; ">
+          <input id="cbIsFormal" type="checkbox" style="margin-left: -70px;">Formal Meeting
+        </label>
       </div>
     </div>
   </div>
-</div>
-
-<div class="checkbox hide">
-  <label><input type="checkbox" value="">Option 1</label>
 </div>
 
 <div class="col-md-3 row-grey" style="background-color: #ecf0f5;">
@@ -505,37 +548,26 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title" style="padding: 20px; ">
-            <span>Purpose</span>
-            <a data-toggle="collapse" href="#purposeCollapse">
-              <div class="round-button-circle pull-right" style="margin-top: -16px;"><i class="fa fa-plus fa-2x"></i></div>
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#purposeCollapse">
+              Purpose
+            </a>
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#purposeCollapse">
+              <i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>
             </a>
           </h4>
         </div>
         <div id="purposeCollapse" class="panel-collapse collapse">
-          <div class="box box-info">
-            <div class="box-header">
-              <h3 class="box-title hide">
-                Bootstrap WYSIHTML5
-                <small>Simple and fast</small>
-              </h3>
-              <!-- tools box -->
-              <div class="pull-right box-tools">
-                <button type="button" class="btn btn-default btn-sm hide" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-                  <i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-default btn-sm hide" data-widget="remove" data-toggle="tooltip" title="Remove">
-                  <i class="fa fa-times"></i>
-                </button>
-              </div>
-              <!-- /. tools -->
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body pad">
-              <form>
-                <textarea id="purposeText" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-              </form>
-            </div>
-          </div>
+         <div id="agendaId">
+           <div class="row">
+             <div class="col-md-12">
+               <div style="margin-left:10px; margin-right:10px;">
+                 <form>
+                   <textarea id="purposeText" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                 </form>
+               </div>
+             </div>
+           </div>
+         </div>
         </div>
       </div>
     </div>
@@ -545,35 +577,24 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title" style="padding: 20px; ">
-            <span>Outcome</span>
-            <a data-toggle="collapse" href="#outcomeCollapse">
-              <div class="round-button-circle pull-right" style="margin-top: -16px;"><i class="fa fa-plus fa-2x"></i></div>
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#outcomeCollapse">
+              Outcome
+            </a>
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#outcomeCollapse">
+              <i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>
             </a>
           </h4>
         </div>
         <div id="outcomeCollapse" class="panel-collapse collapse">
-          <div class="box box-info">
-            <div class="box-header">
-              <h3 class="box-title hide">
-                Bootstrap WYSIHTML5
-                <small>Simple and fast</small>
-              </h3>
-              <!-- tools box -->
-              <div class="pull-right box-tools">
-                <button type="button" class="btn btn-default btn-sm hide" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-                  <i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-default btn-sm hide" data-widget="remove" data-toggle="tooltip" title="Remove">
-                  <i class="fa fa-times"></i>
-                </button>
+          <div class="row" >
+            
+            <div class="col-md-12" >
+              <div style="margin-left:10px; margin-right:10px;">
+                <form>
+                  <textarea id="outcomeText" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                </form>
               </div>
-              <!-- /. tools -->
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body pad">
-              <form>
-                <textarea id="outcomeText" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-              </form>
+
             </div>
           </div>
         </div>
@@ -591,88 +612,11 @@
             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#agendaCollapse">
               <i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>
             </a>
-         </h4>
+          </h4>
         </div>
         <div id="agendaCollapse" class="panel-collapse ">
           <ul id="agendaListControl" style="list-style: none; list-style-position:inside; margin:0; padding:0;">
-            <li>
-              <div class="box box-info hide">
-                <div class="box-header">
-                  <h3 class="box-title hide">
-                    Bootstrap WYSIHTML5
-                    <small>Simple and fast</small>
-                  </h3>
-                  <!-- tools box -->
-                  <div class="pull-right box-tools">
-                    <button type="button" class="btn btn-default btn-sm hide" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-                      <i class="fa fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-default btn-sm hide" data-widget="remove" data-toggle="tooltip" title="Remove">
-                      <i class="fa fa-times"></i>
-                    </button>
-                  </div>
-                  <!-- /. tools -->
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body pad">
-                  <form>
-                    <textarea id="agendaText1" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-                  </form>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="box box-info hide">
-                <div class="box-header">
-                  <h3 class="box-title hide">
-                    Bootstrap WYSIHTML5
-                    <small>Simple and fast</small>
-                  </h3>
-                  <!-- tools box -->
-                  <div class="pull-right box-tools">
-                    <button type="button" class="btn btn-default btn-sm hide" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-                      <i class="fa fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-default btn-sm hide" data-widget="remove" data-toggle="tooltip" title="Remove">
-                      <i class="fa fa-times"></i>
-                    </button>
-                  </div>
-                  <!-- /. tools -->
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body pad">
-                  <form>
-                    <textarea id="agendaText2" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-                  </form>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="box box-info hide">
-                <div class="box-header">
-                  <h3 class="box-title hide">
-                    Bootstrap WYSIHTML5
-                    <small>Simple and fast</small>
-                  </h3>
-                  <!-- tools box -->
-                  <div class="pull-right box-tools">
-                    <button type="button" class="btn btn-default btn-sm hide" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-                      <i class="fa fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-default btn-sm hide" data-widget="remove" data-toggle="tooltip" title="Remove">
-                      <i class="fa fa-times"></i>
-                    </button>
-                  </div>
-                  <!-- /. tools -->
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body pad">
-                  <form>
-                    <textarea id="agendaText3" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-                  </form>
-                </div>
-              </div>
-            </li>
+
           </ul>
           <div class="pull-right">
             <div style="padding-top:20px; padding-bottom:5px;">
@@ -700,7 +644,10 @@
 
 <script type="text/javascript">
   var MinutzTitle = "Minutz : Meeting Creator";
+  var availibleAttendees = [{ id: 0, text: 'Lee-Roy' }, { id: 1, text: 'Mauro' }, { id: 2, text: 'Russell' }];
   var meeting = {
+    Id: 0,
+    Name: "",
     IsLocked: false,
     Location: "",
     Date: "",
@@ -721,26 +668,16 @@
   };
 
   $(function () {
-    $('#meetingTime').timepicker();
+    _initPickers();
 
-    $('#duration').timepicker({
-      minuteStep: 1,
-      template: 'modal',
-      appendWidgetTo: 'body',
-      showSeconds: true,
-      showMeridian: false,
-      defaultTime: false
+    $("#repeatType li a").click(function () {
+
+      $("#repeatTypeText").text($(this).text());
+
+      meeting.IsReacurance = _isReacurance($(this).text());
+      meeting.ReacuranceType = $(this).text();
     });
 
-    $('#date').datepicker({
-      daysOfWeekDisabled: "0,6",
-      calendarWeeks: true,
-      autoclose: true,
-      todayHighlight: true,
-      datesDisabled: ['03/06/2017', '03/21/2017'],
-      toggleActive: true,
-      defaultViewDate: { year: 1977, month: 04, day: 25 }
-    });
 
     $('#meetingNameGroup input').blur(function () {
 
@@ -753,9 +690,6 @@
 
     $("#purposeText").wysihtml5();
     $("#outcomeText").wysihtml5();
-    //$("#agendaText1").wysihtml5();
-    //$("#agendaText2").wysihtml5();
-    //$("#agendaText3").wysihtml5();
 
     var x = document.getElementById("demo");
     function getLocation() {
@@ -769,26 +703,38 @@
       x.innerHTML = "Latitude: " + position.coords.latitude +
         "<br>Longitude: " + position.coords.longitude;
     }
-    $("#btnAddAgenda").click(function () { CreateAgendaItem(); });
-    if (meeting.MeetingAgendaCollection.length < 1) { CreateAgendaItem(); }
+    $("#btnAddAgenda").click(function () { _CreateAgendaItem(); });
+    if (meeting.MeetingAgendaCollection.length < 1) { _CreateAgendaItem(); }
   });
 
-
-  function CreateAgendaItem()
-  {
+  function _CreateAgendaItem() {
     var id = meeting.MeetingAgendaCollection.length;
     var controlName = "agenda" + id;
     meeting.MeetingAgendaCollection.push(MeetingAgendaItem(id, 'refId', 'agendaText', 'meetingattendeeId', 'createdDate', false));
 
-    $('#agendaListControl').append('<li>' + getAgenda(controlName) + '</li>');
+    $('#agendaListControl').append('<li>' + _getAgenda(controlName, _getAgendaAttachments()) + '</li>');
     $("#" + controlName).wysihtml5();
     console.log(meeting);
-   };
+  };
+
+  function _CreateAgendaItem(data) {
+    var id = meeting.MeetingAgendaCollection.length;
+    var controlName = "agenda" + id;
+    meeting.MeetingAgendaCollection.push(MeetingAgendaItem(id, 'refId', 'agendaText', 'meetingattendeeId', 'createdDate', false));
+
+    $('#agendaListControl').append('<li>' + _getAgenda(controlName, _getAgendaAttachments()) + '</li>');
+    $("#" + controlName).wysihtml5();
+    $('#attendees_' + controlName).select2({
+      data: availibleAttendees
+    });
+    console.log(meeting);
+  };
 
   function Save() {
-    updateAgendaTextToModel();
+    _updateAgendaTextToModel();
+    _updateModel();
 
-    if (CallSave()) {
+    if (_CallSave()) {
       notifyMe(MinutzTitle, "The updates were saved successfully.", "fa fa-info");
 
     } else {
@@ -797,49 +743,229 @@
     console.log('log');
   };
 
-  function CallSave() {
+  function _CallSave() {
+    $.ajax({
+      type: "POST",
+      url: "Meeting/Save",
+      data: meeting,
+      success: function (data) {
+        _updateUi(data);
+      },
+      error: function (XMLHttpRequest, textStatus, errorThrown) {
+        notifyMe(MinutzTitle, textStatus + "  " + errorThrown, "fa fa-info");
+      },
+      dataType: "json"
+    });
+
     return true;
   };
 
-  function getAgenda(controlName) {
-   return '<div class="box box-info">'+
-      '<div class="box-header">'+
-        '<h3 class="box-title hide">'+
-          'Bootstrap WYSIHTML5'+
-          '<small>Simple and fast</small>'+
-        '</h3>'+
-          '<div class="pull-right box-tools">'+
-          '<button type="button" class="btn btn-default btn-sm hide" data-widget="collapse" data-toggle="tooltip" title="Collapse">'+
-            '<i class="fa fa-minus"></i>'+
-          '</button>'+
-          '<button type="button" class="btn btn-default btn-sm hide" data-widget="remove" data-toggle="tooltip" title="Remove">'+
-            '<i class="fa fa-times"></i>'+
-          '</button>'+
-        '</div>'+
-      '</div>'+
-      '<div class="box-body pad" > '+
-        '<form>'+
-     '<textarea id="' + controlName+'" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>' +
-         '</form > ' +
-      ' </div > ' +
-    '</div>';
-   };
+  function _getAgenda(controlName, att) {
+    
+    var html = '<div id="agendaId">' +
+      '<div class="container" style="margin-left: 5px;">' +
+      '<div class="row">' +
+      '<div class="col-md-2">' +
+      '<b style="padding: 20px;">Duration</b>' +
+      '</div>' +
+      '<div class="col-md-7">' +
+      '<b style="padding: 20px;">Topic</b>' +
+      '</div>' +
+      '<div class="col-md-3">' +
+      '<b style="padding: 20px;">Owner</b>' +
+      '</div>' +
+      '</div>' +
+      '</div>' +
+      '<div class="container" style="margin-left: 5px;">' +
+      '<div class="row">' +
+      '<div class="col-md-2">' +
+      '<input id="dur" type="text" class="form-control input-small">' +
+      '</div>' +
+      '<div class="col-md-7">' +
+      '<input id="txtTopicTitle" type="text" class="form-control input-small">' +
+      '</div>' +
+      '<div class="col-md-3">' +
+      '<select id="attendees_' + controlName+'" class="js-example-data-array"></select>' +
+      '</div>' +
+      '</div>' +
+      '<br />' +
+      '</div>' +
+      '<div class="row">' +
+      '<div class="col-md-12">' +
+      '<div style="margin-left:10px; margin-right:10px;">' +
+      '<form>' +
+      '<textarea id="' + controlName + '" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>' +
+      '</form>' +
+      '</div>' +
+      '</div>' +
+      '</div>' +
+      '<div class="row">' +
+      '<div class="col-md-12">' +
+      '<ul >';
 
-  function MeetingAgendaItem(id, referanceId, agendaText, meetingAttendeeId, createdDate, isComplete)
-  {
-     return { Id: id, ReferanceId: referanceId, AgendaText: agendaText, MeetingAttendeeId: meetingAttendeeId, CreatedDate: createdDate, IsComplete: isComplete};
+    for (var i = 0; att.length > 0; i++)
+    {
+      var fileAttachment = att[i];
+      html = html + '<li>' +
+                     '<i class="fa fa-paperclip" aria-hidden="true"> <span style="font-family: Arial;">File Attachment</span></i>' +
+                      '</li>';
+    }
+      
+
+     html = html + '</ul>' +
+                   '</div>' +
+                   '<div>' +
+                   '</div>';
+   return html;
   };
 
-  function updateAgendaTextToModel()
-  {
-    for (var i = 0; i < meeting.MeetingAgendaCollection.length  ; i++)
-    {
+  function MeetingAgendaItem(id, referanceId, agendaText, meetingAttendeeId, createdDate, isComplete) {
+    return { Id: id, ReferanceId: referanceId, AgendaText: agendaText, MeetingAttendeeId: meetingAttendeeId, CreatedDate: createdDate, IsComplete: isComplete };
+  };
+
+  function _updateAgendaTextToModel() {
+    for (var i = 0; i < meeting.MeetingAgendaCollection.length; i++) {
       var currentAgenda = meeting.MeetingAgendaCollection[i];
       var controlName = "agenda" + currentAgenda.Id;
       var currentAgendaText = $("#" + controlName).val();
       currentAgenda.AgendaText = currentAgendaText;
     }
+  };
+
+  function _getAgendaAttachments()
+  {
+    return [];
    };
+
+  function _updateUi(data) {
+    //_initPickers();
+    $("#txtMeetingName").val(data.name);
+    $("#repeatTypeText").text(data.reacuranceType);
+    $('#txtLocation').val(data.location);
+    $('#txtDuration').val(data.duration);
+    $("#cbIsPrivate").prop("checked", data.isPrivate);
+    $("#cbIsFormal").prop("checked", data.isFormal);
+    var meetingDate = new Date(data.date);
+    $('#txtDate').data({ date: meetingDate }).datepicker('update').children("input").val(meetingDate);
+
+    $('#meetingTime').val(data.time);
+    $("#txtTags").val(_toString(data.tag));
+    $('#purposeText').val(data.purpose);
+    $('#outcomeText').val(data.outcome);
+
+    meeting.Id = data.id;
+    meeting.Name = data.name;
+    meeting.IsReacurance = data.isReacurance;
+    meeting.ReacuranceType = data.reacuranceType;
+    meeting.date = data.date;
+    meeting.Time = data.time;
+    meeting.Duration = data.duration;
+    meeting.Tag = data.tag;
+    meeting.IsPrivate = data.isPrivate;
+    meeting.IsFormal = data.isFormal;
+    meeting.Purpose = data.purpose;
+    meeting.Outcome = data.outcome;
+  };
+
+  function _updateModel() {
+
+    
+
+    meeting.Tag = _toArray($("#txtTags").val());
+    meeting.IsPrivate = $("#cbIsPrivate").prop("checked");
+    meeting.IsFormal = $("#cbIsFormal").prop("checked");
+    meeting.Name = $("#txtMeetingName").val();
+    meeting.Location = $('#txtLocation').val();
+    meeting.Date = $('#txtDate').datepicker().val();
+    meeting.Time = $('#meetingTime').val();
+    meeting.Duration = $('#txtDuration').val();
+    meeting.ReacuranceType = $("#repeatTypeText").text();
+    meeting.IsReacurance = _isReacurance($("#repeatTypeText").text());
+    meeting.Purpose = $('#purposeText').val();
+    meeting.Outcome = $('#outcomeText').val();
+  };
+
+  function _toArray(str)
+  {
+    return str.split(';');
+  };
+
+  function _toString(strArray)
+  {
+    return strArray.join(';');
+  };
+
+  function _isReacurance(reacuranceType)
+  {
+    if (reacuranceType == "none")
+    {
+      return false;
+    }
+    return true;
+   };
+
+  function _initPickers()
+  {
+    $('#txtDate').datepicker({
+      daysOfWeekDisabled: "0,6",
+      calendarWeeks: true,
+      autoclose: true,
+      todayHighlight: true,
+      datesDisabled: ['03/06/2017', '03/21/2017'],
+      toggleActive: true,
+      defaultViewDate: { year: 1977, month: 04, day: 25 }
+    });
+
+    $('#meetingTime').timepicker();
+
+    $('#txtDuration').durationPicker({
+      lang: 'en',
+      showSeconds: false,
+      showDays: false,
+    });
+
+
+    $('#dur').durationPicker({
+      lang: 'en',
+      showSeconds: false,
+      showDays: false,
+    });
+    
+   };
+
+   function createDropZone()
+   {
+     var dropZone = document.getElementById('drop-zone');
+     var uploadForm = document.getElementById('js-upload-form');
+
+     var startUpload = function (files) {
+       console.log(files)
+     }
+
+     uploadForm.addEventListener('submit', function (e) {
+       var uploadFiles = document.getElementById('js-upload-files').files;
+       e.preventDefault()
+
+       startUpload(uploadFiles)
+     })
+
+     dropZone.ondrop = function (e) {
+       e.preventDefault();
+       this.className = 'upload-drop-zone';
+
+       startUpload(e.dataTransfer.files)
+     }
+
+     dropZone.ondragover = function () {
+       this.className = 'upload-drop-zone drop';
+       return false;
+     }
+
+     dropZone.ondragleave = function () {
+       this.className = 'upload-drop-zone';
+       return false;
+     }
+    };
 
   window.setInterval(function () { Save(); }, 60000);
 </script>
