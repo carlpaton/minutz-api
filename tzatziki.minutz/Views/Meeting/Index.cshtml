@@ -4,6 +4,27 @@
 }
 <link rel="stylesheet" href="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 <style>
+  .dropzone.dz-clickable {
+    cursor: pointer;
+  }
+
+  .dropzone {
+    border: 2px dashed #0087F7;
+    border-radius: 5px;
+    background: white;
+  }
+
+  .dropzone {
+    min-height: 150px;
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    background: white;
+    padding: 54px 54px;
+  }
+
+    .dropzone, .dropzone * {
+      box-sizing: border-box;
+    }
+
   .btn {
     padding: 9px 14px !important;
   }
@@ -11,11 +32,12 @@
   /* layout.css Style */
   .select2-container--default .select2-selection--single {
     border-radius: 0px !important;
-    
-  } 
+  }
+
   .select2-container .select2-selection--single {
     height: 40px !important;
   }
+
   .upload-drop-zone {
     height: 200px;
     border-width: 2px;
@@ -68,6 +90,7 @@
   .bdp-label {
     font-size: 70%;
   }
+
   .material-switch > input[type="checkbox"] {
     display: none;
   }
@@ -79,7 +102,7 @@
     width: 40px;
   }
 
-  .material-switch > label::before {
+    .material-switch > label::before {
       background: rgb(0, 0, 0);
       box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
       border-radius: 8px;
@@ -92,7 +115,7 @@
       width: 40px;
     }
 
-  .material-switch > label::after {
+    .material-switch > label::after {
       background: rgb(255, 255, 255);
       border-radius: 16px;
       box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
@@ -135,7 +158,7 @@
     color: white;
   }
 
-  .round-button-circle i {
+    .round-button-circle i {
       padding-top: 9px;
       padding-left: 10px;
     }
@@ -243,11 +266,12 @@
       margin-left: -50px;
     }
   }
-    @@media screen and (max-width: 1000px) {
-      .row-padding {
-        padding-bottom: 5px;
-      }
+
+  @@media screen and (max-width: 1000px) {
+    .row-padding {
+      padding-bottom: 5px;
     }
+  }
 </style>
 <div class="container-fluid">
   <div class="row hide">
@@ -309,7 +333,7 @@
             </div>
           </div>
           <div class="col-md-4 row-padding">
-            <div class="input-group bootstrap-timepicker timepicker"  data-toggle="tooltip" title="How often will the meeting be held?">
+            <div class="input-group bootstrap-timepicker timepicker" data-toggle="tooltip" title="How often will the meeting be held?">
               <span class="input-group-addon"><i class="fa fa-refresh"></i></span>
               <div class="btn-group">
                 <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -557,17 +581,18 @@
           </h4>
         </div>
         <div id="purposeCollapse" class="panel-collapse collapse">
-         <div id="agendaId">
-           <div class="row">
-             <div class="col-md-12">
-               <div style="margin-left:10px; margin-right:10px;">
-                 <form>
-                   <textarea id="purposeText" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-                 </form>
-               </div>
-             </div>
-           </div>
-         </div>
+          <div id="agendaId">
+            <div class="row">
+              <div class="col-md-12">
+                <div style="margin-left:10px; margin-right:10px;">
+                  <form>
+                    <textarea id="purposeText" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                  </form>
+
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -586,15 +611,14 @@
           </h4>
         </div>
         <div id="outcomeCollapse" class="panel-collapse collapse">
-          <div class="row" >
-            
-            <div class="col-md-12" >
+          <div class="row">
+
+            <div class="col-md-12">
               <div style="margin-left:10px; margin-right:10px;">
                 <form>
                   <textarea id="outcomeText" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
                 </form>
               </div>
-
             </div>
           </div>
         </div>
@@ -615,9 +639,7 @@
           </h4>
         </div>
         <div id="agendaCollapse" class="panel-collapse ">
-          <ul id="agendaListControl" style="list-style: none; list-style-position:inside; margin:0; padding:0;">
-
-          </ul>
+          <ul id="agendaListControl" style="list-style: none; list-style-position:inside; margin:0; padding:0;"></ul>
           <div class="pull-right">
             <div style="padding-top:20px; padding-bottom:5px;">
               <div class="row">
@@ -677,7 +699,6 @@
       meeting.IsReacurance = _isReacurance($(this).text());
       meeting.ReacuranceType = $(this).text();
     });
-
 
     $('#meetingNameGroup input').blur(function () {
 
@@ -761,14 +782,14 @@
   };
 
   function _getAgenda(controlName, att) {
-    
+
     var html = '<div id="agendaId">' +
       '<div class="container" style="margin-left: 5px;">' +
       '<div class="row">' +
       '<div class="col-md-2">' +
       '<b style="padding: 20px;">Duration</b>' +
       '</div>' +
-      '<div class="col-md-7">' +
+      '<div class="col-md-6">' +
       '<b style="padding: 20px;">Topic</b>' +
       '</div>' +
       '<div class="col-md-3">' +
@@ -781,42 +802,41 @@
       '<div class="col-md-2">' +
       '<input id="dur" type="text" class="form-control input-small">' +
       '</div>' +
-      '<div class="col-md-7">' +
+      '<div class="col-md-6">' +
       '<input id="txtTopicTitle" type="text" class="form-control input-small">' +
       '</div>' +
       '<div class="col-md-3">' +
-      '<select id="attendees_' + controlName+'" class="js-example-data-array"></select>' +
+      '<select id="attendees_' + controlName + '" class="js-example-data-array" style="width: 150px;"></select>' +
       '</div>' +
       '</div>' +
       '<br />' +
       '</div>' +
       '<div class="row">' +
-      '<div class="col-md-12">' +
+      '<div class="col-md-9">' +
       '<div style="margin-left:10px; margin-right:10px;">' +
       '<form>' +
       '<textarea id="' + controlName + '" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>' +
       '</form>' +
       '</div>' +
       '</div>' +
+      '<div class="col-md-3"><form action="/Meeting/FileUpload" method="post" enctype="multipart/form-data" class="dropzone dz-clickable" style="margin-top: 50px;" id="my-awesome-dropzone"></form></div>' +
       '</div>' +
       '<div class="row">' +
       '<div class="col-md-12">' +
       '<ul >';
 
-    for (var i = 0; att.length > 0; i++)
-    {
+    for (var i = 0; att.length > 0; i++) {
       var fileAttachment = att[i];
       html = html + '<li>' +
-                     '<i class="fa fa-paperclip" aria-hidden="true"> <span style="font-family: Arial;">File Attachment</span></i>' +
-                      '</li>';
+        '<i class="fa fa-paperclip" aria-hidden="true"> <span style="font-family: Arial;">File Attachment</span></i>' +
+        '</li>';
     }
-      
 
-     html = html + '</ul>' +
-                   '</div>' +
-                   '<div>' +
-                   '</div>';
-   return html;
+    html = html + '</ul>' +
+      '</div>' +
+      '<div>' +
+      '</div>';
+    return html;
   };
 
   function MeetingAgendaItem(id, referanceId, agendaText, meetingAttendeeId, createdDate, isComplete) {
@@ -832,10 +852,9 @@
     }
   };
 
-  function _getAgendaAttachments()
-  {
+  function _getAgendaAttachments() {
     return [];
-   };
+  };
 
   function _updateUi(data) {
     //_initPickers();
@@ -869,8 +888,6 @@
 
   function _updateModel() {
 
-    
-
     meeting.Tag = _toArray($("#txtTags").val());
     meeting.IsPrivate = $("#cbIsPrivate").prop("checked");
     meeting.IsFormal = $("#cbIsFormal").prop("checked");
@@ -885,27 +902,22 @@
     meeting.Outcome = $('#outcomeText').val();
   };
 
-  function _toArray(str)
-  {
+  function _toArray(str) {
     return str.split(';');
   };
 
-  function _toString(strArray)
-  {
+  function _toString(strArray) {
     return strArray.join(';');
   };
 
-  function _isReacurance(reacuranceType)
-  {
-    if (reacuranceType == "none")
-    {
+  function _isReacurance(reacuranceType) {
+    if (reacuranceType == "none") {
       return false;
     }
     return true;
-   };
+  };
 
-  function _initPickers()
-  {
+  function _initPickers() {
     $('#txtDate').datepicker({
       daysOfWeekDisabled: "0,6",
       calendarWeeks: true,
@@ -924,48 +936,56 @@
       showDays: false,
     });
 
-
     $('#dur').durationPicker({
       lang: 'en',
       showSeconds: false,
       showDays: false,
     });
-    
-   };
 
-   function createDropZone()
-   {
-     var dropZone = document.getElementById('drop-zone');
-     var uploadForm = document.getElementById('js-upload-form');
+  };
 
-     var startUpload = function (files) {
-       console.log(files)
-     }
+  function createDropZone() {
+    var dropZone = document.getElementById('drop-zone');
+    var uploadForm = document.getElementById('js-upload-form');
 
-     uploadForm.addEventListener('submit', function (e) {
-       var uploadFiles = document.getElementById('js-upload-files').files;
-       e.preventDefault()
+    var startUpload = function (files) {
+      console.log(files)
+    }
 
-       startUpload(uploadFiles)
-     })
+    uploadForm.addEventListener('submit', function (e) {
+      var uploadFiles = document.getElementById('js-upload-files').files;
+      e.preventDefault()
 
-     dropZone.ondrop = function (e) {
-       e.preventDefault();
-       this.className = 'upload-drop-zone';
+      startUpload(uploadFiles)
+    })
 
-       startUpload(e.dataTransfer.files)
-     }
+    dropZone.ondrop = function (e) {
+      e.preventDefault();
+      this.className = 'upload-drop-zone';
 
-     dropZone.ondragover = function () {
-       this.className = 'upload-drop-zone drop';
-       return false;
-     }
+      startUpload(e.dataTransfer.files)
+    }
 
-     dropZone.ondragleave = function () {
-       this.className = 'upload-drop-zone';
-       return false;
-     }
-    };
+    dropZone.ondragover = function () {
+      this.className = 'upload-drop-zone drop';
+      return false;
+    }
+
+    dropZone.ondragleave = function () {
+      this.className = 'upload-drop-zone';
+      return false;
+    }
+  };
 
   window.setInterval(function () { Save(); }, 60000);
+
+  //File Upload response from the server
+  Dropzone.options.dropzoneForm = {
+    init: function () {
+      this.on("complete", function (data) {
+        //var res = eval('(' + data.xhr.responseText + ')');
+        var res = JSON.parse(data.xhr.responseText);
+      });
+    }
+  };
 </script>

@@ -17,7 +17,12 @@
     <EmbeddedResource Remove="Models\**" />
     <None Remove="Models\**" />
   </ItemGroup>
+
   <ItemGroup>
+    <Content Include="wwwroot\plugins\dropzone.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="dropzone" Version="4.2.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.1" />
@@ -40,6 +45,7 @@
   <ItemGroup>
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Dashboard\" />
+    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\tzatziki.minutz.auth0.service\tzatziki.minutz.auth0.service.csproj" />
