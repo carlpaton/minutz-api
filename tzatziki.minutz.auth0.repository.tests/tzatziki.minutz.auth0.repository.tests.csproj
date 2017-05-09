@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\tzatziki.minutz.auth0.service\tzatziki.minutz.auth0.service.csproj" />
     <ProjectReference Include="..\tzatziki.minutz.interfaces\tzatziki.minutz.interfaces.csproj" />
     <ProjectReference Include="..\tzatziki.minutz.models\tzatziki.minutz.models.csproj" />
   </ItemGroup>

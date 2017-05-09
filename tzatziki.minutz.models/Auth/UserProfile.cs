@@ -16,6 +16,12 @@ namespace tzatziki.minutz.models.Auth
 
     public string Name { get; set; }
 
+    public bool Active { get; set; }
+
+    public string FirstName { get; set; }
+
+    public string LastName { get; set; }
+
     public Guid InstanceId { get; set; }
 
     public string ProfileImage { get; set; }

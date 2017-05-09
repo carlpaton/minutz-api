@@ -10,13 +10,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using tzatziki.minutz.auth0.service;
 using tzatziki.minutz.core;
 using tzatziki.minutz.interfaces;
 using tzatziki.minutz.interfaces.Repositories;
 using tzatziki.minutz.models;
 using tzatziki.minutz.models.Auth;
-using tzatziki.minutz.mysqlrepository;
+using tzatziki.minutz.sqlrepository;
+using tzatziki.minutz.auth0.service;
 
 namespace tzatziki.minutz
 {
@@ -45,11 +45,13 @@ namespace tzatziki.minutz
       //db
       services.AddTransient<IInstanceRepository, InstanceRepository>();
       services.AddTransient<IPersonRepository, PersonRepository>();
+      services.AddTransient<IUserRepository, UserRepository>();
       //services
 
       services.AddTransient<ITokenStringHelper, TokenStringHelper>();
       services.AddTransient<IProfileService, ProfileService>();
-
+      services.AddTransient<IInstanceService, InstanceService>();
+      services.AddTransient<IUserService, UserService>();
       services.AddTransient<IAuth0Repository, Repository>();
     }
 
@@ -57,12 +59,11 @@ namespace tzatziki.minutz
                           IHostingEnvironment env,
                           ILoggerFactory loggerFactory,
                           IOptions<Auth0Settings> auth0Settings,
-                          IOptions<AppSettings> appsettings
-                          //IAuth0Repository auth0Repository,
-                          //IPersonRepository personRepository, 
-                          //IProfileService profileService, 
-                          //ITokenStringHelper tokenStringHelper
-      )
+                          IOptions<AppSettings> appsettings,
+                          IAuth0Repository auth0Repository,
+                          IPersonRepository personRepository,
+                          IProfileService profileService,
+                          ITokenStringHelper tokenStringHelper)
     {
       loggerFactory.AddConsole(Configuration.GetSection("Logging"));
       loggerFactory.AddDebug();
@@ -101,9 +102,9 @@ namespace tzatziki.minutz
         // Set response type to code
         ResponseType = "code",
 
-        // Set the callback path, so Auth0 will call back to http://localhost:5000/signin-auth0 
-        // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard 
-        CallbackPath = new PathString("/Home"),
+        // Set the callback path, so Auth0 will call back to http://localhost:5000/signin-auth0 Also
+        // ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard
+        CallbackPath = new PathString("/Dashboard"),
 
         // Configure the Claims Issuer to be Auth0
         ClaimsIssuer = "Auth0",
@@ -116,12 +117,13 @@ namespace tzatziki.minutz
             var identity = context.Principal.Identity as ClaimsIdentity;
             if (identity != null)
             {
-              // Add the Name ClaimType. This is required if we want User.Identity.Name to actually return something!
-              //if (!context.Principal.HasClaim(c => c.Type == ClaimTypes.Name) &&
-              //    identity.HasClaim(c => c.Type == "name"))
-              //  identity.AddClaim(new Claim(ClaimTypes.Name, identity.FindFirst("name").Value));
+              // Add the Name ClaimType. This is required if we want User.Identity.Name to actually
+              // return something!
+              if (!context.Principal.HasClaim(c => c.Type == ClaimTypes.Name) &&
+                  identity.HasClaim(c => c.Type == "name"))
+                identity.AddClaim(new Claim(ClaimTypes.Name, identity.FindFirst("name").Value));
 
-              //context = auth0Repository.Getrole(context, personRepository, appsettings, profileService, tokenStringHelper);
+              auth0Repository.Getrole(identity, personRepository, appsettings, profileService, tokenStringHelper);
 
               // Check if token names are stored in Properties
               if (context.Properties.Items.ContainsKey(".TokenNames"))
@@ -142,7 +144,7 @@ namespace tzatziki.minutz
 
             return Task.CompletedTask;
           },
-          // handle the logout redirection 
+          // handle the logout redirection
           OnRedirectToIdentityProviderForSignOut = (context) =>
           {
             var logoutUri = $"https://{auth0Settings.Value.Domain}/v2/logout?client_id={auth0Settings.Value.ClientId}";
@@ -167,18 +169,18 @@ namespace tzatziki.minutz
         }
       };
       options.Scope.Clear();
-     // options.Scope.Add("openid");
-    //  options.Scope.Add("picture");
+      options.Scope.Add("openid");
+      options.Scope.Add("picture");
       options.Scope.Add("name");
       options.Scope.Add("email");
-    //  options.Scope.Add("clientID");
-     // options.Scope.Add("updated_at");
-     // options.Scope.Add("created_at");
+      options.Scope.Add("clientID");
+      options.Scope.Add("updated_at");
+      options.Scope.Add("created_at");
       options.Scope.Add("user_id");
-     // options.Scope.Add("nickname");
-      //options.Scope.Add("roles");
-      //options.Scope.Add("app_metadata");
-      //options.Scope.Add("user_metadata");
+      options.Scope.Add("nickname");
+      options.Scope.Add("roles");
+      options.Scope.Add("app_metadata");
+      options.Scope.Add("user_metadata");
 
       app.UseOpenIdConnectAuthentication(options);
 
@@ -186,7 +188,7 @@ namespace tzatziki.minutz
       {
         routes.MapRoute(
                   name: "default",
-                  template: "{controller=Home}/{action=Index}/{id?}");
+                  template: "{controller=Dashboard}/{action=Index}/{id?}");
       });
     }
   }

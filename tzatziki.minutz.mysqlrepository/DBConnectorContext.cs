@@ -6,10 +6,12 @@ namespace tzatziki.minutz.mysqlrepository
   public class DBConnectorContext : DbContext
   {
     private string ConnectionString;
-    public DBConnectorContext(string connectionString)
+
+    public DBConnectorContext(string connectionString, string schema = "app")
     {
       ConnectionString = connectionString;
     }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseMySql(ConnectionString);
 
     public DbSet<Instance> instance { get; set; }

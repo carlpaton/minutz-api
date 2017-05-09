@@ -1,44 +1,180 @@
-@model tzatziki.minutz.models.MeetngModel
+@model tzatziki.minutz.models.Entities.Meeting
 @{
-	ViewData["Title"] = "Meeting";
+  ViewData["Title"] = "Meeting";
 }
+<link rel="stylesheet" href="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 <style>
+  .dropzone.dz-clickable {
+    cursor: pointer;
+  }
+
+  .dropzone {
+    border: 2px dashed #0087F7;
+    border-radius: 5px;
+    background: white;
+  }
+
+  .dropzone {
+    min-height: 150px;
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    background: white;
+    padding: 54px 54px;
+  }
+
+    .dropzone, .dropzone * {
+      box-sizing: border-box;
+    }
+
+  .btn {
+    padding: 9px 14px !important;
+  }
+
+  /* layout.css Style */
+  .select2-container--default .select2-selection--single {
+    border-radius: 0px !important;
+  }
+
+  .select2-container .select2-selection--single {
+    height: 40px !important;
+  }
+
+  .upload-drop-zone {
+    height: 200px;
+    border-width: 2px;
+    margin-bottom: 20px;
+  }
+
+  /* skin.css Style*/
+  .upload-drop-zone {
+    color: #ccc;
+    border-style: dashed;
+    border-color: #ccc;
+    line-height: 200px;
+    text-align: center
+  }
+
+    .upload-drop-zone.drop {
+      color: #222;
+      border-color: #222;
+    }
+
+  .bdp-input {
+    border-radius: 2px;
+    padding: 0 3px;
+    border: 1px solid rgba(34, 36, 38, .15);
+    cursor: pointer;
+  }
+
+    .bdp-input.disabled {
+      color: #AAA;
+      cursor: default;
+    }
+
+  .bdp-popover {
+    min-width: 110px;
+  }
+
+    .bdp-popover input {
+      display: inline;
+      margin-bottom: 3px;
+      width: 60px;
+    }
+
+  .bdp-block {
+    display: inline-block;
+    line-height: 1;
+    text-align: center;
+    padding: 5px 3px;
+  }
+
+  .bdp-label {
+    font-size: 70%;
+  }
+
+  .material-switch > input[type="checkbox"] {
+    display: none;
+  }
+
+  .material-switch > label {
+    cursor: pointer;
+    height: 0px;
+    position: relative;
+    width: 40px;
+  }
+
+    .material-switch > label::before {
+      background: rgb(0, 0, 0);
+      box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+      border-radius: 8px;
+      content: '';
+      height: 16px;
+      margin-top: -8px;
+      position: absolute;
+      opacity: 0.3;
+      transition: all 0.4s ease-in-out;
+      width: 40px;
+    }
+
+    .material-switch > label::after {
+      background: rgb(255, 255, 255);
+      border-radius: 16px;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+      content: '';
+      height: 24px;
+      left: -4px;
+      margin-top: -8px;
+      position: absolute;
+      top: -4px;
+      transition: all 0.3s ease-in-out;
+      width: 24px;
+    }
+
+  .material-switch > input[type="checkbox"]:checked + label::before {
+    background: inherit;
+    opacity: 0.5;
+  }
+
+  .material-switch > input[type="checkbox"]:checked + label::after {
+    background: inherit;
+    left: 20px;
+  }
+
   .row-item {
-    background-color: #dcdcdc;
+    background-color: #F7F7F7;
     padding-top: 15px;
     padding-bottom: 15px;
   }
-	.round-button-circle {
-		width: 50px;
-		height: 0;
-		padding-bottom: 50px;
-		border-radius: 50px;
-		border: 0px solid #cfdcec;
-		overflow: hidden;
-		background: #4679BD;
-		box-shadow: 0 0 3px gray;
-		cursor: pointer;
-		color:white;
-	}
 
-		.round-button-circle i {
-			padding-top: 12px;
-			padding-left: 9px;
-		}
+  .round-button-circle {
+    width: 45px;
+    height: 0;
+    padding-bottom: 45px;
+    border-radius: 45px;
+    border: 0px solid #cfdcec;
+    overflow: hidden;
+    background: #47A9D6;
+    box-shadow: 0 0 3px gray;
+    cursor: pointer;
+    color: white;
+  }
 
-	.text-line {
-		background-color: transparent;
-		color: #000000;
-		outline: none;
-		outline-style: none;
-		outline-offset: 0;
-		border-top: none;
-		border-left: none;
-		border-right: none;
-		border-bottom: solid #000 1px;
-		padding: 3px 10px;
-	}
+    .round-button-circle i {
+      padding-top: 9px;
+      padding-left: 10px;
+    }
 
+  .text-line {
+    background-color: transparent;
+    color: #000000;
+    outline: none;
+    outline-style: none;
+    outline-offset: 0;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: solid #000 1px;
+    padding: 3px 10px;
+  }
 
   /* form starting stylings ------------------------------- */
   .group {
@@ -80,211 +216,489 @@
     color: #5264AE;
   }
 
-  
-
   /* active state */
-  input:focus ~ .bar:before, input:focus ~ .bar:after {
-    width: 50%;
-  }
+
   /* HIGHLIGHTER ================================== */
-.highlight {
-  position:absolute;
-  height:60%;
-  width:100px;
-  top:25%;
-  left:0;
-  pointer-events:none;
-  opacity:0.5;
-}
+  .highlight {
+    position: absolute;
+    height: 60%;
+    width: 100px;
+    top: 25%;
+    left: 0;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
   .dropdown-padding {
     padding-left: 10px;
     font-weight: bold;
   }
 
-/* active state */
-input:focus ~ .highlight {
-  animation:inputHighlighter 0.3s ease;
-}
+  /* active state */
+  input:focus ~ .highlight {
+    /*animation: inputHighlighter 0.3s ease;*/
+  }
 
- 
+  .row-white {
+    background-color: #fff;
+  }
 
+  .panel {
+    border: 0px solid transparent !important;
+  }
+
+  .panel-title {
+    margin-top: inherit !important;
+    margin-bottom: inherit !important;
+    font-size: 16px;
+    color: inherit;
+    background-color: #D7D7D7;
+  }
+
+  .panel-heading {
+    padding: 0px 0px !important;
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+  }
+
+  @@media screen and (min-width: 1000px) {
+    .w {
+      margin-left: -50px;
+    }
+  }
+
+  @@media screen and (max-width: 1000px) {
+    .row-padding {
+      padding-bottom: 5px;
+    }
+  }
 </style>
 <div class="container-fluid">
-<br />
-<div class="row">
-<div class="container-fluid">
-	<div class="pull-left col-lg-10">
-		<div class="col-md-3 ">
-      <h3>My Organisation Name</h3> 
+  <div class="row hide">
+    <div class="container-fluid">
+      <div class="pull-left col-lg-10">
+        <div class="col-md-3 ">
+          <h3>My Organisation Name</h3>
+        </div>
+        <div class="col-md-6 pull-left">
+          <h4 class="pull-left" style="padding-top: 10px;">Create Meeting</h4>
+        </div>
+      </div>
+      <div class="pull-right">
+        <div class="round-button-circle"><i class="fa fa-cogs fa-2x"></i></div>
+      </div>
     </div>
-    <div class="col-md-6 pull-left">
-      <h4 class="pull-left" style="padding-top: 10px;">Create Meeting</h4>
-    </div>
-	</div>
-	<div class="pull-right">
-		<div class="round-button-circle"><i class="fa fa-cogs fa-2x"></i></div>
-	</div>
-</div>
-</div>
+  </div>
   @*This is top heading row row*@
-  <br/>
-<div class="row">
-	<div class="container-fluid">
-		<div class="col-md-10">
-      <div id="meetingNameGroup" class="group">
-        <input type="text" required>
-        <span class="highlight"></span>
-        <label>Meeting Name</label>
-      </div>
-		</div>
-    <div class="col-md-2 pull-right">
-      <div class="dropdown pull-right" style="padding-top:25px;">
-        <div class=" dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-          <i class="fa fa-briefcase"></i>
-          <span class="dropdown-padding">Project</span>
-          <span class="caret"></span>
-        </div>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-          <li><a href="#">Action</a></li>
-          <li><a href="#">Another action</a></li>
-          <li><a href="#">Something else here</a></li>
-          <li role="separator" class="divider"></li>
-          <li><a href="#">Separated link</a></li>
-        </ul>
+  <div class="row row-white">
+    <div class="container-fluid">
+      <div class="col-md-12">
+        <input id="txtMeetingName" type="text" style="font-size: 30px; font-weight: bold;" placeholder="Meeting Name" data-toggle="tooltip" title="Give your meeting a logical name." />
       </div>
     </div>
-	</div>
-</div>
- 
+  </div>
+  <div class="row row-white"><br /></div>
   @*This is meeting time controler row*@
-	<div class="row">
-		<div class="container-fluid">
-			<div class="col-md-2">
-        <div class="input-group">
-          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-map-marker"></i></span>
-          <input type="text" class="form-control" placeholder="Location" aria-describedby="basic-addon1">
-        </div>
-			</div>
-			<div class="col-md-2">
-        <div class="input-group date">
-          <input type="text" id="date" class="form-control"><span class="input-group-addon">
-          <i class="fa fa-calendar"></i></span>
-        </div>
-			</div>
-			<div class="col-md-2">
-        <div class="input-group bootstrap-timepicker timepicker">
-          <input id="meetingTime" type="text" class="form-control input-small">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-        </div>
-			</div>
-			<div class="col-md-2">
-        <div class="input-group bootstrap-timepicker timepicker">
-          <input id="duration" type="text" class="form-control input-small">
-          <span class="input-group-addon">
-            <i class="glyphicon glyphicon-time"></i>
-          </span>
-        </div>
-			</div>
-			<div class="col-md-1">
-        <div class="dropdown" style="padding-top:5px;">
-          <div class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-           <span class="dropdown-padding">Repeat</span> 
-            <span class="caret"></span>
+  <div class="row row-white">
+    <div class="container-fluid">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-4 row-padding">
+            <div class="input-group" data-toggle="tooltip" title="The location of the meeting i.e. meeting room name or address.">
+              <span class="input-group-addon" id="basic-addon1"><i class="fa fa-map-marker"></i></span>
+              <input id="txtLocation" type="text" class="form-control" placeholder="Location" aria-describedby="basic-addon1">
+            </div>
           </div>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-          </ul>
-        </div>
-			</div>
-			<div class="col-md-2">
-        <div class="input-group">
-          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-cubes"></i></span>
-          <input type="text" class="form-control" placeholder="Create Series" aria-describedby="basic-addon1">
-        </div>
-			</div>
-			<div class="col-md-1">
-        <div class="dropdown" style="padding-top:5px;">
-          <div class=" dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <i class="fa fa-user"></i>
-            <span class="dropdown-padding">Role</span> 
-            <span class="caret"></span>
+          <div class="col-md-4 row-padding">
+            <div class="input-group date" data-toggle="tooltip" title="The date of the meeting.">
+              <input type="text" id="txtDate" class="form-control"><span class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+              </span>
+            </div>
           </div>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-          </ul>
+          <div class="col-md-4 row-padding" data-toggle="tooltip" title="The time the meeting is required to begin.">
+            <div class="input-group bootstrap-timepicker timepicker">
+              <input id="meetingTime" type="text" class="form-control input-small">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+            </div>
+          </div>
         </div>
-			</div>
-		</div>
-	</div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-4 row-padding">
+            <div class="input-group bootstrap-timepicker timepicker" data-toggle="tooltip" title="The duration of the meeting.">
+              <input id="txtDuration" type="text" class="form-control input-small">
+              <span class="input-group-addon"><i class="fa fa-hourglass-half"></i></span>
+            </div>
+          </div>
+          <div class="col-md-4 row-padding">
+            <div class="input-group bootstrap-timepicker timepicker" data-toggle="tooltip" title="How often will the meeting be held?">
+              <span class="input-group-addon"><i class="fa fa-refresh"></i></span>
+              <div class="btn-group">
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span id="repeatTypeText" style="padding-left:5px; padding-right:5px;"> Set Recurrence  </span> <span class="caret"></span>
+                </button>
+                <ul id="repeatType" class="dropdown-menu products-list product-list-in-box">
+                  <li class="item" style="text-align: center;"><a href="#">Daily</a></li>
+                  <li class="item" style="text-align: center;"><a href="#">Weekly</a></li>
+                  <li class="item" style="text-align: center;"><a href="#">Monthly</a></li>
+                  <li class="item" style="text-align: center;"><a href="#">Yearly</a></li>
+                  <li class="item" style="text-align: center;"><a href="#">None</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 row-padding">
+            <div class="input-group" data-toggle="tooltip" title="Give your meeting tags, separated by ';' ">
+              <span class="input-group-addon" id="basic-addon1"><i class="fa fa-tags"></i></span>
+              <input id="txtTags" type="text" class="form-control" placeholder="Add a tag" aria-describedby="basic-addon1">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row row-white"><br /></div>
 </div>
-<br/>
 @*This is invations row*@
-<div class="row row-item" >
+<div class="row row-item row-grey">
   <div class="container-fluid">
-    <div class="col-lg-5">
+    <div class="col-lg-7">
       <div class="col-md-3">
-        <a class="btn btn-info" ><i class="fa fa-paper-plane-o"></i><span style="padding-left:5px;">Send Invatations</span></a>
+        <a class="btn btn-info"><i class="fa fa-paper-plane-o"></i><span style="padding-left:5px;">Send Invatations</span></a>
       </div>
       <div class="col-md-3">
         <a class="btn " style="background-color:white; color:black;">
-        <i class="fa fa-eye"></i>
-        <span>Preview Invite</span></a>
+          <i class="fa fa-eye"></i>
+          <span>Preview Invite</span>
+        </a>
       </div>
     </div>
-    <div class="col-lg-5 ">
-      <div class="hide" >
-       
-
-        <input type="checkbox" class="hide" name="private" value="private" /><span>Private meeting</span>
+    <div class="col-sm-2">
+      <div class="checkbox" data-toggle="tooltip" title="Set if this is a private meeting. ">
+        <label style="pointer-events: auto; padding-left: 0px; top: -2px; ">
+          <input id="cbIsPrivate" type="checkbox" style="margin-left: -70px;">Private Meeting
+        </label>
       </div>
-      <div class="hide" >
-        <input type="checkbox" class="checkbox hide" name="audit" value="audit" /><span>Audited meeting</span>
+    </div>
+    <div class="col-md-2 ">
+      <div class="checkbox" data-toggle="tooltip" title="Set if this is a formal meeting. ">
+        <label style="pointer-events: auto; padding-left: 0px; top: -2px; ">
+          <input id="cbIsFormal" type="checkbox" style="margin-left: -70px;">Formal Meeting
+        </label>
       </div>
     </div>
   </div>
 </div>
 
-<div class="checkbox hide">
-  <label><input type="checkbox" value="">Option 1</label>
+<div class="col-md-3 row-grey" style="background-color: #ecf0f5;">
+  <div class="row ">
+    <div class="box box-widget widget-user-2" style="padding:10px; background-color:#ecf0f5; ">
+      <!-- Add the bg color to the header using any of the bg-* classes -->
+      <div class="widget-user-header bg-blue">
+        <div class="widget-user-image">
+          <img class="img-circle" src="@User.ToProfile().ProfileImage" alt="User Avatar">
+        </div>
+        <!-- /.widget-user-image -->
+        <h3 class="widget-user-username">@User.ToProfile().Name</h3>
+        <h5 class="widget-user-desc"><b>Role :</b> Organiser</h5>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="panel-group" style="padding:10px; ">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title" style="padding: 20px; ">
+            <span>Attendee</span>
+            <a id="addUser">
+              <div class="round-button-circle pull-right" style="margin-top: -16px;"><i class="fa fa-plus fa-2x"></i></div>
+            </a>
+          </h4>
+          <div id="attendeeCollapse" class="panel-collapse ">
+            <div class="input-group" style="width: 100%;">
+              <input type="text" name="q" class="form-control" style="height:44px !important" placeholder="Search for people">
+              <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+            <ul class="products-list product-list-in-box">
+              <li class="item">
+                <div class="product-img">
+                  <img class="img-circle" height="50" width="50" style="margin-left: 5px;" src="@User.ToProfile().ProfileImage" alt="Product Image">
+                </div>
+                <div class="product-info">
+                  <a href="javascript:void(0)" class="product-title">
+                    @User.ToProfile().Name
+                  </a>
+                  <span class="product-description">
+                    <b>Role :</b> Organiser
+                  </span>
+                </div>
+              </li>
+              <!-- /.item -->
+              <li class="item">
+                <div class="product-img">
+                  <img class="img-circle" height="50" width="50" style="margin-left: 5px;" src="@User.ToProfile().ProfileImage" alt="Product Image">
+                </div>
+                <div class="product-info">
+                  <a href="javascript:void(0)" class="product-title">
+                    @User.ToProfile().Name
+                  </a>
+                  <span class="product-description">
+                    <b>Role :</b> Organiser
+                  </span>
+                </div>
+              </li>
+              <!-- /.item -->
+              <li class="item">
+                <div class="product-img">
+                  <img class="img-circle" height="50" width="50" style="margin-left: 5px;" src="@User.ToProfile().ProfileImage" alt="Product Image">
+                </div>
+                <div class="product-info">
+                  <a href="javascript:void(0)" class="product-title">@User.ToProfile().Name</a>
+                  <span class="product-description">
+                    <b>Role :</b> Organiser
+                  </span>
+                </div>
+              </li>
+              <!-- /.item -->
+              <li class="item">
+                <div class="product-img">
+                  <img class="img-circle" height="50" width="50" style="margin-left: 5px;" src="@User.ToProfile().ProfileImage" alt="Product Image">
+                </div>
+                <div class="product-info">
+                  <a href="javascript:void(0)" class="product-title">
+                    @User.ToProfile().Name
+                  </a>
+                  <span class="product-description">
+                    <b>Role :</b> Organiser
+                  </span>
+                </div>
+              </li>
+              <!-- /.item -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="panel-group" style="padding:10px; ">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title" style="padding: 20px; ">
+            <span>Attachments</span>
+            <a id="addAttachment">
+              <div class="round-button-circle pull-right" style="margin-top: -16px;"><i class="fa fa-plus fa-2x"></i></div>
+            </a>
+          </h4>
+          <div id="attendeeCollapse" class="panel-collapse ">
+            <div class="input-group">
+              <input type="text" name="q" style="height:44px !important" class="form-control" placeholder="Search attachments">
+              <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+            <ul class="products-list product-list-in-box">
+              <li class="item">
+                <div class="product-img">
+                  <i class="fa fa-file-o fa-2x" style="padding-left: 10px;" aria-hidden="true"></i>
+                </div>
+                <div class="product-info">
+                  <a href="javascript:void(0)" class="product-title">
+                    FileName.pdf
+                  </a>
+                  <span class="product-description">
+                    Linked to Agenda
+                  </span>
+                </div>
+              </li>
+              <!-- /.item -->
+              <li class="item">
+                <div class="product-img">
+                  <i class="fa fa-file-o fa-2x" style="padding-left: 10px;" aria-hidden="true"></i>
+                </div>
+                <div class="product-info">
+                  <a href="javascript:void(0)" class="product-title">
+                    FileName.pdf
+                  </a>
+                  <span class="product-description">
+                    Linked to Agenda
+                  </span>
+                </div>
+              </li>
+              <!-- /.item -->
+              <li class="item">
+                <div class="product-img">
+                  <i class="fa fa-file-o fa-2x" style="padding-left: 10px;" aria-hidden="true"></i>
+                </div>
+                <div class="product-info">
+                  <a href="javascript:void(0)" class="product-title">FileName.pdf</a>
+                  <span class="product-description">
+                    Linked to Agenda
+                  </span>
+                </div>
+              </li>
+              <!-- /.item -->
+              <li class="item">
+                <div class="product-img">
+                  <i class="fa fa-file-o fa-2x" style="padding-left: 10px;" aria-hidden="true"></i>
+                </div>
+                <div class="product-info">
+                  <a href="javascript:void(0)" class="product-title">
+                    FileName.pdf
+                  </a>
+                  <span class="product-description">
+                    Linked to Agenda
+                  </span>
+                </div>
+              </li>
+              <!-- /.item -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-9 row-grey" style="background-color: #ecf0f5;">
+  <div class="row">
+    <div class="panel-group" style="padding:10px;">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title" style="padding: 20px; ">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#purposeCollapse">
+              Purpose
+            </a>
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#purposeCollapse">
+              <i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>
+            </a>
+          </h4>
+        </div>
+        <div id="purposeCollapse" class="panel-collapse collapse">
+          <div id="agendaId">
+            <div class="row">
+              <div class="col-md-12">
+                <div style="margin-left:10px; margin-right:10px;">
+                  <form>
+                    <textarea id="purposeText" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                  </form>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="panel-group" style="padding:10px;">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title" style="padding: 20px; ">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#outcomeCollapse">
+              Outcome
+            </a>
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#outcomeCollapse">
+              <i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>
+            </a>
+          </h4>
+        </div>
+        <div id="outcomeCollapse" class="panel-collapse collapse">
+          <div class="row">
+
+            <div class="col-md-12">
+              <div style="margin-left:10px; margin-right:10px;">
+                <form>
+                  <textarea id="outcomeText" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="panel-group" style="padding:10px;">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title" style="padding: 20px; ">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#agendaCollapse">
+              Agenda
+            </a>
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#agendaCollapse">
+              <i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>
+            </a>
+          </h4>
+        </div>
+        <div id="agendaCollapse" class="panel-collapse ">
+          <ul id="agendaListControl" style="list-style: none; list-style-position:inside; margin:0; padding:0;"></ul>
+          <div class="pull-right">
+            <div style="padding-top:20px; padding-bottom:5px;">
+              <div class="row">
+                <div class="col-sm-1">
+                  <div id="btnAddAgenda" class="round-button-circle" style="margin-top: -35px; margin-left:-160px;"><i class="fa fa-plus fa-2x"></i></div>
+                </div>
+                <div class="col-sm-1">
+                  <div id="btnRemoveAgenda" class="round-button-circle" style="margin-top: -35px; margin-left:-120px; background-color:red"><i class="fa fa-minus fa-2x"></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div>
-  @Html.Partial("~/Views/Shared/_wysihtml.cshtml")
-</div>
-
+<!-- FastClick -->
+<script src="~/plugins/fastclick/fastclick.js"></script>
+<script src="https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
+<!-- Bootstrap WYSIHTML5 -->
+<script src="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 
 <script type="text/javascript">
+  var MinutzTitle = "Minutz : Meeting Creator";
+  var availibleAttendees = [{ id: 0, text: 'Lee-Roy' }, { id: 1, text: 'Mauro' }, { id: 2, text: 'Russell' }];
+  var meeting = {
+    Id: 0,
+    Name: "",
+    IsLocked: false,
+    Location: "",
+    Date: "",
+    Time: "",
+    Duration: "",
+    IsReacurance: false,
+    IsPrivate: false,
+    IsFormal: false,
+    TimeZone: "",
+    Tag: [],
+    MeetingAttendeeCollection: {},
+    Purpose: "",
+    Outcome: "",
+    MeetingAgendaCollection: [],
+    MeetingActionCollection: [],
+    MeetingNoteCollection: [],
+    MeetingAttachmentCollection: []
+  };
 
   $(function () {
-    $('#meetingTime').timepicker();
+    _initPickers();
 
-    $('#duration').timepicker({
-      minuteStep: 1,
-      template: 'modal',
-      appendWidgetTo: 'body',
-      showSeconds: true,
-      showMeridian: false,
-      defaultTime: false
+    $("#repeatType li a").click(function () {
+
+      $("#repeatTypeText").text($(this).text());
+
+      meeting.IsReacurance = _isReacurance($(this).text());
+      meeting.ReacuranceType = $(this).text();
     });
-
-    $('#date').datepicker({
-      daysOfWeekDisabled: "0,6",
-      calendarWeeks: true,
-      autoclose: true,
-      todayHighlight: true,
-      datesDisabled: ['03/06/2017', '03/21/2017'],
-      toggleActive: true,
-      defaultViewDate: { year: 1977, month: 04, day: 25 }
-    });
-
 
     $('#meetingNameGroup input').blur(function () {
 
@@ -294,5 +708,284 @@ input:focus ~ .highlight {
       else
         $(this).removeClass('used');
     });
-   });
+
+    $("#purposeText").wysihtml5();
+    $("#outcomeText").wysihtml5();
+
+    var x = document.getElementById("demo");
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+      } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+      }
+    }
+    function showPosition(position) {
+      x.innerHTML = "Latitude: " + position.coords.latitude +
+        "<br>Longitude: " + position.coords.longitude;
+    }
+    $("#btnAddAgenda").click(function () { _CreateAgendaItem(); });
+    if (meeting.MeetingAgendaCollection.length < 1) { _CreateAgendaItem(); }
+  });
+
+  function _CreateAgendaItem() {
+    var id = meeting.MeetingAgendaCollection.length;
+    var controlName = "agenda" + id;
+    meeting.MeetingAgendaCollection.push(MeetingAgendaItem(id, 'refId', 'agendaText', 'meetingattendeeId', 'createdDate', false));
+
+    $('#agendaListControl').append('<li>' + _getAgenda(controlName, _getAgendaAttachments()) + '</li>');
+    $("#" + controlName).wysihtml5();
+    console.log(meeting);
+  };
+
+  function _CreateAgendaItem(data) {
+    var id = meeting.MeetingAgendaCollection.length;
+    var controlName = "agenda" + id;
+    meeting.MeetingAgendaCollection.push(MeetingAgendaItem(id, 'refId', 'agendaText', 'meetingattendeeId', 'createdDate', false));
+
+    $('#agendaListControl').append('<li>' + _getAgenda(controlName, _getAgendaAttachments()) + '</li>');
+    $("#" + controlName).wysihtml5();
+    $('#attendees_' + controlName).select2({
+      data: availibleAttendees
+    });
+    console.log(meeting);
+  };
+
+  function Save() {
+    _updateAgendaTextToModel();
+    _updateModel();
+
+    if (_CallSave()) {
+      notifyMe(MinutzTitle, "The updates were saved successfully.", "fa fa-info");
+
+    } else {
+      notifyMe(MinutzTitle, "Oops something went wrong.", "fa fa-info")
+    }
+    console.log('log');
+  };
+
+  function _CallSave() {
+    $.ajax({
+      type: "POST",
+      url: "Meeting/Save",
+      data: meeting,
+      success: function (data) {
+        _updateUi(data);
+      },
+      error: function (XMLHttpRequest, textStatus, errorThrown) {
+        notifyMe(MinutzTitle, textStatus + "  " + errorThrown, "fa fa-info");
+      },
+      dataType: "json"
+    });
+
+    return true;
+  };
+
+  function _getAgenda(controlName, att) {
+
+    var html = '<div id="agendaId">' +
+      '<div class="container" style="margin-left: 5px;">' +
+      '<div class="row">' +
+      '<div class="col-md-2">' +
+      '<b style="padding: 20px;">Duration</b>' +
+      '</div>' +
+      '<div class="col-md-6">' +
+      '<b style="padding: 20px;">Topic</b>' +
+      '</div>' +
+      '<div class="col-md-3">' +
+      '<b style="padding: 20px;">Owner</b>' +
+      '</div>' +
+      '</div>' +
+      '</div>' +
+      '<div class="container" style="margin-left: 5px;">' +
+      '<div class="row">' +
+      '<div class="col-md-2">' +
+      '<input id="dur" type="text" class="form-control input-small">' +
+      '</div>' +
+      '<div class="col-md-6">' +
+      '<input id="txtTopicTitle" type="text" class="form-control input-small">' +
+      '</div>' +
+      '<div class="col-md-3">' +
+      '<select id="attendees_' + controlName + '" class="js-example-data-array" style="width: 150px;"></select>' +
+      '</div>' +
+      '</div>' +
+      '<br />' +
+      '</div>' +
+      '<div class="row">' +
+      '<div class="col-md-9">' +
+      '<div style="margin-left:10px; margin-right:10px;">' +
+      '<form>' +
+      '<textarea id="' + controlName + '" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>' +
+      '</form>' +
+      '</div>' +
+      '</div>' +
+      '<div class="col-md-3"><form action="/Meeting/FileUpload" method="post" enctype="multipart/form-data" class="dropzone dz-clickable" style="margin-top: 50px;" id="my-awesome-dropzone"></form></div>' +
+      '</div>' +
+      '<div class="row">' +
+      '<div class="col-md-12">' +
+      '<ul >';
+
+    for (var i = 0; att.length > 0; i++) {
+      var fileAttachment = att[i];
+      html = html + '<li>' +
+        '<i class="fa fa-paperclip" aria-hidden="true"> <span style="font-family: Arial;">File Attachment</span></i>' +
+        '</li>';
+    }
+
+    html = html + '</ul>' +
+      '</div>' +
+      '<div>' +
+      '</div>';
+    return html;
+  };
+
+  function MeetingAgendaItem(id, referanceId, agendaText, meetingAttendeeId, createdDate, isComplete) {
+    return { Id: id, ReferanceId: referanceId, AgendaText: agendaText, MeetingAttendeeId: meetingAttendeeId, CreatedDate: createdDate, IsComplete: isComplete };
+  };
+
+  function _updateAgendaTextToModel() {
+    for (var i = 0; i < meeting.MeetingAgendaCollection.length; i++) {
+      var currentAgenda = meeting.MeetingAgendaCollection[i];
+      var controlName = "agenda" + currentAgenda.Id;
+      var currentAgendaText = $("#" + controlName).val();
+      currentAgenda.AgendaText = currentAgendaText;
+    }
+  };
+
+  function _getAgendaAttachments() {
+    return [];
+  };
+
+  function _updateUi(data) {
+    //_initPickers();
+    $("#txtMeetingName").val(data.name);
+    $("#repeatTypeText").text(data.reacuranceType);
+    $('#txtLocation').val(data.location);
+    $('#txtDuration').val(data.duration);
+    $("#cbIsPrivate").prop("checked", data.isPrivate);
+    $("#cbIsFormal").prop("checked", data.isFormal);
+    var meetingDate = new Date(data.date);
+    $('#txtDate').data({ date: meetingDate }).datepicker('update').children("input").val(meetingDate);
+
+    $('#meetingTime').val(data.time);
+    $("#txtTags").val(_toString(data.tag));
+    $('#purposeText').val(data.purpose);
+    $('#outcomeText').val(data.outcome);
+
+    meeting.Id = data.id;
+    meeting.Name = data.name;
+    meeting.IsReacurance = data.isReacurance;
+    meeting.ReacuranceType = data.reacuranceType;
+    meeting.date = data.date;
+    meeting.Time = data.time;
+    meeting.Duration = data.duration;
+    meeting.Tag = data.tag;
+    meeting.IsPrivate = data.isPrivate;
+    meeting.IsFormal = data.isFormal;
+    meeting.Purpose = data.purpose;
+    meeting.Outcome = data.outcome;
+  };
+
+  function _updateModel() {
+
+    meeting.Tag = _toArray($("#txtTags").val());
+    meeting.IsPrivate = $("#cbIsPrivate").prop("checked");
+    meeting.IsFormal = $("#cbIsFormal").prop("checked");
+    meeting.Name = $("#txtMeetingName").val();
+    meeting.Location = $('#txtLocation').val();
+    meeting.Date = $('#txtDate').datepicker().val();
+    meeting.Time = $('#meetingTime').val();
+    meeting.Duration = $('#txtDuration').val();
+    meeting.ReacuranceType = $("#repeatTypeText").text();
+    meeting.IsReacurance = _isReacurance($("#repeatTypeText").text());
+    meeting.Purpose = $('#purposeText').val();
+    meeting.Outcome = $('#outcomeText').val();
+  };
+
+  function _toArray(str) {
+    return str.split(';');
+  };
+
+  function _toString(strArray) {
+    return strArray.join(';');
+  };
+
+  function _isReacurance(reacuranceType) {
+    if (reacuranceType == "none") {
+      return false;
+    }
+    return true;
+  };
+
+  function _initPickers() {
+    $('#txtDate').datepicker({
+      daysOfWeekDisabled: "0,6",
+      calendarWeeks: true,
+      autoclose: true,
+      todayHighlight: true,
+      datesDisabled: ['03/06/2017', '03/21/2017'],
+      toggleActive: true,
+      defaultViewDate: { year: 1977, month: 04, day: 25 }
+    });
+
+    $('#meetingTime').timepicker();
+
+    $('#txtDuration').durationPicker({
+      lang: 'en',
+      showSeconds: false,
+      showDays: false,
+    });
+
+    $('#dur').durationPicker({
+      lang: 'en',
+      showSeconds: false,
+      showDays: false,
+    });
+
+  };
+
+  function createDropZone() {
+    var dropZone = document.getElementById('drop-zone');
+    var uploadForm = document.getElementById('js-upload-form');
+
+    var startUpload = function (files) {
+      console.log(files)
+    }
+
+    uploadForm.addEventListener('submit', function (e) {
+      var uploadFiles = document.getElementById('js-upload-files').files;
+      e.preventDefault()
+
+      startUpload(uploadFiles)
+    })
+
+    dropZone.ondrop = function (e) {
+      e.preventDefault();
+      this.className = 'upload-drop-zone';
+
+      startUpload(e.dataTransfer.files)
+    }
+
+    dropZone.ondragover = function () {
+      this.className = 'upload-drop-zone drop';
+      return false;
+    }
+
+    dropZone.ondragleave = function () {
+      this.className = 'upload-drop-zone';
+      return false;
+    }
+  };
+
+  window.setInterval(function () { Save(); }, 60000);
+
+  //File Upload response from the server
+  Dropzone.options.dropzoneForm = {
+    init: function () {
+      this.on("complete", function (data) {
+        //var res = eval('(' + data.xhr.responseText + ')');
+        var res = JSON.parse(data.xhr.responseText);
+      });
+    }
+  };
 </script>

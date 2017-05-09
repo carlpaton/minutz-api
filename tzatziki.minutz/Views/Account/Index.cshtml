@@ -2,80 +2,112 @@
 @{
   ViewData["Title"] = "Profile";
 }
-<style>
-  .profilePictre {
-    border-radius: 50%;
-    width: 150px;
-    height: 150px;
-  }
 
-</style>
-<div class="page">
-  <div class="container-fluid">
-    <div class="pull-left">
-      <h1 class="col-lg-offset-10">Profile</h1>
-      <img class="profilePictre col-sm-offset-10" src="@Model.ProfileImage" />
-    </div>
-    <div class="pull-right">
-      <h1><a href="#meeting" class="btn btn-success">Create Meeting</a></h1>
-    </div>
-  </div>
-  <br />
+<div class="row">
+  <div class="col-md-3">
 
-  <div class="container-fluid">
-    <form class="form-horizontal">
-      <div class="form-group">
-        <label class="control-label col-sm-1" for="firstName">Name:</label>
-        <input type="text" class="form-control" disabled id="firstName" value="@Model.Name">
-      </div>
-    </form>
-    <form class="form-horizontal">
-      <div class="form-group">
-        <label class="control-label col-sm-1" for="role">Role:</label>
-        <input type="text" class="form-control" disabled id="role" value="@User.Claims.FirstOrDefault(i => i.Type == System.Security.Claims.ClaimTypes.Role).Value">
-      </div>
-    </form>
-    <form class="form-horizontal">
-      <div class="form-group">
-        <label class="control-label col-sm-1" for="role">Email:</label>
-        <input type="text" class="form-control" disabled id="role" value="@Model.EmailAddress">
-      </div>
-    </form>
-    @if (Model.InstanceId == Guid.Empty)
-    {
-      <form class="form-horizontal">
-        <div class="form-group">
-          <a class="btn btn-info col-sm-1 col-sm-offset-1" asp-controller="Account" asp-action="Login" id="btn-login">Start full Version</a>
-        </div>
-      </form>
-    }
-  </div>
+    <!-- Profile Image -->
+    <div class="box box-primary">
+      <div class="box-body box-profile">
+        <img class="profile-user-img img-responsive img-circle" src="@Model.ProfileImage" alt="User profile picture">
 
-</div>
-<div class="row hide">
-  <div class="col-md-12">
-    <h3>Claims associated with current User</h3>
-    <p>This page displays all the claims associated the the current User. This is useful when debugging to see which claims are being populated from the Auth0 ID Token.</p>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>
-            Claim
-          </th>
-          <th>
-            Value
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach (var claim in User.Claims)
+        <h3 class="profile-username text-center">@Model.Name</h3>
+
+        <p class="text-muted text-center">@User.Claims.FirstOrDefault(i => i.Type == System.Security.Claims.ClaimTypes.Role).Value</p>
+
+        <ul class="list-group list-group-unbordered hide">
+          <li class="list-group-item">
+            <b>Followers</b> <a class="pull-right">1,322</a>
+          </li>
+          <li class="list-group-item">
+            <b>Following</b> <a class="pull-right">543</a>
+          </li>
+          <li class="list-group-item">
+            <b>Friends</b> <a class="pull-right">13,287</a>
+          </li>
+        </ul>
+        @if (Model.InstanceId == Guid.Empty)
         {
-        <tr>
-          <td>@claim.Type</td>
-          <td>@claim.Value</td>
-        </tr>
+          <a asp-controller="Account" asp-action="StartFullVersion" id="btn-start-account" class="btn btn-primary btn-block"><b>Start full Version</b></a>
         }
-      </tbody>
-    </table>
+      </div>
+      <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+    <!-- About Me Box -->
+    <div class="box box-primary hide">
+      <div class="box-header with-border">
+        <h3 class="box-title">About Me</h3>
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body">
+        <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
+
+        <p class="text-muted">
+          B.S. in Computer Science from the University of Tennessee at Knoxville
+        </p>
+
+        <hr>
+
+        <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
+
+        <p class="text-muted">Malibu, California</p>
+
+        <hr>
+
+        <strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
+
+        <p>
+          <span class="label label-danger">UI Design</span>
+          <span class="label label-success">Coding</span>
+          <span class="label label-info">Javascript</span>
+          <span class="label label-warning">PHP</span>
+          <span class="label label-primary">Node.js</span>
+        </p>
+
+        <hr>
+
+        <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
+
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+      </div>
+      <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
   </div>
+  <!-- /.col -->
+  <div class="col-md-9">
+    <div class="nav-tabs-custom">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#actions" data-toggle="tab">My Actions</a></li>
+        <li><a href="#account-activity" data-toggle="tab">Activity</a></li>
+        <li><a href="#account" data-toggle="tab">Settings</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="active tab-pane" id="actions">
+        </div>
+        <!-- /.tab-pane -->
+        <div class="tab-pane" id="account-activity">
+          <!-- The timeline -->
+        </div>
+        <!-- /.tab-pane -->
+        <div class="tab-pane" id="account">
+          <div id="user-account-profile-form"></div>
+        </div>
+        <!-- /.tab-pane -->
+      </div>
+      <!-- /.tab-content -->
+    </div>
+    <!-- /.nav-tabs-custom -->
+  </div>
+  <!-- /.col -->
 </div>
+<script>
+  (function ($) {
+    "use strict";
+
+    $('#user-account-profile-form').load('/Account/_userProfileForm');
+    $('#actions').load('/Account/_userProfileActions');
+    $('#account-activity').load('/Account/_userProfileActivityLog');
+  })(jQuery)
+</script>
