@@ -49,13 +49,13 @@ namespace tzatziki.minutz.Controllers
 
     public ActionResult UserSwitcher()
     {
-      var model = @User.ToProfile();
+      var model = User.ToProfile();
       return PartialView("~/Views/Shared/_userSwitcher.cshtml", model);
     }
 
     public ActionResult MainMenu()
     {
-      var model = @User.ToProfile();
+      var model = User.ToProfile();
       return PartialView("~/Views/Shared/_mainSideMenu.cshtml", model);
     }
   }
