@@ -4,6 +4,55 @@
 }
 <link rel="stylesheet" href="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 <style>
+  .border {
+    border: solid 1px #D2D6DE;
+  }
+  .gridHeader {
+    height:50px;
+  }
+  .left-tab {
+    margin-left: 5px;
+  }
+
+  .top-tab {
+    margin-top: 10px;
+  }
+  .select2-container {
+    margin-top: 3px;
+  }
+    .nav-tabs > li > a {
+    margin-right: 2px;
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-bottom: 5px;
+    font-size: large;
+    color: black;
+    border-top: 0px solid transparent;
+    border-left: 0px solid transparent;
+    border-right: 0px solid black;
+    border-radius: 2px 4px 0 0;
+  }
+  .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    color: #555;
+    cursor: default;
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-bottom: 5px;
+    font-size: large;
+    color: black;
+    background-color: transparent !important;
+    border-top: 0px solid transparent;
+    border-left: 0px solid transparent;
+    border-right: 0px;
+    border-bottom-width: 2px;
+    border-bottom-color: black;
+  }
+  .nav-tabs {
+    border-bottom: 0px solid #ddd;
+  }
+
   .dropzone.dz-clickable {
     cursor: pointer;
   }
@@ -274,21 +323,6 @@
   }
 </style>
 <div class="container-fluid">
-  <div class="row hide">
-    <div class="container-fluid">
-      <div class="pull-left col-lg-10">
-        <div class="col-md-3 ">
-          <h3>My Organisation Name</h3>
-        </div>
-        <div class="col-md-6 pull-left">
-          <h4 class="pull-left" style="padding-top: 10px;">Create Meeting</h4>
-        </div>
-      </div>
-      <div class="pull-right">
-        <div class="round-button-circle"><i class="fa fa-cogs fa-2x"></i></div>
-      </div>
-    </div>
-  </div>
   @*This is top heading row row*@
   <div class="row row-white">
     <div class="container-fluid">
@@ -375,7 +409,7 @@
         </a>
       </div>
     </div>
-    <div class="col-sm-2">
+    <div class="col-sm-2 hide">
       <div class="checkbox" data-toggle="tooltip" title="Set if this is a private meeting. ">
         <label style="pointer-events: auto; padding-left: 0px; top: -2px; ">
           <input id="cbIsPrivate" type="checkbox" style="margin-left: -70px;">Private Meeting
@@ -485,6 +519,85 @@
         </div>
       </div>
     </div>
+    <br/>
+    <div class="panel-group" style="padding:10px; ">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title" style="padding: 20px; ">
+            <span>Agenda</span>
+            <a id="addAttachment">
+              <div class="round-button-circle pull-right" style="margin-top: -16px;"><i class="fa fa-plus fa-2x"></i></div>
+            </a>
+          </h4>
+          <div id="attendeeCollapse" class="panel-collapse ">
+            <div class="input-group">
+              <input type="text" name="q" style="height:44px !important" class="form-control" placeholder="Search attachments">
+              <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+            <ul class="products-list product-list-in-box">
+              <li class="item">
+                <div class="product-img">
+                  <i class="fa fa-file-o fa-2x" style="padding-left: 10px;" aria-hidden="true"></i>
+                </div>
+                <div class="product-info">
+                  <a href="javascript:void(0)" class="product-title">
+                    FileName.pdf
+                  </a>
+                  <span class="product-description">
+                    Linked to Agenda
+                  </span>
+                </div>
+              </li>
+              <!-- /.item -->
+              <li class="item">
+                <div class="product-img">
+                  <i class="fa fa-file-o fa-2x" style="padding-left: 10px;" aria-hidden="true"></i>
+                </div>
+                <div class="product-info">
+                  <a href="javascript:void(0)" class="product-title">
+                    FileName.pdf
+                  </a>
+                  <span class="product-description">
+                    Linked to Agenda
+                  </span>
+                </div>
+              </li>
+              <!-- /.item -->
+              <li class="item">
+                <div class="product-img">
+                  <i class="fa fa-file-o fa-2x" style="padding-left: 10px;" aria-hidden="true"></i>
+                </div>
+                <div class="product-info">
+                  <a href="javascript:void(0)" class="product-title">FileName.pdf</a>
+                  <span class="product-description">
+                    Linked to Agenda
+                  </span>
+                </div>
+              </li>
+              <!-- /.item -->
+              <li class="item">
+                <div class="product-img">
+                  <i class="fa fa-file-o fa-2x" style="padding-left: 10px;" aria-hidden="true"></i>
+                </div>
+                <div class="product-info">
+                  <a href="javascript:void(0)" class="product-title">
+                    FileName.pdf
+                  </a>
+                  <span class="product-description">
+                    Linked to Agenda
+                  </span>
+                </div>
+              </li>
+              <!-- /.item -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
     <br />
     <div class="panel-group" style="padding:10px; ">
       <div class="panel panel-default">
@@ -567,97 +680,62 @@
   </div>
 </div>
 <div class="col-md-9 row-grey" style="background-color: #ecf0f5;">
-  <div class="row">
-    <div class="panel-group" style="padding:10px;">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title" style="padding: 20px; ">
-            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#purposeCollapse">
-              Purpose
-            </a>
-            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#purposeCollapse">
-              <i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>
-            </a>
-          </h4>
+  <div class="row row-white left-tab top-tab">
+    <div class="col-md-12">
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" ><a href="#objectiveTab" aria-controls="objectiveTab" role="tab" data-toggle="tab">Objective</a></li>
+        <li role="presentation"><a href="#outcomeTab" aria-controls="outcomeTab" role="tab" data-toggle="tab">Outcome</a></li>
+        <li role="presentation" class="active"><a href="#agendaTab" aria-controls="agendaTab" role="tab" data-toggle="tab">Agenda</a></li>
+      </ul>
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane " id="objectiveTab">
+          <br/>
+          <form>
+            <textarea id="purposeText" class="textarea" placeholder="Write the purpose for your meeting." style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+          </form>
         </div>
-        <div id="purposeCollapse" class="panel-collapse collapse">
-          <div id="agendaId">
-            <div class="row">
-              <div class="col-md-12">
-                <div style="margin-left:10px; margin-right:10px;">
-                  <form>
-                    <textarea id="purposeText" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-                  </form>
+        <div role="tabpanel" class="tab-pane" id="outcomeTab">
+          <br />
+          <form>
+            <textarea id="outcomeText" class="textarea" placeholder="Write your intended outcome for your meeting." style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+          </form>
+        </div>
+        <div role="tabpanel" class="tab-pane active" id="agendaTab">
+          <br />
+          <div class="row left-tab">
+            <div class="col-md-2 gridHeader">
+              <div class="input-group bootstrap-timepicker timepicker">
+                <input id="agendaItemTime" type="text" class="form-control input-small">
+                <span class="input-group-addon"><i class="fa fa-hourglass-half"></i></span>
+              </div>
+            </div>
+            <div class="col-md-6  gridHeader">
+              <input id="txtAgendaTitle" type="text" style="font-size: 15px; font-weight: bold;" placeholder="Topic Title" data-toggle="tooltip" title="Give your agenda item a title." />
+            </div>
+            <div class="col-md-3  gridHeader">
+              <select id="attendees_agendaItem" class="js-example-data-array" style="margin-top: 5px;"></select>
+            </div>
+          </div>
+          <div class="row left-tab">
+            <br />
+            <form>
+              <textarea id="agendaText" class="textarea" placeholder="Write your detailed topic information." style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+            </form>
+          </div>
+        </div>
+      </div>
 
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="panel-group" style="padding:10px;">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title" style="padding: 20px; ">
-            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#outcomeCollapse">
-              Outcome
-            </a>
-            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#outcomeCollapse">
-              <i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>
-            </a>
-          </h4>
-        </div>
-        <div id="outcomeCollapse" class="panel-collapse collapse">
-          <div class="row">
 
-            <div class="col-md-12">
-              <div style="margin-left:10px; margin-right:10px;">
-                <form>
-                  <textarea id="outcomeText" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+   
     </div>
-  </div>
-  <div class="row">
-    <div class="panel-group" style="padding:10px;">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title" style="padding: 20px; ">
-            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#agendaCollapse">
-              Agenda
-            </a>
-            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#agendaCollapse">
-              <i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>
-            </a>
-          </h4>
-        </div>
-        <div id="agendaCollapse" class="panel-collapse ">
-          <ul id="agendaListControl" style="list-style: none; list-style-position:inside; margin:0; padding:0;"></ul>
-          <div class="pull-right">
-            <div style="padding-top:20px; padding-bottom:5px;">
-              <div class="row">
-                <div class="col-sm-1">
-                  <div id="btnAddAgenda" class="round-button-circle" style="margin-top: -35px; margin-left:-160px;"><i class="fa fa-plus fa-2x"></i></div>
-                </div>
-                <div class="col-sm-1">
-                  <div id="btnRemoveAgenda" class="round-button-circle" style="margin-top: -35px; margin-left:-120px; background-color:red"><i class="fa fa-minus fa-2x"></i></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
-
+<div class="col-sm-1 hide">
+  <div id="btnAddAgenda" class="round-button-circle" style="margin-top: -35px; margin-left:-160px;"><i class="fa fa-plus fa-2x"></i></div>
+</div>
+<div class="col-sm-1 hide">
+  <div id="btnRemoveAgenda" class="round-button-circle" style="margin-top: -35px; margin-left:-120px; background-color:red"><i class="fa fa-minus fa-2x"></i></div>
+</div>
 <!-- FastClick -->
 <script src="~/plugins/fastclick/fastclick.js"></script>
 <script src="https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
@@ -711,7 +789,11 @@
 
     $("#purposeText").wysihtml5();
     $("#outcomeText").wysihtml5();
-
+    $("#agendaText").wysihtml5();
+    $('#attendees_agendaItem').select2({
+      data: availibleAttendees,
+      width: '100%'
+    });
     var x = document.getElementById("demo");
     function getLocation() {
       if (navigator.geolocation) {
@@ -745,9 +827,7 @@
 
     $('#agendaListControl').append('<li>' + _getAgenda(controlName, _getAgendaAttachments()) + '</li>');
     $("#" + controlName).wysihtml5();
-    $('#attendees_' + controlName).select2({
-      data: availibleAttendees
-    });
+    
     console.log(meeting);
   };
 
@@ -937,6 +1017,12 @@
     });
 
     $('#dur').durationPicker({
+      lang: 'en',
+      showSeconds: false,
+      showDays: false,
+    });
+
+    $("#agendaItemTime").durationPicker({
       lang: 'en',
       showSeconds: false,
       showDays: false,
