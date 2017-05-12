@@ -18,7 +18,7 @@
     margin-top: 10px;
   }
   .select2-container {
-    margin-top: 3px;
+    
   }
     .nav-tabs > li > a {
     margin-right: 2px;
@@ -195,21 +195,20 @@
   }
 
   .round-button-circle {
-    width: 45px;
+    width: 35px;
     height: 0;
-    padding-bottom: 45px;
-    border-radius: 45px;
+    padding-bottom: 35px;
+    border-radius: 35px;
     border: 0px solid #cfdcec;
     overflow: hidden;
     background: #47A9D6;
-    box-shadow: 0 0 3px gray;
     cursor: pointer;
     color: white;
   }
 
-    .round-button-circle i {
-      padding-top: 9px;
-      padding-left: 10px;
+  .round-button-circle i {
+      padding-top: 11px;
+      padding-left: 11px;
     }
 
   .text-line {
@@ -441,85 +440,9 @@
     </div>
   </div>
   <div class="row">
-    <div class="panel-group" style="padding:10px; ">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title" style="padding: 20px; ">
-            <span>Attendee</span>
-            <a id="addUser">
-              <div class="round-button-circle pull-right" style="margin-top: -16px;"><i class="fa fa-plus fa-2x"></i></div>
-            </a>
-          </h4>
-          <div id="attendeeCollapse" class="panel-collapse ">
-            <div class="input-group" style="width: 100%;">
-              <input type="text" name="q" class="form-control" style="height:44px !important" placeholder="Search for people">
-              <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat">
-                  <i class="fa fa-search"></i>
-                </button>
-              </span>
-            </div>
-            <ul class="products-list product-list-in-box">
-              <li class="item">
-                <div class="product-img">
-                  <img class="img-circle" height="50" width="50" style="margin-left: 5px;" src="@User.ToProfile().ProfileImage" alt="Product Image">
-                </div>
-                <div class="product-info">
-                  <a href="javascript:void(0)" class="product-title">
-                    @User.ToProfile().Name
-                  </a>
-                  <span class="product-description">
-                    <b>Role :</b> Organiser
-                  </span>
-                </div>
-              </li>
-              <!-- /.item -->
-              <li class="item">
-                <div class="product-img">
-                  <img class="img-circle" height="50" width="50" style="margin-left: 5px;" src="@User.ToProfile().ProfileImage" alt="Product Image">
-                </div>
-                <div class="product-info">
-                  <a href="javascript:void(0)" class="product-title">
-                    @User.ToProfile().Name
-                  </a>
-                  <span class="product-description">
-                    <b>Role :</b> Organiser
-                  </span>
-                </div>
-              </li>
-              <!-- /.item -->
-              <li class="item">
-                <div class="product-img">
-                  <img class="img-circle" height="50" width="50" style="margin-left: 5px;" src="@User.ToProfile().ProfileImage" alt="Product Image">
-                </div>
-                <div class="product-info">
-                  <a href="javascript:void(0)" class="product-title">@User.ToProfile().Name</a>
-                  <span class="product-description">
-                    <b>Role :</b> Organiser
-                  </span>
-                </div>
-              </li>
-              <!-- /.item -->
-              <li class="item">
-                <div class="product-img">
-                  <img class="img-circle" height="50" width="50" style="margin-left: 5px;" src="@User.ToProfile().ProfileImage" alt="Product Image">
-                </div>
-                <div class="product-info">
-                  <a href="javascript:void(0)" class="product-title">
-                    @User.ToProfile().Name
-                  </a>
-                  <span class="product-description">
-                    <b>Role :</b> Organiser
-                  </span>
-                </div>
-              </li>
-              <!-- /.item -->
-            </ul>
-          </div>
-        </div>
-      </div>
+    <div id="attendeesControl" class="panel-group" style="padding:10px; ">
     </div>
-    <br/>
+    <br />
     <div class="panel-group" style="padding:10px; ">
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -683,13 +606,13 @@
   <div class="row row-white left-tab top-tab">
     <div class="col-md-12">
       <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" ><a href="#objectiveTab" aria-controls="objectiveTab" role="tab" data-toggle="tab">Objective</a></li>
+        <li role="presentation"><a href="#objectiveTab" aria-controls="objectiveTab" role="tab" data-toggle="tab">Objective</a></li>
         <li role="presentation"><a href="#outcomeTab" aria-controls="outcomeTab" role="tab" data-toggle="tab">Outcome</a></li>
         <li role="presentation" class="active"><a href="#agendaTab" aria-controls="agendaTab" role="tab" data-toggle="tab">Agenda</a></li>
       </ul>
       <div class="tab-content">
         <div role="tabpanel" class="tab-pane " id="objectiveTab">
-          <br/>
+          <br />
           <form>
             <textarea id="purposeText" class="textarea" placeholder="Write the purpose for your meeting." style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
           </form>
@@ -724,11 +647,8 @@
           </div>
         </div>
       </div>
-
     </div>
-
-   
-    </div>
+  </div>
 </div>
 <div class="col-sm-1 hide">
   <div id="btnAddAgenda" class="round-button-circle" style="margin-top: -35px; margin-left:-160px;"><i class="fa fa-plus fa-2x"></i></div>
@@ -790,10 +710,13 @@
     $("#purposeText").wysihtml5();
     $("#outcomeText").wysihtml5();
     $("#agendaText").wysihtml5();
+
     $('#attendees_agendaItem').select2({
       data: availibleAttendees,
       width: '100%'
     });
+
+
     var x = document.getElementById("demo");
     function getLocation() {
       if (navigator.geolocation) {
@@ -808,6 +731,8 @@
     }
     $("#btnAddAgenda").click(function () { _CreateAgendaItem(); });
     if (meeting.MeetingAgendaCollection.length < 1) { _CreateAgendaItem(); }
+
+    $('#attendeesControl').load('/Meeting/AttendeesControl');
   });
 
   function _CreateAgendaItem() {
@@ -827,7 +752,7 @@
 
     $('#agendaListControl').append('<li>' + _getAgenda(controlName, _getAgendaAttachments()) + '</li>');
     $("#" + controlName).wysihtml5();
-    
+
     console.log(meeting);
   };
 

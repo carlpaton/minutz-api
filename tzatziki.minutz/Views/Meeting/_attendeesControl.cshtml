@@ -1,0 +1,59 @@
+<div class="panel panel-default">
+  <div class="panel-body" style="background-color: darkgrey;">
+    <i class="fa fa-user fa-2x" style="color:white;" aria-hidden="true"></i>
+    <span style="font-size:25px; font-weight:bold; padding:5px; color:white;">Attendees</span>
+    <span id="totalAttenddesIcon" class="label label-info" >4</span>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-body" >
+    <div class="row">
+      <div class="col-md-10">
+        <div class="input-group" data-toggle="tooltip" title="The location of the meeting i.e. meeting room name or address.">
+          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-user"></i></span>
+          <select id="attendees" class="form-control js-example-data-array" style="width: 150px;"></select>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div id="btnAddAttendee" class="round-button-circle pull-right"><i class="fa fa-plus"></i></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="attendeeCollapse" class="panel-collapse ">
+  <ul id="attendeeList" class="products-list product-list-in-box"></ul>
+</div>
+<script type="text/javascript">
+  var img = "https://lh3.googleusercontent.com/-Me7IFI2HKzM/AAAAAAAAAAI/AAAAAAAARwo/Gc40a_hpsSI/photo.jpg";
+  $(function () { 
+    $('#attendees').select2({
+      data: availibleAttendees,
+      width: '100%'
+    });
+
+    $("#btnAddAttendee").click(function ()
+    {
+      var user = { ProfileImage: img, Name: "Lee-Roy Ashworth", Role: "Attendee" };
+      console.log(user);
+
+      $("#attendeeList").append(createUserListItem(user));
+      //add user to meeting object
+    });
+
+    function createUserListItem(user)
+    {
+      return '<li class="item">'
+        + '<div class="product-img">'
+        + '<img class="img-circle" height="50" width="50" style="margin-left: 5px;" src="'+ user.ProfileImage +'" alt="Product Image">'
+        + '</div>'
+        + '<div class="product-info">'
+        + '<a href="javascript:void(0)" class="product-title">' + user.Name
+        + '</a>'
+        + '<span class="product-description">'
+        + '<b>Role :</b>' + user.Role
+        + '</span>'
+        + '</div>'
+        + '</li>';
+     };
+  });
+</script>

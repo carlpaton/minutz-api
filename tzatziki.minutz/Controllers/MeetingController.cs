@@ -47,6 +47,12 @@ namespace tzatziki.minutz.Controllers
       return Json(meeting);
     }
 
+    public ActionResult AttendeesControl()
+    {
+      var model = new Test { Me = "Hello Model" };
+      return PartialView("~/Views/Meeting/_attendeesControl.cshtml", model);
+    }
+
     [HttpPost]
     public async Task<JsonResult> FileUpload()
     {
