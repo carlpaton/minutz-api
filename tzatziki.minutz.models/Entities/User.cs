@@ -17,5 +17,7 @@
     public string Role { get; set; }
 
     public bool Active { get; set; }
+
+    public string Image { get; set; }
   }
 }

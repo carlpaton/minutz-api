@@ -18,7 +18,7 @@
     margin-top: 10px;
   }
   .select2-container {
-    
+
   }
     .nav-tabs > li > a {
     margin-right: 2px;
@@ -664,7 +664,7 @@
 
 <script type="text/javascript">
   var MinutzTitle = "Minutz : Meeting Creator";
-  var availibleAttendees = [{ id: 0, text: 'Lee-Roy' }, { id: 1, text: 'Mauro' }, { id: 2, text: 'Russell' }];
+  //var availibleAttendees = [{ id: 0, text: 'Lee-Roy' }, { id: 1, text: 'Mauro' }, { id: 2, text: 'Russell' }];
   var meeting = {
     Id: 0,
     Name: "",
@@ -678,7 +678,7 @@
     IsFormal: false,
     TimeZone: "",
     Tag: [],
-    MeetingAttendeeCollection: {},
+    MeetingAttendeeCollection: [],
     Purpose: "",
     Outcome: "",
     MeetingAgendaCollection: [],
@@ -711,11 +711,7 @@
     $("#outcomeText").wysihtml5();
     $("#agendaText").wysihtml5();
 
-    $('#attendees_agendaItem').select2({
-      data: availibleAttendees,
-      width: '100%'
-    });
-
+   
 
     var x = document.getElementById("demo");
     function getLocation() {
@@ -729,10 +725,17 @@
       x.innerHTML = "Latitude: " + position.coords.latitude +
         "<br>Longitude: " + position.coords.longitude;
     }
+
     $("#btnAddAgenda").click(function () { _CreateAgendaItem(); });
     if (meeting.MeetingAgendaCollection.length < 1) { _CreateAgendaItem(); }
 
-    $('#attendeesControl').load('/Meeting/AttendeesControl');
+    $('#attendeesControl').load('/Meeting/AttendeesControl', 1, function (responseText, textStatus, jqXHR)
+    {
+      $('#attendees_agendaItem').select2({
+        data: availibleAttendees,
+        width: '100%'
+      });
+     });
   });
 
   function _CreateAgendaItem() {

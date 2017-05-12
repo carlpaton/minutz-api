@@ -1,59 +1,120 @@
+@model List<tzatziki.minutz.models.Entities.User>
+
 <div class="panel panel-default">
-  <div class="panel-body" style="background-color: darkgrey;">
-    <i class="fa fa-user fa-2x" style="color:white;" aria-hidden="true"></i>
-    <span style="font-size:25px; font-weight:bold; padding:5px; color:white;">Attendees</span>
-    <span id="totalAttenddesIcon" class="label label-info" >4</span>
-  </div>
+  <a data-toggle="collapse" data-target=".attendeeControl" style="cursor: pointer;">
+    <div class="panel-body" style="background-color: darkgrey;">
+      <i class="fa fa-user fa-2x" style="color:white;" aria-hidden="true"></i>
+      <span style="font-size:25px; font-weight:bold; padding:5px; color:white;">Attendees</span>
+      <span id="totalAttenddesIcon" class="label label-info"></span>
+    </div>
+  </a>
 </div>
-<div class="panel panel-default">
-  <div class="panel-body" >
-    <div class="row">
-      <div class="col-md-10">
-        <div class="input-group" data-toggle="tooltip" title="The location of the meeting i.e. meeting room name or address.">
-          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-user"></i></span>
-          <select id="attendees" class="form-control js-example-data-array" style="width: 150px;"></select>
+<div class="panel panel-default attendeeControl">
+  <div class="panel-body">
+      <div class="row">
+        <div class="col-md-10">
+          <div class="input-group" data-toggle="tooltip" title="Add or remove attendees to your meeting.">
+            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-user"></i></span>
+            <select id="attendees" class="form-control js-example-data-array" style="width: 150px;"></select>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div id="btnAddAttendee" class="round-button-circle pull-right"><i class="fa fa-plus"></i></div>
         </div>
       </div>
-      <div class="col-md-2">
-        <div id="btnAddAttendee" class="round-button-circle pull-right"><i class="fa fa-plus"></i></div>
-      </div>
-    </div>
   </div>
 </div>
-<div id="attendeeCollapse" class="panel-collapse ">
+<div id="attendeeCollapse" class="attendeeControl" >
   <ul id="attendeeList" class="products-list product-list-in-box"></ul>
 </div>
 <script type="text/javascript">
   var img = "https://lh3.googleusercontent.com/-Me7IFI2HKzM/AAAAAAAAAAI/AAAAAAAARwo/Gc40a_hpsSI/photo.jpg";
-  $(function () { 
+
+  var availibleAttendees = [];
+
+  function deleteAttendee(id)
+  {
+    for (var q = 0; q < meeting.MeetingAttendeeCollection.length; q++) {
+      var check = meeting.MeetingAttendeeCollection[q];
+      if (check.id == id) {
+        var index = meeting.MeetingAttendeeCollection.indexOf(q);
+        meeting.MeetingAttendeeCollection.splice(index, 1);
+        $("#" + check.id).remove();
+      }
+    }
+    $("#totalAttenddesIcon").text(meeting.MeetingAttendeeCollection.length);
+  };
+
+  $(function () {
+    var meetingId = 0;
     $('#attendees').select2({
-      data: availibleAttendees,
+      ajax: {
+        url: "/Meeting/Attendees?meetingId=" + meetingId,
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+          return {
+            q: params.term, // search term
+            page: params.page
+          };
+        },
+        processResults: function (data) {
+          availibleAttendees = [];
+          availibleAttendees = data;
+          var newData = [];
+          for (var i = 0; i < data.length; i++) {
+            newData.push({ id: data[i].identity, text: data[i].fullName });
+          }
+
+          return {
+            results: newData
+          };
+        },
+        cache: true
+      },
       width: '100%'
     });
 
-    $("#btnAddAttendee").click(function ()
-    {
-      var user = { ProfileImage: img, Name: "Lee-Roy Ashworth", Role: "Attendee" };
-      console.log(user);
+    $("#btnAddAttendee").click(function () {
 
-      $("#attendeeList").append(createUserListItem(user));
+      var identity = $("#attendees").select2('data')[0].id;
+      for (var i = 0; i < availibleAttendees.length; i++) {
+        if (availibleAttendees[i].identity == identity) {
+          var x = availibleAttendees[i];
+
+          var user = { active: x.active, email: x.email, firstName: x.firstName, fullName: x.fullName, id: x.id, identity: x.identity, image: x.image, lastName: x.lastName, role: x.role };
+          for (var q = 0; q < meeting.MeetingAttendeeCollection.length; q++) {
+            var check = meeting.MeetingAttendeeCollection[q];
+            if (check.identity == x.identity) {
+              var index = meeting.MeetingAttendeeCollection.indexOf(q);
+              meeting.MeetingAttendeeCollection.splice(index, 1);
+              $("#" + check.id).remove();
+            }
+          }
+          meeting.MeetingAttendeeCollection.push(user);
+          $("#attendeeList").append(createUserListItem(user));
+          $("#totalAttenddesIcon").text(meeting.MeetingAttendeeCollection.length);
+        }
+
+      }
+
       //add user to meeting object
     });
 
-    function createUserListItem(user)
-    {
-      return '<li class="item">'
+    function createUserListItem(user) {
+      return '<li id="' + user.id + '" class="item">'
         + '<div class="product-img">'
-        + '<img class="img-circle" height="50" width="50" style="margin-left: 5px;" src="'+ user.ProfileImage +'" alt="Product Image">'
+        + '<img class="img-circle" height="50" width="50" style="margin-left: 5px;" src="' + user.image + '" alt="Product Image">'
         + '</div>'
         + '<div class="product-info">'
-        + '<a href="javascript:void(0)" class="product-title">' + user.Name
+        + '<a href="javascript:void(0)" class="product-title">' + user.fullName
         + '</a>'
         + '<span class="product-description">'
-        + '<b>Role :</b>' + user.Role
+        + '<b>Role :</b>' + user.role
         + '</span>'
+        +'<i class="fa fa-trash fa-2x pull-right" style="margin-top: -30px; margin-right: 10px; cursor: pointer;color: grey; " aria-hidden="true" onclick="deleteAttendee('+ user.id+')" ></i>'
         + '</div>'
         + '</li>';
-     };
+    };
   });
 </script>
