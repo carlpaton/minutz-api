@@ -629,7 +629,7 @@
 
     $('#toggle-formal').bootstrapToggle({
       on: 'Formal',
-      off: 'Non formal'
+      off: 'Informal'
     });
 
     $("#repeatType li a").click(function () {
@@ -666,8 +666,8 @@
         "<br>Longitude: " + position.coords.longitude;
     }
 
-    $("#btnAddAgenda").click(function () { _CreateAgendaItem(); });
-    if (meeting.MeetingAgendaCollection.length < 1) { _CreateAgendaItem(); }
+    //$("#btnAddAgenda").click(function () { _CreateAgendaItem(); });
+    //if (meeting.MeetingAgendaCollection.length < 1) { _CreateAgendaItem(); }
 
     $('#attendeesControl').load('/Meeting/AttendeesControl?meetingId=' + 1, 1, function (responseText, textStatus, jqXHR) {
       var meetingId = 1;
@@ -710,14 +710,10 @@
     });
   });
 
-  function _CreateAgendaItem() {
+  meeting.CreateAgendaItem = function() {
     var id = meeting.MeetingAgendaCollection.length;
-    var controlName = "agenda" + id;
-    meeting.MeetingAgendaCollection.push(MeetingAgendaItem(id, 'refId', 'agendaText', 'meetingattendeeId', 'createdDate', false));
-
-    $('#agendaListControl').append('<li>' + _getAgenda(controlName, _getAgendaAttachments()) + '</li>');
-    $("#" + controlName).wysihtml5();
-    console.log(meeting);
+    meeting.MeetingAgendaCollection.push(MeetingAgendaItem(id, 'refId', $("#txtAgendaTitle").val(), $("#agendaText").val(), 'meetingattendeeId', 'createdDate', false));
+    return id;
   };
 
   function _CreateAgendaItem(data) {
@@ -819,8 +815,8 @@
     return html;
   };
 
-  function MeetingAgendaItem(id, referanceId, agendaText, meetingAttendeeId, createdDate, isComplete) {
-    return { Id: id, ReferanceId: referanceId, AgendaText: agendaText, MeetingAttendeeId: meetingAttendeeId, CreatedDate: createdDate, IsComplete: isComplete };
+  function MeetingAgendaItem(id, referanceId, agendaHeading ,agendaText, meetingAttendeeId, createdDate, isComplete) {
+    return { Id: id, ReferanceId: referanceId, AgendaHeading: agendaHeading,AgendaText: agendaText, MeetingAttendeeId: meetingAttendeeId, CreatedDate: createdDate, IsComplete: isComplete };
   };
 
   function _updateAgendaTextToModel() {

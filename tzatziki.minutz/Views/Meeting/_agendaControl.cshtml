@@ -1,3 +1,8 @@
+<style >
+  .highlighted {
+
+  }
+</style>
 <div class="panel panel-default">
   <a data-toggle="collapse" data-target=".agendaControl" style="cursor: pointer;">
     <div class="panel-body" style="background-color: darkgrey;">
@@ -22,21 +27,18 @@
     </div>
   </div>
 </div>
-<ul class="products-list product-list-in-box collapse agendaControl">
-  <li class="item">
-    <div class="row">
-      <div class="col-md-9">
-         <span style="padding-left:10px;"> Agenda topic</span>
-      </div>
-      <div class="col-md-3">
-        <div class="input-group bootstrap-timepicker timepicker">
-          <input id="agendaItemTime" type="text" class="form-control input-small">
-        </div>
-      </div>
-    </div>
-  </li>
+<ul id="agendaItems" class="products-list product-list-in-box collapse agendaControl">
 </ul>
 <script type="text/javascript">
+
+  meeting.deleteAgendaQuickItem = function(id){
+    console.log('delete_' + id);
+  };
+
+  meeting.updateAgendaTextControl = function(text) {
+    $("#txtAgendaTitleQuick").val(text);
+  };
+
   $(function ()
   {
     $("#agendaItemTime").durationPicker({
@@ -45,19 +47,47 @@
       showDays: false,
     });
 
-
     $("#btnAddAgendaItem").click(function ()
     {
-
+      var id = meeting.CreateAgendaItem();
+      var html = _getAgendaItemHtml($("#txtAgendaTitleQuick").val(), id);
+      $("#agendaItems").append(html);
+      $("#txtAgendaTitleQuick").val('');
+      $('#timer_' + id).durationPicker({
+        lang: 'en',
+        showSeconds: false,
+        showDays: false,
+      });
+      console.log(meeting);
     });
 
-    meeting.updateAgendaTextControl = function updateAgendaTextControl(text) {
-      $("#txtAgendaTitleQuick").val(text);
-    };
 
     $("#txtAgendaTitleQuick").on('change keydown paste input', function () {
       meeting.updateAgendaText($("#txtAgendaTitleQuick").val());
       console.log('boo');
     });
   });
+
+  meeting.agendaSelect = function (id)
+  {
+    $("li").each(function (index) {
+      console.log(index + ": " + $(this).text());
+    });
+    console.log(id);
+  };
+
+  function _getAgendaItemHtml(title, id) {
+    return '<li id="_' + id + '" class="item">'
+      + '<div class="row" style="cursor: pointer;" >'
+      + '<div class="col-md-7" onclick="meeting.agendaSelect(' + id + ')"  >'
+      + '<div style="padding-left:10px; text-overflow: ellipsis;  overflow: hidden; white-space: nowrap;">' + title+'</div>' 
+      + '</div>'
+      + '<div class="col-md-3">'
+      + '<div class="input-group bootstrap-timepicker timepicker" style="margin-top: -10px;">'
+      + '<input id="timer_' + id + '" type="text" class="form-control input-small">'
+      + '</div>'
+      + '</div>'
+      + '<div class="col-md-1"><i class="fa fa-trash fa-2x pull-right" style=" cursor: pointer;color: grey; " aria-hidden="true" onclick="meeting.deleteAgendaQuickItem(' + id +')" ></i></div>'
+    '</div></li>';
+  };
 </script>
