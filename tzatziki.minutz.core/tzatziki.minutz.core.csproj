@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -13,5 +13,4 @@
     <ProjectReference Include="..\tzatziki.minutz.interfaces\tzatziki.minutz.interfaces.csproj" />
     <ProjectReference Include="..\tzatziki.minutz.models\tzatziki.minutz.models.csproj" />
   </ItemGroup>
-
 </Project>

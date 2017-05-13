@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -54,5 +54,4 @@
     <ProjectReference Include="..\tzatziki.minutz.models\tzatziki.minutz.models.csproj" />
     <ProjectReference Include="..\tzatziki.minutz.sqlrepository\tzatziki.minutz.sqlrepository.csproj" />
   </ItemGroup>
-
 </Project>
