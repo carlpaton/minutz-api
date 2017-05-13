@@ -53,6 +53,16 @@ namespace tzatziki.minutz.Controllers
       return PartialView("~/Views/Meeting/_attendeesControl.cshtml", model);
     }
 
+    public ActionResult AgendaControl(int meetingId)
+    {
+      return PartialView("~/Views/Meeting/_agendaControl.cshtml");
+    }
+
+    public ActionResult AttachmentsControl(int meetingId)
+    {
+      return PartialView("~/Views/Meeting/_attachmentsControl.cshtml");
+    }
+
     [HttpGet]
     public JsonResult Attendees(int meetingId)
     {

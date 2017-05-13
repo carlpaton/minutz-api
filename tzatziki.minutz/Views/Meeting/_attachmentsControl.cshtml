@@ -1,0 +1,39 @@
+<div class="panel panel-default">
+  <a data-toggle="collapse" data-target=".fileControl" style="cursor: pointer;">
+    <div class="panel-body" style="background-color: darkgrey;">
+      <i class="fa fa-paperclip fa-2x icon-border" aria-hidden="true"></i>
+      <span style="font-size:20px; font-weight:bold; padding:5px; color:white;">Attachments</span>
+      <span id="totalAgendaTopicsIcon" class="label label-info"></span>
+    </div>
+  </a>
+</div>
+<div class="panel panel-default collapse fileControl">
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-10">
+        <div class="input-group" data-toggle="tooltip" title="Give your agenda item a title.">
+          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-paperclip"></i></span>
+          <input id="txtAgendaTitleQuick" type="file" />
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div id="btnAddAttendee" class="round-button-circle pull-right"><i class="fa fa-plus"></i></div>
+      </div>
+    </div>
+  </div>
+</div>
+<ul class="products-list product-list-in-box collapse fileControl">
+  <li class="item">
+    <div class="product-img">
+      <i class="fa fa-file-o fa-2x" style="padding-left: 10px;" aria-hidden="true"></i>
+    </div>
+    <div class="product-info">
+      <a href="javascript:void(0)" class="product-title">
+        FileName.pdf
+      </a>
+      <span class="product-description">
+        Linked to Agenda
+      </span>
+    </div>
+  </li>
+</ul>

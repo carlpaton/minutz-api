@@ -4,6 +4,22 @@
 }
 <link rel="stylesheet" href="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 <style>
+  .main-footer {
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    z-index: 999;
+  } 
+  .icon-border {
+    border: 1px solid white;
+    padding: 12px;
+    border-radius: 100px;
+    background-color: white;
+    color: black;
+    font-size: 24px;
+  }
+
   .border {
     border: solid 1px #D2D6DE;
   }
@@ -397,30 +413,113 @@
 @*This is invations row*@
 <div class="row row-item row-grey">
   <div class="container-fluid">
-    <div class="col-lg-7">
+    <div class="col-md-6">
       <div class="col-md-3">
         <a class="btn btn-info"><i class="fa fa-paper-plane-o"></i><span style="padding-left:5px;">Send Invatations</span></a>
       </div>
       <div class="col-md-3">
         <a class="btn " style="background-color:white; color:black;">
-          <i class="fa fa-eye"></i>
-          <span>Preview Invite</span>
+          <i class="fa fa-print"></i>
+          <span>Print</span>
         </a>
       </div>
     </div>
-    <div class="col-sm-2 hide">
-      <div class="checkbox" data-toggle="tooltip" title="Set if this is a private meeting. ">
-        <label style="pointer-events: auto; padding-left: 0px; top: -2px; ">
-          <input id="cbIsPrivate" type="checkbox" style="margin-left: -70px;">Private Meeting
-        </label>
+    <div class="col-md-4">
+      <div class="input-group bootstrap-timepicker timepicker" data-toggle="tooltip" title="How often will the meeting be held?">
+        <span class="input-group-addon"><i class="fa fa-globe"></i></span>
+        <div class="btn-group" style="width: 100%;">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="width: 100%;" aria-haspopup="true" aria-expanded="false">
+            <span id="repeatTypeText" style="padding-left:5px; padding-right:5px;"> Set Timezone  </span> <span class="caret"></span>
+          </button>
+          <ul id="repeatType" class="dropdown-menu products-list product-list-in-box">
+            <li class="item" style="text-align: center;" timeZoneId="1" gmtAdjustment="GMT-12:00" useDaylightTime="0" value="-12">(GMT-12:00) International Date Line West</li>
+            <li class="item" style="text-align: center;" timeZoneId="2" gmtAdjustment="GMT-11:00" useDaylightTime="0" value="-11">(GMT-11:00) Midway Island, Samoa</li>
+            <li class="item" style="text-align: center;" timeZoneId="3" gmtAdjustment="GMT-10:00" useDaylightTime="0" value="-10">(GMT-10:00) Hawaii</li>
+            <li class="item" style="text-align: center;" timeZoneId="4" gmtAdjustment="GMT-09:00" useDaylightTime="1" value="-9">(GMT-09:00) Alaska</li>
+            <li class="item" style="text-align: center;" timeZoneId="5" gmtAdjustment="GMT-08:00" useDaylightTime="1" value="-8">(GMT-08:00) Pacific Time (US & Canada)</li>
+            <li class="item" style="text-align: center;" timeZoneId="6" gmtAdjustment="GMT-08:00" useDaylightTime="1" value="-8">(GMT-08:00) Tijuana, Baja California</li>
+            <li class="item" style="text-align: center;" timeZoneId="7" gmtAdjustment="GMT-07:00" useDaylightTime="0" value="-7">(GMT-07:00) Arizona</li>
+            <li class="item" style="text-align: center;" timeZoneId="8" gmtAdjustment="GMT-07:00" useDaylightTime="1" value="-7">(GMT-07:00) Chihuahua, La Paz, Mazatlan</li>
+            <li class="item" style="text-align: center;" timeZoneId="9" gmtAdjustment="GMT-07:00" useDaylightTime="1" value="-7">(GMT-07:00) Mountain Time (US & Canada)</li>
+            <li class="item" style="text-align: center;" timeZoneId="10" gmtAdjustment="GMT-06:00" useDaylightTime="0" value="-6">(GMT-06:00) Central America</li>
+            <li class="item" style="text-align: center;" timeZoneId="11" gmtAdjustment="GMT-06:00" useDaylightTime="1" value="-6">(GMT-06:00) Central Time (US & Canada)</li>
+            <li class="item" style="text-align: center;" timeZoneId="12" gmtAdjustment="GMT-06:00" useDaylightTime="1" value="-6">(GMT-06:00) Guadalajara, Mexico City, Monterrey</liclass="item">
+            <li class="item" style="text-align: center;"  timeZoneId="13" gmtAdjustment="GMT-06:00" useDaylightTime="0" value="-6">(GMT-06:00) Saskatchewan</li>
+            <li class="item" style="text-align: center;"  timeZoneId="14" gmtAdjustment="GMT-05:00" useDaylightTime="0" value="-5">(GMT-05:00) Bogota, Lima, Quito, Rio Branco</li>
+            <li class="item" style="text-align: center;"  timeZoneId="15" gmtAdjustment="GMT-05:00" useDaylightTime="1" value="-5">(GMT-05:00) Eastern Time (US & Canada)</li>
+            <li class="item" style="text-align: center;"  class="item" style="text-align: center;"  timeZoneId="16" gmtAdjustment="GMT-05:00" useDaylightTime="1" value="-5">(GMT-05:00) Indiana (East)</li>
+            <li class="item" style="text-align: center;"  timeZoneId="17" gmtAdjustment="GMT-04:00" useDaylightTime="1" value="-4">(GMT-04:00) Atlantic Time (Canada)</li>
+            <li  class="item" style="text-align: center;"  timeZoneId="18" gmtAdjustment="GMT-04:00" useDaylightTime="0" value="-4">(GMT-04:00) Caracas, La Paz</li>
+            <li class="item" style="text-align: center;"  timeZoneId="19" gmtAdjustment="GMT-04:00" useDaylightTime="0" value="-4">(GMT-04:00) Manaus</li>
+            <li class="item" style="text-align: center;"  timeZoneId="20" gmtAdjustment="GMT-04:00" useDaylightTime="1" value="-4">(GMT-04:00) Santiago</li>
+            <li class="item" style="text-align: center;"  timeZoneId="21" gmtAdjustment="GMT-03:30" useDaylightTime="1" value="-3.5">(GMT-03:30) Newfoundland</li>
+            <li class="item" style="text-align: center;"  timeZoneId="22" gmtAdjustment="GMT-03:00" useDaylightTime="1" value="-3">(GMT-03:00) Brasilia</li>
+            <li class="item" style="text-align: center;"  timeZoneId="23" gmtAdjustment="GMT-03:00" useDaylightTime="0" value="-3">(GMT-03:00) Buenos Aires, Georgetown</li>
+            <li class="item" style="text-align: center;"  timeZoneId="24" gmtAdjustment="GMT-03:00" useDaylightTime="1" value="-3">(GMT-03:00) Greenland</li>
+            <li class="item" style="text-align: center;"  timeZoneId="25" gmtAdjustment="GMT-03:00" useDaylightTime="1" value="-3">(GMT-03:00) Montevideo</li>
+            <li class="item" style="text-align: center;"  timeZoneId="26" gmtAdjustment="GMT-02:00" useDaylightTime="1" value="-2">(GMT-02:00) Mid-Atlantic</li>
+            <li class="item" style="text-align: center;"  timeZoneId="27" gmtAdjustment="GMT-01:00" useDaylightTime="0" value="-1">(GMT-01:00) Cape Verde Is.</li>
+            <li class="item" style="text-align: center;"  timeZoneId="28" gmtAdjustment="GMT-01:00" useDaylightTime="1" value="-1">(GMT-01:00) Azores</li>
+            <li class="item" style="text-align: center;"  timeZoneId="29" gmtAdjustment="GMT+00:00" useDaylightTime="0" value="0">(GMT+00:00) Casablanca, Monrovia, Reykjavik</li>
+            <li class="item" style="text-align: center;"  timeZoneId="30" gmtAdjustment="GMT+00:00" useDaylightTime="1" value="0">(GMT+00:00) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London</li>
+            <li class="item" style="text-align: center;"  timeZoneId="31" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna</li>
+            <li class="item" style="text-align: center;"  timeZoneId="32" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague</li>
+            <li class="item" style="text-align: center;"  timeZoneId="33" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) Brussels, Copenhagen, Madrid, Paris</li>
+            <li class="item" style="text-align: center;"  timeZoneId="34" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb</li>
+            <li class="item" style="text-align: center;"  timeZoneId="35" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) West Central Africa</li>
+            <li class="item" style="text-align: center;"  timeZoneId="36" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Amman</li>
+            <li class="item" style="text-align: center;"  timeZoneId="37" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Athens, Bucharest, Istanbul</li>
+            <li class="item" style="text-align: center;"  timeZoneId="38" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Beirut</li>
+            <li class="item" style="text-align: center;"  timeZoneId="39" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Cairo</li>
+            <li class="item" style="text-align: center;"  timeZoneId="40" gmtAdjustment="GMT+02:00" useDaylightTime="0" value="2">(GMT+02:00) Harare, Pretoria</li>
+            <li class="item" style="text-align: center;"  timeZoneId="41" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius</li>
+            <li class="item" style="text-align: center;"  timeZoneId="42" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Jerusalem</li>
+            <li class="item" style="text-align: center;"  timeZoneId="43" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Minsk</li>
+            <li class="item" style="text-align: center;"  timeZoneId="44" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Windhoek</li>
+            <li class="item" style="text-align: center;"  timeZoneId="45" gmtAdjustment="GMT+03:00" useDaylightTime="0" value="3">(GMT+03:00) Kuwait, Riyadh, Baghdad</li>
+            <li class="item" style="text-align: center;"  timeZoneId="46" gmtAdjustment="GMT+03:00" useDaylightTime="1" value="3">(GMT+03:00) Moscow, St. Petersburg, Volgograd</li>
+            <li class="item" style="text-align: center;"  timeZoneId="47" gmtAdjustment="GMT+03:00" useDaylightTime="0" value="3">(GMT+03:00) Nairobi</li>
+            <li class="item" style="text-align: center;"  timeZoneId="48" gmtAdjustment="GMT+03:00" useDaylightTime="0" value="3">(GMT+03:00) Tbilisi</li>
+            <li class="item" style="text-align: center;"  timeZoneId="49" gmtAdjustment="GMT+03:30" useDaylightTime="1" value="3.5">(GMT+03:30) Tehran</li>
+            <li class="item" style="text-align: center;"  timeZoneId="50" gmtAdjustment="GMT+04:00" useDaylightTime="0" value="4">(GMT+04:00) Abu Dhabi, Muscat</li>
+            <li class="item" style="text-align: center;"  timeZoneId="51" gmtAdjustment="GMT+04:00" useDaylightTime="1" value="4">(GMT+04:00) Baku</li>
+            <li class="item" style="text-align: center;"  timeZoneId="52" gmtAdjustment="GMT+04:00" useDaylightTime="1" value="4">(GMT+04:00) Yerevan</li>
+            <li class="item" style="text-align: center;"  timeZoneId="53" gmtAdjustment="GMT+04:30" useDaylightTime="0" value="4.5">(GMT+04:30) Kabul</li>
+            <li class="item" style="text-align: center;"  timeZoneId="54" gmtAdjustment="GMT+05:00" useDaylightTime="1" value="5">(GMT+05:00) Yekaterinburg</li>
+            <li class="item" style="text-align: center;"  timeZoneId="55" gmtAdjustment="GMT+05:00" useDaylightTime="0" value="5">(GMT+05:00) Islamabad, Karachi, Tashkent</li>
+            <li class="item" style="text-align: center;"  timeZoneId="56" gmtAdjustment="GMT+05:30" useDaylightTime="0" value="5.5">(GMT+05:30) Sri Jayawardenapura</li>
+            <li class="item" style="text-align: center;"  timeZoneId="57" gmtAdjustment="GMT+05:30" useDaylightTime="0" value="5.5">(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi</li>
+            <li class="item" style="text-align: center;"  timeZoneId="58" gmtAdjustment="GMT+05:45" useDaylightTime="0" value="5.75">(GMT+05:45) Kathmandu</li>
+            <li class="item" style="text-align: center;"  timeZoneId="59" gmtAdjustment="GMT+06:00" useDaylightTime="1" value="6">(GMT+06:00) Almaty, Novosibirsk</li>
+            <li class="item" style="text-align: center;"  timeZoneId="60" gmtAdjustment="GMT+06:00" useDaylightTime="0" value="6">(GMT+06:00) Astana, Dhaka</li>
+            <li class="item" style="text-align: center;"  timeZoneId="61" gmtAdjustment="GMT+06:30" useDaylightTime="0" value="6.5">(GMT+06:30) Yangon (Rangoon)</li>
+            <li class="item" style="text-align: center;"  timeZoneId="62" gmtAdjustment="GMT+07:00" useDaylightTime="0" value="7">(GMT+07:00) Bangkok, Hanoi, Jakarta</li>
+            <li class="item" style="text-align: center;"  timeZoneId="63" gmtAdjustment="GMT+07:00" useDaylightTime="1" value="7">(GMT+07:00) Krasnoyarsk</li>
+            <li class="item" style="text-align: center;"  timeZoneId="64" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi</li>
+            <li class="item" style="text-align: center;"  timeZoneId="65" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Kuala Lumpur, Singapore</li>
+            <li class="item" style="text-align: center;"  timeZoneId="66" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Irkutsk, Ulaan Bataar</li>
+            <li class="item" style="text-align: center;"  timeZoneId="67" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Perth</li>
+            <li class="item" style="text-align: center;"  timeZoneId="68" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Taipei</li>
+            <li class="item" style="text-align: center;"  timeZoneId="69" gmtAdjustment="GMT+09:00" useDaylightTime="0" value="9">(GMT+09:00) Osaka, Sapporo, Tokyo</li>
+            <li class="item" style="text-align: center;"  timeZoneId="70" gmtAdjustment="GMT+09:00" useDaylightTime="0" value="9">(GMT+09:00) Seoul</li>
+            <li class="item" style="text-align: center;"  timeZoneId="71" gmtAdjustment="GMT+09:00" useDaylightTime="1" value="9">(GMT+09:00) Yakutsk</li>
+            <li class="item" style="text-align: center;"  timeZoneId="72" gmtAdjustment="GMT+09:30" useDaylightTime="0" value="9.5">(GMT+09:30) Adelaide</li>
+            <li class="item" style="text-align: center;"  timeZoneId="73" gmtAdjustment="GMT+09:30" useDaylightTime="0" value="9.5">(GMT+09:30) Darwin</li>
+            <li class="item" style="text-align: center;"  timeZoneId="74" gmtAdjustment="GMT+10:00" useDaylightTime="0" value="10">(GMT+10:00) Brisbane</li>
+            <li class="item" style="text-align: center;"  timeZoneId="75" gmtAdjustment="GMT+10:00" useDaylightTime="1" value="10">(GMT+10:00) Canberra, Melbourne, Sydney</li>
+            <li class="item" style="text-align: center;"  timeZoneId="76" gmtAdjustment="GMT+10:00" useDaylightTime="1" value="10">(GMT+10:00) Hobart</li>
+            <li class="item" style="text-align: center;"  timeZoneId="77" gmtAdjustment="GMT+10:00" useDaylightTime="0" value="10">(GMT+10:00) Guam, Port Moresby</li>
+            <li class="item" style="text-align: center;"  timeZoneId="78" gmtAdjustment="GMT+10:00" useDaylightTime="1" value="10">(GMT+10:00) Vladivostok</li>
+            <li class="item" style="text-align: center;"  timeZoneId="79" gmtAdjustment="GMT+11:00" useDaylightTime="1" value="11">(GMT+11:00) Magadan, Solomon Is., New Caledonia</li>
+            <li class="item" style="text-align: center;"  timeZoneId="80" gmtAdjustment="GMT+12:00" useDaylightTime="1" value="12">(GMT+12:00) Auckland, Wellington</li>
+            <li class="item" style="text-align: center;"  timeZoneId="81" gmtAdjustment="GMT+12:00" useDaylightTime="0" value="12">(GMT+12:00) Fiji, Kamchatka, Marshall Is.</li>
+            <li class="item" style="text-align: center;"  timeZoneId="82" gmtAdjustment="GMT+13:00" useDaylightTime="0" value="13">(GMT+13:00) Nuku'alofa</li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="col-md-2 ">
-      <div class="checkbox" data-toggle="tooltip" title="Set if this is a formal meeting. ">
-        <label style="pointer-events: auto; padding-left: 0px; top: -2px; ">
-          <input id="cbIsFormal" type="checkbox" style="margin-left: -70px;">Formal Meeting
-        </label>
-      </div>
+      <input  type="checkbox" id="toggle-formal">
     </div>
   </div>
 </div>
@@ -442,163 +541,9 @@
   <div class="row">
     <div id="attendeesControl" class="panel-group" style="padding:10px; ">
     </div>
-    <br />
-    <div class="panel-group" style="padding:10px; ">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title" style="padding: 20px; ">
-            <span>Agenda</span>
-            <a id="addAttachment">
-              <div class="round-button-circle pull-right" style="margin-top: -16px;"><i class="fa fa-plus fa-2x"></i></div>
-            </a>
-          </h4>
-          <div id="attendeeCollapse" class="panel-collapse ">
-            <div class="input-group">
-              <input type="text" name="q" style="height:44px !important" class="form-control" placeholder="Search attachments">
-              <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat">
-                  <i class="fa fa-search"></i>
-                </button>
-              </span>
-            </div>
-            <ul class="products-list product-list-in-box">
-              <li class="item">
-                <div class="product-img">
-                  <i class="fa fa-file-o fa-2x" style="padding-left: 10px;" aria-hidden="true"></i>
-                </div>
-                <div class="product-info">
-                  <a href="javascript:void(0)" class="product-title">
-                    FileName.pdf
-                  </a>
-                  <span class="product-description">
-                    Linked to Agenda
-                  </span>
-                </div>
-              </li>
-              <!-- /.item -->
-              <li class="item">
-                <div class="product-img">
-                  <i class="fa fa-file-o fa-2x" style="padding-left: 10px;" aria-hidden="true"></i>
-                </div>
-                <div class="product-info">
-                  <a href="javascript:void(0)" class="product-title">
-                    FileName.pdf
-                  </a>
-                  <span class="product-description">
-                    Linked to Agenda
-                  </span>
-                </div>
-              </li>
-              <!-- /.item -->
-              <li class="item">
-                <div class="product-img">
-                  <i class="fa fa-file-o fa-2x" style="padding-left: 10px;" aria-hidden="true"></i>
-                </div>
-                <div class="product-info">
-                  <a href="javascript:void(0)" class="product-title">FileName.pdf</a>
-                  <span class="product-description">
-                    Linked to Agenda
-                  </span>
-                </div>
-              </li>
-              <!-- /.item -->
-              <li class="item">
-                <div class="product-img">
-                  <i class="fa fa-file-o fa-2x" style="padding-left: 10px;" aria-hidden="true"></i>
-                </div>
-                <div class="product-info">
-                  <a href="javascript:void(0)" class="product-title">
-                    FileName.pdf
-                  </a>
-                  <span class="product-description">
-                    Linked to Agenda
-                  </span>
-                </div>
-              </li>
-              <!-- /.item -->
-            </ul>
-          </div>
-        </div>
-      </div>
+    <div id="agendaControl" class="panel-group" style="padding:10px; ">
     </div>
-    <br />
-    <div class="panel-group" style="padding:10px; ">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title" style="padding: 20px; ">
-            <span>Attachments</span>
-            <a id="addAttachment">
-              <div class="round-button-circle pull-right" style="margin-top: -16px;"><i class="fa fa-plus fa-2x"></i></div>
-            </a>
-          </h4>
-          <div id="attendeeCollapse" class="panel-collapse ">
-            <div class="input-group">
-              <input type="text" name="q" style="height:44px !important" class="form-control" placeholder="Search attachments">
-              <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat">
-                  <i class="fa fa-search"></i>
-                </button>
-              </span>
-            </div>
-            <ul class="products-list product-list-in-box">
-              <li class="item">
-                <div class="product-img">
-                  <i class="fa fa-file-o fa-2x" style="padding-left: 10px;" aria-hidden="true"></i>
-                </div>
-                <div class="product-info">
-                  <a href="javascript:void(0)" class="product-title">
-                    FileName.pdf
-                  </a>
-                  <span class="product-description">
-                    Linked to Agenda
-                  </span>
-                </div>
-              </li>
-              <!-- /.item -->
-              <li class="item">
-                <div class="product-img">
-                  <i class="fa fa-file-o fa-2x" style="padding-left: 10px;" aria-hidden="true"></i>
-                </div>
-                <div class="product-info">
-                  <a href="javascript:void(0)" class="product-title">
-                    FileName.pdf
-                  </a>
-                  <span class="product-description">
-                    Linked to Agenda
-                  </span>
-                </div>
-              </li>
-              <!-- /.item -->
-              <li class="item">
-                <div class="product-img">
-                  <i class="fa fa-file-o fa-2x" style="padding-left: 10px;" aria-hidden="true"></i>
-                </div>
-                <div class="product-info">
-                  <a href="javascript:void(0)" class="product-title">FileName.pdf</a>
-                  <span class="product-description">
-                    Linked to Agenda
-                  </span>
-                </div>
-              </li>
-              <!-- /.item -->
-              <li class="item">
-                <div class="product-img">
-                  <i class="fa fa-file-o fa-2x" style="padding-left: 10px;" aria-hidden="true"></i>
-                </div>
-                <div class="product-info">
-                  <a href="javascript:void(0)" class="product-title">
-                    FileName.pdf
-                  </a>
-                  <span class="product-description">
-                    Linked to Agenda
-                  </span>
-                </div>
-              </li>
-              <!-- /.item -->
-            </ul>
-          </div>
-        </div>
-      </div>
+    <div id="attachmentsControl" class="panel-group" style="padding:10px; ">
     </div>
   </div>
 </div>
@@ -606,9 +551,9 @@
   <div class="row row-white left-tab top-tab">
     <div class="col-md-12">
       <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation"><a href="#objectiveTab" aria-controls="objectiveTab" role="tab" data-toggle="tab">Objective</a></li>
-        <li role="presentation"><a href="#outcomeTab" aria-controls="outcomeTab" role="tab" data-toggle="tab">Outcome</a></li>
-        <li role="presentation" class="active"><a href="#agendaTab" aria-controls="agendaTab" role="tab" data-toggle="tab">Agenda</a></li>
+        <li role="presentation"><a href="#objectiveTab" aria-controls="objectiveTab" role="tab" data-toggle="tab"><i class="fa fa-globe"></i> Objective</a></li>
+        <li role="presentation"><a href="#outcomeTab" aria-controls="outcomeTab" role="tab" data-toggle="tab"><i class="fa fa-globe"></i> Outcome</a></li>
+        <li role="presentation" class="active"><a href="#agendaTab" aria-controls="agendaTab" role="tab" data-toggle="tab"><i class="fa fa-pencil"></i> Agenda</a></li>
       </ul>
       <div class="tab-content">
         <div role="tabpanel" class="tab-pane " id="objectiveTab">
@@ -690,6 +635,11 @@
   $(function () {
     _initPickers();
 
+    $('#toggle-formal').bootstrapToggle({
+      on: 'Formal',
+      off: 'Non formal'
+    });
+
     $("#repeatType li a").click(function () {
 
       $("#repeatTypeText").text($(this).text());
@@ -711,8 +661,6 @@
     $("#outcomeText").wysihtml5();
     $("#agendaText").wysihtml5();
 
-   
-
     var x = document.getElementById("demo");
     function getLocation() {
       if (navigator.geolocation) {
@@ -729,13 +677,45 @@
     $("#btnAddAgenda").click(function () { _CreateAgendaItem(); });
     if (meeting.MeetingAgendaCollection.length < 1) { _CreateAgendaItem(); }
 
-    $('#attendeesControl').load('/Meeting/AttendeesControl', 1, function (responseText, textStatus, jqXHR)
-    {
+    $('#attendeesControl').load('/Meeting/AttendeesControl?meetingId=' + 1, 1, function (responseText, textStatus, jqXHR) {
+      var meetingId = 1;
       $('#attendees_agendaItem').select2({
-        data: availibleAttendees,
+        placeholder: "Assign to attendee",
+        ajax: {
+          url: "/Meeting/Attendees?meetingId=" + meetingId,
+          dataType: 'json',
+          delay: 250,
+          data: function (params) {
+            return {
+              q: params.term, // search term
+              page: params.page
+            };
+          },
+          processResults: function (data) {
+            availibleAttendees = [];
+            availibleAttendees = data;
+            var newData = [];
+            for (var i = 0; i < data.length; i++) {
+              newData.push({ id: data[i].identity, text: data[i].fullName });
+            }
+
+            return {
+              results: newData
+            };
+          },
+          cache: true
+        },
         width: '100%'
       });
-     });
+    });
+
+    $('#agendaControl').load('/Meeting/AgendaControl?meetingId='+1, 1, function (responseText, textStatus, jqXHR) {
+
+    });
+
+    $('#attachmentsControl').load('/Meeting/AttachmentsControl?meetingId=' + 1, 1, function (responseText, textStatus, jqXHR) {
+
+    });
   });
 
   function _CreateAgendaItem() {

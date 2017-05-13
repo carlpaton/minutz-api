@@ -1,0 +1,56 @@
+<div class="panel panel-default">
+  <a data-toggle="collapse" data-target=".agendaControl" style="cursor: pointer;">
+    <div class="panel-body" style="background-color: darkgrey;">
+      <i class="fa fa-bars fa-2x icon-border"  aria-hidden="true"></i>
+      <span style="font-size:20px; font-weight:bold; padding:5px; color:white;">Agenda Topics</span>
+      <span id="totalAgendaTopicsIcon" class="label label-info"></span>
+    </div>
+  </a>
+</div>
+<div class="panel panel-default collapse agendaControl">
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-10">
+        <div class="input-group" data-toggle="tooltip" title="Give your agenda item a title.">
+          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-pencil"></i></span>
+          <input id="txtAgendaTitleQuick" type="text"/>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div id="btnAddAgendaItem" class="round-button-circle pull-right"><i class="fa fa-plus"></i></div>
+      </div>
+    </div>
+  </div>
+</div>
+<ul class="products-list product-list-in-box collapse agendaControl">
+  <li class="item">
+    <div class="row">
+      <div class="col-md-9">
+         <span style="padding-left:10px;"> Agenda topic</span>
+      </div>
+      <div class="col-md-3">
+        <div class="input-group bootstrap-timepicker timepicker">
+          <input id="agendaItemTime" type="text" class="form-control input-small">
+        </div>
+      </div>
+    </div>
+  </li>
+</ul>
+<script type="text/javascript">
+  $(function ()
+  {
+    $("#agendaItemTime").durationPicker({
+      lang: 'en',
+      showSeconds: false,
+      showDays: false,
+    });
+
+
+    $("#btnAddAgendaItem").click(function ()
+    {
+
+    });
+
+    
+  });
+</script>
