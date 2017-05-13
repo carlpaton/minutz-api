@@ -609,31 +609,23 @@
 
 <script type="text/javascript">
   var MinutzTitle = "Minutz : Meeting Creator";
-  //var availibleAttendees = [{ id: 0, text: 'Lee-Roy' }, { id: 1, text: 'Mauro' }, { id: 2, text: 'Russell' }];
-  var meeting = {
-    Id: 0,
-    Name: "",
-    IsLocked: false,
-    Location: "",
-    Date: "",
-    Time: "",
-    Duration: "",
-    IsReacurance: false,
-    IsPrivate: false,
-    IsFormal: false,
-    TimeZone: "",
-    Tag: [],
-    MeetingAttendeeCollection: [],
-    Purpose: "",
-    Outcome: "",
-    MeetingAgendaCollection: [],
-    MeetingActionCollection: [],
-    MeetingNoteCollection: [],
-    MeetingAttachmentCollection: []
+
+  meeting.updateAgendaText = function updateAgendaText(text)
+  {
+    $("#txtAgendaTitle").val(text);
   };
+
+
+  //var availibleAttendees = [{ id: 0, text: 'Lee-Roy' }, { id: 1, text: 'Mauro' }, { id: 2, text: 'Russell' }];
+ 
 
   $(function () {
     _initPickers();
+
+    $("#txtAgendaTitle").on('change keydown paste input', function () {
+      meeting.updateAgendaTextControl($("#txtAgendaTitle").val());
+      console.log('boo');
+    });
 
     $('#toggle-formal').bootstrapToggle({
       on: 'Formal',

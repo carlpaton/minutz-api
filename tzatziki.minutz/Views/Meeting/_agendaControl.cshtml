@@ -51,6 +51,13 @@
 
     });
 
-    
+    meeting.updateAgendaTextControl = function updateAgendaTextControl(text) {
+      $("#txtAgendaTitleQuick").val(text);
+    };
+
+    $("#txtAgendaTitleQuick").on('change keydown paste input', function () {
+      meeting.updateAgendaText($("#txtAgendaTitleQuick").val());
+      console.log('boo');
+    });
   });
 </script>

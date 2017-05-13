@@ -29,6 +29,29 @@
   <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
   <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
   @Html.Raw(JavaScriptSnippet.FullScript)
+  <script type="text/javascript">
+     var meeting = {
+       Id: 0,
+       Name: "",
+       IsLocked: false,
+       Location: "",
+       Date: "",
+       Time: "",
+       Duration: "",
+       IsReacurance: false,
+       IsPrivate: false,
+       IsFormal: false,
+       TimeZone: "",
+       Tag: [],
+       MeetingAttendeeCollection: [],
+       Purpose: "",
+       Outcome: "",
+       MeetingAgendaCollection: [],
+       MeetingActionCollection: [],
+       MeetingNoteCollection: [],
+       MeetingAttachmentCollection: []
+     };
+  </script>
   <style>
     .nav > li > a:hover, .nav > li > a:focus {
        text-decoration: none;
@@ -417,7 +440,9 @@
   </div>
 
   @RenderSection("Scripts", required: false)
+ 
   <script>
+
     (function (g) {
       var h = { en: { day: "day", hour: "hour", minute: "minute", second: "second", days: "days", hours: "hours", minutes: "minutes", seconds: "seconds" }, es: { day: "d&iacute;a", hour: "hora", minute: "minuto", second: "segundo", days: "d&iacute;s", hours: "horas", minutes: "minutos", seconds: "segundos" } }; g.fn.durationPicker = function (m) {
         var a = 0, b = g.extend({}, { lang: "en", max: 59, checkRanges: !1, totalMax: 31556952E3, totalMin: 6E4, showSeconds: !1, showDays: !0 }, m); this.each(function (m, q) {
