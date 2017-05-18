@@ -33,7 +33,7 @@
   })();
 
 
-  function notifyMe(title, message, iconString) {
+  minutz.functions.notifyMe = function(title, message, iconString) {
     totalNotifications += 1;
     var theTitle = title;
     var options = {
@@ -62,12 +62,12 @@
       });
     }
     $('#menuNotificationSection').append('<li><a href="#"><i class="' + iconString + '"></i>' + message + '</a></li>');
-    updateNotificationText(totalNotifications);
+    minutz.functions.updateNotificationText(totalNotifications);
     // At last, if the user has denied notifications, and you
     // want to be respectful there is no need to bother them any more.
   };
 
-  function updateNotificationText(total)
+  minutz.functions.updateNotificationText = function(total)
   {
     $('#totalNotificationText').text("You have " + total + " notifications");
     $('#totalNotificationIcon').text(total);

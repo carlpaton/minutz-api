@@ -609,22 +609,18 @@
 
 <script type="text/javascript">
   var MinutzTitle = "Minutz : Meeting Creator";
+  minutz.properties.infoIcon = 'fa fa-info';
 
-  meeting.updateAgendaText = function updateAgendaText(text)
+  minutz.functions.updateAgendaText = function(text)
   {
     $("#txtAgendaTitle").val(text);
   };
-
-
-  //var availibleAttendees = [{ id: 0, text: 'Lee-Roy' }, { id: 1, text: 'Mauro' }, { id: 2, text: 'Russell' }];
- 
 
   $(function () {
     _initPickers();
 
     $("#txtAgendaTitle").on('change keydown paste input', function () {
-      meeting.updateAgendaTextControl($("#txtAgendaTitle").val());
-      console.log('boo');
+      minutz.functions.updateAgendaTextControl($("#txtAgendaTitle").val());
     });
 
     $('#toggle-formal').bootstrapToggle({
@@ -641,17 +637,15 @@
     });
 
     $('#meetingNameGroup input').blur(function () {
-
-      // check if the input has any value (if we've typed into it)
       if ($(this).val())
         $(this).addClass('used');
       else
         $(this).removeClass('used');
     });
 
-    $("#purposeText").wysihtml5();
-    $("#outcomeText").wysihtml5();
-    $("#agendaText").wysihtml5();
+    minutz.functions.wysihtml5('agendaText');
+    minutz.functions.wysihtml5('outcomeText');
+    minutz.functions.wysihtml5('purposeText');
 
     var x = document.getElementById("demo");
     function getLocation() {
@@ -710,8 +704,8 @@
     });
   });
 
-  meeting.CreateAgendaItem = function() {
-    var id = meeting.MeetingAgendaCollection.length;
+  minutz.functions.CreateAgendaItem = function() {
+    var id = minutz.functions.createId();
     meeting.MeetingAgendaCollection.push(MeetingAgendaItem(id, 'refId', $("#txtAgendaTitle").val(), $("#agendaText").val(), 'meetingattendeeId', 'createdDate', false));
     return id;
   };
@@ -725,36 +719,6 @@
     $("#" + controlName).wysihtml5();
 
     console.log(meeting);
-  };
-
-  function Save() {
-    _updateAgendaTextToModel();
-    _updateModel();
-
-    if (_CallSave()) {
-      notifyMe(MinutzTitle, "The updates were saved successfully.", "fa fa-info");
-
-    } else {
-      notifyMe(MinutzTitle, "Oops something went wrong.", "fa fa-info")
-    }
-    console.log('log');
-  };
-
-  function _CallSave() {
-    $.ajax({
-      type: "POST",
-      url: "Meeting/Save",
-      data: meeting,
-      success: function (data) {
-        _updateUi(data);
-      },
-      error: function (XMLHttpRequest, textStatus, errorThrown) {
-        notifyMe(MinutzTitle, textStatus + "  " + errorThrown, "fa fa-info");
-      },
-      dataType: "json"
-    });
-
-    return true;
   };
 
   function _getAgenda(controlName, att) {
@@ -894,8 +858,26 @@
   };
 
   function _initPickers() {
-    $('#txtDate').datepicker({
-      daysOfWeekDisabled: "0,6",
+    minutz.functions.datepickers('txtDate');
+    minutz.functions.timepicker('meetingTime');
+    minutz.functions.durationpicker('txtDuration');
+    minutz.functions.durationpicker('dur');
+    minutz.functions.durationpicker('agendaItemTime');
+  };
+
+  minutz.functions.wysihtml5 = function (control)
+  {
+    $('#' + control).wysihtml5();
+  };
+
+  minutz.functions.timepicker = function (control)
+  {
+    $('#' + control).timepicker();
+  };
+
+  minutz.functions.datepickers = function(control)
+  {
+    $('#' + control).datepicker({
       calendarWeeks: true,
       autoclose: true,
       todayHighlight: true,
@@ -903,27 +885,46 @@
       toggleActive: true,
       defaultViewDate: { year: 1977, month: 04, day: 25 }
     });
+  };
 
-    $('#meetingTime').timepicker();
-
-    $('#txtDuration').durationPicker({
+  minutz.functions.durationpicker = function(controlname)
+  {
+    $('#' + controlname).durationPicker({
       lang: 'en',
       showSeconds: false,
       showDays: false,
     });
+  };
 
-    $('#dur').durationPicker({
-      lang: 'en',
-      showSeconds: false,
-      showDays: false,
+  minutz.functions.save = function ()
+  {
+    _updateAgendaTextToModel();
+    _updateModel();
+
+    if (minutz.functions.saveAjax()) {
+      minutz.functions.notifyMe(MinutzTitle, "The updates were saved successfully.", "fa fa-info");
+
+    } else {
+      minutz.functions.notifyMe(MinutzTitle, "Oops something went wrong.", "fa fa-info")
+    }
+  };
+
+  minutz.functions.saveAjax = function ()
+  {
+    $.ajax({
+      type: minutz.properties.POST,
+      url: "Meeting/Save",
+      data: meeting,
+      success: function (data) {
+        _updateUi(data);
+      },
+      error: function (XMLHttpRequest, textStatus, errorThrown) {
+        minutz.functions.notifyMe(MinutzTitle, textStatus + "  " + errorThrown, minutz.properties.infoIcon);
+      },
+      dataType: minutz.properties.JSON
     });
 
-    $("#agendaItemTime").durationPicker({
-      lang: 'en',
-      showSeconds: false,
-      showDays: false,
-    });
-
+    return true;
   };
 
   function createDropZone() {
@@ -959,7 +960,7 @@
     }
   };
 
-  window.setInterval(function () { Save(); }, 60000);
+  window.setInterval(function () { minutz.functions.save(); }, 60000);
 
   //File Upload response from the server
   Dropzone.options.dropzoneForm = {

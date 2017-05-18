@@ -1,12 +1,11 @@
-<style >
+<style>
   .highlighted {
-
   }
 </style>
 <div class="panel panel-default">
   <a data-toggle="collapse" data-target=".agendaControl" style="cursor: pointer;">
     <div class="panel-body" style="background-color: darkgrey;">
-      <i class="fa fa-bars fa-2x icon-border"  aria-hidden="true"></i>
+      <i class="fa fa-bars fa-2x icon-border" aria-hidden="true"></i>
       <span style="font-size:20px; font-weight:bold; padding:5px; color:white;">Agenda Topics</span>
       <span id="totalAgendaTopicsIcon" class="label label-info"></span>
     </div>
@@ -18,7 +17,7 @@
       <div class="col-md-10">
         <div class="input-group" data-toggle="tooltip" title="Give your agenda item a title.">
           <span class="input-group-addon" id="basic-addon1"><i class="fa fa-pencil"></i></span>
-          <input id="txtAgendaTitleQuick" type="text"/>
+          <input id="txtAgendaTitleQuick" type="text" />
         </div>
       </div>
       <div class="col-md-2">
@@ -27,83 +26,82 @@
     </div>
   </div>
 </div>
-<ul id="agendaItems" class="products-list product-list-in-box collapse agendaControl">
-</ul>
+<ul id="agendaItems" class="products-list product-list-in-box collapse agendaControl"></ul>
 <script type="text/javascript">
 
-  meeting.deleteAgendaQuickItem = function (id) {
-    console.log('start');
-    for (var q = 0; q < meeting.MeetingAgendaCollection.length; q++) {
-      var check = meeting.MeetingAgendaCollection[q];
-      if (check.Id == id) {
-        var index = meeting.MeetingAgendaCollection.indexOf(q);
-        meeting.MeetingAgendaCollection.splice(index, 1);
-        $("#_" + id).remove();
-        console.log('delete');
-      }
-    }
+  minutz.functions.deleteAgendaQuickItem = function (id) {
+    var index = minutz.functions.findIndex(meeting.MeetingAgendaCollection, id);
+    meeting.MeetingAgendaCollection.splice(index, 1);
+    $("#_" + id).remove();
   };
 
-  meeting.updateAgendaTextControl = function(text) {
-    $("#txtAgendaTitleQuick").val(text);
+  minutz.functions.updateAgendaTextControl = function (text) {
+    minutz.functions.setValue('txtAgendaTitleQuick', text);
   };
 
-  $(function ()
+  minutz.functions.agendaItemAddClick = function (id)
   {
-    $("#agendaItemTime").durationPicker({
-      lang: 'en',
-      showSeconds: false,
-      showDays: false,
-    });
+    minutz.functions.addHtml('agendaItems', _getAgendaItemHtml($("#txtAgendaTitleQuick").val(), id));
+    minutz.functions.setValue('txtAgendaTitleQuick', '');
+    minutz.functions.durationpicker('timer_' + id);
+  };
 
-    $("#btnAddAgendaItem").click(function ()
+  minutz.functions.agendaClearQuickItems = function ()
+  {
+    $("#agendaItems li").each(function (index, value)
     {
-      var id = meeting.CreateAgendaItem();
-      var html = _getAgendaItemHtml($("#txtAgendaTitleQuick").val(), id);
-      $("#agendaItems").append(html);
-      $("#txtAgendaTitleQuick").val('');
-      $('#timer_' + id).durationPicker({
-        lang: 'en',
-        showSeconds: false,
-        showDays: false,
-      });
-      console.log(meeting);
+      $(value).css(minutz.properties.backgroundColor, minutz.properties.white);
     });
+  };
 
-
-    $("#txtAgendaTitleQuick").on('change keydown paste input', function () {
-      meeting.updateAgendaText($("#txtAgendaTitleQuick").val());
-      console.log('boo');
-    });
-  });
-
-  meeting.agendaSelect = function (id)
+  minutz.functions.getSelectedAgenda = function (id)
   {
+    var result;
+    minutz.functions.agendaClearQuickItems();
     $("#agendaItems li").each(function (index, value) {
-
       var baseAgendaObject = {
         id: $(value).find('div.title').attr("data-id"),
         title: $(value).find('div.title').text(),
         duration: $(value).find('input.timer').val()
       };
-      
-      console.log(baseAgendaObject);
+      if (baseAgendaObject.id == id)
+      {
+        $(value).css(minutz.properties.backgroundColor, minutz.properties.lightGrey);
+        result = baseAgendaObject;
+      }
     });
-    console.log(id);
+    return result;
+  };
+
+  minutz.functions.agendaSelect = function (id) {
+    var selected = minutz.functions.getSelectedAgenda(id);
+    console.log(selected);
   };
 
   function _getAgendaItemHtml(title, id) {
     return '<li id="_' + id + '" class="item">'
       + '<div class="row" style="cursor: pointer;" >'
-      + '<div class="col-md-7" onclick="meeting.agendaSelect(' + id + ')"  >'
-      + '<div  class="title" data-id="' + id + '" style="padding-left:10px; text-overflow: ellipsis;  overflow: hidden; white-space: nowrap;">' + title+'</div>' 
+      + '<div class="col-md-7" onclick="minutz.functions.agendaSelect(\'' + id + '\')"  >'
+      + '<div  class="title" data-id="' + id + '" style="padding-left:10px; text-overflow: ellipsis;  overflow: hidden; white-space: nowrap;">' + title + '</div>'
       + '</div>'
       + '<div class="col-md-3">'
       + '<div class="input-group bootstrap-timepicker timepicker" style="margin-top: -10px;">'
-      + '<input id="timer_'+id+'" type="text" class="form-control input-small timer">'
+      + '<input id="timer_' + id + '" type="text" class="form-control input-small timer">'
       + '</div>'
       + '</div>'
-      + '<div class="col-md-1"><i class="fa fa-trash fa-2x pull-right" style=" cursor: pointer;color: grey; " aria-hidden="true" onclick="meeting.deleteAgendaQuickItem(' + id + ')" ></i></div>'
+      + '<div class="col-md-1"><i class="fa fa-trash fa-2x pull-right" style=" cursor: pointer;color: grey; " aria-hidden="true" onclick="minutz.functions.deleteAgendaQuickItem(\'' + id + '\')" ></i></div>'
     '</div></li>';
   };
+
+  $(function () {
+    minutz.functions.durationpicker('agendaItemTime');
+
+    $("#btnAddAgendaItem").click(function () {
+      minutz.functions.agendaItemAddClick(minutz.functions.CreateAgendaItem());
+    });
+
+    $("#txtAgendaTitleQuick").on('change keydown paste input', function () {
+      minutz.functions.updateAgendaText(minutz.functions.getValue('txtAgendaTitleQuick'));
+    });
+  });
 </script>
