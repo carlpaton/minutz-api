@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='CICD|AnyCPU'" />
+
   <ItemGroup>
     <PackageReference Include="Auth0" Version="3.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="1.1.1" />
