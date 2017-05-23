@@ -28,78 +28,89 @@
   <script src="~/plugins/dropzone.js"></script>
   <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
   <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+  <!-- Bootstrap WYSIHTML5 -->
+  <script src="~/lib/wysihtml5-0.3.0.js"></script>
+  <script src="~/lib/wysihtml-advanced.js"></script>
   @Html.Raw(JavaScriptSnippet.FullScript)
-  <script type="text/javascript">  
-    minutz = {};
-    minutz.functions = {};
-    minutz.functions.getValue = function (control) { return $('#' + control).val(); };
-    minutz.functions.setValue = function (control, value) { $('#' + control).val(value); };
-    minutz.functions.addHtml = function (control, html) { $('#' + control).append(html); };
-    minutz.functions.s4 = function () { return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1); };
-    minutz.functions.createId = function ()
-    {
-      return minutz.functions.s4() + minutz.functions.s4() + '-' + minutz.functions.s4() + '-' + minutz.functions.s4() + '-' + minutz.functions.s4() + '-' + minutz.functions.s4() + minutz.functions.s4() + minutz.functions.s4();
-    };
-    minutz.functions.findIndex = function (collection, id) {
-      for (var q = 0; q < collection.length; q++) {
-        var check = collection[q];
-        if (check.Id == id) {
-          return q;
+  <script type="text/javascript">
+
+    var minutz = {
+      functions: {
+        get: {
+          value: function (control) { return $('#' + control).val(); },
+          datepicker: function (control) { return $('#' + control).datepicker().val(); },
+          text: function (control) { return $('#' + control).text(); }
+        },
+        set: {
+          value: function (control, value) { $('#' + control).val(value); },
+          text: function (control, value) { $('#' + control).text(value); }
+        },
+        getValue: function (control) { return $('#' + control).val(); },
+        setValue: function (control, value) { $('#' + control).val(value); },
+        addHtml: function (control, html) { $('#' + control).append(html); },
+        s4: function () { return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1); },
+        createId: function () {
+          return minutz.functions.s4() + minutz.functions.s4() + '-' + minutz.functions.s4() + '-' + minutz.functions.s4() + '-' + minutz.functions.s4() + '-' + minutz.functions.s4() + minutz.functions.s4() + minutz.functions.s4();
+        },
+        findIndex: function (collection, id) {
+          for (var q = 0; q < collection.length; q++) {
+            var check = collection[q];
+            if (check.Id == id) {
+              return q;
+            }
+          }
+        },
+        find: function (collection, id) {
+          for (var q = 0; q < collection.length; q++) {
+            var check = collection[q];
+            if (check.Id == id) {
+              return check;
+            }
+          }
         }
-      }
-    };
-    minutz.functions.find = function (collection, id) {
-      for (var q = 0; q < collection.length; q++) {
-        var check = collection[q];
-        if (check.Id == id) {
-          return check;
-        }
-      }
+      },
+      controls: [],
+      properties: { POST: "POST", GET: "GET", JSON: "json", lightGrey: '#F7F7F7', white: 'white', backgroundColor: 'background-color' }
     };
 
-
-    minutz.properties = {};
-    minutz.properties.POST = "POST";
-    minutz.properties.GET = "GET";
-    minutz.properties.JSON = "json";
-    minutz.properties.lightGrey = '#F7F7F7';
-    minutz.properties.white = 'white';
-    minutz.properties.backgroundColor = 'background-color';
-    
-
-     var meeting = {
-       Id: 0,
-       Name: "",
-       IsLocked: false,
-       Location: "",
-       Date: "",
-       Time: "",
-       Duration: "",
-       IsReacurance: false,
-       IsPrivate: false,
-       IsFormal: false,
-       TimeZone: "",
-       Tag: [],
-       MeetingAttendeeCollection: [],
-       Purpose: "",
-       Outcome: "",
-       MeetingAgendaCollection: [],
-       MeetingActionCollection: [],
-       MeetingNoteCollection: [],
-       MeetingAttachmentCollection: []
-     };
+    var meeting = {
+      Id: 0,
+      Name: "",
+      IsLocked: false,
+      Location: "",
+      Date: "",
+      Time: "",
+      Duration: "",
+      IsReacurance: false,
+      IsPrivate: false,
+      IsFormal: false,
+      TimeZone: "",
+      Tag: [],
+      MeetingAttendeeCollection: [],
+      Purpose: "",
+      Outcome: "",
+      MeetingAgendaCollection: [],
+      SelectedAgendaItemId: "",
+      MeetingActionCollection: [],
+      SelectedAgendaNoteId: "",
+      MeetingNoteCollection: [],
+      MeetingAttachmentCollection: [],
+      SelectedAgendaFileId: ""
+    };
   </script>
   <style>
     .nav > li > a:hover, .nav > li > a:focus {
-       text-decoration: none;
-       background-color: white;
-       color: #000000;
+      text-decoration: none;
+      background-color: white;
+      color: #000000;
     }
+
     .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
       background-color: white;
       border-color: #337ab7;
       color: #000000;
     }
+
     .skin-blue .main-header .navbar .nav > li > a:hover, .skin-blue .main-header .navbar .nav > li > a:active, .skin-blue .main-header .navbar .nav > li > a:focus, .skin-blue .main-header .navbar .nav .open > a, .skin-blue .main-header .navbar .nav .open > a:hover, .skin-blue .main-header .navbar .nav .open > a:focus, .skin-blue .main-header .navbar .nav > .active > a {
       color: #000000;
     }
@@ -477,7 +488,7 @@
   </div>
 
   @RenderSection("Scripts", required: false)
- 
+
   <script>
 
     (function (g) {

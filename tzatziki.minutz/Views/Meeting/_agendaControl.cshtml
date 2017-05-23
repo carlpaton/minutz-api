@@ -1,6 +1,6 @@
 <style>
-  .highlighted {
-  }
+  
+  
 </style>
 <div class="panel panel-default">
   <a data-toggle="collapse" data-target=".agendaControl" style="cursor: pointer;">
@@ -29,79 +29,9 @@
 <ul id="agendaItems" class="products-list product-list-in-box collapse agendaControl"></ul>
 <script type="text/javascript">
 
-  minutz.functions.deleteAgendaQuickItem = function (id) {
-    var index = minutz.functions.findIndex(meeting.MeetingAgendaCollection, id);
-    meeting.MeetingAgendaCollection.splice(index, 1);
-    $("#_" + id).remove();
-  };
-
-  minutz.functions.updateAgendaTextControl = function (text) {
-    minutz.functions.setValue('txtAgendaTitleQuick', text);
-  };
-
-  minutz.functions.agendaItemAddClick = function (id)
-  {
-    minutz.functions.addHtml('agendaItems', _getAgendaItemHtml($("#txtAgendaTitleQuick").val(), id));
-    minutz.functions.setValue('txtAgendaTitleQuick', '');
-    minutz.functions.durationpicker('timer_' + id);
-  };
-
-  minutz.functions.agendaClearQuickItems = function ()
-  {
-    $("#agendaItems li").each(function (index, value)
-    {
-      $(value).css(minutz.properties.backgroundColor, minutz.properties.white);
-    });
-  };
-
-  minutz.functions.getSelectedAgenda = function (id)
-  {
-    var result;
-    minutz.functions.agendaClearQuickItems();
-    $("#agendaItems li").each(function (index, value) {
-      var baseAgendaObject = {
-        id: $(value).find('div.title').attr("data-id"),
-        title: $(value).find('div.title').text(),
-        duration: $(value).find('input.timer').val()
-      };
-      if (baseAgendaObject.id == id)
-      {
-        $(value).css(minutz.properties.backgroundColor, minutz.properties.lightGrey);
-        result = baseAgendaObject;
-      }
-    });
-    return result;
-  };
-
-  minutz.functions.agendaSelect = function (id) {
-    var selected = minutz.functions.getSelectedAgenda(id);
-    console.log(selected);
-  };
-
-  function _getAgendaItemHtml(title, id) {
-    return '<li id="_' + id + '" class="item">'
-      + '<div class="row" style="cursor: pointer;" >'
-      + '<div class="col-md-7" onclick="minutz.functions.agendaSelect(\'' + id + '\')"  >'
-      + '<div  class="title" data-id="' + id + '" style="padding-left:10px; text-overflow: ellipsis;  overflow: hidden; white-space: nowrap;">' + title + '</div>'
-      + '</div>'
-      + '<div class="col-md-3">'
-      + '<div class="input-group bootstrap-timepicker timepicker" style="margin-top: -10px;">'
-      + '<input id="timer_' + id + '" type="text" class="form-control input-small timer">'
-      + '</div>'
-      + '</div>'
-      + '<div class="col-md-1"><i class="fa fa-trash fa-2x pull-right" style=" cursor: pointer;color: grey; " aria-hidden="true" onclick="minutz.functions.deleteAgendaQuickItem(\'' + id + '\')" ></i></div>'
-    '</div></li>';
-  };
+ 
 
   $(function () {
-    minutz.functions.durationpicker('agendaItemTime');
-
-    $("#btnAddAgendaItem").click(function () {
-      minutz.functions.agendaItemAddClick(minutz.functions.CreateAgendaItem());
-    });
-
-    $("#txtAgendaTitleQuick").on('change keydown paste input', function () {
-      minutz.functions.updateAgendaText(minutz.functions.getValue('txtAgendaTitleQuick'));
-    });
+  
   });
 </script>

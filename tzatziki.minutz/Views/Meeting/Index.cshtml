@@ -4,6 +4,228 @@
 }
 <link rel="stylesheet" href="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 <style>
+  .commands {
+    border-left: 1px solid #ddd;
+    display: inline-block;
+  }
+
+  [data-wysihtml5-command],
+  [data-wysihtml5-action],
+  .fore-color {
+    position: relative;
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #fff;
+    list-style: none;
+    font-size: 12px;
+    display: inline-block;
+    cursor: pointer;
+    height: 40px;
+    width: 68px;
+  }
+
+    [data-wysihtml5-command]:after,
+    [data-wysihtml5-action]:after,
+    .fore-color:after {
+      content: "";
+      background-image: url(../img/spr_toolbar_icons_r1.png);
+      background-repeat: no-repeat;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
+
+    [data-wysihtml5-command]:hover,
+    [data-wysihtml5-action]:hover,
+    .fore-color:hover {
+      background-image: linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
+      background-image: -o-linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
+      background-image: -moz-linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
+      background-image: -webkit-linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
+      background-image: -ms-linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
+    }
+
+  [data-wysihtml5-command="bold"]:after {
+    background-position: 24px center;
+  }
+
+  [data-wysihtml5-command="italic"]:after {
+    background-position: -48px center;
+  }
+
+  [data-wysihtml5-command="insertUnorderedList"]:after {
+    background-position: -115px center;
+  }
+
+  [data-wysihtml5-command="insertOrderedList"]:after {
+    background-position: -197px center;
+  }
+
+  [data-wysihtml5-command="formatBlock"][data-wysihtml5-command-value="h1"]:after {
+    background-position: -344px center;
+  }
+
+  [data-wysihtml5-command="formatBlock"][data-wysihtml5-command-value="h2"]:after {
+    background-position: -428px center;
+  }
+
+  [data-wysihtml5-command="createLink"]:after {
+    background-position: -271px center;
+  }
+
+  [data-wysihtml5-command="insertImage"]:after {
+    background-position: -513px center;
+  }
+
+  .fore-color:after {
+    background-position: -741px center;
+  }
+
+  [data-wysihtml5-command="insertSpeech"]:after {
+    background-position: -596px center;
+  }
+
+  [data-wysihtml5-action="change_view"]:after {
+    background-position: -670px center;
+  }
+
+  .fore-color ul {
+    display: none;
+    position: absolute;
+    z-index: 2;
+    top: 40px;
+    right: -1px;
+    left: -2px;
+    border: 1px solid #ccc;
+    border-top: 0;
+    background: #fff;
+    overflow: hidden;
+  }
+
+  .fore-color li {
+    display: block;
+    margin: 3px;
+    width: auto;
+    border: 0;
+    height: 15px;
+  }
+
+    .fore-color li:after {
+      display: none;
+    }
+
+  .fore-color:hover ul {
+    display: block;
+  }
+
+  .fore-color [data-wysihtml5-command-value="silver"] {
+    background: silver !important;
+  }
+
+
+  .fore-color [data-wysihtml5-command-value="gray"] {
+    background: gray !important;
+  }
+
+  .fore-color [data-wysihtml5-command-value="maroon"] {
+    background: maroon !important;
+  }
+
+  .fore-color [data-wysihtml5-command-value="red"] {
+    background: red !important;
+  }
+
+  .fore-color [data-wysihtml5-command-value="purple"] {
+    background: purple !important;
+  }
+
+  .fore-color [data-wysihtml5-command-value="green"] {
+    background: green !important;
+  }
+
+  .fore-color [data-wysihtml5-command-value="olive"] {
+    background: olive !important;
+  }
+
+  .fore-color [data-wysihtml5-command-value="navy"] {
+    background: navy !important;
+  }
+
+  .fore-color [data-wysihtml5-command-value="blue"] {
+    background: blue !important;
+  }
+
+  .fore-color .wysihtml5-command-active {
+    outline: 1px solid #666;
+    outline-offset: 1px;
+  }
+
+  .wysihtml5-commands-disabled .fore-color ul {
+    display: none;
+  }
+
+  .wysihtml5-action-active,
+  .wysihtml5-command-active {
+    box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.2);
+    background: #eee !important;
+  }
+
+  .wysihtml5-commands-disabled [data-wysihtml5-command],
+  .wysihtml5-commands-disabled .fore-color {
+    opacity: 0.4;
+    cursor: default;
+    background-image: none !important;
+  }
+
+  [data-wysihtml5-dialog] {
+    color: #333;
+    font-size: 14px;
+    text-align: left;
+    border-radius: 4px;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    background: #FFFBE0;
+    position: absolute;
+    width: 810px;
+    text-align: center;
+    top: 45px;
+  }
+
+    [data-wysihtml5-dialog] input {
+      color: #333;
+      border: 1px solid #ccc;
+      padding: 3px;
+      width: 300px;
+    }
+
+      [data-wysihtml5-dialog] input:focus {
+        outline: 0;
+        border: 1px solid #666;
+      }
+
+  [data-wysihtml5-dialog-action] {
+    padding: 4px;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  [data-wysihtml5-dialog-action="save"] {
+    background: #007200;
+  }
+
+  [data-wysihtml5-dialog-action="cancel"] {
+    background: #999;
+  }
+
+
+
+  .highlighted {
+  }
   .main-footer {
     bottom: 0;
     left: 0;
@@ -542,6 +764,31 @@
     <div id="attendeesControl" class="panel-group" style="padding:10px; ">
     </div>
     <div id="agendaControl" class="panel-group" style="padding:10px; ">
+      <div class="panel panel-default">
+        <a data-toggle="collapse" data-target=".agendaControl" style="cursor: pointer;">
+          <div class="panel-body" style="background-color: darkgrey;">
+            <i class="fa fa-bars fa-2x icon-border" aria-hidden="true"></i>
+            <span style="font-size:20px; font-weight:bold; padding:5px; color:white;">Agenda Topics</span>
+            <span id="totalAgendaTopicsIcon" class="label label-info"></span>
+          </div>
+        </a>
+      </div>
+      <div class="panel panel-default collapse agendaControl">
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-md-10">
+              <div class="input-group" data-toggle="tooltip" title="Give your agenda item a title.">
+                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-pencil"></i></span>
+                <input id="txtAgendaTitleQuick" type="text" />
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div id="btnAddAgendaItem" class="round-button-circle pull-right"><i class="fa fa-plus"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ul id="agendaItems" class="products-list product-list-in-box collapse agendaControl"></ul>
     </div>
     <div id="attachmentsControl" class="panel-group" style="padding:10px; ">
     </div>
@@ -571,7 +818,7 @@
         <div role="tabpanel" class="tab-pane active" id="agendaTab">
           <br />
           <div class="row left-tab">
-            <div class="col-md-2 gridHeader">
+            <div class="col-md-2 gridHeader hide">
               <div class="input-group bootstrap-timepicker timepicker">
                 <input id="agendaItemTime" type="text" class="form-control input-small">
                 <span class="input-group-addon"><i class="fa fa-hourglass-half"></i></span>
@@ -586,8 +833,24 @@
           </div>
           <div class="row left-tab">
             <br />
+            <form class="hide">
+              <textarea id="agendaText1" class="textarea" placeholder="Write your detailed topic information." style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+            </form>
             <form>
-              <textarea id="agendaText" class="textarea" placeholder="Write your detailed topic information." style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+              <div id="toolbar" style="display: none;">
+                <div class="btn-group">
+                  <button type="button" data-wysihtml5-command="bold" class="btn btn-primary command">bold</button>
+                  <button type="button" data-wysihtml5-command="italic" class="btn btn-primary command">italic</button>
+                  <button type="button" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h1" class="btn btn-primary command">h1</button>
+                  <button type="button" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2" class="btn btn-primary command">h2</button>
+                  <button type="button" data-wysihtml5-command="insertUnorderedList" class="btn btn-primary command">UnorderedList</button>
+                  <button type="button" data-wysihtml5-command="insertOrderedList" class="btn btn-primary command">OrderedList</button>
+                  <li data-wysihtml5-command="insertSpeech" class="hide">speech</li>
+                  <li data-wysihtml5-action="change_view" class="command hide">switch to html view</li>
+                </div>
+              </div>
+              <textarea id="agendaText" placeholder="Enter text ..." style="width:100%; min-height:300px;"></textarea>
+              <br><input type="reset" class="hide" value="Reset form!">
             </form>
           </div>
         </div>
@@ -603,13 +866,83 @@
 </div>
 <!-- FastClick -->
 <script src="~/plugins/fastclick/fastclick.js"></script>
-<script src="https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
-<!-- Bootstrap WYSIHTML5 -->
-<script src="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+
 
 <script type="text/javascript">
   var MinutzTitle = "Minutz : Meeting Creator";
   minutz.properties.infoIcon = 'fa fa-info';
+
+  //Controllers
+  minutz.functions.datepickers = function (control) {
+    $('#' + control).datepicker({
+      calendarWeeks: true,
+      autoclose: true,
+      todayHighlight: true,
+      datesDisabled: ['03/06/2017', '03/21/2017'],
+      toggleActive: true,
+      defaultViewDate: { year: 1977, month: 04, day: 25 }
+    });
+  };
+  minutz.functions.timepicker = function (control) {
+    $('#' + control).timepicker();
+  };
+
+
+  //Editors
+  minutz.controls.agendaTextEditor = new wysihtml5.Editor("agendaText", { toolbar: "toolbar", parserRules: wysihtml5ParserRules });
+  minutz.controls.outcomeTextEditor = new wysihtml5.Editor("outcomeText", { toolbar: "toolbar", parserRules: wysihtml5ParserRules });
+  minutz.controls.objectiveTextEditor = new wysihtml5.Editor("purposeText", { toolbar: "toolbar", parserRules: wysihtml5ParserRules });
+
+  //Text Controls
+  minutz.controls.agendaTitle = $("#txtAgendaTitle");
+  minutz.controls.location = $("#txtLocation");
+  minutz.controls.formal = $('#toggle-formal').bootstrapToggle({ on: 'Formal', off: 'Informal' });
+  minutz.controls.agendaTitleQuick = $("#txtAgendaTitleQuick");
+  minutz.controls.meetingTags = $("#txtTags");
+  minutz.controls.meetingDuration = {};
+ 
+
+  //Buttons
+  minutz.controls.addAgendaButton = $("#btnAddAgendaItem");
+
+  //Date
+  minutz.controls.meetingDate = $('#txtDate').datepicker({
+    calendarWeeks: true,
+    autoclose: true,
+    todayHighlight: true,
+    datesDisabled: ['03/06/2017', '03/21/2017'],
+    toggleActive: true,
+    defaultViewDate: { year: 1977, month: 04, day: 25 }
+  });
+
+  minutz.controls.meetingTime = $('#meetingTime').timepicker();
+
+  //Change Events
+  minutz.controls.agendaTextEditor.on("blur", function () {
+    var current = minutz.functions.find(meeting.MeetingAgendaCollection, meeting.SelectedAgendaItemId)
+    current.AgendaText = minutz.functions.get.value('agendaText');
+    console.log(current);
+    console.log($('#agendaText').val());
+  });
+  minutz.controls.agendaTitle.blur(function () { console.log('agenda title '); });
+  minutz.controls.agendaTitle.on('change keydown paste input', function () {
+    minutz.functions.updateAgendaTextControl($("#txtAgendaTitle").val());
+  });
+  minutz.controls.agendaTitleQuick.on('change keydown paste input', function () {
+    minutz.functions.updateAgendaText(minutz.functions.getValue('txtAgendaTitleQuick'));
+  });
+
+  minutz.controls.location.blur(function () { console.log('location'); });
+  minutz.controls.meetingDate.on("change", function () { console.log('meetingDate'); });
+  minutz.controls.meetingTime.on("change", function () { console.log('meetingTime'); });
+  minutz.controls.meetingTags.blur(function () { console.log('tags'); });
+  
+
+  //Click
+  minutz.controls.addAgendaButton.click(function () {
+    minutz.functions.agendaItemAddClick(minutz.functions.CreateAgendaItem());
+  });
+
 
   minutz.functions.updateAgendaText = function(text)
   {
@@ -619,14 +952,24 @@
   $(function () {
     _initPickers();
 
-    $("#txtAgendaTitle").on('change keydown paste input', function () {
-      minutz.functions.updateAgendaTextControl($("#txtAgendaTitle").val());
-    });
+    //$("#txtAgendaTitle").on('change keydown paste input', function () {
+    //  minutz.functions.updateAgendaTextControl($("#txtAgendaTitle").val());
+    //});
 
-    $('#toggle-formal').bootstrapToggle({
-      on: 'Formal',
-      off: 'Informal'
-    });
+    //$("#agendaText").on('change keydown paste input', function ()
+    //{
+    //  minutz.functions.save();
+    //});
+
+    //$("#outcomeText").on('change keydown paste input', function () {
+    //  minutz.functions.save();
+    //});
+
+    //$("#purposeText").on('change keydown paste input', function () {
+    //  minutz.functions.save();
+    //});
+
+    
 
     $("#repeatType li a").click(function () {
 
@@ -643,25 +986,22 @@
         $(this).removeClass('used');
     });
 
-    minutz.functions.wysihtml5('agendaText');
-    minutz.functions.wysihtml5('outcomeText');
-    minutz.functions.wysihtml5('purposeText');
+    //minutz.functions.wysihtml5('agendaText');
+    //minutz.functions.wysihtml5('outcomeText');
+    //minutz.functions.wysihtml5('purposeText');
 
-    var x = document.getElementById("demo");
-    function getLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-      } else {
-        x.innerHTML = "Geolocation is not supported by this browser.";
-      }
-    }
-    function showPosition(position) {
-      x.innerHTML = "Latitude: " + position.coords.latitude +
-        "<br>Longitude: " + position.coords.longitude;
-    }
-
-    //$("#btnAddAgenda").click(function () { _CreateAgendaItem(); });
-    //if (meeting.MeetingAgendaCollection.length < 1) { _CreateAgendaItem(); }
+    //var x = document.getElementById("demo");
+    //function getLocation() {
+    //  if (navigator.geolocation) {
+    //    navigator.geolocation.getCurrentPosition(showPosition);
+    //  } else {
+    //    x.innerHTML = "Geolocation is not supported by this browser.";
+    //  }
+    //}
+    //function showPosition(position) {
+    //  x.innerHTML = "Latitude: " + position.coords.latitude +
+    //    "<br>Longitude: " + position.coords.longitude;
+    //}
 
     $('#attendeesControl').load('/Meeting/AttendeesControl?meetingId=' + 1, 1, function (responseText, textStatus, jqXHR) {
       var meetingId = 1;
@@ -695,100 +1035,116 @@
       });
     });
 
-    $('#agendaControl').load('/Meeting/AgendaControl?meetingId='+1, 1, function (responseText, textStatus, jqXHR) {
+    //$('#agendaControl').load('/Meeting/AgendaControl?meetingId='+1, 1, function (responseText, textStatus, jqXHR) {
 
-    });
+    //});
 
     $('#attachmentsControl').load('/Meeting/AttachmentsControl?meetingId=' + 1, 1, function (responseText, textStatus, jqXHR) {
 
     });
+
+    // minutz.functions.durationpicker('agendaItemTime');
+
+    //$("#btnAddAgendaItem").click(function () {
+    //  minutz.functions.agendaItemAddClick(minutz.functions.CreateAgendaItem());
+    //});
+
+    //$("#txtAgendaTitleQuick").on('change keydown paste input', function () {
+    //  minutz.functions.updateAgendaText(minutz.functions.getValue('txtAgendaTitleQuick'));
+    //});
+
+    meeting.Id = minutz.functions.createId();
   });
 
   minutz.functions.CreateAgendaItem = function() {
     var id = minutz.functions.createId();
-    meeting.MeetingAgendaCollection.push(MeetingAgendaItem(id, 'refId', $("#txtAgendaTitle").val(), $("#agendaText").val(), 'meetingattendeeId', 'createdDate', false));
+    meeting.MeetingAgendaCollection.push(MeetingAgendaItem(id, meeting.Id, $("#txtAgendaTitle").val(), $("#agendaText").val(), 'meetingattendeeId', Date.now(), false));
     return id;
   };
 
-  function _CreateAgendaItem(data) {
-    var id = meeting.MeetingAgendaCollection.length;
-    var controlName = "agenda" + id;
-    meeting.MeetingAgendaCollection.push(MeetingAgendaItem(id, 'refId', 'agendaText', 'meetingattendeeId', 'createdDate', false));
+  //function _CreateAgendaItem(data) {
+  //  var id = meeting.MeetingAgendaCollection.length;
+  //  var controlName = "agenda" + id;
+  //  meeting.MeetingAgendaCollection.push(MeetingAgendaItem(id, 'refId', 'agendaText', 'meetingattendeeId', 'createdDate', false));
 
-    $('#agendaListControl').append('<li>' + _getAgenda(controlName, _getAgendaAttachments()) + '</li>');
-    $("#" + controlName).wysihtml5();
+  //  $('#agendaListControl').append('<li>' + _getAgenda(controlName, _getAgendaAttachments()) + '</li>');
+  //  $("#" + controlName).wysihtml5();
 
-    console.log(meeting);
-  };
+  //  console.log(meeting);
+  //};
 
-  function _getAgenda(controlName, att) {
+  //function _getAgenda(controlName, att) {
 
-    var html = '<div id="agendaId">' +
-      '<div class="container" style="margin-left: 5px;">' +
-      '<div class="row">' +
-      '<div class="col-md-2">' +
-      '<b style="padding: 20px;">Duration</b>' +
-      '</div>' +
-      '<div class="col-md-6">' +
-      '<b style="padding: 20px;">Topic</b>' +
-      '</div>' +
-      '<div class="col-md-3">' +
-      '<b style="padding: 20px;">Owner</b>' +
-      '</div>' +
-      '</div>' +
-      '</div>' +
-      '<div class="container" style="margin-left: 5px;">' +
-      '<div class="row">' +
-      '<div class="col-md-2">' +
-      '<input id="dur" type="text" class="form-control input-small">' +
-      '</div>' +
-      '<div class="col-md-6">' +
-      '<input id="txtTopicTitle" type="text" class="form-control input-small">' +
-      '</div>' +
-      '<div class="col-md-3">' +
-      '<select id="attendees_' + controlName + '" class="js-example-data-array" style="width: 150px;"></select>' +
-      '</div>' +
-      '</div>' +
-      '<br />' +
-      '</div>' +
-      '<div class="row">' +
-      '<div class="col-md-9">' +
-      '<div style="margin-left:10px; margin-right:10px;">' +
-      '<form>' +
-      '<textarea id="' + controlName + '" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>' +
-      '</form>' +
-      '</div>' +
-      '</div>' +
-      '<div class="col-md-3"><form action="/Meeting/FileUpload" method="post" enctype="multipart/form-data" class="dropzone dz-clickable" style="margin-top: 50px;" id="my-awesome-dropzone"></form></div>' +
-      '</div>' +
-      '<div class="row">' +
-      '<div class="col-md-12">' +
-      '<ul >';
+  //  var html = '<div id="agendaId">' +
+  //    '<div class="container" style="margin-left: 5px;">' +
+  //    '<div class="row">' +
+  //    '<div class="col-md-2">' +
+  //    '<b style="padding: 20px;">Duration</b>' +
+  //    '</div>' +
+  //    '<div class="col-md-6">' +
+  //    '<b style="padding: 20px;">Topic</b>' +
+  //    '</div>' +
+  //    '<div class="col-md-3">' +
+  //    '<b style="padding: 20px;">Owner</b>' +
+  //    '</div>' +
+  //    '</div>' +
+  //    '</div>' +
+  //    '<div class="container" style="margin-left: 5px;">' +
+  //    '<div class="row">' +
+  //    '<div class="col-md-2">' +
+  //    '<input id="dur" type="text" class="form-control input-small">' +
+  //    '</div>' +
+  //    '<div class="col-md-6">' +
+  //    '<input id="txtTopicTitle" type="text" class="form-control input-small">' +
+  //    '</div>' +
+  //    '<div class="col-md-3">' +
+  //    '<select id="attendees_' + controlName + '" class="js-example-data-array" style="width: 150px;"></select>' +
+  //    '</div>' +
+  //    '</div>' +
+  //    '<br />' +
+  //    '</div>' +
+  //    '<div class="row">' +
+  //    '<div class="col-md-9">' +
+  //    '<div style="margin-left:10px; margin-right:10px;">' +
+  //    '<form>' +
+  //    '<textarea id="' + controlName + '" class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>' +
+  //    '</form>' +
+  //    '</div>' +
+  //    '</div>' +
+  //    '<div class="col-md-3"><form action="/Meeting/FileUpload" method="post" enctype="multipart/form-data" class="dropzone dz-clickable" style="margin-top: 50px;" id="my-awesome-dropzone"></form></div>' +
+  //    '</div>' +
+  //    '<div class="row">' +
+  //    '<div class="col-md-12">' +
+  //    '<ul >';
 
-    for (var i = 0; att.length > 0; i++) {
-      var fileAttachment = att[i];
-      html = html + '<li>' +
-        '<i class="fa fa-paperclip" aria-hidden="true"> <span style="font-family: Arial;">File Attachment</span></i>' +
-        '</li>';
-    }
+  //  for (var i = 0; att.length > 0; i++) {
+  //    var fileAttachment = att[i];
+  //    html = html + '<li>' +
+  //      '<i class="fa fa-paperclip" aria-hidden="true"> <span style="font-family: Arial;">File Attachment</span></i>' +
+  //      '</li>';
+  //  }
 
-    html = html + '</ul>' +
-      '</div>' +
-      '<div>' +
-      '</div>';
-    return html;
-  };
+  //  html = html + '</ul>' +
+  //    '</div>' +
+  //    '<div>' +
+  //    '</div>';
+  //  return html;
+  //};
 
   function MeetingAgendaItem(id, referanceId, agendaHeading ,agendaText, meetingAttendeeId, createdDate, isComplete) {
     return { Id: id, ReferanceId: referanceId, AgendaHeading: agendaHeading,AgendaText: agendaText, MeetingAttendeeId: meetingAttendeeId, CreatedDate: createdDate, IsComplete: isComplete };
   };
 
-  function _updateAgendaTextToModel() {
+  minutz.functions.updateAgendaTextToModel = function () {
     for (var i = 0; i < meeting.MeetingAgendaCollection.length; i++) {
       var currentAgenda = meeting.MeetingAgendaCollection[i];
-      var controlName = "agenda" + currentAgenda.Id;
-      var currentAgendaText = $("#" + controlName).val();
-      currentAgenda.AgendaText = currentAgendaText;
+      if (currentAgenda.Id == meeting.SelectedAgendaItemId)
+      {
+        var controlName = "agenda" + currentAgenda.Id;
+        //var currentAgendaText = $("#" + controlName).val();
+        meeting.MeetingAgendaCollection[i].AgendaText = minutz.functions.get.wysihtml5('agendaText');
+      }
+     
     }
   };
 
@@ -826,23 +1182,24 @@
     meeting.Outcome = data.outcome;
   };
 
-  function _updateModel() {
-
-    meeting.Tag = _toArray($("#txtTags").val());
+  minutz.functions.updateMainModelProperties = function () {
+    meeting.Tag = minutz.functions.toArray(minutz.functions.get.value('txtTags'));
     meeting.IsPrivate = $("#cbIsPrivate").prop("checked");
     meeting.IsFormal = $("#cbIsFormal").prop("checked");
-    meeting.Name = $("#txtMeetingName").val();
-    meeting.Location = $('#txtLocation').val();
-    meeting.Date = $('#txtDate').datepicker().val();
-    meeting.Time = $('#meetingTime').val();
-    meeting.Duration = $('#txtDuration').val();
-    meeting.ReacuranceType = $("#repeatTypeText").text();
-    meeting.IsReacurance = _isReacurance($("#repeatTypeText").text());
-    meeting.Purpose = $('#purposeText').val();
-    meeting.Outcome = $('#outcomeText').val();
+    meeting.Name = minutz.functions.get.value('txtMeetingName');
+    meeting.Location = minutz.functions.get.value('txtLocation');
+    meeting.Date = minutz.functions.get.datepicker('txtDate');
+    meeting.Time = minutz.functions.get.value('meetingTime');
+    meeting.Duration = minutz.functions.get.value('txtDuration');
+    meeting.ReacuranceType = minutz.functions.get.text('repeatTypeText');
+    meeting.IsReacurance = _isReacurance(minutz.functions.get.text('repeatTypeText'));
+    meeting.Purpose = minutz.functions.get.value('purposeText');
+    meeting.Outcome = minutz.functions.get.value('outcomeText');
+
+    //minutz.functions.find(meeting.MeetingAgendaCollection, meeting.SelectedAgendaItemId).AgendaText = minutz.functions.get.value('agendaText');
   };
 
-  function _toArray(str) {
+  minutz.functions.toArray = function(str) {
     return str.split(';');
   };
 
@@ -858,48 +1215,34 @@
   };
 
   function _initPickers() {
-    minutz.functions.datepickers('txtDate');
-    minutz.functions.timepicker('meetingTime');
-    minutz.functions.durationpicker('txtDuration');
-    minutz.functions.durationpicker('dur');
-    minutz.functions.durationpicker('agendaItemTime');
+    minutz.controls.meetingDuration = $('#txtDuration').durationPicker({ lang: 'en', showSeconds: false, showDays: false, });
   };
 
-  minutz.functions.wysihtml5 = function (control)
+  minutz.functions.displayAgendaItem = function (baseObject)
   {
-    $('#' + control).wysihtml5();
-  };
+    var selectedItem = minutz.functions.find(meeting.MeetingAgendaCollection, baseObject.id);
+    meeting.SelectedAgendaItemId = selectedItem.Id;
+    //minutz.functions.set.value(selectedItem.AgendaText);
 
-  minutz.functions.timepicker = function (control)
-  {
-    $('#' + control).timepicker();
-  };
-
-  minutz.functions.datepickers = function(control)
-  {
-    $('#' + control).datepicker({
-      calendarWeeks: true,
-      autoclose: true,
-      todayHighlight: true,
-      datesDisabled: ['03/06/2017', '03/21/2017'],
-      toggleActive: true,
-      defaultViewDate: { year: 1977, month: 04, day: 25 }
-    });
+    minutz.controls.agendaTextEditor.setValue(selectedItem.AgendaText);
+    minutz.functions.save();
   };
 
   minutz.functions.durationpicker = function(controlname)
   {
-    $('#' + controlname).durationPicker({
+    var x = '#' + controlname;
+    console.log(x);
+    $(x).durationPicker({
       lang: 'en',
       showSeconds: false,
-      showDays: false,
+      showDays: false
     });
   };
 
   minutz.functions.save = function ()
   {
-    _updateAgendaTextToModel();
-    _updateModel();
+    //minutz.functions.updateAgendaTextToModel();
+    minutz.functions.updateMainModelProperties();
 
     if (minutz.functions.saveAjax()) {
       minutz.functions.notifyMe(MinutzTitle, "The updates were saved successfully.", "fa fa-info");
@@ -919,7 +1262,7 @@
         _updateUi(data);
       },
       error: function (XMLHttpRequest, textStatus, errorThrown) {
-        minutz.functions.notifyMe(MinutzTitle, textStatus + "  " + errorThrown, minutz.properties.infoIcon);
+        //minutz.functions.notifyMe(MinutzTitle, textStatus + "  " + errorThrown, minutz.properties.infoIcon);
       },
       dataType: minutz.properties.JSON
     });
@@ -960,7 +1303,66 @@
     }
   };
 
-  window.setInterval(function () { minutz.functions.save(); }, 60000);
+
+  minutz.functions.deleteAgendaQuickItem = function (id) {
+    var index = minutz.functions.findIndex(meeting.MeetingAgendaCollection, id);
+    meeting.MeetingAgendaCollection.splice(index, 1);
+    $("#_" + id).remove();
+  };
+
+  minutz.functions.updateAgendaTextControl = function (text) {
+    minutz.functions.setValue('txtAgendaTitleQuick', text);
+  };
+
+  minutz.functions.agendaItemAddClick = function (id) {
+    minutz.functions.addHtml('agendaItems', minutz.functions.getAgendaItemHtml($("#txtAgendaTitleQuick").val(), id));
+    minutz.functions.setValue('txtAgendaTitleQuick', '');
+    minutz.functions.durationpicker('timer_' + id);
+  };
+
+  minutz.functions.agendaClearQuickItems = function () {
+    $("#agendaItems li").each(function (index, value) {
+      $(value).css(minutz.properties.backgroundColor, minutz.properties.white);
+    });
+  };
+
+  minutz.functions.getSelectedAgenda = function (id) {
+    var result;
+    minutz.functions.agendaClearQuickItems();
+    $("#agendaItems li").each(function (index, value) {
+      var baseAgendaObject = {
+        id: $(value).find('div.title').attr("data-id"),
+        title: $(value).find('div.title').text(),
+        duration: $(value).find('input.timer').val()
+      };
+      if (baseAgendaObject.id == id) {
+        $(value).css(minutz.properties.backgroundColor, minutz.properties.lightGrey);
+        result = baseAgendaObject;
+      }
+    });
+    return result;
+  };
+
+  minutz.functions.agendaSelect = function (id) {
+    var selected = minutz.functions.getSelectedAgenda(id);
+    minutz.functions.displayAgendaItem(selected);
+  };
+
+  minutz.functions.getAgendaItemHtml = function (title, id) {
+    return '<li id="_' + id + '" class="item">'
+      + '<br/><div class="row" style="cursor: pointer;" >'
+      + '<div class="col-md-7" >'
+      + '<div onclick="minutz.functions.agendaSelect(\'' + id + '\')" class="title" data-id="' + id + '" style="padding-left:10px; text-overflow: ellipsis;  overflow: hidden; white-space: nowrap;">' + title + '</div>'
+      + '</div>'
+      + '<div class="col-md-3">'
+      + '<div class="input-group bootstrap-timepicker timepicker" >'
+      + '<input id="timer_' + id + '" type="text" class="form-control input-small timer">'
+      + '</div>'
+      + '</div>'
+      + '<div class="col-md-1"><i class="fa fa-trash fa-2x pull-right" style=" cursor: pointer;color: grey; " aria-hidden="true" onclick="minutz.functions.deleteAgendaQuickItem(\'' + id + '\')" ></i></div>'
+    '</div><br/></li>';
+  };
+  //window.setInterval(function () { minutz.functions.save(); }, 60000);
 
   //File Upload response from the server
   Dropzone.options.dropzoneForm = {

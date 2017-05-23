@@ -41,8 +41,8 @@ namespace tzatziki.minutz.Controllers
     {
       if (string.IsNullOrEmpty(meeting.Name))
         meeting.Name = GetName();
-      if (meeting.Id < 1)
-        meeting.Id = GetId();
+      if (meeting.Id == Guid.Empty)
+        meeting.Id = Guid.NewGuid();
 
       return Json(meeting);
     }
@@ -91,11 +91,6 @@ namespace tzatziki.minutz.Controllers
     private string GetName()
     {
       return "MeetingName" + new Random().Next();
-    }
-
-    private int GetId()
-    {
-      return new Random().Next();
     }
 
     private List<User> GetUsers()
