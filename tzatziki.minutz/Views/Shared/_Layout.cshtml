@@ -29,8 +29,10 @@
   <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
   <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
   <!-- Bootstrap WYSIHTML5 -->
-  <script src="~/lib/wysihtml5-0.3.0.js"></script>
-  <script src="~/lib/wysihtml-advanced.js"></script>
+
+  <script src="~/lib/trumbowyg.js"></script>
+  <link rel="stylesheet" href="~/lib/ui/trumbowyg.css">
+
   @Html.Raw(JavaScriptSnippet.FullScript)
   <script type="text/javascript">
 
@@ -614,13 +616,13 @@
     };
   </script>
   <script>
-		window.intercomSettings = {
-			app_id: "oili1ns3",
-			name: "@User.ToProfile().Name", 	// Full name
-			email: "@User.ToProfile().EmailAddress}", 		// Email address
-			created_at: "@User.ToProfile().Created_At",			// Signup date as a Unix timestamp (When Person was created in Minutz)
-			"VFPage": window.location			// VisualForce page
-		};
+    window.intercomSettings = {
+      app_id: "oili1ns3",
+      name: "@User.ToProfile().Name", 	// Full name
+      email: "@User.ToProfile().EmailAddress}", 		// Email address
+      created_at: "@User.ToProfile().Created_At",			// Signup date as a Unix timestamp (When Person was created in Minutz)
+      "VFPage": window.location			// VisualForce page
+    };
   </script>
   <script>
     /* ------------------
