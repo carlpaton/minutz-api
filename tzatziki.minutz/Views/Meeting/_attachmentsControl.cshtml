@@ -10,30 +10,60 @@
 <div class="panel panel-default collapse fileControl">
   <div class="panel-body">
     <div class="row">
-      <div class="col-md-10">
-        <div class="input-group" data-toggle="tooltip" title="Give your agenda item a title.">
+      <div class="col-md-12">
+        <div  class="dropzone" id="dropzoneForm">
+          <div class="fallback">
+            <input name="file" type="file" multiple />
+            <input type="submit" value="Upload" />
+          </div>
+        </div>
+
+
+        <div class="input-group hide" data-toggle="tooltip" title="Give your agenda item a title.">
           <span class="input-group-addon" id="basic-addon1"><i class="fa fa-paperclip"></i></span>
           <input id="txtAgendaTitleQuick" type="file" />
         </div>
       </div>
-      <div class="col-md-2">
-        <div id="btnAddAttendee" class="round-button-circle pull-right"><i class="fa fa-plus"></i></div>
-      </div>
     </div>
   </div>
 </div>
-<ul class="products-list product-list-in-box collapse fileControl">
-  <li class="item">
-    <div class="product-img">
-      <i class="fa fa-file-o fa-2x" style="padding-left: 10px;" aria-hidden="true"></i>
-    </div>
-    <div class="product-info">
-      <a href="javascript:void(0)" class="product-title">
-        FileName.pdf
-      </a>
-      <span class="product-description">
-        Linked to Agenda
-      </span>
-    </div>
-  </li>
+<ul id="fileAttachmentList" class="products-list product-list-in-box collapse fileControl">
+  
 </ul>
+<style>
+  .dz-preview {
+    display:none;
+  }
+  .dropzone {
+    min-height: 50px;
+    max-height: 50px;
+    padding: 10px 10px;
+  }
+</style>
+<script>
+  $(function ()
+  {
+    $("div#dropzoneForm").dropzone({ url: "/Meeting/FileUpload" });
+  });
+
+  minutz.functions.addattachmentHtml = function (filename)
+  {
+    $("#fileAttachmentList").append(_createHtml(filename));
+  };
+
+  function _createHtml(fileName)
+  {
+    return '<li class="item">'
+      + '<div class="product-img">'
+      + '<i class="fa fa-file-o fa-2x" style="padding-left: 10px;" aria-hidden="true"></i>'
+      + '</div>'
+      + '<div class="product-info">'
+      + '<a href="javascript:void(0)" class="product-title">' + fileName
+      + '</a>'
+      + '<span class="product-description">'
+      + 'Linked to Agenda'
+      + '</span>'
+      + '</div>'
+      + '</li>';
+  };
+</script>
