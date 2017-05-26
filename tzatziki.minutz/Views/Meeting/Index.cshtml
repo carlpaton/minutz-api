@@ -4,6 +4,17 @@
 }
 <link rel="stylesheet" href="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 <style>
+  label {
+    position: inherit !important;
+  }
+  select {
+    
+    text-align: center;
+  }
+
+    select .lt {
+      text-align: center;
+    }
   .commands {
     border-left: 1px solid #ddd;
     display: inline-block;
@@ -651,97 +662,9 @@
       </div>
     </div>
     <div class="col-md-4">
-      <div class="input-group bootstrap-timepicker timepicker" data-toggle="tooltip" title="How often will the meeting be held?">
-        <span class="input-group-addon"><i class="fa fa-globe"></i></span>
-        <div class="btn-group" style="width: 100%;">
-          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="width: 100%;" aria-haspopup="true" aria-expanded="false">
-            <span id="repeatTypeText" style="padding-left:5px; padding-right:5px;"> Set Timezone  </span> <span class="caret"></span>
-          </button>
-          <ul id="repeatType" class="dropdown-menu products-list product-list-in-box">
-            <li class="item" style="text-align: center;" timeZoneId="1" gmtAdjustment="GMT-12:00" useDaylightTime="0" value="-12">(GMT-12:00) International Date Line West</li>
-            <li class="item" style="text-align: center;" timeZoneId="2" gmtAdjustment="GMT-11:00" useDaylightTime="0" value="-11">(GMT-11:00) Midway Island, Samoa</li>
-            <li class="item" style="text-align: center;" timeZoneId="3" gmtAdjustment="GMT-10:00" useDaylightTime="0" value="-10">(GMT-10:00) Hawaii</li>
-            <li class="item" style="text-align: center;" timeZoneId="4" gmtAdjustment="GMT-09:00" useDaylightTime="1" value="-9">(GMT-09:00) Alaska</li>
-            <li class="item" style="text-align: center;" timeZoneId="5" gmtAdjustment="GMT-08:00" useDaylightTime="1" value="-8">(GMT-08:00) Pacific Time (US & Canada)</li>
-            <li class="item" style="text-align: center;" timeZoneId="6" gmtAdjustment="GMT-08:00" useDaylightTime="1" value="-8">(GMT-08:00) Tijuana, Baja California</li>
-            <li class="item" style="text-align: center;" timeZoneId="7" gmtAdjustment="GMT-07:00" useDaylightTime="0" value="-7">(GMT-07:00) Arizona</li>
-            <li class="item" style="text-align: center;" timeZoneId="8" gmtAdjustment="GMT-07:00" useDaylightTime="1" value="-7">(GMT-07:00) Chihuahua, La Paz, Mazatlan</li>
-            <li class="item" style="text-align: center;" timeZoneId="9" gmtAdjustment="GMT-07:00" useDaylightTime="1" value="-7">(GMT-07:00) Mountain Time (US & Canada)</li>
-            <li class="item" style="text-align: center;" timeZoneId="10" gmtAdjustment="GMT-06:00" useDaylightTime="0" value="-6">(GMT-06:00) Central America</li>
-            <li class="item" style="text-align: center;" timeZoneId="11" gmtAdjustment="GMT-06:00" useDaylightTime="1" value="-6">(GMT-06:00) Central Time (US & Canada)</li>
-            <li class="item" style="text-align: center;" timeZoneId="12" gmtAdjustment="GMT-06:00" useDaylightTime="1" value="-6">(GMT-06:00) Guadalajara, Mexico City, Monterrey</liclass="item">
-            <li class="item" style="text-align: center;" timeZoneId="13" gmtAdjustment="GMT-06:00" useDaylightTime="0" value="-6">(GMT-06:00) Saskatchewan</li>
-            <li class="item" style="text-align: center;" timeZoneId="14" gmtAdjustment="GMT-05:00" useDaylightTime="0" value="-5">(GMT-05:00) Bogota, Lima, Quito, Rio Branco</li>
-            <li class="item" style="text-align: center;" timeZoneId="15" gmtAdjustment="GMT-05:00" useDaylightTime="1" value="-5">(GMT-05:00) Eastern Time (US & Canada)</li>
-            <li class="item" style="text-align: center;" class="item" style="text-align: center;" timeZoneId="16" gmtAdjustment="GMT-05:00" useDaylightTime="1" value="-5">(GMT-05:00) Indiana (East)</li>
-            <li class="item" style="text-align: center;" timeZoneId="17" gmtAdjustment="GMT-04:00" useDaylightTime="1" value="-4">(GMT-04:00) Atlantic Time (Canada)</li>
-            <li class="item" style="text-align: center;" timeZoneId="18" gmtAdjustment="GMT-04:00" useDaylightTime="0" value="-4">(GMT-04:00) Caracas, La Paz</li>
-            <li class="item" style="text-align: center;" timeZoneId="19" gmtAdjustment="GMT-04:00" useDaylightTime="0" value="-4">(GMT-04:00) Manaus</li>
-            <li class="item" style="text-align: center;" timeZoneId="20" gmtAdjustment="GMT-04:00" useDaylightTime="1" value="-4">(GMT-04:00) Santiago</li>
-            <li class="item" style="text-align: center;" timeZoneId="21" gmtAdjustment="GMT-03:30" useDaylightTime="1" value="-3.5">(GMT-03:30) Newfoundland</li>
-            <li class="item" style="text-align: center;" timeZoneId="22" gmtAdjustment="GMT-03:00" useDaylightTime="1" value="-3">(GMT-03:00) Brasilia</li>
-            <li class="item" style="text-align: center;" timeZoneId="23" gmtAdjustment="GMT-03:00" useDaylightTime="0" value="-3">(GMT-03:00) Buenos Aires, Georgetown</li>
-            <li class="item" style="text-align: center;" timeZoneId="24" gmtAdjustment="GMT-03:00" useDaylightTime="1" value="-3">(GMT-03:00) Greenland</li>
-            <li class="item" style="text-align: center;" timeZoneId="25" gmtAdjustment="GMT-03:00" useDaylightTime="1" value="-3">(GMT-03:00) Montevideo</li>
-            <li class="item" style="text-align: center;" timeZoneId="26" gmtAdjustment="GMT-02:00" useDaylightTime="1" value="-2">(GMT-02:00) Mid-Atlantic</li>
-            <li class="item" style="text-align: center;" timeZoneId="27" gmtAdjustment="GMT-01:00" useDaylightTime="0" value="-1">(GMT-01:00) Cape Verde Is.</li>
-            <li class="item" style="text-align: center;" timeZoneId="28" gmtAdjustment="GMT-01:00" useDaylightTime="1" value="-1">(GMT-01:00) Azores</li>
-            <li class="item" style="text-align: center;" timeZoneId="29" gmtAdjustment="GMT+00:00" useDaylightTime="0" value="0">(GMT+00:00) Casablanca, Monrovia, Reykjavik</li>
-            <li class="item" style="text-align: center;" timeZoneId="30" gmtAdjustment="GMT+00:00" useDaylightTime="1" value="0">(GMT+00:00) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London</li>
-            <li class="item" style="text-align: center;" timeZoneId="31" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna</li>
-            <li class="item" style="text-align: center;" timeZoneId="32" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague</li>
-            <li class="item" style="text-align: center;" timeZoneId="33" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) Brussels, Copenhagen, Madrid, Paris</li>
-            <li class="item" style="text-align: center;" timeZoneId="34" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb</li>
-            <li class="item" style="text-align: center;" timeZoneId="35" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) West Central Africa</li>
-            <li class="item" style="text-align: center;" timeZoneId="36" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Amman</li>
-            <li class="item" style="text-align: center;" timeZoneId="37" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Athens, Bucharest, Istanbul</li>
-            <li class="item" style="text-align: center;" timeZoneId="38" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Beirut</li>
-            <li class="item" style="text-align: center;" timeZoneId="39" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Cairo</li>
-            <li class="item" style="text-align: center;" timeZoneId="40" gmtAdjustment="GMT+02:00" useDaylightTime="0" value="2">(GMT+02:00) Harare, Pretoria</li>
-            <li class="item" style="text-align: center;" timeZoneId="41" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius</li>
-            <li class="item" style="text-align: center;" timeZoneId="42" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Jerusalem</li>
-            <li class="item" style="text-align: center;" timeZoneId="43" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Minsk</li>
-            <li class="item" style="text-align: center;" timeZoneId="44" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Windhoek</li>
-            <li class="item" style="text-align: center;" timeZoneId="45" gmtAdjustment="GMT+03:00" useDaylightTime="0" value="3">(GMT+03:00) Kuwait, Riyadh, Baghdad</li>
-            <li class="item" style="text-align: center;" timeZoneId="46" gmtAdjustment="GMT+03:00" useDaylightTime="1" value="3">(GMT+03:00) Moscow, St. Petersburg, Volgograd</li>
-            <li class="item" style="text-align: center;" timeZoneId="47" gmtAdjustment="GMT+03:00" useDaylightTime="0" value="3">(GMT+03:00) Nairobi</li>
-            <li class="item" style="text-align: center;" timeZoneId="48" gmtAdjustment="GMT+03:00" useDaylightTime="0" value="3">(GMT+03:00) Tbilisi</li>
-            <li class="item" style="text-align: center;" timeZoneId="49" gmtAdjustment="GMT+03:30" useDaylightTime="1" value="3.5">(GMT+03:30) Tehran</li>
-            <li class="item" style="text-align: center;" timeZoneId="50" gmtAdjustment="GMT+04:00" useDaylightTime="0" value="4">(GMT+04:00) Abu Dhabi, Muscat</li>
-            <li class="item" style="text-align: center;" timeZoneId="51" gmtAdjustment="GMT+04:00" useDaylightTime="1" value="4">(GMT+04:00) Baku</li>
-            <li class="item" style="text-align: center;" timeZoneId="52" gmtAdjustment="GMT+04:00" useDaylightTime="1" value="4">(GMT+04:00) Yerevan</li>
-            <li class="item" style="text-align: center;" timeZoneId="53" gmtAdjustment="GMT+04:30" useDaylightTime="0" value="4.5">(GMT+04:30) Kabul</li>
-            <li class="item" style="text-align: center;" timeZoneId="54" gmtAdjustment="GMT+05:00" useDaylightTime="1" value="5">(GMT+05:00) Yekaterinburg</li>
-            <li class="item" style="text-align: center;" timeZoneId="55" gmtAdjustment="GMT+05:00" useDaylightTime="0" value="5">(GMT+05:00) Islamabad, Karachi, Tashkent</li>
-            <li class="item" style="text-align: center;" timeZoneId="56" gmtAdjustment="GMT+05:30" useDaylightTime="0" value="5.5">(GMT+05:30) Sri Jayawardenapura</li>
-            <li class="item" style="text-align: center;" timeZoneId="57" gmtAdjustment="GMT+05:30" useDaylightTime="0" value="5.5">(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi</li>
-            <li class="item" style="text-align: center;" timeZoneId="58" gmtAdjustment="GMT+05:45" useDaylightTime="0" value="5.75">(GMT+05:45) Kathmandu</li>
-            <li class="item" style="text-align: center;" timeZoneId="59" gmtAdjustment="GMT+06:00" useDaylightTime="1" value="6">(GMT+06:00) Almaty, Novosibirsk</li>
-            <li class="item" style="text-align: center;" timeZoneId="60" gmtAdjustment="GMT+06:00" useDaylightTime="0" value="6">(GMT+06:00) Astana, Dhaka</li>
-            <li class="item" style="text-align: center;" timeZoneId="61" gmtAdjustment="GMT+06:30" useDaylightTime="0" value="6.5">(GMT+06:30) Yangon (Rangoon)</li>
-            <li class="item" style="text-align: center;" timeZoneId="62" gmtAdjustment="GMT+07:00" useDaylightTime="0" value="7">(GMT+07:00) Bangkok, Hanoi, Jakarta</li>
-            <li class="item" style="text-align: center;" timeZoneId="63" gmtAdjustment="GMT+07:00" useDaylightTime="1" value="7">(GMT+07:00) Krasnoyarsk</li>
-            <li class="item" style="text-align: center;" timeZoneId="64" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi</li>
-            <li class="item" style="text-align: center;" timeZoneId="65" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Kuala Lumpur, Singapore</li>
-            <li class="item" style="text-align: center;" timeZoneId="66" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Irkutsk, Ulaan Bataar</li>
-            <li class="item" style="text-align: center;" timeZoneId="67" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Perth</li>
-            <li class="item" style="text-align: center;" timeZoneId="68" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Taipei</li>
-            <li class="item" style="text-align: center;" timeZoneId="69" gmtAdjustment="GMT+09:00" useDaylightTime="0" value="9">(GMT+09:00) Osaka, Sapporo, Tokyo</li>
-            <li class="item" style="text-align: center;" timeZoneId="70" gmtAdjustment="GMT+09:00" useDaylightTime="0" value="9">(GMT+09:00) Seoul</li>
-            <li class="item" style="text-align: center;" timeZoneId="71" gmtAdjustment="GMT+09:00" useDaylightTime="1" value="9">(GMT+09:00) Yakutsk</li>
-            <li class="item" style="text-align: center;" timeZoneId="72" gmtAdjustment="GMT+09:30" useDaylightTime="0" value="9.5">(GMT+09:30) Adelaide</li>
-            <li class="item" style="text-align: center;" timeZoneId="73" gmtAdjustment="GMT+09:30" useDaylightTime="0" value="9.5">(GMT+09:30) Darwin</li>
-            <li class="item" style="text-align: center;" timeZoneId="74" gmtAdjustment="GMT+10:00" useDaylightTime="0" value="10">(GMT+10:00) Brisbane</li>
-            <li class="item" style="text-align: center;" timeZoneId="75" gmtAdjustment="GMT+10:00" useDaylightTime="1" value="10">(GMT+10:00) Canberra, Melbourne, Sydney</li>
-            <li class="item" style="text-align: center;" timeZoneId="76" gmtAdjustment="GMT+10:00" useDaylightTime="1" value="10">(GMT+10:00) Hobart</li>
-            <li class="item" style="text-align: center;" timeZoneId="77" gmtAdjustment="GMT+10:00" useDaylightTime="0" value="10">(GMT+10:00) Guam, Port Moresby</li>
-            <li class="item" style="text-align: center;" timeZoneId="78" gmtAdjustment="GMT+10:00" useDaylightTime="1" value="10">(GMT+10:00) Vladivostok</li>
-            <li class="item" style="text-align: center;" timeZoneId="79" gmtAdjustment="GMT+11:00" useDaylightTime="1" value="11">(GMT+11:00) Magadan, Solomon Is., New Caledonia</li>
-            <li class="item" style="text-align: center;" timeZoneId="80" gmtAdjustment="GMT+12:00" useDaylightTime="1" value="12">(GMT+12:00) Auckland, Wellington</li>
-            <li class="item" style="text-align: center;" timeZoneId="81" gmtAdjustment="GMT+12:00" useDaylightTime="0" value="12">(GMT+12:00) Fiji, Kamchatka, Marshall Is.</li>
-            <li class="item" style="text-align: center;" timeZoneId="82" gmtAdjustment="GMT+13:00" useDaylightTime="0" value="13">(GMT+13:00) Nuku'alofa</li>
-          </ul>
-        </div>
+      <div class="input-group" data-toggle="tooltip" title="Select a timezone for the meeting." style="width: 100%;">
+        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-globe"></i></span>
+        <select id="timeZones" class="form-control js-example-data-array" style="width: 350px; text-align:center;"></select>
       </div>
     </div>
     <div class="col-md-2 ">
@@ -856,12 +779,98 @@
 <div class="col-sm-1 hide">
   <div id="btnRemoveAgenda" class="round-button-circle" style="margin-top: -35px; margin-left:-120px; background-color:red"><i class="fa fa-minus fa-2x"></i></div>
 </div>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="reacuranceModel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Custom Recurrence Settings</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form" > 
+            <div class="row">
+              <div class="col-sm-2">
+                <span>Every</span>
+              </div>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" id="txtDayNumber" placeholder="number of days">
+              </div>
+              <div class="col-sm-3">
+                <span>day</span>
+              </div>
+            </div> 
+          <div class="row">
+            <div class="col-sm-2">
+              <span>Start date</span>
+            </div>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" id="txtStartDate" placeholder="Select starting date">
+            </div>
+            <div class="col-sm-3">
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-2">
+              <span>End date</span>
+            </div>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" id="txtEndDate" placeholder="Select ending date">
+            </div>
+            <div class="col-sm-3">
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-2">
+              <span>after</span>
+            </div>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" id="txtrecuranceNumber" placeholder="Number of occurences">
+            </div>
+            <div class="col-sm-3">
+              <span>occurrences</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-2">
+              <span>on</span>
+            </div>
+            <div class="col-sm-4">
+              <select class="form-control">
+                <option>Monday</option>
+                <option>Tuesday</option>
+                <option>Wednesday</option>
+                <option>Thursday</option>
+                <option>Friday</option>
+                <option>Saturday</option>
+                <option>Sunday</option>
+              </select>
+            </div>
+            <div class="col-sm-3">
+
+            </div>
+          </div> 
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary">Set Recurrence</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <!-- FastClick -->
 <script src="~/plugins/fastclick/fastclick.js"></script>
 
 <script type="text/javascript">
   var MinutzTitle = "Minutz : Meeting Creator";
   minutz.properties.infoIcon = 'fa fa-info';
+  minutz.properties.zones = [];
+  minutz.properties.availibleAttendees = [];
+  minutz.properties.weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
   //Controllers
   minutz.functions.datepickers = function (control) {
@@ -904,8 +913,28 @@
     toggleActive: true,
     defaultViewDate: { year: 1977, month: 04, day: 25 }
   });
+  minutz.controls.meetingDate = $('#txtStartDate').datepicker({
+    calendarWeeks: true,
+    autoclose: true,
+    todayHighlight: true,
+    datesDisabled: ['03/06/2017', '03/21/2017'],
+    toggleActive: true,
+    defaultViewDate: { year: 1977, month: 04, day: 25 }
+  });
+  minutz.controls.meetingDate = $('#txtEndDate').datepicker({
+    calendarWeeks: true,
+    autoclose: true,
+    todayHighlight: true,
+    datesDisabled: ['03/06/2017', '03/21/2017'],
+    toggleActive: true,
+    defaultViewDate: { year: 1977, month: 04, day: 25 }
+  });
+
+  
 
   minutz.controls.meetingTime = $('#meetingTime').timepicker();
+
+  
 
   //Change Events
   minutz.controls.agendaTextEditor.on("tbwblur", function () {
@@ -938,14 +967,16 @@
   };
 
   $(function () {
+    meeting.Id = minutz.functions.createId();
+    minutz.functions.meetingAttendeesAjax(meeting.Id);
     _initPickers();
 
     $("#repeatType li a").click(function () {
-
       $("#repeatTypeText").text($(this).text());
-
       meeting.IsReacurance = _isReacurance($(this).text());
       meeting.ReacuranceType = $(this).text();
+      $('#reacuranceModel').modal({ keyboard: false , width : 550});
+
     });
 
     $('#meetingNameGroup input').blur(function () {
@@ -957,42 +988,58 @@
 
     $('#attendeesControl').load('/Meeting/AttendeesControl?meetingId=' + 1, 1, function (responseText, textStatus, jqXHR) {
       var meetingId = 1;
-      $('#attendees_agendaItem').select2({
-        placeholder: "Assign to attendee",
-        ajax: {
-          url: "/Meeting/Attendees?meetingId=" + meetingId,
-          dataType: 'json',
-          delay: 250,
-          data: function (params) {
-            return {
-              q: params.term, // search term
-              page: params.page
-            };
-          },
-          processResults: function (data) {
-            availibleAttendees = [];
-            availibleAttendees = data;
-            var newData = [];
-            for (var i = 0; i < data.length; i++) {
-              newData.push({ id: data[i].identity, text: data[i].fullName });
-            }
+      
+      
+      //$('#attendees_agendaItem').select2({
+      //  placeholder: "Assign to attendee",
+      //  ajax: {
+      //      url: "/Meeting/Attendees?meetingId=" + meetingId,
+      //      dataType: 'json',
+      //    delay: 250,
+      //    data: function (params) {
+      //      return {
+      //        q: params.term, // search term
+      //        page: params.page
+      //      };
+      //    },
+      //    processResults: function (data) {
+      //      availibleAttendees = [];
+      //      availibleAttendees = data;
+      //      var newData = [];
+      //      for (var i = 0; i < data.length; i++) {
+      //        newData.push({ id: data[i].identity, text: data[i].fullName });
+      //      }
 
-            return {
-              results: newData
-            };
-          },
-          cache: true
-        },
-        width: '100%'
-      });
+      //      return {
+      //        results: newData
+      //      };
+      //    },
+      //    cache: true
+      //  },
+      //  width: '100%'
+      //});
+      
     });
 
     $('#attachmentsControl').load('/Meeting/AttachmentsControl?meetingId=' + 1, 1, function (responseText, textStatus, jqXHR) {
 
     });
 
-    meeting.Id = minutz.functions.createId();
+    
+    $('#timeZones').select2({
+      data: minutz.properties.zones,
+      width: '100%'
+    });
+    
   });
+
+  minutz.functions.setAttendees = function ()
+  {
+    $('#attendees_agendaItem').select2({
+      data: minutz.properties.availibleAttendees,
+      width: '100%'
+    });
+  };
 
   minutz.functions.CreateAgendaItem = function () {
     var id = minutz.functions.createId();
@@ -1070,6 +1117,23 @@
   //    '</div>';
   //  return html;
   //};
+
+
+  minutz.functions.meetingAttendeesAjax = function (id)
+  {
+    $.ajax({
+      url: '/Meeting/Attendees?meetingId=' + id,
+      dataType: 'json',
+      type: 'GET',
+      context: document.body
+    }).done(function (data) {
+      var newData = [];
+      for (var i = 0; i < data.length; i++) {
+        minutz.properties.availibleAttendees.push({ id: data[i].identity, text: data[i].fullName });
+      }
+      minutz.functions.setAttendees();
+    });
+  };
 
   function MeetingAgendaItem(id, referanceId, agendaHeading, agendaText, meetingAttendeeId, createdDate, isComplete, duration) {
     return {
@@ -1161,9 +1225,9 @@
     }
     return true;
   };
-
+ 
   function _initPickers() {
-    //Time Picker
+    minutz.functions.getTimeZones();
     minutz.controls.meetingDuration = $('#txtDuration').durationPicker({ lang: 'en', showSeconds: false, showDays: false, onChanged: function () { console.log('test') }});
     minutz.controls.agendaItemTimepicker = $('#agendaItemTime').durationPicker({ lang: 'en', showSeconds: false, showDays: false});
     $('#agendaItemTime').change(function () {
@@ -1172,9 +1236,7 @@
        
       } else {
         agendaItem.Duration = $('#agendaItemTime').val();
-        //var seconds = agendaItem.Duration; // or "2000"
-        //seconds = parseInt(seconds); //because moment js dont know to handle number in string format
-        //var format = Math.floor(moment.duration(seconds, 'seconds').asHours()) + ':' + moment.duration(seconds, 'seconds').minutes() + ':' + moment.duration(seconds, 'seconds').seconds();
+        
         var minutes = Math.floor(agendaItem.Duration / 1000 / 60);
         var mo = moment.duration(minutes, 'minutes');
         $("#badge_" + agendaItem.Id).html('');
@@ -1323,6 +1385,14 @@
     '</div><br /></li>';
   };
   //window.setInterval(function () { minutz.functions.save(); }, 60000);
+
+  minutz.functions.getTimeZones = function ()
+  {
+    var zoneNames = moment.tz.names();
+    for (var q = 0; q < zoneNames.length; q++) {
+      minutz.properties.zones.push({ data: moment().tz(zoneNames[q]), id: zoneNames[q], attr: moment().tz(zoneNames[q]).format("Z z"), text: '( ' + moment().tz(zoneNames[q]).format("Z z") + ' )  ' + zoneNames[q].split("/")[1] });
+    }
+  };
 
   //File Upload response from the server
   Dropzone.options.dropzoneForm = {
