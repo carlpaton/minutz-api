@@ -2,7 +2,7 @@ version: '2'
 
 services:
   tzatziki.minutz:
-    image: tzatziki.minutz:dev
+    image: tzatziki/minutz:dev
     build:
       args:
         source: ${DOCKER_BUILD_SOURCE}

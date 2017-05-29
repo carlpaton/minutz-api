@@ -19,6 +19,11 @@
     <EmbeddedResource Remove="Models\**" />
     <None Remove="Models\**" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Properties\PublishProfiles\tzatzikiminutz20170421103338.pubxml" />
+    <None Remove="Properties\PublishProfiles\tzatzikiminutz20170421104729.pubxml" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="dropzone" Version="4.2.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
