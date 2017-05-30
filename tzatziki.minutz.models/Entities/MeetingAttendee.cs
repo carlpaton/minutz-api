@@ -6,7 +6,7 @@ namespace tzatziki.minutz.models.Entities
   {
     public Guid Id { get; set; }
     public string PersonIdentity { get; set; }
-    public int ReferanceId { get; set; }
+    public Guid ReferanceId { get; set; }
     public string Role { get; set; }
   }
 }
