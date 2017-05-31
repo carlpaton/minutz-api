@@ -81,10 +81,3 @@ CREATE TABLE' + @tenant +'.[MeetingAttachment] (
 EXEC sp_executesql @sql
 End
    
-
-INSERT INTO [Meeting]
-VALUES()
-
-UPDATE [Meeting]
-SET
-WHERE

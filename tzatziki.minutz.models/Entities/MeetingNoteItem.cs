@@ -7,7 +7,7 @@ namespace tzatziki.minutz.models.Entities
     public int Id { get; set; }
     public int ReferanceId { get; set; }
     public string NoteText { get; set; }
-    public int MeetingAttendeeId { get; set; }
+    public Guid MeetingAttendeeId { get; set; }
     public DateTime CreatedDate { get; set; }
   }
 }
