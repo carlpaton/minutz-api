@@ -48,7 +48,7 @@ namespace tzatziki.minutz.sqlrepository
 
     internal IEnumerable<Meeting> GetUserMeetings(string connectionString, string schema, User user)
     {
-      return ToList(schema, connectionString, $" {_meetingOwnerIdProperty} = '{user.Id.ToString()}'");
+      return ToList(schema, connectionString, $" {_meetingOwnerIdProperty} = '{user.Identity.ToString()}'");
     }
 
     internal List<Meeting> ToList(string schema, string connectionString)
@@ -210,7 +210,6 @@ namespace tzatziki.minutz.sqlrepository
       
       return $@"INSERT INTO [{schema}].[{_meetingTableName}] VALUES (
         '{meeting.Id}',
-        '{meeting.MeetingOwnerId}',
         '{meeting.Name.EmptyIfNull()}',
         '{meeting.Location.EmptyIfNull()}',
         '{meetingDate}',
@@ -225,6 +224,7 @@ namespace tzatziki.minutz.sqlrepository
         '{meeting.TimeZone.EmptyIfNull()}',
         '{string.Join(",", meeting.Tag.EmptyIfNull())}',
         '{meeting.Purpose.EmptyIfNull()}',
+        '{meeting.MeetingOwnerId}',
         '{meeting.Outcome.EmptyIfNull()}'
         )";
     }

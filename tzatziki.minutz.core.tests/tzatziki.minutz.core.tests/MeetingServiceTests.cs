@@ -40,8 +40,24 @@ namespace tzatziki.minutz.core.tests
     [TestMethod]
     public void MeetingRepository_Initiate_ShouldReturnObjectInstance()
     {
-      var model = new Meeting { Id = Guid.NewGuid(), MeetingOwnerId = "8da9e136-e578-4b17-b436-018cdeb1ebba" };
+      var model = new Meeting { Id = Guid.NewGuid(), MeetingOwnerId = "auth0|58f14a8bb21f0766553879ec", Name = "MeetingRepository_Initiate_ShouldReturnObjectInstance" };
       var instance = _meetingRepository.Get(AzureConnection, Schema, model);
+      Assert.IsNotNull(instance);
+    }
+
+    [TestMethod]
+    public void MeetingRepository_GetInstance_ShouldReturnObjectInstance()
+    {
+      var model = new Meeting { Id = Guid.Parse("EE009E00-2FB1-40C8-93C2-EBFAC93089E8"), MeetingOwnerId = "auth0|58f14a8bb21f0766553879ec" ,Name = "MeetingRepository_GetInstance_ShouldReturnObjectInstance" };
+      var instance = _meetingRepository.Get(AzureConnection, Schema, model);
+      Assert.IsNotNull(instance);
+    }
+
+    [TestMethod]
+    public void MeetingRepository_GetUserMeetings_ShouldReturnObjectCollection()
+    {
+      //var model = new Meeting { Id = Guid.Parse("EE009E00-2FB1-40C8-93C2-EBFAC93089E9"), MeetingOwnerId = "auth0|58f14a8bb21f0766553879ec", Name = "MeetingRepository_GetUserMeetings_ShouldReturnObjectCollection"};
+      var instance = _meetingRepository.Get(AzureConnection, Schema, new User { Identity = "auth0|58f14a8bb21f0766553879ec" });
       Assert.IsNotNull(instance);
     }
   }
