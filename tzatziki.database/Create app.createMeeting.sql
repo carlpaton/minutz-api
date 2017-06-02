@@ -17,6 +17,7 @@ CREATE PROCEDURE app.createMeetingSchema
         [Id] uniqueidentifier NOT NULL,
         [Name] VARCHAR (MAX) NOT NULL,
         [Location] VARCHAR (255) NULL,
+        [MeetingOwnerId] VARCHAR (255) NULL,
         [Date] DATETIME2 NULL,
         [Time] VARCHAR (255) NULL,
         [Duration] INT  NULL,
