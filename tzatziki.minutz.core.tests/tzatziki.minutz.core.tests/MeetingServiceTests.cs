@@ -26,5 +26,15 @@ namespace tzatziki.minutz.core.tests
       var tableExists = _tableService.Initiate(AzureConnection, Schema, MeetingTable, MeetingSql);
       Assert.IsTrue(tableExists);
     }
+
+    [TestMethod]
+    public void TableService_Initiate_ShourlReturnFalse()
+    {
+      var tableExists = _tableService.Initiate(AzureConnection, Schema, $"{MeetingTable}_1", MeetingSql);
+      Assert.IsFalse(tableExists);
+    }
+
+
+
   }
 }

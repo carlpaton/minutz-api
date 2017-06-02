@@ -33,16 +33,18 @@ namespace tzatziki.minutz.sqlrepository
         var result = false;
         using (SqlConnection con = new SqlConnection(connectionString))
         {
+          con.Open();
           using (SqlCommand command = new SqlCommand(Statement(schema, table), con))
           {
             using (SqlDataReader reader = command.ExecuteReader())
             {
               while (reader.Read())
               {
-                result = bool.Parse(reader[_res].ToString());
+                result = reader[_res].ToString() == "1"? true: false;
               }
             }
           }
+          con.Close();
         }
         return result;
       }
