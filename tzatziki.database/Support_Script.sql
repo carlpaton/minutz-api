@@ -23,6 +23,12 @@ EXEC app.createMeetingSchema @tenant=account_235
 --DROP TABLES
 DROP TABLE [account_235].[User]
 
+DROP TABLE [account_235].[Meeting]
+DROP TABLE [account_235].[MeetingAttendee]
+DROP TABLE [account_235].[MeetingAgenda]
+DROP TABLE [account_235].[MeetingAttachment]
+DROP TABLE [account_235].[MeetingNote]
+DROP TABLE [account_235].[MeetingAction]
 
 --DELETE FROM TABLE
 
@@ -36,9 +42,7 @@ UPDATE [app].Person SET InstanceId = null WHERE id = 11
 SELECT * FROM [app].Person
 SELECT * FROM app.Instance
 
-CREATE PROCEDURE [app].[](@table NVARCHAR(100),@table NVARCHAR(100))
-AS
-BEGIN
+
 IF EXISTS (SELECT 1 
            FROM [database].INFORMATION_SCHEMA.TABLES 
            WHERE TABLE_TYPE='BASE TABLE' 
@@ -46,14 +50,6 @@ IF EXISTS (SELECT 1
            TABLE_SCHEMA = 'app1' )
    SELECT 1 AS res ELSE SELECT 0 AS res;
 END
-
-IF EXISTS (SELECT 1
-           FROM INFORMATION_SCHEMA.TABLES 
-           WHERE TABLE_TYPE='BASE TABLE' 
-           AND TABLE_NAME='Person' AND 
-           TABLE_SCHEMA = 'app1' )
-   SELECT 1 AS res ELSE SELECT 0 AS res;
-
 
 CREATE PROCEDURE app.createMeetingSchema 
  (@tenant NVARCHAR(100))
@@ -65,6 +61,7 @@ CREATE PROCEDURE app.createMeetingSchema
         [Name] VARCHAR (MAX) NOT NULL,
         [Location] VARCHAR (255) NULL,
         [Date] DATETIME2 NULL,
+		[UpdatedDate] DATETIME2 NULL,
         [Time] VARCHAR (255) NULL,
         [Duration] INT  NULL,
         [IsReacurance] BIT  NULL,

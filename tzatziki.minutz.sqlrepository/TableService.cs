@@ -61,11 +61,13 @@ namespace tzatziki.minutz.sqlrepository
         var result = false;
         using (SqlConnection con = new SqlConnection(connectionString))
         {
+          con.Open();
           using (SqlCommand command = new SqlCommand($"EXEC [{_appSchema}].[{sqlStatement}]@tenant={schema}", con))
           {
             command.ExecuteNonQuery();
             result = true;
           }
+          con.Close();
         }
         return result;
       }
