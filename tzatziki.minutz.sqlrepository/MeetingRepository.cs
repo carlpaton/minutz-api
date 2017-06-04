@@ -41,6 +41,10 @@ namespace tzatziki.minutz.sqlrepository
         {
           instance = ToMeeting(connectionString, schema, meeting, false);
         }
+        else
+        {
+          instance = ToMeeting(connectionString, schema, meeting, true);
+        }
         return instance;
       }
       throw new Exception($"Error retrieving the meeting instance for: {schema}, {meeting.Id}");
@@ -183,21 +187,21 @@ namespace tzatziki.minutz.sqlrepository
       var isPrivate = meeting.IsPrivate == true ? 1 : 0;
       var isLocked = meeting.IsLocked == true ? 1 : 0;
       return $@"UPDATE [{schema}].[Meeting]
-        SET [Name] = {meeting.Name},
-        [Location] ={meeting.Location},
-        [Date] = {meeting.Date},
-        [Time] = {meeting.Time},
-        [Duration] = {meeting.Duration},
+        SET [Name] = '{meeting.Name.EmptyIfNull()}',
+        [Location] ='{meeting.Location.EmptyIfNull()}',
+        [Date] = '{meeting.Date}',
+        [Time] = '{meeting.Time.EmptyIfNull()}',
+        [Duration] = '{meeting.Duration.EmptyIfNull()}',
         [IsReacurance] = {isReacurance},
         [IsPrivate] = {isPrivate},
-        [ReacuranceType] = {meeting.ReacuranceType},
+        [ReacuranceType] = '{meeting.ReacuranceType}',
         [IsLocked] = {isLocked},
         [IsFormal] = {isFormal},
-        [TimeZone] = {meeting.TimeZone},
-        [Tag] = {string.Join(",", meeting.Tag)},
-        [Purpose] = {meeting.Purpose},
-        [Outcome] = {meeting.Outcome}
-        WHERE [Id] = {meeting.Id}";
+        [TimeZone] = '{meeting.TimeZone.EmptyIfNull()}',
+        [Tag] = '{string.Join(",", meeting.Tag)}',
+        [Purpose] = '{meeting.Purpose.EmptyIfNull()}',
+        [Outcome] = '{meeting.Outcome.EmptyIfNull()}'
+        WHERE [Id] = '{meeting.Id}'";
     }
 
     internal string InsertMeetingStatement(string schema, Meeting meeting)
@@ -222,7 +226,7 @@ namespace tzatziki.minutz.sqlrepository
         {isLocked},
         {isFormal},
         '{meeting.TimeZone.EmptyIfNull()}',
-        '{string.Join(",", meeting.Tag.EmptyIfNull())}',
+        '{string.Join(",", meeting.Tag)}',
         '{meeting.Purpose.EmptyIfNull()}',
         '{meeting.MeetingOwnerId}',
         '{meeting.Outcome.EmptyIfNull()}'
