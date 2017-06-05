@@ -21,7 +21,7 @@ EXEC app.createMeetingSchema @tenant=account_235
 
 
 --DROP TABLES
-DROP TABLE [account_235].[User]
+DROP TABLE [account_9309628653564ed19e9d0d44f2580b06].[User]
 
 DROP TABLE [account_235].[Meeting]
 DROP TABLE [account_235].[MeetingAttendee]
@@ -34,14 +34,29 @@ DROP TABLE [account_235].[MeetingAction]
 
 DELETE FROM app.Instance
 
+
+
+-- drop table [account_8da9e136e5784b17b436018cdeb1ebba].[User]
+
 --UPDATE TABLE
 UPDATE [app].Person SET InstanceId = null WHERE id = 11
 
+--f41a450e-715d-4491-8e9f-67ecfc0d9da8
+--MINE 31FB6E5D-3ADC-14BD-1FB8-6C1A4228D063
+SELECT * FROM app.Instance
+SELECT * FROM [app].Person
 
 --SELECT FROM TABLE
+SELECT * FROM [account_9309628653564ed19e9d0d44f2580b06].[User]
 SELECT * FROM [app].Person
 SELECT * FROM app.Instance
+SELECT * FROM account_235.Meeting
 
+SELECT * FROM [account_f41a450e715d44918e9f67ecfc0d9da8].[Meeting]
+
+SELECT * FROM [account_235].[Meeting] WHERE  Id = '5423f6fb-b764-4f27-bb63-26b04c72cba6'
+--DELETE
+DELETE FROM account_235.Meeting WHERE Id = '0F5301C5-6B2A-43DA-9CCB-772C27E0B5BA'
 
 IF EXISTS (SELECT 1 
            FROM [database].INFORMATION_SCHEMA.TABLES 
@@ -126,3 +141,23 @@ CREATE TABLE [' + @tenant +'].[MeetingAttachment] (
 EXEC sp_executesql @sql
 End
 
+
+INSERT INTO [account_235].[Meeting] VALUES (
+        'e577cfad-0f93-480f-b7e6-92dada35bd61',
+        '8da9e136-e578-4b17-b436-018cdeb1ebba',
+        '',
+        '',
+        '6/2/2017 7:28:18 PM',
+        '6/2/2017 7:28:18 PM',
+        '',
+        '0',
+         0,
+         0,
+         '',
+         0,
+         0,
+         '',
+        '',
+        '',
+        ''
+        )

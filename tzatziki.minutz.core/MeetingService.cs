@@ -12,9 +12,9 @@ namespace tzatziki.minutz.core
       _meetingRepository = meetingRepository;
     }
 
-    public Meeting Get(string connectionString, string schema, Meeting meeting)
+    public Meeting Get(string connectionString, string schema, Meeting meeting, bool read = false)
     {
-      return _meetingRepository.Get(connectionString, schema, meeting);
+      return _meetingRepository.Get(connectionString, schema, meeting, read);
     }
 
     public IEnumerable<Meeting> Get(string connectionString, string schema, User user)

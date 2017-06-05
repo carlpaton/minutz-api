@@ -32,7 +32,7 @@ namespace tzatziki.minutz.sqlrepository
       return result;
     }
 
-    public Meeting Get(string connectionString, string schema, Meeting meeting)
+    public Meeting Get(string connectionString, string schema, Meeting meeting, bool read = false)
     {
       if (_tableService.Initiate(connectionString, schema, _meetingTableName, _createMeetingSchemaStoredProcedure))
       {
@@ -43,7 +43,14 @@ namespace tzatziki.minutz.sqlrepository
         }
         else
         {
-          instance = ToMeeting(connectionString, schema, meeting, true);
+          if (read)
+          {
+            return instance;
+          }
+          else
+          {
+            instance = ToMeeting(connectionString, schema, meeting, true);
+          }
         }
         return instance;
       }
