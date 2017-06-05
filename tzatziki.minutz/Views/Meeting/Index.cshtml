@@ -970,7 +970,21 @@
   };
 
   $(function () {
-    meeting.Id = minutz.functions.createId();
+
+    if (document.location.search.length) {
+      if (document.location.search.match("id").length > 0) {
+        var query = document.location.search.match("id").input.split('?')[1];
+        if (query.includes("id"))
+        {
+          var id = query.split('=')[1];
+          minutz.functions.getAjax(id);
+        }
+      }
+    } else {
+      meeting.Id = minutz.functions.createId();
+    }
+
+    
     minutz.functions.meetingAttendeesAjax(meeting.Id);
     _initPickers();
 
@@ -1202,6 +1216,22 @@
     } else {
       minutz.functions.notifyMe(MinutzTitle, "Oops something went wrong.", "fa fa-info")
     }
+  };
+
+  minutz.functions.getAjax = function (id)
+  {
+    $.ajax({
+      type: minutz.properties.GET,
+      url: "Meeting/GetMeeting?id=" + id,
+      data: meeting,
+      success: function (data) {
+       // _updateUi(data);
+      },
+      error: function (XMLHttpRequest, textStatus, errorThrown) {
+        //minutz.functions.notifyMe(MinutzTitle, textStatus + "  " + errorThrown, minutz.properties.infoIcon);
+      },
+      dataType: minutz.properties.JSON
+    });
   };
 
   minutz.functions.saveAjax = function () {

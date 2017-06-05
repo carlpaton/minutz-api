@@ -43,6 +43,8 @@ namespace tzatziki.minutz
       services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
       //db
+      services.AddTransient<ITableService, TableService>();
+      services.AddTransient<IMeetingRepository, MeetingRepository>();
       services.AddTransient<IInstanceRepository, InstanceRepository>();
       services.AddTransient<IPersonRepository, PersonRepository>();
       services.AddTransient<IUserRepository, UserRepository>();
@@ -53,6 +55,7 @@ namespace tzatziki.minutz
       services.AddTransient<IInstanceService, InstanceService>();
       services.AddTransient<IUserService, UserService>();
       services.AddTransient<IAuth0Repository, Repository>();
+      services.AddTransient<IMeetingService, MeetingService>();
     }
 
     public void Configure(IApplicationBuilder app,

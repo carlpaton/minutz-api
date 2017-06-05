@@ -19,15 +19,20 @@ namespace tzatziki.minutz.Controllers
   public class MeetingController : BaseController
   {
     private IHostingEnvironment _environment;
+    private readonly IMeetingService _meetingService;
 
     public MeetingController(
       ITokenStringHelper tokenStringHelper,
       IProfileService profileService,
       IInstanceService instanceService,
       IOptions<AppSettings> settings,
-      IUserService userService, IHostingEnvironment environment) : base(settings, profileService, tokenStringHelper, instanceService, userService)
+      IUserService userService, 
+      IHostingEnvironment environment,
+      IMeetingService meetingService
+    ) : base(settings, profileService, tokenStringHelper, instanceService, userService)
     {
       _environment = environment;
+      _meetingService = meetingService;
     }
 
     public IActionResult Index()
@@ -36,14 +41,28 @@ namespace tzatziki.minutz.Controllers
       return View(new Meeting { });
     }
 
+    [HttpGet]
+    [Authorize]
+    public JsonResult GetMeeting(string id)
+    {
+      var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
+      var schema = user.InstanceId.ToSchemaString();
+      var data = _meetingService.Get(AppSettings.ConnectionStrings.AzureConnection, schema, new Meeting { Id =  Guid.Parse(id)  }, true);
+      return Json(data);
+    }
+
     [HttpPost]
+    [Authorize]
     public JsonResult Save(Meeting meeting)
     {
       if (string.IsNullOrEmpty(meeting.Name))
         meeting.Name = GetName();
+
       if (meeting.Id == Guid.Empty)
         meeting.Id = Guid.NewGuid();
-
+      var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
+      var schema = user.InstanceId.ToSchemaString();
+      _meetingService.Get(AppSettings.ConnectionStrings.AzureConnection,schema, meeting);
       return Json(meeting);
     }
 

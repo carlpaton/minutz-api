@@ -46,6 +46,7 @@ namespace tzatziki.minutz.sqlrepository
 
           users = new List<User>();
         }
+        con.Close();
       }
 
       return users.FirstOrDefault(i => i.Identity == userProfile.UserId);

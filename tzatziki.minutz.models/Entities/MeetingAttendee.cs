@@ -1,10 +1,12 @@
-﻿namespace tzatziki.minutz.models.Entities
+﻿using System;
+
+namespace tzatziki.minutz.models.Entities
 {
   public class MeetingAttendee
   {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string PersonIdentity { get; set; }
-    public int ReferanceId { get; set; }
+    public Guid ReferanceId { get; set; }
     public string Role { get; set; }
   }
 }

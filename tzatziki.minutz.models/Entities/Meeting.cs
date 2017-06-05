@@ -11,9 +11,11 @@ namespace tzatziki.minutz.models.Entities
     public bool IsLocked { get; set; }
 
     public Guid Id { get; set; }
+    public string MeetingOwnerId { get; set; }
     public string Name { get; set; }
     public string Location { get; set; }
     public DateTime Date { get; set; }
+    public DateTime UpdatedDate { get; set; }
     public string Time { get; set; }
     public int Duration { get; set; }
     public bool IsReacurance { get; set; }
