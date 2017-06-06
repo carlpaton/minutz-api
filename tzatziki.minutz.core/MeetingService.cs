@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using tzatziki.minutz.interfaces;
+using tzatziki.minutz.models.Auth;
 using tzatziki.minutz.models.Entities;
 
 namespace tzatziki.minutz.core
@@ -17,7 +18,7 @@ namespace tzatziki.minutz.core
       return _meetingRepository.Get(connectionString, schema, meeting, read);
     }
 
-    public IEnumerable<Meeting> Get(string connectionString, string schema, User user)
+    public IEnumerable<Meeting> Get(string connectionString, string schema, UserProfile user)
     {
       return _meetingRepository.Get(connectionString, schema, user);
     }

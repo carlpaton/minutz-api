@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using tzatziki.minutz.interfaces;
+using tzatziki.minutz.models.Auth;
 using tzatziki.minutz.models.Entities;
 using tzatziki.minutz.sqlrepository;
 
@@ -57,7 +58,7 @@ namespace tzatziki.minutz.core.tests
     public void MeetingRepository_GetUserMeetings_ShouldReturnObjectCollection()
     {
       //var model = new Meeting { Id = Guid.Parse("EE009E00-2FB1-40C8-93C2-EBFAC93089E9"), MeetingOwnerId = "auth0|58f14a8bb21f0766553879ec", Name = "MeetingRepository_GetUserMeetings_ShouldReturnObjectCollection"};
-      var instance = _meetingRepository.Get(AzureConnection, Schema, new User { Identity = "auth0|58f14a8bb21f0766553879ec" });
+      var instance = _meetingRepository.Get(AzureConnection, Schema, new UserProfile { ClientID = "auth0|58f14a8bb21f0766553879ec" });
       Assert.IsNotNull(instance);
     }
   }

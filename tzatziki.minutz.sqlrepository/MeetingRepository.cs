@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using tzatziki.minutz.interfaces;
+using tzatziki.minutz.models.Auth;
 using tzatziki.minutz.models.Entities;
 
 namespace tzatziki.minutz.sqlrepository
@@ -19,7 +20,7 @@ namespace tzatziki.minutz.sqlrepository
       _tableService = tableService;
     }
 
-    public IEnumerable<Meeting> Get(string connectionString, string schema, User user)
+    public IEnumerable<Meeting> Get(string connectionString, string schema, UserProfile user)
     {
       var result = new List<Meeting>();
       if (_tableService.Initiate(connectionString, schema, _meetingTableName, _createMeetingSchemaStoredProcedure))
@@ -57,9 +58,9 @@ namespace tzatziki.minutz.sqlrepository
       throw new Exception($"Error retrieving the meeting instance for: {schema}, {meeting.Id}");
     }
 
-    internal IEnumerable<Meeting> GetUserMeetings(string connectionString, string schema, User user)
+    internal IEnumerable<Meeting> GetUserMeetings(string connectionString, string schema, UserProfile user)
     {
-      return ToList(schema, connectionString, $" {_meetingOwnerIdProperty} = '{user.Identity.ToString()}'");
+      return ToList(schema, connectionString, $" {_meetingOwnerIdProperty} = '{user.UserId.ToString()}'");
     }
 
     internal List<Meeting> ToList(string schema, string connectionString)

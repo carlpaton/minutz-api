@@ -43,6 +43,16 @@ namespace tzatziki.minutz.Controllers
 
     [HttpGet]
     [Authorize]
+    public JsonResult GetMeetings()
+    {
+      var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
+      var schema = user.InstanceId.ToSchemaString();
+      var data = _meetingService.Get(AppSettings.ConnectionStrings.AzureConnection, schema, user);
+      return Json(data);
+    }
+
+    [HttpGet]
+    [Authorize]
     public JsonResult GetMeeting(string id)
     {
       var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
