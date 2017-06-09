@@ -106,6 +106,7 @@ namespace tzatziki.minutz.sqlrepository
       var result = new List<User>();
       using (SqlConnection con = new SqlConnection(connectionString))
       {
+        con.Open();
         using (SqlCommand command = new SqlCommand(SelectUserStatement(schema, userProfile.UserId), con))
         {
           using (SqlDataReader reader = command.ExecuteReader())
@@ -116,6 +117,7 @@ namespace tzatziki.minutz.sqlrepository
             }
           }
         }
+        con.Close();
       }
       return result;
     }
@@ -125,6 +127,7 @@ namespace tzatziki.minutz.sqlrepository
       var result = new List<User>();
       using (SqlConnection con = new SqlConnection(connectionString))
       {
+        con.Open();
         using (SqlCommand command = new SqlCommand(SelectUsersStatement(schema), con))
         {
           using (SqlDataReader reader = command.ExecuteReader())
@@ -135,6 +138,7 @@ namespace tzatziki.minutz.sqlrepository
             }
           }
         }
+        con.Close();
       }
       return result;
     }
@@ -143,6 +147,7 @@ namespace tzatziki.minutz.sqlrepository
     {
       using (SqlConnection con = new SqlConnection(connectionString))
       {
+        con.Open();
         using (SqlCommand command = new SqlCommand(UpdateUserSatement(schema, user), con))
         {
           try
@@ -154,6 +159,7 @@ namespace tzatziki.minutz.sqlrepository
             throw new Exception($"Issue inserting the user record. {ex.Message}", ex.InnerException);
           }
         }
+        con.Close();
         return ToList(schema, connectionString, user).FirstOrDefault(i => i.Identity == user.UserId);
       }
     }
@@ -162,6 +168,7 @@ namespace tzatziki.minutz.sqlrepository
     {
       using (SqlConnection con = new SqlConnection(connectionString))
       {
+        con.Open();
         using (SqlCommand command = new SqlCommand(UpdateUserSatement(schema, user), con))
         {
           try
@@ -173,6 +180,7 @@ namespace tzatziki.minutz.sqlrepository
             throw new Exception($"Issue inserting the user record. {ex.Message}", ex.InnerException);
           }
         }
+        con.Close();
         return user;
       }
     }

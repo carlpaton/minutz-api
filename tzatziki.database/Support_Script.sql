@@ -53,6 +53,7 @@ SELECT * FROM app.Instance
 SELECT * FROM account_235.Meeting
 
 SELECT * FROM [account_f41a450e715d44918e9f67ecfc0d9da8].[Meeting]
+SELECT * FROM [account_f41a450e715d44918e9f67ecfc0d9da8].[MeetingAgenda]
 
 SELECT * FROM [account_235].[Meeting] WHERE  Id = '5423f6fb-b764-4f27-bb63-26b04c72cba6'
 --DELETE
@@ -161,3 +162,25 @@ INSERT INTO [account_235].[Meeting] VALUES (
         '',
         ''
         )
+
+
+
+BEGIN
+CREATE DATABASE minutz
+END;
+GO 
+USE minutz
+GO
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE NAME='minutz' AND xtype='U')
+BEGIN
+	CREATE TABLE Demo
+	(
+		id INT NULL,
+		name VARCHAR(200) NULL,
+	)
+END
+
+SELECT * FROM Demo
+INSERT INTO Demo values(1,'Lee');
+SELECT * FROM Demo
+
