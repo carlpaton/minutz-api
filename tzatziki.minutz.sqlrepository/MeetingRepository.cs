@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using tzatziki.minutz.interfaces;
@@ -11,6 +12,7 @@ namespace tzatziki.minutz.sqlrepository
   public class MeetingRepository : IMeetingRepository
   {
     private const string _createMeetingSchemaStoredProcedure = "createMeetingSchema";
+    private const string _deleteMeetingSchemaStoredProcedure = "deleteMeetingSchema";
     private const string _meetingTableName = "Meeting";
     private const string _meetingAgendaTableName = "MeetingAgenda";
     private const string _meetingOwnerIdProperty = "MeetingOwnerId";
@@ -24,6 +26,23 @@ namespace tzatziki.minutz.sqlrepository
     public MeetingRepository(ITableService tableService)
     {
       _tableService = tableService;
+    }
+
+    public void DeleteMeetingSchema(string connectionString, string schema, UserProfile user)
+    {
+      using (SqlConnection con = new SqlConnection(connectionString))
+      {
+         using (SqlCommand command = new SqlCommand(_deleteMeetingSchemaStoredProcedure, con))
+         {
+          command.CommandType = CommandType.StoredProcedure;
+          command.Parameters.Add(new SqlParameter("@tenant", schema));
+          command.Parameters.Add(new SqlParameter("@userIdentity", user.InstanceId));
+          command.Parameters.Add(new SqlParameter("@instanceId", schema.Split('_')[1]));
+          con.Open();
+          command.ExecuteNonQuery();
+          con.Close();
+         }
+      }
     }
 
     public IEnumerable<Meeting> Get(string connectionString, string schema, UserProfile user)
@@ -47,19 +66,31 @@ namespace tzatziki.minutz.sqlrepository
         if (instance == null)
         {
           instance = ToMeeting(connectionString, schema, meeting, false);
+          var collectionFilter = $" ReferanceId = '{instance.Id}'";
+          instance.MeetingAgendaCollection = ToMeetingAgenda(connectionString, schema, collectionFilter).ToList();
+          instance.MeetingAttendeeCollection = ToMeetingAttendee(connectionString, schema, collectionFilter).ToList();
+          instance.MeetingNoteCollection = ToMeetingNote(connectionString, schema, collectionFilter).ToList();
+          instance.MeetingAttachmentCollection = ToMeetingAttachment(connectionString, schema, collectionFilter).ToList();
         }
         else
         {
           if (read)
           {
-            //get the agenda items
-            var agendCollection = ToMeetingAgenda(connectionString, schema, $" Id = '{meeting.Id}'");
-
+            var collectionFilter = $" ReferanceId = '{instance.Id}'";
+            instance.MeetingAgendaCollection = ToMeetingAgenda(connectionString, schema, collectionFilter).ToList();
+            instance.MeetingAttendeeCollection = ToMeetingAttendee(connectionString, schema, collectionFilter).ToList();
+            instance.MeetingNoteCollection = ToMeetingNote(connectionString, schema, collectionFilter).ToList();
+            instance.MeetingAttachmentCollection = ToMeetingAttachment(connectionString, schema, collectionFilter).ToList();
             return instance;
           }
           else
           {
             instance = ToMeeting(connectionString, schema, meeting, true);
+            var collectionFilter = $" ReferanceId = '{instance.Id}'";
+            instance.MeetingAgendaCollection = ToMeetingAgenda(connectionString, schema, collectionFilter).ToList();
+            instance.MeetingAttendeeCollection = ToMeetingAttendee(connectionString, schema, collectionFilter).ToList();
+            instance.MeetingNoteCollection = ToMeetingNote(connectionString, schema, collectionFilter).ToList();
+            instance.MeetingAttachmentCollection = ToMeetingAttachment(connectionString, schema, collectionFilter).ToList();
           }
         }
         return instance;

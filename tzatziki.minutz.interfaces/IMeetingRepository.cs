@@ -16,5 +16,7 @@ namespace tzatziki.minutz.interfaces
     Meeting Get(string connectionString, string schema, Meeting meeting, bool read = false);
 
     IEnumerable<Meeting> Get(string connectionString, string schema, UserProfile user);
+
+    void DeleteMeetingSchema(string connectionString, string schema, UserProfile user);
   }
 }

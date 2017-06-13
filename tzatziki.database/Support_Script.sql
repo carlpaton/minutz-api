@@ -34,6 +34,7 @@ DROP TABLE [account_235].[MeetingAction]
 
 DELETE FROM app.Instance
 
+app.deleteMeetingSchema 
 
 
 -- drop table [account_8da9e136e5784b17b436018cdeb1ebba].[User]
