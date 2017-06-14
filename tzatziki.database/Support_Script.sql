@@ -17,18 +17,31 @@ DROP PROCEDURE [app].[createMeetingSchema]
 --CALLING STREDPROCEDURES
 EXEC app.createInstanceSchema @tenant=account_235
 EXEC app.createInstanceUser @tenant=account_235
-EXEC app.createMeetingSchema @tenant=account_235
+EXEC app.createMeetingSchema @tenant=account_9309628653564ed19e9d0d44f2580b06
 
-
+CREATE PROCEDURE [app].[createMeetingSchema] 
 --DROP TABLES
 DROP TABLE [account_9309628653564ed19e9d0d44f2580b06].[User]
 
-DROP TABLE [account_235].[Meeting]
-DROP TABLE [account_235].[MeetingAttendee]
-DROP TABLE [account_235].[MeetingAgenda]
-DROP TABLE [account_235].[MeetingAttachment]
-DROP TABLE [account_235].[MeetingNote]
-DROP TABLE [account_235].[MeetingAction]
+select * from  [account_f41a450e715d44918e9f67ecfc0d9da8].[Meeting]
+select * from  [account_f41a450e715d44918e9f67ecfc0d9da8].[MeetingAttendee] where ReferenceId '63e7c7e1-db80-9e64-028f-e2c75921ada0'
+select * from  [account_f41a450e715d44918e9f67ecfc0d9da8].[MeetingAgenda] where ReferanceId = '63e7c7e1-db80-9e64-028f-e2c75921ada0'
+DROP TABLE [account_f41a450e715d44918e9f67ecfc0d9da8].[MeetingAttachment]
+DROP TABLE [account_f41a450e715d44918e9f67ecfc0d9da8].[MeetingNote]
+DROP TABLE [account_f41a450e715d44918e9f67ecfc0d9da8].[MeetingAction]
+
+select * from  [account_f41a450e715d44918e9f67ecfc0d9da8].[MeetingAgenda]
+INSERT INTO [account_f41a450e715d44918e9f67ecfc0d9da8].[MeetingAgenda] VALUES (
+        '488ce342-4a44-95f3-299a-2a57b5bcd786',
+        'c5f72937-d3b0-03a6-15a2-b873e0ba282a',
+        'bar',
+        '',
+        'meetingattendeeId',
+        '0',
+        '0001/01/01 12:00:00 AM',
+        0
+        )
+
 
 --DELETE FROM TABLE
 
@@ -36,7 +49,8 @@ DELETE FROM app.Instance
 
 app.deleteMeetingSchema 
 
-
+-- 12	google-oauth2|117785067536320807071	Lee-Roy Ashworth	NULL	NULL	leeroya@gmail.com	Admin	1	
+-- f41a450e-715d-4491-8e9f-67ecfc0d9da8
 -- drop table [account_8da9e136e5784b17b436018cdeb1ebba].[User]
 
 --UPDATE TABLE
@@ -46,8 +60,10 @@ UPDATE [app].Person SET InstanceId = null WHERE id = 11
 --MINE 31FB6E5D-3ADC-14BD-1FB8-6C1A4228D063
 SELECT * FROM app.Instance
 SELECT * FROM [app].Person
-
+SELECT * FROM [account_f41a450e715d44918e9f67ecfc0d9da8].[User]
 --SELECT FROM TABLE
+UPDATE [account_f41a450e715d44918e9f67ecfc0d9da8].[Meeting] SET MeetingOwnerId = 'google-oauth2|117785067536320807071' WHERE Id = 1
+SELECT * FROM [account_f41a450e715d44918e9f67ecfc0d9da8].[Meeting]
 SELECT * FROM [account_9309628653564ed19e9d0d44f2580b06].[User]
 SELECT * FROM [app].Person
 SELECT * FROM app.Instance
