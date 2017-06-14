@@ -369,7 +369,6 @@ namespace tzatziki.minutz.sqlrepository
     {
       return $"SELECT * FROM [{schema}].[{_meetingTableName}] WHERE {filter}";
     }
-
     internal string SelectMeetingAgendaStatement(string schema, String filter)
     {
       return $"SELECT * FROM [{schema}].[{_meetingAgendaTableName}] WHERE {filter}";
@@ -398,7 +397,7 @@ namespace tzatziki.minutz.sqlrepository
       var isReacurance = meeting.IsReacurance == true ? 1 : 0;
       var isPrivate = meeting.IsPrivate == true ? 1 : 0;
       var isLocked = meeting.IsLocked == true ? 1 : 0;
-      return $@"UPDATE [{schema}].[Meeting]
+      return $@"UPDATE [{schema}].[{_meetingTableName}]
         SET [Name] = '{meeting.Name.EmptyIfNull()}',
         [Location] ='{meeting.Location.EmptyIfNull()}',
         [Date] = '{meeting.Date}',
@@ -415,11 +414,10 @@ namespace tzatziki.minutz.sqlrepository
         [Outcome] = '{meeting.Outcome.EmptyIfNull()}'
         WHERE [Id] = '{meeting.Id}'";
     }
-
     internal string UpdateMeetingAgendaItemStatement(string schema, MeetingAgendaItem meetingAgendaItem)
     {
       var isComplete = meetingAgendaItem.IsComplete == true ? 1 : 0;
-      return $@"UPDATE [{schema}].[_meetingAgendaTableName] SET
+      return $@"UPDATE [{schema}].[{_meetingAgendaTableName}] SET
         [ReferanceId] = '{meetingAgendaItem.ReferanceId}',
         [AgendaHeading] = '{meetingAgendaItem.AgendaHeading.EmptyIfNull()}',
         [AgendaText] = '{meetingAgendaItem.AgendaText.EmptyIfNull()}',
@@ -429,7 +427,6 @@ namespace tzatziki.minutz.sqlrepository
         [IsComplete] = {isComplete}
         WHERE [Id] = '{meetingAgendaItem.Id}'";
     }
-
     internal string UpdateMeetingAttachmentStatement(string schema, MeetingAttachmentItem meetingAttachmentItem)
     {
       return $@"UPDATE [{schema}].[{_meetingAttachment}] SET
@@ -458,7 +455,7 @@ namespace tzatziki.minutz.sqlrepository
       var isPrivate = meeting.IsPrivate == true ? 1 : 0;
       var isLocked = meeting.IsLocked == true ? 1 : 0;
       var meetingDate = meeting.Date == DateTime.MinValue ? DateTime.UtcNow.ToString() : meeting.Date.ToUniversalTime().ToString();
-
+      
       return $@"INSERT INTO [{schema}].[{_meetingTableName}] VALUES (
         '{meeting.Id}',
         '{meeting.Name.EmptyIfNull()}',
@@ -479,7 +476,6 @@ namespace tzatziki.minutz.sqlrepository
         '{meeting.Outcome.EmptyIfNull()}'
         )";
     }
-
     internal string InsertMeetingAgendaItemStatement(string schema, MeetingAgendaItem meetingAgendaItem)
     {
       var isComplete = meetingAgendaItem.IsComplete == true ? 1 : 0;
@@ -495,7 +491,6 @@ namespace tzatziki.minutz.sqlrepository
         {isComplete}
         )";
     }
-
     internal string InsertMeetingAttendeeStatement(string schema, MeetingAttendee meetingAttendee)
     {
       return $@"INSERT INTO [{schema}].[{_meetingAttendee}] VALUES (
@@ -505,7 +500,6 @@ namespace tzatziki.minutz.sqlrepository
         '{meetingAttendee.Role.EmptyIfNull()}'
         )";
     }
-
     internal string InsertMeetingNoteStatement(string schema, MeetingNoteItem meetingNote)
     {
       return $@"INSERT INTO [{schema}].[{_meetingNote}] VALUES (
@@ -516,7 +510,6 @@ namespace tzatziki.minutz.sqlrepository
         '{meetingNote.CreatedDate.ToString()}'
         )";
     }
-
     internal string InsertMeetingAttachmentStatement(string schema, MeetingAttachmentItem meetingAttachmentItem)
     {
       return $@"INSERT INTO [{schema}].[{_meetingAttachment}] VALUES (

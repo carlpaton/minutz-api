@@ -41,6 +41,7 @@ namespace tzatziki.minutz.Controllers
       return View(new Meeting { });
     }
 
+
     [HttpGet]
     [Authorize]
     public JsonResult GetMeetings()
@@ -72,6 +73,15 @@ namespace tzatziki.minutz.Controllers
         meeting.Id = Guid.NewGuid();
       var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
       var schema = user.InstanceId.ToSchemaString();
+
+      if (meeting.MeetingOwnerId == null) meeting.MeetingOwnerId = user.UserId;
+
+      if (meeting.MeetingAgendaCollection == null) meeting.MeetingAgendaCollection = new List<MeetingAgendaItem>();
+      if (meeting.MeetingActionCollection == null) meeting.MeetingActionCollection = new List<ActionItem>();
+      if (meeting.MeetingAttachmentCollection == null) meeting.MeetingAttachmentCollection = new List<MeetingAttachmentItem>();
+      if (meeting.MeetingAttendeeCollection == null) meeting.MeetingAttendeeCollection = new List<MeetingAttendee>();
+      if (meeting.MeetingNoteCollection == null) meeting.MeetingNoteCollection = new List<MeetingNoteItem>();
+
       _meetingService.Get(AppSettings.ConnectionStrings.AzureConnection,schema, meeting);
       return Json(meeting);
     }
