@@ -1187,7 +1187,26 @@
     console.log(current);
     console.log($('#agendaText').val());
   });
-  minutz.controls.agendaTitle.blur(function () { console.log('agenda title '); });
+  minutz.controls.agendaTitle.blur(function ()
+  {
+    $("#agendaItems li").each(function (index) {
+      var listItemId = $($(this)[0]).attr('id').split('_')[1];
+      var oldText = $('.' + listItemId).text();
+      console.log(oldText);
+      //$('.' + listItemId).text();
+      var newtext = $("#txtAgendaTitleQuick").val();
+      console.log(newtext);
+      if (listItemId == meeting.SelectedAgendaItemId)
+      {
+        $('.' + listItemId).text(newtext);
+      }
+      
+      //console.log(listItemId);
+      //console.log(index);
+      //console.log($(this));
+    });
+    console.log('agenda title ');
+  });
   minutz.controls.agendaTitle.on('change keydown paste input', function () {
     minutz.functions.updateAgendaTextControl($("#txtAgendaTitle").val());
   });
@@ -1341,14 +1360,14 @@
 
   function MeetingAgendaItem(id, referanceId, agendaHeading, agendaText, meetingAttendeeId, createdDate, isComplete, duration) {
     return {
-      Id: id,
-      ReferanceId: referanceId,
-      AgendaHeading: agendaHeading,
-      AgendaText: agendaText,
-      MeetingAttendeeId: meetingAttendeeId,
-      Duration: duration,
-      CreatedDate: createdDate,
-      IsComplete: isComplete
+      id: id,
+      referanceId: referanceId,
+      agendaHeading: agendaHeading,
+      agendaText: agendaText,
+      meetingAttendeeId: meetingAttendeeId,
+      duration: duration,
+      createdDate: createdDate,
+      isComplete: isComplete
     };
   };
 
@@ -1464,9 +1483,10 @@
 
   minutz.functions.displayAgendaItem = function (baseObject) {
     var selectedItem = minutz.functions.find(meeting.MeetingAgendaCollection, baseObject.id);
-    meeting.SelectedAgendaItemId = selectedItem.Id;
-    $('#agendaText').trumbowyg('html', selectedItem.AgendaText);
-    minutz.functions.save();
+    meeting.SelectedAgendaItemId = selectedItem.id;
+    minutz.functions.setValue('txtAgendaTitle', selectedItem.agendaHeading);
+    $('#agendaText').trumbowyg('html', selectedItem.agendaText);
+    //minutz.functions.save();
   };
 
   minutz.functions.durationpicker = function (controlname) {
@@ -1606,7 +1626,7 @@
     return '<li id="_' + id + '" class="item">'
       + '<br /><div class="row" style="cursor: pointer;" >'
       + '<div class="col-md-7" >'
-      + '<div onclick="minutz.functions.agendaSelect(\'' + id + '\')" class="title" data-id="' + id + '" style="padding-left:10px; text-overflow: ellipsis;  overflow: hidden; white-space: nowrap;"><span class="badge">' + number + ' </span> ' + title + '</div>'
+      + '<div onclick="minutz.functions.agendaSelect(\'' + id + '\')" class="title" data-id="' + id + '" style="padding-left:10px; text-overflow: ellipsis;  overflow: hidden; white-space: nowrap;"><span class="badge">' + number + ' </span><span class="' + id +' "> ' + title + '</span></div>'
       + '</div>'
       + '<div class="col-md-3">'
       + '<div >'
