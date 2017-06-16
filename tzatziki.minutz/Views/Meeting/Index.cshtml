@@ -615,6 +615,7 @@
             </div>
           </div>
           <div class="col-md-4 row-padding" data-toggle="tooltip" title="The time the meeting is required to begin.">
+           
             <div class="input-group bootstrap-timepicker timepicker">
               <input id="meetingTime" type="text" class="form-control input-small">
               <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
@@ -625,8 +626,10 @@
       <div class="col-md-6">
         <div class="row">
           <div class="col-md-4 row-padding">
-            <div class="input-group bootstrap-timepicker timepicker" data-toggle="tooltip" title="The duration of the meeting.">
-              <input id="txtDuration" type="text" class="form-control input-small">
+            <input type="text" placeholder="Pick Duration..." id="txtDuration" value="1450">
+
+            <div  class="input-group bootstrap-timepicker timepicker hide" data-toggle="tooltip" title="The duration of the meeting.">
+              <input id="txtDuration2" type="text" class="form-control input-small">
               <span class="input-group-addon"><i class="fa fa-hourglass-half"></i></span>
             </div>
           </div>
@@ -1129,6 +1132,9 @@
   };
   minutz.functions.timepicker = function (control) {
     $('#' + control).timepicker();
+    $('#' + control).on("focus", function () {
+      $("timeInput").timepicker("hideWidget");
+    });
   };
 
   //Editors
@@ -1326,6 +1332,12 @@
       width: '100%'
     });
 
+
+    $("#txtDuration").duration_picker();
+  });
+
+  $(document).on('blur', '.timepicker', function () {
+    $(this).timepicker('hideWidget');
   });
 
   minutz.functions.setAttendees = function () {
@@ -1463,8 +1475,14 @@
 
   function _initPickers() {
     minutz.functions.getTimeZones();
-    minutz.controls.meetingDuration = $('#txtDuration').durationPicker({ lang: 'en', showSeconds: false, showDays: false, onChanged: function () { console.log('test') } });
-    minutz.controls.agendaItemTimepicker = $('#agendaItemTime').durationPicker({ lang: 'en', showSeconds: false, showDays: false });
+    //minutz.controls.meetingDuration = $('#txtDuration').durationPicker({
+    //  lang: 'en', showSeconds: false, showDays: false, onChanged: function () {
+    //    console.log('test');
+    //    $('.popover').hide();
+    //  }
+    //});
+    
+   // minutz.controls.agendaItemTimepicker = $('#agendaItemTime').durationPicker({ lang: 'en', showSeconds: false, showDays: false });
     $('#agendaItemTime').change(function () {
       var agendaItem = minutz.functions.find(meeting.MeetingAgendaCollection, meeting.SelectedAgendaItemId);
       if (agendaItem === undefined || agendaItem === null) {
@@ -1489,15 +1507,15 @@
     //minutz.functions.save();
   };
 
-  minutz.functions.durationpicker = function (controlname) {
-    var x = '#' + controlname;
-    console.log(x);
-    $(x).durationPicker({
-      lang: 'en',
-      showSeconds: false,
-      showDays: false
-    });
-  };
+  //minutz.functions.durationpicker = function (controlname) {
+  //  var x = '#' + controlname;
+  //  console.log(x);
+  //  $(x).durationPicker({
+  //    lang: 'en',
+  //    showSeconds: false,
+  //    showDays: false
+  //  });
+  //};
 
   minutz.functions.save = function () {
     //minutz.functions.updateAgendaTextToModel();
