@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using tzatziki.minutz.models.Auth;
 using tzatziki.minutz.models.Entities;
 
 namespace tzatziki.minutz.interfaces
@@ -14,6 +15,8 @@ namespace tzatziki.minutz.interfaces
     /// <returns></returns>
     Meeting Get(string connectionString, string schema, Meeting meeting, bool read = false);
 
-    IEnumerable<Meeting> Get(string connectionString, string schema, User user);
+    IEnumerable<Meeting> Get(string connectionString, string schema, UserProfile user);
+
+    void DeleteMeetingSchema(string connectionString, string schema, UserProfile user);
   }
 }

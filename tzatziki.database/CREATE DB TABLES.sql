@@ -1,10 +1,37 @@
-﻿SET ANSI_NULLS ON
+-- CREATE
+
+CREATE SCHEMA [app]
 GO
 
-SET QUOTED_IDENTIFIER ON
+CREATE TABLE [app].[Instance](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](255) NOT NULL,
+	[Username] [varchar](255) NOT NULL,
+	[Password] [varchar](255) NOT NULL,
+	[Active] [bit] NOT NULL,
+	[Type] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+)
 GO
 
-DROP PROCEDURE [app].[createMeetingSchema]
+CREATE TABLE [app].[Person](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Identityid] [varchar](max) NOT NULL,
+	[FirstName] [varchar](255) NULL,
+	[LastName] [varchar](255) NULL,
+	[FullName] [varchar](255) NULL,
+	[Email] [varchar](255) NOT NULL,
+	[Role] [varchar](255) NOT NULL,
+	[Active] [bit] NOT NULL,
+	[InstanceId] [varchar](255) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+)
 GO
 
 CREATE PROCEDURE [app].[createMeetingSchema] 
@@ -83,8 +110,34 @@ CREATE TABLE [' + @tenant +'].[MeetingAttachment] (
 )';
 EXEC sp_executesql @sql
 End
-
-
 GO
 
+CREATE PROCEDURE [app].[createInstanceSchema] 
+ (@tenant nvarchar(100))
+  AS
+  Begin
+    declare @sql nvarchar(4000) = 'create schema ' + @tenant + ' authorization  dbo';
 
+    EXEC sp_executesql @sql
+
+  End
+GO
+
+CREATE PROCEDURE [app].[createInstanceUser] 
+ (@tenant nvarchar(100))
+  AS
+  Begin
+    declare @sql nvarchar(4000) =
+    'CREATE TABLE ' + @tenant +'.[User] (
+        [Id] INT IDENTITY (1, 1) NOT NULL,
+        [Identity] VARCHAR (MAX) NOT NULL,
+        [FirstName]  VARCHAR (255) NULL,
+        [LastName]   VARCHAR (255) NULL,
+        [FullName]   VARCHAR (255) NULL,
+        [Email]      VARCHAR (255) NOT NULL,
+        [Role]       VARCHAR (255) NOT NULL,
+        [Active]     BIT           NOT NULL,
+    )';
+ EXEC sp_executesql @sql
+End
+GO

@@ -1,8 +1,18 @@
 version: '2'
-
 services:
   tzatziki.minutz:
     image: tzatziki/minutz
+    ports:
+      - "5555:80"
     build:
       context: ./tzatziki.minutz
       dockerfile: Dockerfile
+  tzatziki.minutzdb:
+    image: microsoft/mssql-server-linux
+    volumes:
+      - ./tzatziki.database/db:/var/opt/mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Password1234
+    ports:
+      - "1433:1433"

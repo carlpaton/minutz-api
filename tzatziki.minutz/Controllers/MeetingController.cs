@@ -41,6 +41,22 @@ namespace tzatziki.minutz.Controllers
       return View(new Meeting { });
     }
 
+    public IActionResult Runner()
+    {
+      this.UserProfile = User.ToProfile(ProfileService, TokenStringHelper, AppSettings);
+      return View("MeetingRunner",new Meeting { });
+    }
+
+    [HttpGet]
+    [Authorize]
+    public JsonResult GetMeetings()
+    {
+      var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
+      var schema = user.InstanceId.ToSchemaString();
+      var data = _meetingService.Get(AppSettings.ConnectionStrings.AzureConnection, schema, user);
+      return Json(data);
+    }
+
     [HttpGet]
     [Authorize]
     public JsonResult GetMeeting(string id)
@@ -62,6 +78,15 @@ namespace tzatziki.minutz.Controllers
         meeting.Id = Guid.NewGuid();
       var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
       var schema = user.InstanceId.ToSchemaString();
+
+      if (meeting.MeetingOwnerId == null) meeting.MeetingOwnerId = user.UserId;
+
+      if (meeting.MeetingAgendaCollection == null) meeting.MeetingAgendaCollection = new List<MeetingAgendaItem>();
+      if (meeting.MeetingActionCollection == null) meeting.MeetingActionCollection = new List<ActionItem>();
+      if (meeting.MeetingAttachmentCollection == null) meeting.MeetingAttachmentCollection = new List<MeetingAttachmentItem>();
+      if (meeting.MeetingAttendeeCollection == null) meeting.MeetingAttendeeCollection = new List<MeetingAttendee>();
+      if (meeting.MeetingNoteCollection == null) meeting.MeetingNoteCollection = new List<MeetingNoteItem>();
+
       _meetingService.Get(AppSettings.ConnectionStrings.AzureConnection,schema, meeting);
       return Json(meeting);
     }

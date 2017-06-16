@@ -12,3 +12,6 @@ input
 
 https://scotch.io/tutorials/google-material-design-input-boxes-in-css3
 
+SQL Statements
+
+https://docs.microsoft.com/en-us/sql/t-sql/statements/create-database-sql-server-transact-sql

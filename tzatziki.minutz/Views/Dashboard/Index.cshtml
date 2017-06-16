@@ -31,6 +31,9 @@
             <li class="hide"><a href="#">Completed Projects <span class="pull-right badge bg-green">12</span></a></li>
             <li class="hide"><a href="#">Followers <span class="pull-right badge bg-red">842</span></a></li>
           </ul>
+          <ul id="meetingList" class="nav nav-stacked">
+
+          </ul>
         </div>
       </div>
     </div>
@@ -69,4 +72,28 @@
   </div>
 </div>
 
+<script >
 
+  var meetings = [];
+
+  $(function(){
+
+
+
+    $.ajax({
+      url: '/Meeting/GetMeetings',
+      dataType: 'json',
+      type: 'GET',
+      context: document.body
+    }).done(function (data) {
+      var newData = [];
+      for (var i = 0; i < data.length; i++) {
+        meetings.push({ id: data[i].Id, text: data[i].Name });
+        var html = '<li><a href="/meeting?id='+ data[i].id +'">'+ data[i].name +'</a></li>';
+        $('#meetingList').append(html);
+      }
+      //minutz.functions.setAttendees();
+    });
+
+  });
+</script>
