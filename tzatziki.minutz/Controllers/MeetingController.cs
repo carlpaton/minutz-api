@@ -41,6 +41,11 @@ namespace tzatziki.minutz.Controllers
       return View(new Meeting { });
     }
 
+    public IActionResult Runner()
+    {
+      this.UserProfile = User.ToProfile(ProfileService, TokenStringHelper, AppSettings);
+      return View("MeetingRunner",new Meeting { });
+    }
 
     [HttpGet]
     [Authorize]
