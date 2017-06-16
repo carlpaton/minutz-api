@@ -32,8 +32,8 @@ namespace tzatziki.minutz.sqlrepository
     {
       using (SqlConnection con = new SqlConnection(connectionString))
       {
-         using (SqlCommand command = new SqlCommand(_deleteMeetingSchemaStoredProcedure, con))
-         {
+        using (SqlCommand command = new SqlCommand(_deleteMeetingSchemaStoredProcedure, con))
+        {
           command.CommandType = CommandType.StoredProcedure;
           command.Parameters.Add(new SqlParameter("@tenant", schema));
           command.Parameters.Add(new SqlParameter("@userIdentity", user.InstanceId));
@@ -41,7 +41,7 @@ namespace tzatziki.minutz.sqlrepository
           con.Open();
           command.ExecuteNonQuery();
           con.Close();
-         }
+        }
       }
     }
 
@@ -284,26 +284,66 @@ namespace tzatziki.minutz.sqlrepository
               try
               {
                 command.ExecuteNonQuery();
+
                 foreach (var agendaItem in meeting.MeetingAgendaCollection)
                 {
-                  using (SqlCommand agendaItemsCommand = new SqlCommand(UpdateMeetingAgendaItemStatement(schema, agendaItem), con))
+                  var agendaItemFilter = $" Id = '{agendaItem.Id}'";
+                  var currentAgendaItem = ToMeetingAgenda(connectionString, schema, agendaItemFilter);
+                  if (currentAgendaItem == null)
                   {
-                    agendaItemsCommand.ExecuteNonQuery();
+                    using (SqlCommand agendaItemsCommand = new SqlCommand(InsertMeetingAgendaItemStatement(schema, agendaItem), con))
+                    {
+                      agendaItemsCommand.ExecuteNonQuery();
+                    }
+                  }
+                  else
+                  {
+                    using (SqlCommand agendaItemsCommand = new SqlCommand(UpdateMeetingAgendaItemStatement(schema, agendaItem), con))
+                    {
+                      agendaItemsCommand.ExecuteNonQuery();
+                    }
                   }
                 }
+
                 foreach (var agendaAttachment in meeting.MeetingAttachmentCollection)
                 {
-                  using (SqlCommand attachmentCommand = new SqlCommand(UpdateMeetingAttachmentStatement(schema, agendaAttachment), con))
+                  var agendaAttachmentFilter = $" Id = '{agendaAttachment.Id}'";
+                  var currentAttachment = ToMeetingAttachment(connectionString, schema, agendaAttachmentFilter);
+                  if (currentAttachment == null)
                   {
-                    attachmentCommand.ExecuteNonQuery();
+                    using (SqlCommand attachmentCommand = new SqlCommand(InsertMeetingAttachmentStatement(schema, agendaAttachment), con))
+                    {
+                      attachmentCommand.ExecuteNonQuery();
+                    }
+                  }
+                  else
+                  {
+                    using (SqlCommand attachmentCommand = new SqlCommand(UpdateMeetingAttachmentStatement(schema, agendaAttachment), con))
+                    {
+                      attachmentCommand.ExecuteNonQuery();
+                    }
                   }
                 }
+
                 foreach (var meetingNote in meeting.MeetingNoteCollection)
                 {
-                  using (SqlCommand noteCommand = new SqlCommand(UpdateMeetingNoteStatement(schema, meetingNote), con))
+                  var agendaNoteFilter = $" Id = '{meetingNote.Id}'";
+                  var currentNote = ToMeetingNote(connectionString, schema, agendaNoteFilter);
+                  if (currentNote == null)
                   {
-                    noteCommand.ExecuteNonQuery();
+                    using (SqlCommand noteCommand = new SqlCommand(InsertMeetingNoteStatement(schema, meetingNote), con))
+                    {
+                      noteCommand.ExecuteNonQuery();
+                    }
                   }
+                  else
+                  {
+                    using (SqlCommand noteCommand = new SqlCommand(UpdateMeetingNoteStatement(schema, meetingNote), con))
+                    {
+                      noteCommand.ExecuteNonQuery();
+                    }
+                  }
+
                 }
               }
               catch (Exception ex)
@@ -319,9 +359,11 @@ namespace tzatziki.minutz.sqlrepository
           using (SqlConnection con = new SqlConnection(connectionString))
           {
             con.Open();
-            using (SqlCommand command = new SqlCommand(InsertMeetingStatement(schema, meeting), con))
+            var meetingFilter = $" Id = '{meeting.Id}'";
+            var currentMeeting = ToMeeting(connectionString, schema, meetingFilter);
+            if (currentMeeting == null)
             {
-              try
+              using (SqlCommand command = new SqlCommand(InsertMeetingStatement(schema, meeting), con))
               {
                 command.ExecuteNonQuery();
                 foreach (var agendaItem in meeting.MeetingAgendaCollection)
@@ -346,16 +388,13 @@ namespace tzatziki.minutz.sqlrepository
                   }
                 }
               }
-              catch (Exception ex)
-              {
-                throw new Exception($"Issue insert the meeting record. {ex.Message}", ex.InnerException);
-              }
             }
             con.Close();
           }
         }
       }
-      return ToMeeting(connectionString, schema, $" Id = '{meeting.Id}'");
+      var data = ToMeeting(connectionString, schema, $" Id = '{meeting.Id}'");
+      return data;
     }
 
     internal string SelectMeetingStatement(string schema)
@@ -455,7 +494,7 @@ namespace tzatziki.minutz.sqlrepository
       var isPrivate = meeting.IsPrivate == true ? 1 : 0;
       var isLocked = meeting.IsLocked == true ? 1 : 0;
       var meetingDate = meeting.Date == DateTime.MinValue ? DateTime.UtcNow.ToString() : meeting.Date.ToUniversalTime().ToString();
-      
+
       return $@"INSERT INTO [{schema}].[{_meetingTableName}] VALUES (
         '{meeting.Id}',
         '{meeting.Name.EmptyIfNull()}',
