@@ -1369,7 +1369,7 @@
   };
 
   function _updateUi(data) {
-    //_initPickers();
+    console.log(data);
     $("#txtMeetingName").val(data.name);
     $("#repeatTypeText").text(data.reacuranceType);
     $('#txtLocation').val(data.location);
@@ -1486,7 +1486,7 @@
       url: "Meeting/GetMeeting?id=" + id,
       data: meeting,
       success: function (data) {
-       // _updateUi(data);
+       _updateUi(data); 
       },
       error: function (XMLHttpRequest, textStatus, errorThrown) {
         //minutz.functions.notifyMe(MinutzTitle, textStatus + "  " + errorThrown, minutz.properties.infoIcon);

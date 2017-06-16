@@ -89,13 +89,11 @@
       var newData = [];
       for (var i = 0; i < data.length; i++) {
         meetings.push({ id: data[i].Id, text: data[i].Name });
-        var html = '<li><a href="'+ data[i].Id +'">'+ data[i].Name +'</a></li>';
+        var html = '<li><a href="/meeting?id='+ data[i].id +'">'+ data[i].name +'</a></li>';
         $('#meetingList').append(html);
       }
       //minutz.functions.setAttendees();
     });
-
-
 
   });
 </script>
