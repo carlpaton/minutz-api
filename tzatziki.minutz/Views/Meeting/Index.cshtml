@@ -1556,7 +1556,6 @@
   };
 
   minutz.functions.agendaItemAddClick = function (id, duration) {
-
     minutz.functions.addHtml('agendaItems', minutz.functions.getAgendaItemHtml($("#txtAgendaTitleQuick").val(), id, duration));
     minutz.functions.setValue('txtAgendaTitleQuick', '');
     minutz.functions.durationpicker('timer_' + id);
@@ -1591,10 +1590,11 @@
   };
 
   minutz.functions.getAgendaItemHtml = function (title, id, time) {
+    var number = meeting.MeetingAgendaCollection.length;
     return '<li id="_' + id + '" class="item">'
       + '<br /><div class="row" style="cursor: pointer;" >'
       + '<div class="col-md-7" >'
-      + '<div onclick="minutz.functions.agendaSelect(\'' + id + '\')" class="title" data-id="' + id + '" style="padding-left:10px; text-overflow: ellipsis;  overflow: hidden; white-space: nowrap;">' + title + '</div>'
+      + '<div onclick="minutz.functions.agendaSelect(\'' + id + '\')" class="title" data-id="' + id + '" style="padding-left:10px; text-overflow: ellipsis;  overflow: hidden; white-space: nowrap;"><span class="badge">' + number + ' </span> ' + title + '</div>'
       + '</div>'
       + '<div class="col-md-3">'
       + '<div >'
