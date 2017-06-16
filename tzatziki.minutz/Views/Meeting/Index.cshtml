@@ -1407,6 +1407,7 @@
       minutz.functions.addHtml('agendaItems', minutz.functions.getAgendaItemHtml(agendaItem.agendaHeading, agendaItem.id, agendaItem.duration,number));
     }
     console.log(meeting);
+    $("#agendaItems").sortable();
   };
 
   minutz.functions.updateMainModelProperties = function () {
