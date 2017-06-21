@@ -76,7 +76,7 @@ namespace tzatziki.minutz.sqlrepository
         {
           if (read)
           {
-            var collectionFilter = $" ReferanceId = '{instance.Id}'";
+            var collectionFilter = $" ReferanceId = '{instance.Id.ToString()}'";
             instance.MeetingAgendaCollection = ToMeetingAgenda(connectionString, schema, collectionFilter).ToList();
             instance.MeetingAttendeeCollection = ToMeetingAttendee(connectionString, schema, collectionFilter).ToList();
             instance.MeetingNoteCollection = ToMeetingNote(connectionString, schema, collectionFilter).ToList();
@@ -86,7 +86,7 @@ namespace tzatziki.minutz.sqlrepository
           else
           {
             instance = ToMeeting(connectionString, schema, meeting, true);
-            var collectionFilter = $" ReferanceId = '{instance.Id}'";
+            var collectionFilter = $" ReferanceId = '{instance.Id.ToString()}'";
             instance.MeetingAgendaCollection = ToMeetingAgenda(connectionString, schema, collectionFilter).ToList();
             instance.MeetingAttendeeCollection = ToMeetingAttendee(connectionString, schema, collectionFilter).ToList();
             instance.MeetingNoteCollection = ToMeetingNote(connectionString, schema, collectionFilter).ToList();
@@ -198,6 +198,8 @@ namespace tzatziki.minutz.sqlrepository
           {
             while (reader.Read())
             {
+              //check if null , if null then create else update and return
+
               result.Add(ToMeetingAgenda(reader));
             }
           }

@@ -65,7 +65,7 @@ namespace tzatziki.minutz.sqlrepository
           return true;
         }
       }
-      catch (Exception ex)
+      catch (Exception )
       {
         return false;
       }
