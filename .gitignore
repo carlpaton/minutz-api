@@ -26,3 +26,4 @@ bld/
 /tzatziki.minutz.models/bin/Debug/netcoreapp1.1
 /tzatziki.minutz.models/obj
 tzatziki.database/db/.system/instance_id
+tzatziki.database/data/
