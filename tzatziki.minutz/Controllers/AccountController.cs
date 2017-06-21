@@ -100,5 +100,14 @@ namespace tzatziki.minutz.Controllers
       var instanceUser = this.UserService.CopyPersonToUser(user, AppSettings);
       return View("Index", user);
     }
+
+    [Authorize]
+    public ActionResult ResetAccount()
+    {
+      var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
+      var schema = user.InstanceId.ToSchemaString();
+      var instanceUser = this.UserService.ResetAccount(user, AppSettings);
+      return RedirectToAction("Index", "Dashboard");
+    }
   }
 }

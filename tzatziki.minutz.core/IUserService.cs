@@ -7,5 +7,7 @@ namespace tzatziki.minutz.core
   public interface IUserService
   {
     User CopyPersonToUser(UserProfile user, AppSettings appsettings);
+
+    bool ResetAccount(UserProfile user, AppSettings appsettings);
   }
 }

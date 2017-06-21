@@ -4,6 +4,7 @@
 }
 <link rel="stylesheet" href="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 <style>
+  
   #reacuranceModel .modal-dialog {
     width: 70%;
   }
@@ -633,21 +634,10 @@
               <span class="input-group-addon"><i class="fa fa-hourglass-half"></i></span>
             </div>
           </div>
-          <div class="col-md-4 row-padding">
-            <div class="input-group bootstrap-timepicker timepicker" data-toggle="tooltip" title="How often will the meeting be held?">
-              <span class="input-group-addon"><i class="fa fa-refresh"></i></span>
-              <div class="btn-group">
-                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span id="repeatTypeText" style="padding-left:5px; padding-right:5px;"> Set Recurrence  </span> <span class="caret"></span>
-                </button>
-                <ul id="repeatType" class="dropdown-menu products-list product-list-in-box">
-                  <li class="item" style="text-align: center;"><a href="#">Daily</a></li>
-                  <li class="item" style="text-align: center;"><a href="#">Weekly</a></li>
-                  <li class="item" style="text-align: center;"><a href="#">Monthly</a></li>
-                  <li class="item" style="text-align: center;"><a href="#">Yearly</a></li>
-                  <li class="item" style="text-align: center;"><a href="#">None</a></li>
-                </ul>
-              </div>
+          <div class="col-md-1 row-padding">
+            <div class="input-group" data-toggle="tooltip" title="How often will the meeting be held?">
+              <div class="btn" style="position: relative; top: -9px;" data-toggle="modal" data-target="#reacuranceModel"><span class="input-group-addon"><i class="fa fa-refresh"></i></span></div>
+              
             </div>
           </div>
           <div class="col-md-4 row-padding">
@@ -676,7 +666,7 @@
         </a>
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-2">
       <div class="input-group" data-toggle="tooltip" title="Select a timezone for the meeting." style="width: 275px;">
         <span class="input-group-addon" id="basic-addon1"><i class="fa fa-globe"></i></span>
         <select id="timeZones" class="form-control js-example-data-array" style="width: 275px; text-align:center;"></select>
@@ -686,6 +676,9 @@
       <div style="margin-left:-10px;">
         <input type="checkbox" id="toggle-formal">
       </div>
+    </div>
+    <div class="col-md-2">
+      <div id="btnSave" class="btn btn-success"><span id="txtSave">Save</span></div>
     </div>
   </div>
 </div>
@@ -765,13 +758,13 @@
         <div role="tabpanel" class="tab-pane active" id="agendaTab">
           <br />
           <div class="row left-tab">
-            <div class="col-md-2 gridHeader ">
+            <div class="col-md-3 gridHeader ">
               <div class="input-group bootstrap-timepicker timepicker">
                 <input id="agendaItemTime" type="text" class="form-control input-small">
                 <span class="input-group-addon"><i class="fa fa-hourglass-half"></i></span>
               </div>
             </div>
-            <div class="col-md-5  gridHeader">
+            <div class="col-md-4  gridHeader">
               <input id="txtAgendaTitle" type="text" style="font-size: 15px; font-weight: bold;" placeholder="Topic Title" data-toggle="tooltip" title="Give your agenda item a title." />
             </div>
             <div class="col-md-1  gridHeader">
@@ -1199,17 +1192,12 @@
       var listItemId = $($(this)[0]).attr('id').split('_')[1];
       var oldText = $('.' + listItemId).text();
       console.log(oldText);
-      //$('.' + listItemId).text();
       var newtext = $("#txtAgendaTitleQuick").val();
       console.log(newtext);
       if (listItemId == meeting.SelectedAgendaItemId)
       {
         $('.' + listItemId).text(newtext);
       }
-      
-      //console.log(listItemId);
-      //console.log(index);
-      //console.log($(this));
     });
     console.log('agenda title ');
   });
@@ -1255,8 +1243,9 @@
     $("#txtAgendaTitle").val(text);
   };
 
-  $(function () {
 
+  $(function () {
+   
     if (document.location.search.length) {
       if (document.location.search.match("id").length > 0) {
         var query = document.location.search.match("id").input.split('?')[1];
@@ -1273,6 +1262,11 @@
     
     minutz.functions.meetingAttendeesAjax(meeting.Id);
     _initPickers();
+
+    $("#btnSave").click(function ()
+    {
+      minutz.functions.save();
+    });
 
     $("#repeatType li a").click(function () {
       $("#repeatTypeText").text($(this).text());
@@ -1332,9 +1326,32 @@
       width: '100%'
     });
 
-
-    $("#txtDuration").duration_picker();
+    
+    $("#agendaItemTime").val(109460);
+    $("#agendaItemTime").duration_picker({
+      formatter: function (s) {
+        console.log($("#agendaItemTime").val());
+        $("#agendaItems li").each(function (index) {
+          var listItemId = $($(this)[0]).attr('id').split('_')[1];
+          if (listItemId == meeting.SelectedAgendaItemId) {
+            var t = $("#agendaItemTime").val();
+            var myDate = new Date(null, null, null, null, null, t).toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+            //var myDate = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+            $('#time_' + listItemId).text(myDate);
+          }
+         });
+        return s;
+      }
+    });
+    $("#txtDuration").duration_picker({
+      formatter: function (s) {
+        //console.log(s);
+        return s;
+      }
+    });
   });
+
+
 
   $(document).on('blur', '.timepicker', function () {
     $(this).timepicker('hideWidget');
@@ -1496,6 +1513,7 @@
         $("#badge_" + agendaItem.Id).html(mo._data.hours + ' hours & ' + mo._data.minutes + ' min');
       }
       console.log($('#agendaItemTime').val());
+    
     });
   };
 
@@ -1504,7 +1522,11 @@
     meeting.SelectedAgendaItemId = selectedItem.id;
     minutz.functions.setValue('txtAgendaTitle', selectedItem.agendaHeading);
     $('#agendaText').trumbowyg('html', selectedItem.agendaText);
-    //minutz.functions.save();
+    console.log('current :' + $("#agendaItemTime").val());
+    
+    $("#agendaItemTime").val(0);
+
+    console.log('new :' + $("#agendaItemTime").val());
   };
 
   //minutz.functions.durationpicker = function (controlname) {
@@ -1546,15 +1568,18 @@
   };
 
   minutz.functions.saveAjax = function () {
+    $("#txtSave").text("Loading");
     $.ajax({
       type: minutz.properties.POST,
       url: "Meeting/Save",
       data: meeting,
       success: function (data) {
         _updateUi(data);
+        $("#txtSave").text("Saved");
       },
       error: function (XMLHttpRequest, textStatus, errorThrown) {
         //minutz.functions.notifyMe(MinutzTitle, textStatus + "  " + errorThrown, minutz.properties.infoIcon);
+        $("#txtSave").text("Save");
       },
       dataType: minutz.properties.JSON
     });
@@ -1644,11 +1669,11 @@
     return '<li id="_' + id + '" class="item">'
       + '<br /><div class="row" style="cursor: pointer;" >'
       + '<div class="col-md-7" >'
-      + '<div onclick="minutz.functions.agendaSelect(\'' + id + '\')" class="title" data-id="' + id + '" style="padding-left:10px; text-overflow: ellipsis;  overflow: hidden; white-space: nowrap;"><span class="badge">' + number + ' </span><span class="' + id +' "> ' + title + '</span></div>'
+      + '<div onclick="minutz.functions.agendaSelect(\'' + id + '\')" class="title" data-id="' + id + '" style="padding-left:10px; text-overflow: ellipsis;  overflow: hidden; white-space: nowrap;"><span class="badge" ">' + number + ' </span><span class="' + id +' "> ' + title + '</span></div>'
       + '</div>'
       + '<div class="col-md-3">'
       + '<div >'
-      + '<span id="badge_' + id + '" class="badge">' + (time / 60) + ' min</span>'
+      + '<span id="time_' + id + '" class="badge">' + (time / 60) + ' min</span>'
       + '</div>'
       + '</div>'
       + '<div class="col-md-1"><i class="fa fa-trash fa-2x pull-right" style=" cursor: pointer;color: grey; " aria-hidden="true" onclick="minutz.functions.deleteAgendaQuickItem(\'' + id + '\')" ></i></div>'

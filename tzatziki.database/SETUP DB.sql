@@ -231,3 +231,42 @@ END
 GO
 EXEC [app].[dropSchema] @Pattern = N'account_';
 GO
+
+USE [minutz]
+IF EXISTS(SELECT 1 FROM [minutz].[INFORMATION_SCHEMA].[ROUTINES] WHERE routine_type = 'PROCEDURE' AND SPECIFIC_NAME = 'resetAccount')
+BEGIN
+EXEC ('DROP PROCEDURE [app].[resetAccount];')
+END
+GO
+
+CREATE PROCEDURE [app].[resetAccount]
+   @schema AS varchar(255),
+   @instanceName AS varchar(255),
+   @instanceId AS VARCHAR(255)
+ AS
+BEGIN
+DELETE FROM [minutz].[app].[Instance] WHERE Name = @instanceName
+DELETE FROM [minutz].[app].[Person] WHERE InstanceId = @instanceId
+
+IF EXISTS(SELECT 1 FROM [minutz].[INFORMATION_SCHEMA].[TABLES] WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME = 'Meeting')
+EXEC ('DROP TABLE ' + @schema + '.Meeting')
+
+IF EXISTS(SELECT 1 FROM [minutz].[INFORMATION_SCHEMA].[TABLES] WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME = 'MeetingAction')
+EXEC ('DROP TABLE ' + @schema + '.MeetingAction')
+
+IF EXISTS(SELECT 1 FROM [minutz].[INFORMATION_SCHEMA].[TABLES] WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME = 'MeetingAgenda')
+EXEC ('DROP TABLE ' + @schema + '.MeetingAgenda')
+
+IF EXISTS(SELECT 1 FROM [minutz].[INFORMATION_SCHEMA].[TABLES] WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME = 'MeetingAttachment')
+EXEC ('DROP TABLE ' + @schema + '.MeetingAttachment')
+
+IF EXISTS(SELECT 1 FROM [minutz].[INFORMATION_SCHEMA].[TABLES] WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME = 'MeetingAttendee')
+EXEC ('DROP TABLE ' + @schema + '.MeetingAttendee')
+
+IF EXISTS(SELECT 1 FROM [minutz].[INFORMATION_SCHEMA].[TABLES] WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME = 'MeetingNote')
+EXEC ('DROP TABLE ' + @schema + '.MeetingNote')
+
+IF EXISTS(SELECT 1 FROM [minutz].[INFORMATION_SCHEMA].[TABLES] WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME = 'User')
+EXEC ('DROP TABLE [minutz].[' + @schema + '].[User]')
+
+END
