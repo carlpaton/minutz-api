@@ -18,5 +18,8 @@ namespace tzatziki.minutz.interfaces
     IEnumerable<Meeting> Get(string connectionString, string schema, UserProfile user);
 
     void DeleteMeetingSchema(string connectionString, string schema, UserProfile user);
-  }
+
+		void DeleteMeetingAgendaItem(string connectionString, string schema, string agendaItemId);
+
+	}
 }

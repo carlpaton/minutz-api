@@ -1622,8 +1622,24 @@
 
   minutz.functions.deleteAgendaQuickItem = function (id) {
     var index = minutz.functions.findIndex(meeting.MeetingAgendaCollection, id);
-    meeting.MeetingAgendaCollection.splice(index, 1);
-    $("#_" + id).remove();
+		meeting.MeetingAgendaCollection.splice(index, 1);
+		//DeleteAgenda
+		$("#txtSave").text("Loading");
+		$.ajax({
+			type: minutz.properties.POST,
+			url: "Meeting/DeleteAgenda?agendaId="+ id,
+			success: function (data) {
+				$("#_" + id).remove();
+				$("#txtSave").text("Saved");
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				$("#txtSave").text("Save");
+			},
+			dataType: minutz.properties.JSON
+		});
+
+		return true;
+    
   };
 
   minutz.functions.updateAgendaTextControl = function (text) {

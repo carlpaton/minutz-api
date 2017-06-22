@@ -22,5 +22,10 @@ namespace tzatziki.minutz.core
     {
       return _meetingRepository.Get(connectionString, schema, user);
     }
+
+		public void DeleteAgenda(string connectionString, string schema, string agendaItemId)
+		{
+			_meetingRepository.DeleteMeetingAgendaItem(connectionString, schema, agendaItemId);
+		}
   }
 }

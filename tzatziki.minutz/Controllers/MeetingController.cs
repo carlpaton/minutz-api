@@ -91,6 +91,16 @@ namespace tzatziki.minutz.Controllers
       return Json(meeting);
     }
 
+		[HttpPost]
+		[Authorize]
+		public JsonResult DeleteAgenda(string agendaId)
+		{
+			var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
+			var schema = user.InstanceId.ToSchemaString();
+			_meetingService.DeleteAgenda(AppSettings.ConnectionStrings.AzureConnection, schema, agendaId);
+			return Json(agendaId);
+		}
+
     public ActionResult AttendeesControl(int meetingId)
     {
       var model = GetUsers();
