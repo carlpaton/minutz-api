@@ -1,90 +1,91 @@
 @model List<tzatziki.minutz.models.Entities.User>
 
 <div class="panel panel-default">
-  <a data-toggle="collapse" data-target=".attendeeControl" style="cursor: pointer;">
-    <div class="panel-body" style="background-color: darkgrey;">
-      <i class="fa fa-user fa-2x icon-border"  aria-hidden="true"></i>
-      <span style="font-size:20px; font-weight:bold; padding:5px; color:white;">Attendees</span>
-      <span id="totalAttenddesIcon" class="label label-info"></span>
-    </div>
-  </a>
+	<a data-toggle="collapse" data-target=".attendeeControl" style="cursor: pointer;">
+		<div class="panel-body" style="background-color: darkgrey;">
+			<i class="fa fa-user fa-2x icon-border" aria-hidden="true"></i>
+			<span style="font-size:20px; font-weight:bold; padding:5px; color:white;">Attendees</span>
+			<span id="totalAttenddesIcon" class="label label-info"></span>
+		</div>
+	</a>
 </div>
 <div class="panel panel-default collapse attendeeControl">
-  <div class="panel-body">
-      <div class="row">
-        <div class="col-md-10">
-          <div class="input-group" data-toggle="tooltip" title="Add or remove attendees to your meeting.">
-            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-user"></i></span>
-            <select id="attendees" class="form-control js-example-data-array" style="width: 150px;"></select>
-          </div>
-        </div>
-        <div class="col-md-2">
-          <div id="btnAddAttendee" class="round-button-circle pull-right"><i class="fa fa-plus"></i></div>
-        </div>
-      </div>
-  </div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-10">
+				<div class="input-group" data-toggle="tooltip" title="Add or remove attendees to your meeting.">
+					<span class="input-group-addon" id="basic-addon1"><i class="fa fa-user"></i></span>
+					<select id="attendees" class="form-control js-example-data-array" style="width: 150px;"></select>
+				</div>
+			</div>
+			<div class="col-md-2">
+				<div id="btnAddAttendee" class="round-button-circle pull-right"><i class="fa fa-plus"></i></div>
+			</div>
+		</div>
+	</div>
 </div>
-<div id="attendeeCollapse" class=" collapse attendeeControl" >
-  <ul id="attendeeList" class="products-list product-list-in-box"></ul>
+<div id="attendeeCollapse" class=" collapse attendeeControl">
+	<ul id="attendeeList" class="products-list product-list-in-box"></ul>
 </div>
 <script type="text/javascript">
-  var img = "https://lh3.googleusercontent.com/-Me7IFI2HKzM/AAAAAAAAAAI/AAAAAAAARwo/Gc40a_hpsSI/photo.jpg";
+	var img = "https://lh3.googleusercontent.com/-Me7IFI2HKzM/AAAAAAAAAAI/AAAAAAAARwo/Gc40a_hpsSI/photo.jpg";
 
-  var availibleAttendees = [];
+	var availibleAttendees = [];
 
-  function deleteAttendee(id)
-  {
-    for (var q = 0; q < meeting.MeetingAttendeeCollection.length; q++) {
-      var check = meeting.MeetingAttendeeCollection[q];
-      if (check.id == id) {
-        var index = meeting.MeetingAttendeeCollection.indexOf(q);
-        meeting.MeetingAttendeeCollection.splice(index, 1);
-        $("#" + check.id).remove();
-      }
-    }
-    $("#totalAttenddesIcon").text(meeting.MeetingAttendeeCollection.length);
-  };
+	function deleteAttendee(id) {
+		for (var q = 0; q < meeting.MeetingAttendeeCollection.length; q++) {
+			var check = meeting.MeetingAttendeeCollection[q];
+			if (check.id == id) {
+				var index = meeting.MeetingAttendeeCollection.indexOf(q);
+				meeting.MeetingAttendeeCollection.splice(index, 1);
+				$("#" + check.id).remove();
+			}
+		}
+		$("#totalAttenddesIcon").text(meeting.MeetingAttendeeCollection.length);
+	};
 
-  $(function () {
-    var meetingId = 0;
-    $('#attendees').select2({
-      ajax: {
-        url: "/Meeting/Attendees?meetingId=" + meetingId,
-        dataType: 'json',
-        delay: 250,
-        data: function (params) {
-          return {
-            q: params.term, // search term
-            page: params.page
-          };
-        },
-        processResults: function (data) {
-          availibleAttendees = [];
-          availibleAttendees = data;
+	$(function () {
+		var meetingId = 0;
+
+
+		$('#attendees').select2({
+			ajax: {
+				url: "/Meeting/Attendees?meetingId=" + meetingId,
+				dataType: 'json',
+				delay: 250,
+				data: function (params) {
+					return {
+						q: params.term, // search term
+						page: params.page
+					};
+				},
+				processResults: function (data) {
+					availibleAttendees = [];
+					availibleAttendees = data;
 					var newData = [];
 					console.log(data);
-          for (var i = 0; i < data.length; i++) {
-            newData.push({ id: data[i].identity, text: data[i].fullName });
-          }
+					for (var i = 0; i < data.length; i++) {
+						newData.push({ id: data[i].identity, text: data[i].fullName });
+					}
 
-          return {
-            results: newData
-          };
-        },
-        cache: true
-      },
-      width: '100%'
-    });
+					return {
+						results: newData
+					};
+				},
+				cache: true
+			},
+			width: '100%'
+		});
 
-    $("#btnAddAttendee").click(function () {
+		$("#btnAddAttendee").click(function () {
 
 			var identity = $("#attendees").select2('data')[0].id;
 			console.log(identity);
 			console.log(meeting.Id);
-      for (var i = 0; i < availibleAttendees.length; i++) {
-        if (availibleAttendees[i].identity == identity) {
-          var x = availibleAttendees[i];
-				var guid =	minutz.functions.createId();
+			for (var i = 0; i < availibleAttendees.length; i++) {
+				if (availibleAttendees[i].identity == identity) {
+					var x = availibleAttendees[i];
+					var guid = minutz.functions.createId();
 					var user = {
 						active: x.active,
 						email: x.email,
@@ -102,40 +103,93 @@
 						referanceId: meeting.Id,
 						Id: x.id
 					};
-          for (var q = 0; q < meeting.MeetingAttendeeCollection.length; q++) {
-            var check = meeting.MeetingAttendeeCollection[q];
-            if (check.identity == x.identity) {
-              var index = meeting.MeetingAttendeeCollection.indexOf(q);
-              meeting.MeetingAttendeeCollection.splice(index, 1);
-              $("#" + check.id).remove();
-            }
+					for (var q = 0; q < meeting.MeetingAttendeeCollection.length; q++) {
+						var check = meeting.MeetingAttendeeCollection[q];
+						if (check.identity == x.identity) {
+							var index = meeting.MeetingAttendeeCollection.indexOf(q);
+							meeting.MeetingAttendeeCollection.splice(index, 1);
+							$("#" + check.id).remove();
+						}
 					}
-					console.log(user);	
+					console.log(user);
 					meeting.MeetingAttendeeCollection.push(user);
 					console.log(meeting.MeetingAttendeeCollection);
-          $("#attendeeList").append(createUserListItem(user));
-          $("#totalAttenddesIcon").text(meeting.MeetingAttendeeCollection.length);
-        }
+					$("#attendeeList").append(createUserListItem(user));
+					$("#totalAttenddesIcon").text(meeting.MeetingAttendeeCollection.length);
+				}
 
-      }
+			}
 
-      //add user to meeting object
-    });
+			//add user to meeting object
+		});
 
-    function createUserListItem(user) {
-      return '<li id="' + user.id + '" class="item">'
-        + '<div class="product-img">'
-        + '<img class="img-circle" height="50" width="50" style="margin-left: 5px;" src="' + user.image + '" alt="Product Image">'
-        + '</div>'
-        + '<div class="product-info">'
-        + '<a href="javascript:void(0)" class="product-title">' + user.fullName
-        + '</a>'
-        + '<span class="product-description">'
-        + '<b>Role :</b>' + user.role
-        + '</span>'
-        +'<i class="fa fa-trash fa-2x pull-right" style="margin-top: -30px; margin-right: 10px; cursor: pointer;color: grey; " aria-hidden="true" onclick="deleteAttendee('+ user.id+')" ></i>'
-        + '</div>'
-        + '</li>';
-    };
-  });
+		function createUserListItem(user) {
+			return '<li id="' + user.id + '" class="item">'
+				+ '<div class="product-img">'
+				+ '<img class="img-circle" height="50" width="50" style="margin-left: 5px;" src="' + user.image + '" alt="Product Image">'
+				+ '</div>'
+				+ '<div class="product-info">'
+				+ '<a href="javascript:void(0)" class="product-title">' + user.fullName
+				+ '</a>'
+				+ '<span class="product-description">'
+				+ '<b>Role :</b>' + user.role
+				+ '</span>'
+				+ '<i class="fa fa-trash fa-2x pull-right" style="margin-top: -30px; margin-right: 10px; cursor: pointer;color: grey; " aria-hidden="true" onclick="deleteAttendee(' + user.id + ')" ></i>'
+				+ '</div>'
+				+ '</li>';
+		};
+
+
+		if (document.location.search.length) {
+			var id = document.location.search.split("=")[1];
+			$.ajax({
+				type: minutz.properties.GET,
+				url: document.location.origin + "/Meeting/Attendees?meetingId=" + id,
+				success: function (data) {
+					var users = data;
+					var url = document.location.origin + "/Meeting/GetMeeting?id=" + id;
+					$.ajax({
+						type: minutz.properties.GET,
+						url: url,
+						success: function (data) {
+							console.log(data);
+							for (var attendeeIdex = 0; attendeeIdex < data.meetingAttendeeCollection.length; attendeeIdex++) {
+								var userId = data.meetingAttendeeCollection[attendeeIdex].personIdentity;
+
+								for (var orginalUserIndex = 0; orginalUserIndex < users.length; orginalUserIndex++) {
+									if (userId == users[orginalUserIndex].identity)
+									{
+										$("#attendeeList").append(createUserListItem(users[orginalUserIndex]));
+									 }
+								}
+							}
+							$("#totalAttenddesIcon").text(data.meetingAttendeeCollection.length);
+						},
+						error: function (XMLHttpRequest, textStatus, errorThrown) {
+							//minutz.functions.notifyMe(MinutzTitle, textStatus + "  " + errorThrown, minutz.properties.infoIcon);
+						},
+						dataType: minutz.properties.JSON
+					});
+				},
+				error: function (XMLHttpRequest, textStatus, errorThrown) {
+					//minutz.functions.notifyMe(MinutzTitle, textStatus + "  " + errorThrown, minutz.properties.infoIcon);
+				},
+				dataType: minutz.properties.JSON
+			});
+		}
+
+	});
+
+	function getUrlVars() {
+		var vars = [], hash;
+		var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+		for (var i = 0; i < hashes.length; i++) {
+			hash = hashes[i].split('=');
+			vars.push(hash[0]);
+			vars[hash[0]] = hash[1];
+		}
+		return vars;
+	}
+
+
 </script>
