@@ -635,7 +635,7 @@
 			<div class="col-md-6">
 				<div class="row">
 					<div class="col-md-4 row-padding">
-						<input type="text" placeholder="Pick Duration..." id="txtDuration" value="1450">
+						<input type="text" placeholder="Pick Duration..." id="txtDuration" >
 
 						<div class="input-group bootstrap-timepicker timepicker hide" data-toggle="tooltip" title="The duration of the meeting.">
 							<input id="txtDuration2" type="text" class="form-control input-small">
@@ -1337,14 +1337,17 @@
 
 		$("#pickerHolder").append(minutz.functions.getTimeControl());
 
-		//$("#agendaItemTime").val(109460);
+		
 		$("#agendaItemTime").duration_picker();
-		$("#txtDuration").duration_picker({
-			formatter: function (s) {
-				//console.log(s);
-				return s;
-			}
-		});
+
+		if (document.location.search.length) {
+			// query string exists
+		} else {
+			$("#txtDuration").duration_picker();
+
+			
+			$('#txtDate').datepicker("setDate", minutz.functions.dateTimeNow());
+		}
 	});
 
 
@@ -1375,14 +1378,11 @@
 	minutz.functions.dateTimeNow = function ()
 	{
 		var d = new Date();
-
-		var month = d.getMonth() + 1;
-		var day = d.getDate();
-
-		var output = d.getFullYear() + '/' +
-			(('' + month).length < 2 ? '0' : '') + month + '/' +
-			(('' + day).length < 2 ? '0' : '') + day;
-		return output;
+		d.getFullYear();
+		d.getMonth();
+		d.getDate();
+		var meetingDate = d;
+		return d;
 	 };
 
 	minutz.functions.meetingAttendeesAjax = function (id) {
@@ -1437,13 +1437,18 @@
 		$('#txtDuration').val(data.duration);
 		$("#cbIsPrivate").prop("checked", data.isPrivate);
 		$("#cbIsFormal").prop("checked", data.isFormal);
+		
 		var meetingDate = new Date(data.date);
-		$('#txtDate').data({ date: meetingDate }).datepicker('update').children("input").val(meetingDate);
+		$('#txtDate').datepicker("setDate", meetingDate);
+		
 
 		$('#meetingTime').val(data.time);
 		$("#txtTags").val(_toString(data.tag));
 		$('#purposeText').val(data.purpose);
 		$('#outcomeText').val(data.outcome);
+
+
+		$("#txtDuration").duration_picker();
 
 		meeting.Id = data.id;
 		meeting.Name = data.name;
