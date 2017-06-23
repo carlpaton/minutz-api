@@ -61,7 +61,8 @@
         processResults: function (data) {
           availibleAttendees = [];
           availibleAttendees = data;
-          var newData = [];
+					var newData = [];
+					console.log(data);
           for (var i = 0; i < data.length; i++) {
             newData.push({ id: data[i].identity, text: data[i].fullName });
           }
@@ -77,12 +78,30 @@
 
     $("#btnAddAttendee").click(function () {
 
-      var identity = $("#attendees").select2('data')[0].id;
+			var identity = $("#attendees").select2('data')[0].id;
+			console.log(identity);
+			console.log(meeting.Id);
       for (var i = 0; i < availibleAttendees.length; i++) {
         if (availibleAttendees[i].identity == identity) {
           var x = availibleAttendees[i];
-
-          var user = { active: x.active, email: x.email, firstName: x.firstName, fullName: x.fullName, id: x.id, identity: x.identity, image: x.image, lastName: x.lastName, role: x.role };
+				var guid =	minutz.functions.createId();
+					var user = {
+						active: x.active,
+						email: x.email,
+						firstName: x.firstName,
+						fullName: x.fullName,
+						id: guid,
+						identity: x.identity,
+						Identity: x.identity,
+						image: x.image,
+						lastName: x.lastName,
+						role: x.role,
+						Role: x.role,
+						personIdentity: x.identity,
+						ReferanceId: meeting.Id,
+						referanceId: meeting.Id,
+						Id: x.id
+					};
           for (var q = 0; q < meeting.MeetingAttendeeCollection.length; q++) {
             var check = meeting.MeetingAttendeeCollection[q];
             if (check.identity == x.identity) {
@@ -90,8 +109,10 @@
               meeting.MeetingAttendeeCollection.splice(index, 1);
               $("#" + check.id).remove();
             }
-          }
-          meeting.MeetingAttendeeCollection.push(user);
+					}
+					console.log(user);	
+					meeting.MeetingAttendeeCollection.push(user);
+					console.log(meeting.MeetingAttendeeCollection);
           $("#attendeeList").append(createUserListItem(user));
           $("#totalAttenddesIcon").text(meeting.MeetingAttendeeCollection.length);
         }
