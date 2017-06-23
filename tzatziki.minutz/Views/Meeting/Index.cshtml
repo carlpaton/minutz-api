@@ -1,1633 +1,1685 @@
 @model tzatziki.minutz.models.Entities.Meeting
 @{
-  ViewData["Title"] = "Create Meeting";
+	ViewData["Title"] = "Create Meeting";
 }
 <link rel="stylesheet" href="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 <style>
-  
-  #reacuranceModel .modal-dialog {
-    width: 70%;
-  }
-  label {
-    position: inherit !important;
-  }
-  select {
-
-    text-align: center;
-  }
-
-    select .lt {
-      text-align: center;
-    }
-  .commands {
-    border-left: 1px solid #ddd;
-    display: inline-block;
-  }
-
-  [data-wysihtml5-command],
-  [data-wysihtml5-action],
-  .fore-color {
-    position: relative;
-    border-right: 1px solid #ddd;
-    border-left: 1px solid #fff;
-    list-style: none;
-    font-size: 12px;
-    display: inline-block;
-    cursor: pointer;
-    height: 40px;
-    width: 68px;
-  }
-
-    [data-wysihtml5-command]:after,
-    [data-wysihtml5-action]:after,
-    .fore-color:after {
-      content: "";
-      background-image: url(../img/spr_toolbar_icons_r1.png);
-      background-repeat: no-repeat;
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-    }
-
-    [data-wysihtml5-command]:hover,
-    [data-wysihtml5-action]:hover,
-    .fore-color:hover {
-      background-image: linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
-      background-image: -o-linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
-      background-image: -moz-linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
-      background-image: -webkit-linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
-      background-image: -ms-linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
-    }
-
-  [data-wysihtml5-command="bold"]:after {
-    background-position: 24px center;
-  }
-
-  [data-wysihtml5-command="italic"]:after {
-    background-position: -48px center;
-  }
-
-  [data-wysihtml5-command="insertUnorderedList"]:after {
-    background-position: -115px center;
-  }
-
-  [data-wysihtml5-command="insertOrderedList"]:after {
-    background-position: -197px center;
-  }
-
-  [data-wysihtml5-command="formatBlock"][data-wysihtml5-command-value="h1"]:after {
-    background-position: -344px center;
-  }
-
-  [data-wysihtml5-command="formatBlock"][data-wysihtml5-command-value="h2"]:after {
-    background-position: -428px center;
-  }
-
-  [data-wysihtml5-command="createLink"]:after {
-    background-position: -271px center;
-  }
-
-  [data-wysihtml5-command="insertImage"]:after {
-    background-position: -513px center;
-  }
-
-  .fore-color:after {
-    background-position: -741px center;
-  }
-
-  [data-wysihtml5-command="insertSpeech"]:after {
-    background-position: -596px center;
-  }
-
-  [data-wysihtml5-action="change_view"]:after {
-    background-position: -670px center;
-  }
-
-  .fore-color ul {
-    display: none;
-    position: absolute;
-    z-index: 2;
-    top: 40px;
-    right: -1px;
-    left: -2px;
-    border: 1px solid #ccc;
-    border-top: 0;
-    background: #fff;
-    overflow: hidden;
-  }
-
-  .fore-color li {
-    display: block;
-    margin: 3px;
-    width: auto;
-    border: 0;
-    height: 15px;
-  }
-
-    .fore-color li:after {
-      display: none;
-    }
-
-  .fore-color:hover ul {
-    display: block;
-  }
-
-  .fore-color [data-wysihtml5-command-value="silver"] {
-    background: silver !important;
-  }
-
-  .fore-color [data-wysihtml5-command-value="gray"] {
-    background: gray !important;
-  }
-
-  .fore-color [data-wysihtml5-command-value="maroon"] {
-    background: maroon !important;
-  }
-
-  .fore-color [data-wysihtml5-command-value="red"] {
-    background: red !important;
-  }
-
-  .fore-color [data-wysihtml5-command-value="purple"] {
-    background: purple !important;
-  }
-
-  .fore-color [data-wysihtml5-command-value="green"] {
-    background: green !important;
-  }
-
-  .fore-color [data-wysihtml5-command-value="olive"] {
-    background: olive !important;
-  }
-
-  .fore-color [data-wysihtml5-command-value="navy"] {
-    background: navy !important;
-  }
-
-  .fore-color [data-wysihtml5-command-value="blue"] {
-    background: blue !important;
-  }
-
-  .fore-color .wysihtml5-command-active {
-    outline: 1px solid #666;
-    outline-offset: 1px;
-  }
-
-  .wysihtml5-commands-disabled .fore-color ul {
-    display: none;
-  }
-
-  .wysihtml5-action-active,
-  .wysihtml5-command-active {
-    box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.2);
-    background: #eee !important;
-  }
-
-  .wysihtml5-commands-disabled [data-wysihtml5-command],
-  .wysihtml5-commands-disabled .fore-color {
-    opacity: 0.4;
-    cursor: default;
-    background-image: none !important;
-  }
-
-  [data-wysihtml5-dialog] {
-    color: #333;
-    font-size: 14px;
-    text-align: left;
-    border-radius: 4px;
-    -ms-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    padding: 5px 10px;
-    background: #FFFBE0;
-    position: absolute;
-    width: 810px;
-    text-align: center;
-    top: 45px;
-  }
-
-    [data-wysihtml5-dialog] input {
-      color: #333;
-      border: 1px solid #ccc;
-      padding: 3px;
-      width: 300px;
-    }
-
-      [data-wysihtml5-dialog] input:focus {
-        outline: 0;
-        border: 1px solid #666;
-      }
-
-  [data-wysihtml5-dialog-action] {
-    padding: 4px;
-    color: #fff;
-    cursor: pointer;
-  }
-
-  [data-wysihtml5-dialog-action="save"] {
-    background: #007200;
-  }
-
-  [data-wysihtml5-dialog-action="cancel"] {
-    background: #999;
-  }
-
-  .highlighted {
-  }
-
-  .main-footer {
-    bottom: 0;
-    left: 0;
-    position: fixed;
-    right: 0;
-    z-index: 999;
-  }
-
-  .icon-border {
-    border: 1px solid white;
-    padding: 12px;
-    border-radius: 100px;
-    background-color: white;
-    color: black;
-    font-size: 24px;
-  }
-
-  .border {
-    border: solid 1px #D2D6DE;
-  }
-
-  .gridHeader {
-    height: 50px;
-  }
-
-  .left-tab {
-    margin-left: 5px;
-  }
-
-  .top-tab {
-    margin-top: 10px;
-  }
-
-  .select2-container {
-  }
-
-  .nav-tabs > li > a {
-    margin-right: 2px;
-    padding-left: 20px;
-    padding-top: 20px;
-    padding-right: 20px;
-    padding-bottom: 5px;
-    font-size: large;
-    color: black;
-    border-top: 0px solid transparent;
-    border-left: 0px solid transparent;
-    border-right: 0px solid black;
-    border-radius: 2px 4px 0 0;
-  }
-
-  .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
-    color: #555;
-    cursor: default;
-    padding-left: 20px;
-    padding-top: 20px;
-    padding-right: 20px;
-    padding-bottom: 5px;
-    font-size: large;
-    color: black;
-    background-color: transparent !important;
-    border-top: 0px solid transparent;
-    border-left: 0px solid transparent;
-    border-right: 0px;
-    border-bottom-width: 2px;
-    border-bottom-color: black;
-  }
-
-  .nav-tabs {
-    border-bottom: 0px solid #ddd;
-  }
-
-  .dropzone.dz-clickable {
-    cursor: pointer;
-  }
-
-  .dropzone {
-    border: 2px dashed #0087F7;
-    border-radius: 5px;
-    background: white;
-  }
-
-  .dropzone {
-    min-height: 150px;
-    border: 2px solid rgba(0, 0, 0, 0.3);
-    background: white;
-    padding: 54px 54px;
-  }
-
-    .dropzone, .dropzone * {
-      box-sizing: border-box;
-    }
-
-  .btn {
-    padding: 9px 14px !important;
-  }
-
-  /* layout.css Style */
-  .select2-container--default .select2-selection--single {
-    border-radius: 0px !important;
-  }
-
-  .select2-container .select2-selection--single {
-    height: 40px !important;
-  }
-
-  .upload-drop-zone {
-    height: 200px;
-    border-width: 2px;
-    margin-bottom: 20px;
-  }
-
-  /* skin.css Style*/
-  .upload-drop-zone {
-    color: #ccc;
-    border-style: dashed;
-    border-color: #ccc;
-    line-height: 200px;
-    text-align: center
-  }
-
-    .upload-drop-zone.drop {
-      color: #222;
-      border-color: #222;
-    }
-
-  .bdp-input {
-    border-radius: 2px;
-    padding: 0 3px;
-    border: 1px solid rgba(34, 36, 38, .15);
-    cursor: pointer;
-  }
-
-    .bdp-input.disabled {
-      color: #AAA;
-      cursor: default;
-    }
-
-  .bdp-popover {
-    min-width: 110px;
-  }
-
-    .bdp-popover input {
-      display: inline;
-      margin-bottom: 3px;
-      width: 60px;
-    }
-
-  .bdp-block {
-    display: inline-block;
-    line-height: 1;
-    text-align: center;
-    padding: 5px 3px;
-  }
-
-  .bdp-label {
-    font-size: 70%;
-  }
-
-  .material-switch > input[type="checkbox"] {
-    display: none;
-  }
-
-  .material-switch > label {
-    cursor: pointer;
-    height: 0px;
-    position: relative;
-    width: 40px;
-  }
-
-    .material-switch > label::before {
-      background: rgb(0, 0, 0);
-      box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
-      border-radius: 8px;
-      content: '';
-      height: 16px;
-      margin-top: -8px;
-      position: absolute;
-      opacity: 0.3;
-      transition: all 0.4s ease-in-out;
-      width: 40px;
-    }
-
-    .material-switch > label::after {
-      background: rgb(255, 255, 255);
-      border-radius: 16px;
-      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
-      content: '';
-      height: 24px;
-      left: -4px;
-      margin-top: -8px;
-      position: absolute;
-      top: -4px;
-      transition: all 0.3s ease-in-out;
-      width: 24px;
-    }
-
-  .material-switch > input[type="checkbox"]:checked + label::before {
-    background: inherit;
-    opacity: 0.5;
-  }
-
-  .material-switch > input[type="checkbox"]:checked + label::after {
-    background: inherit;
-    left: 20px;
-  }
-
-  .row-item {
-    background-color: #F7F7F7;
-    padding-top: 5px;
-    padding-bottom: 5px;
-  }
-
-  .round-button-circle {
-    width: 35px;
-    height: 0;
-    padding-bottom: 35px;
-    border-radius: 35px;
-    border: 0px solid #cfdcec;
-    overflow: hidden;
-    background: #47A9D6;
-    cursor: pointer;
-    color: white;
-  }
-
-    .round-button-circle i {
-      padding-top: 11px;
-      padding-left: 11px;
-    }
-
-  .text-line {
-    background-color: transparent;
-    color: #000000;
-    outline: none;
-    outline-style: none;
-    outline-offset: 0;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-bottom: solid #000 1px;
-    padding: 3px 10px;
-  }
-
-  /* form starting stylings ------------------------------- */
-  .group {
-    position: relative;
-    margin-bottom: 45px;
-  }
-
-  input {
-    font-size: 18px;
-    padding: 10px 10px 10px 5px;
-    display: block;
-    width: 100%;
-    max-width: 100%;
-    background-color: transparent;
-    border: none;
-    border-bottom: 1px solid #757575;
-  }
-
-    input:focus {
-      outline: none;
-    }
-
-  /* LABEL ======================================= */
-  label {
-    color: #999;
-    font-size: 18px;
-    font-weight: normal;
-    position: absolute;
-    pointer-events: none;
-    left: 5px;
-    top: 10px;
-    transition: 0.2s ease all;
-  }
-
-  /* active state */
-  input:focus ~ label, input:valid ~ label {
-    top: -20px;
-    font-size: 14px;
-    color: #5264AE;
-  }
-
-  /* active state */
-
-  /* HIGHLIGHTER ================================== */
-  .highlight {
-    position: absolute;
-    height: 60%;
-    width: 100px;
-    top: 25%;
-    left: 0;
-    pointer-events: none;
-    opacity: 0.5;
-  }
-
-  .dropdown-padding {
-    padding-left: 10px;
-    font-weight: bold;
-  }
-
-  /* active state */
-  input:focus ~ .highlight {
-    /*animation: inputHighlighter 0.3s ease;*/
-  }
-
-  .row-white {
-    background-color: #fff;
-  }
-
-  .panel {
-    border: 0px solid transparent !important;
-  }
-
-  .panel-title {
-    margin-top: inherit !important;
-    margin-bottom: inherit !important;
-    font-size: 16px;
-    color: inherit;
-    background-color: #D7D7D7;
-  }
-
-  .panel-heading {
-    padding: 0px 0px !important;
-    border-top-left-radius: 0px !important;
-    border-top-right-radius: 0px !important;
-  }
-
-  @@media screen and (min-width: 1000px) {
-    .w {
-      margin-left: -50px;
-    }
-  }
-
-  @@media screen and (max-width: 1000px) {
-    .row-padding {
-      padding-bottom: 5px;
-    } 
-  }
-
-  .panel-body {
-    padding: 5px !important;
-  }
-  .panel-group {
-    margin-bottom: 1px !important;
-  }
-  .box{margin-bottom :1px !important;}
-  .meetingHeading{padding-bottom:10px;}
+	#reacuranceModel .modal-dialog {
+		width: 70%;
+	}
+
+	label {
+		position: inherit !important;
+	}
+
+	select {
+		text-align: center;
+	}
+
+		select .lt {
+			text-align: center;
+		}
+
+	.commands {
+		border-left: 1px solid #ddd;
+		display: inline-block;
+	}
+
+	[data-wysihtml5-command],
+	[data-wysihtml5-action],
+	.fore-color {
+		position: relative;
+		border-right: 1px solid #ddd;
+		border-left: 1px solid #fff;
+		list-style: none;
+		font-size: 12px;
+		display: inline-block;
+		cursor: pointer;
+		height: 40px;
+		width: 68px;
+	}
+
+		[data-wysihtml5-command]:after,
+		[data-wysihtml5-action]:after,
+		.fore-color:after {
+			content: "";
+			background-image: url(../img/spr_toolbar_icons_r1.png);
+			background-repeat: no-repeat;
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+		}
+
+		[data-wysihtml5-command]:hover,
+		[data-wysihtml5-action]:hover,
+		.fore-color:hover {
+			background-image: linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
+			background-image: -o-linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
+			background-image: -moz-linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
+			background-image: -webkit-linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
+			background-image: -ms-linear-gradient(bottom, rgb(229,240,226) 0%, rgb(255,255,255) 100%);
+		}
+
+	[data-wysihtml5-command="bold"]:after {
+		background-position: 24px center;
+	}
+
+	[data-wysihtml5-command="italic"]:after {
+		background-position: -48px center;
+	}
+
+	[data-wysihtml5-command="insertUnorderedList"]:after {
+		background-position: -115px center;
+	}
+
+	[data-wysihtml5-command="insertOrderedList"]:after {
+		background-position: -197px center;
+	}
+
+	[data-wysihtml5-command="formatBlock"][data-wysihtml5-command-value="h1"]:after {
+		background-position: -344px center;
+	}
+
+	[data-wysihtml5-command="formatBlock"][data-wysihtml5-command-value="h2"]:after {
+		background-position: -428px center;
+	}
+
+	[data-wysihtml5-command="createLink"]:after {
+		background-position: -271px center;
+	}
+
+	[data-wysihtml5-command="insertImage"]:after {
+		background-position: -513px center;
+	}
+
+	.fore-color:after {
+		background-position: -741px center;
+	}
+
+	[data-wysihtml5-command="insertSpeech"]:after {
+		background-position: -596px center;
+	}
+
+	[data-wysihtml5-action="change_view"]:after {
+		background-position: -670px center;
+	}
+
+	.fore-color ul {
+		display: none;
+		position: absolute;
+		z-index: 2;
+		top: 40px;
+		right: -1px;
+		left: -2px;
+		border: 1px solid #ccc;
+		border-top: 0;
+		background: #fff;
+		overflow: hidden;
+	}
+
+	.fore-color li {
+		display: block;
+		margin: 3px;
+		width: auto;
+		border: 0;
+		height: 15px;
+	}
+
+		.fore-color li:after {
+			display: none;
+		}
+
+	.fore-color:hover ul {
+		display: block;
+	}
+
+	.fore-color [data-wysihtml5-command-value="silver"] {
+		background: silver !important;
+	}
+
+	.fore-color [data-wysihtml5-command-value="gray"] {
+		background: gray !important;
+	}
+
+	.fore-color [data-wysihtml5-command-value="maroon"] {
+		background: maroon !important;
+	}
+
+	.fore-color [data-wysihtml5-command-value="red"] {
+		background: red !important;
+	}
+
+	.fore-color [data-wysihtml5-command-value="purple"] {
+		background: purple !important;
+	}
+
+	.fore-color [data-wysihtml5-command-value="green"] {
+		background: green !important;
+	}
+
+	.fore-color [data-wysihtml5-command-value="olive"] {
+		background: olive !important;
+	}
+
+	.fore-color [data-wysihtml5-command-value="navy"] {
+		background: navy !important;
+	}
+
+	.fore-color [data-wysihtml5-command-value="blue"] {
+		background: blue !important;
+	}
+
+	.fore-color .wysihtml5-command-active {
+		outline: 1px solid #666;
+		outline-offset: 1px;
+	}
+
+	.wysihtml5-commands-disabled .fore-color ul {
+		display: none;
+	}
+
+	.wysihtml5-action-active,
+	.wysihtml5-command-active {
+		box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.2);
+		background: #eee !important;
+	}
+
+	.wysihtml5-commands-disabled [data-wysihtml5-command],
+	.wysihtml5-commands-disabled .fore-color {
+		opacity: 0.4;
+		cursor: default;
+		background-image: none !important;
+	}
+
+	[data-wysihtml5-dialog] {
+		color: #333;
+		font-size: 14px;
+		text-align: left;
+		border-radius: 4px;
+		-ms-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		border: 1px solid #ccc;
+		padding: 5px 10px;
+		background: #FFFBE0;
+		position: absolute;
+		width: 810px;
+		text-align: center;
+		top: 45px;
+	}
+
+		[data-wysihtml5-dialog] input {
+			color: #333;
+			border: 1px solid #ccc;
+			padding: 3px;
+			width: 300px;
+		}
+
+			[data-wysihtml5-dialog] input:focus {
+				outline: 0;
+				border: 1px solid #666;
+			}
+
+	[data-wysihtml5-dialog-action] {
+		padding: 4px;
+		color: #fff;
+		cursor: pointer;
+	}
+
+	[data-wysihtml5-dialog-action="save"] {
+		background: #007200;
+	}
+
+	[data-wysihtml5-dialog-action="cancel"] {
+		background: #999;
+	}
+
+	.highlighted {
+	}
+
+	.main-footer {
+		bottom: 0;
+		left: 0;
+		position: fixed;
+		right: 0;
+		z-index: 999;
+	}
+
+	.icon-border {
+		border: 1px solid white;
+		padding: 12px;
+		border-radius: 100px;
+		background-color: white;
+		color: black;
+		font-size: 24px;
+	}
+
+	.border {
+		border: solid 1px #D2D6DE;
+	}
+
+	.gridHeader {
+		height: 50px;
+	}
+
+	.left-tab {
+		margin-left: 5px;
+	}
+
+	.top-tab {
+		margin-top: 10px;
+	}
+
+	.select2-container {
+	}
+
+	.nav-tabs > li > a {
+		margin-right: 2px;
+		padding-left: 20px;
+		padding-top: 20px;
+		padding-right: 20px;
+		padding-bottom: 5px;
+		font-size: large;
+		color: black;
+		border-top: 0px solid transparent;
+		border-left: 0px solid transparent;
+		border-right: 0px solid black;
+		border-radius: 2px 4px 0 0;
+	}
+
+	.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+		color: #555;
+		cursor: default;
+		padding-left: 20px;
+		padding-top: 20px;
+		padding-right: 20px;
+		padding-bottom: 5px;
+		font-size: large;
+		color: black;
+		background-color: transparent !important;
+		border-top: 0px solid transparent;
+		border-left: 0px solid transparent;
+		border-right: 0px;
+		border-bottom-width: 2px;
+		border-bottom-color: black;
+	}
+
+	.nav-tabs {
+		border-bottom: 0px solid #ddd;
+	}
+
+	.dropzone.dz-clickable {
+		cursor: pointer;
+	}
+
+	.dropzone {
+		border: 2px dashed #0087F7;
+		border-radius: 5px;
+		background: white;
+	}
+
+	.dropzone {
+		min-height: 150px;
+		border: 2px solid rgba(0, 0, 0, 0.3);
+		background: white;
+		padding: 54px 54px;
+	}
+
+		.dropzone, .dropzone * {
+			box-sizing: border-box;
+		}
+
+	.btn {
+		padding: 9px 14px !important;
+	}
+
+	/* layout.css Style */
+	.select2-container--default .select2-selection--single {
+		border-radius: 0px !important;
+	}
+
+	.select2-container .select2-selection--single {
+		height: 40px !important;
+	}
+
+	.upload-drop-zone {
+		height: 200px;
+		border-width: 2px;
+		margin-bottom: 20px;
+	}
+
+	/* skin.css Style*/
+	.upload-drop-zone {
+		color: #ccc;
+		border-style: dashed;
+		border-color: #ccc;
+		line-height: 200px;
+		text-align: center
+	}
+
+		.upload-drop-zone.drop {
+			color: #222;
+			border-color: #222;
+		}
+
+	.bdp-input {
+		border-radius: 2px;
+		padding: 0 3px;
+		border: 1px solid rgba(34, 36, 38, .15);
+		cursor: pointer;
+	}
+
+		.bdp-input.disabled {
+			color: #AAA;
+			cursor: default;
+		}
+
+	.bdp-popover {
+		min-width: 110px;
+	}
+
+		.bdp-popover input {
+			display: inline;
+			margin-bottom: 3px;
+			width: 60px;
+		}
+
+	.bdp-block {
+		display: inline-block;
+		line-height: 1;
+		text-align: center;
+		padding: 5px 3px;
+	}
+
+	.bdp-label {
+		font-size: 70%;
+	}
+
+	.material-switch > input[type="checkbox"] {
+		display: none;
+	}
+
+	.material-switch > label {
+		cursor: pointer;
+		height: 0px;
+		position: relative;
+		width: 40px;
+	}
+
+		.material-switch > label::before {
+			background: rgb(0, 0, 0);
+			box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+			border-radius: 8px;
+			content: '';
+			height: 16px;
+			margin-top: -8px;
+			position: absolute;
+			opacity: 0.3;
+			transition: all 0.4s ease-in-out;
+			width: 40px;
+		}
+
+		.material-switch > label::after {
+			background: rgb(255, 255, 255);
+			border-radius: 16px;
+			box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+			content: '';
+			height: 24px;
+			left: -4px;
+			margin-top: -8px;
+			position: absolute;
+			top: -4px;
+			transition: all 0.3s ease-in-out;
+			width: 24px;
+		}
+
+	.material-switch > input[type="checkbox"]:checked + label::before {
+		background: inherit;
+		opacity: 0.5;
+	}
+
+	.material-switch > input[type="checkbox"]:checked + label::after {
+		background: inherit;
+		left: 20px;
+	}
+
+	.row-item {
+		background-color: #F7F7F7;
+		padding-top: 5px;
+		padding-bottom: 5px;
+	}
+
+	.round-button-circle {
+		width: 35px;
+		height: 0;
+		padding-bottom: 35px;
+		border-radius: 35px;
+		border: 0px solid #cfdcec;
+		overflow: hidden;
+		background: #47A9D6;
+		cursor: pointer;
+		color: white;
+	}
+
+		.round-button-circle i {
+			padding-top: 11px;
+			padding-left: 11px;
+		}
+
+	.text-line {
+		background-color: transparent;
+		color: #000000;
+		outline: none;
+		outline-style: none;
+		outline-offset: 0;
+		border-top: none;
+		border-left: none;
+		border-right: none;
+		border-bottom: solid #000 1px;
+		padding: 3px 10px;
+	}
+
+	/* form starting stylings ------------------------------- */
+	.group {
+		position: relative;
+		margin-bottom: 45px;
+	}
+
+	input {
+		font-size: 18px;
+		padding: 10px 10px 10px 5px;
+		display: block;
+		width: 100%;
+		max-width: 100%;
+		background-color: transparent;
+		border: none;
+		border-bottom: 1px solid #757575;
+	}
+
+		input:focus {
+			outline: none;
+		}
+
+	/* LABEL ======================================= */
+	label {
+		color: #999;
+		font-size: 18px;
+		font-weight: normal;
+		position: absolute;
+		pointer-events: none;
+		left: 5px;
+		top: 10px;
+		transition: 0.2s ease all;
+	}
+
+	/* active state */
+	input:focus ~ label, input:valid ~ label {
+		top: -20px;
+		font-size: 14px;
+		color: #5264AE;
+	}
+
+	/* active state */
+
+	/* HIGHLIGHTER ================================== */
+	.highlight {
+		position: absolute;
+		height: 60%;
+		width: 100px;
+		top: 25%;
+		left: 0;
+		pointer-events: none;
+		opacity: 0.5;
+	}
+
+	.dropdown-padding {
+		padding-left: 10px;
+		font-weight: bold;
+	}
+
+	/* active state */
+	input:focus ~ .highlight {
+		/*animation: inputHighlighter 0.3s ease;*/
+	}
+
+	.row-white {
+		background-color: #fff;
+	}
+
+	.panel {
+		border: 0px solid transparent !important;
+	}
+
+	.panel-title {
+		margin-top: inherit !important;
+		margin-bottom: inherit !important;
+		font-size: 16px;
+		color: inherit;
+		background-color: #D7D7D7;
+	}
+
+	.panel-heading {
+		padding: 0px 0px !important;
+		border-top-left-radius: 0px !important;
+		border-top-right-radius: 0px !important;
+	}
+
+	@@media screen and (min-width: 1000px) {
+		.w {
+			margin-left: -50px;
+		}
+	}
+
+	@@media screen and (max-width: 1000px) {
+		.row-padding {
+			padding-bottom: 5px;
+		}
+	}
+
+	.panel-body {
+		padding: 5px !important;
+	}
+
+	.panel-group {
+		margin-bottom: 1px !important;
+	}
+
+	.box {
+		margin-bottom: 1px !important;
+	}
+
+	.meetingHeading {
+		padding-bottom: 10px;
+	}
 </style>
 <div class="container-fluid">
-  @*This is top heading row row*@
-  <div class="row row-white">
-    <div class="container-fluid">
-      <div class="col-md-12 meetingHeading">
-        <input id="txtMeetingName" type="text" style="font-size: 30px; font-weight: bold;" placeholder="Meeting Name" data-toggle="tooltip" title="Give your meeting a logical name." />
-      </div>
-    </div>
-  </div>
+	@*This is top heading row row*@
+	<div class="row row-white">
+		<div class="container-fluid">
+			<div class="col-md-12 meetingHeading">
+				<input id="txtMeetingName" type="text" style="font-size: 30px; font-weight: bold;" placeholder="Meeting Name" data-toggle="tooltip" title="Give your meeting a logical name." />
+			</div>
+		</div>
+	</div>
 
-  @*This is meeting time controler row*@
-  <div class="row row-white">
-    <div class="container-fluid">
-      <div class="col-md-6">
-        <div class="row">
-          <div class="col-md-4 row-padding">
-            <div class="input-group" data-toggle="tooltip" title="The location of the meeting i.e. meeting room name or address.">
-              <span class="input-group-addon" id="basic-addon1"><i class="fa fa-map-marker"></i></span>
-              <input id="txtLocation" type="text" class="form-control" placeholder="Location" aria-describedby="basic-addon1">
-            </div>
-          </div>
-          <div class="col-md-4 row-padding">
-            <div class="input-group date" data-toggle="tooltip" title="The date of the meeting.">
-              <input type="text" id="txtDate" class="form-control"><span class="input-group-addon">
-                <i class="fa fa-calendar"></i>
-              </span>
-            </div>
-          </div>
-          <div class="col-md-4 row-padding" data-toggle="tooltip" title="The time the meeting is required to begin.">
-           
-            <div class="input-group bootstrap-timepicker timepicker">
-              <input id="meetingTime" type="text" class="form-control input-small">
-              <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <div class="col-md-4 row-padding">
-            <input type="text" placeholder="Pick Duration..." id="txtDuration" value="1450">
+	@*This is meeting time controler row*@
+	<div class="row row-white">
+		<div class="container-fluid">
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-4 row-padding">
+						<div class="input-group" data-toggle="tooltip" title="The location of the meeting i.e. meeting room name or address.">
+							<span class="input-group-addon" id="basic-addon1"><i class="fa fa-map-marker"></i></span>
+							<input id="txtLocation" type="text" class="form-control" placeholder="Location" aria-describedby="basic-addon1">
+						</div>
+					</div>
+					<div class="col-md-4 row-padding">
+						<div class="input-group date" data-toggle="tooltip" title="The date of the meeting.">
+							<input type="text" id="txtDate" class="form-control"><span class="input-group-addon">
+								<i class="fa fa-calendar"></i>
+							</span>
+						</div>
+					</div>
+					<div class="col-md-4 row-padding" data-toggle="tooltip" title="The time the meeting is required to begin.">
 
-            <div  class="input-group bootstrap-timepicker timepicker hide" data-toggle="tooltip" title="The duration of the meeting.">
-              <input id="txtDuration2" type="text" class="form-control input-small">
-              <span class="input-group-addon"><i class="fa fa-hourglass-half"></i></span>
-            </div>
-          </div>
-          <div class="col-md-1 row-padding">
-            <div class="input-group" data-toggle="tooltip" title="How often will the meeting be held?">
-              <div class="btn" style="position: relative; top: -9px;" data-toggle="modal" data-target="#reacuranceModel"><span class="input-group-addon"><i class="fa fa-refresh"></i></span></div>
-              
-            </div>
-          </div>
-          <div class="col-md-4 row-padding">
-            <div class="input-group" data-toggle="tooltip" title="Give your meeting tags, separated by ',' ">
-              <span class="input-group-addon" id="basic-addon1"><i class="fa fa-tags"></i></span>
-              <input id="txtTags" type="text" class="form-control" placeholder="Add a tag" aria-describedby="basic-addon1">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
- 
+						<div class="input-group bootstrap-timepicker timepicker">
+							<input id="meetingTime" type="text" class="form-control input-small">
+							<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-4 row-padding">
+						<input type="text" placeholder="Pick Duration..." id="txtDuration" value="1450">
+
+						<div class="input-group bootstrap-timepicker timepicker hide" data-toggle="tooltip" title="The duration of the meeting.">
+							<input id="txtDuration2" type="text" class="form-control input-small">
+							<span class="input-group-addon"><i class="fa fa-hourglass-half"></i></span>
+						</div>
+					</div>
+					<div class="col-md-1 row-padding">
+						<div class="input-group" data-toggle="tooltip" title="How often will the meeting be held?">
+							<div class="btn" style="position: relative; top: -9px;" data-toggle="modal" data-target="#reacuranceModel"><span class="input-group-addon"><i class="fa fa-refresh"></i></span></div>
+
+						</div>
+					</div>
+					<div class="col-md-4 row-padding">
+						<div class="input-group" data-toggle="tooltip" title="Give your meeting tags, separated by ',' ">
+							<span class="input-group-addon" id="basic-addon1"><i class="fa fa-tags"></i></span>
+							<input id="txtTags" type="text" class="form-control" placeholder="Add a tag" aria-describedby="basic-addon1">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </div>
 @*This is invations row*@
 <div class="row row-item row-grey">
-  <div class="container-fluid">
-    <div class="col-md-6">
-      <div class="col-md-3">
-        <a class="btn btn-info"><i class="fa fa-paper-plane-o"></i><span style="padding-left:5px;">Send Invatations</span></a>
-      </div>
-      <div class="col-md-3">
-        <a class="btn " style="background-color:white; color:black;">
-          <i class="fa fa-print"></i>
-          <span>Print</span>
-        </a>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div class="input-group" data-toggle="tooltip" title="Select a timezone for the meeting." style="width: 275px;">
-        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-globe"></i></span>
-        <select id="timeZones" class="form-control js-example-data-array" style="width: 275px; text-align:center;"></select>
-      </div>
-    </div>
-    <div class="col-md-2 ">
-      <div style="margin-left:-10px;">
-        <input type="checkbox" id="toggle-formal">
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div id="btnSave" class="btn btn-success"><span id="txtSave">Save</span></div>
-    </div>
-  </div>
+	<div class="container-fluid">
+		<div class="col-md-6">
+			<div class="col-md-3">
+				<a class="btn btn-info"><i class="fa fa-paper-plane-o"></i><span style="padding-left:5px;">Send Invatations</span></a>
+			</div>
+			<div class="col-md-3">
+				<a class="btn " style="background-color:white; color:black;">
+					<i class="fa fa-print"></i>
+					<span>Print</span>
+				</a>
+			</div>
+		</div>
+		<div class="col-md-2">
+			<div class="input-group" data-toggle="tooltip" title="Select a timezone for the meeting." style="width: 275px;">
+				<span class="input-group-addon" id="basic-addon1"><i class="fa fa-globe"></i></span>
+				<select id="timeZones" class="form-control js-example-data-array" style="width: 275px; text-align:center;"></select>
+			</div>
+		</div>
+		<div class="col-md-2 ">
+			<div style="margin-left:-10px;">
+				<input type="checkbox" id="toggle-formal">
+			</div>
+		</div>
+		<div class="col-md-2">
+			<div id="btnSave" class="btn btn-success"><span id="txtSave">Save</span></div>
+		</div>
+	</div>
 </div>
 
 <div class="col-md-3 row-grey" style="background-color: #ecf0f5;">
-  <div class="row ">
-    <div class="box box-widget widget-user-2" style=" background-color:#ecf0f5; ">
-      <!-- Add the bg color to the header using any of the bg-* classes -->
-      <div class="widget-user-header bg-blue">
-        <div class="widget-user-image">
-          <img class="img-circle" src="@User.ToProfile().ProfileImage" alt="User Avatar">
-        </div>
-        <!-- /.widget-user-image -->
-        <h3 class="widget-user-username">@User.ToProfile().Name</h3>
-        <h5 class="widget-user-desc"><b>Role :</b> Organiser</h5>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div id="attendeesControl" class="panel-group" >
-    </div>
-    <div id="agendaControl" class="panel-group" >
-      <div class="panel panel-default">
-        <a data-toggle="collapse" data-target=".agendaControl" style="cursor: pointer;">
-          <div class="panel-body" style="background-color: darkgrey;">
-            <i class="fa fa-bars fa-2x icon-border" aria-hidden="true"></i>
-            <span style="font-size:20px; font-weight:bold; padding:5px; color:white;">Agenda Topics</span>
-            <span id="totalAgendaTopicsIcon" class="label label-info"></span>
-          </div>
-        </a>
-      </div>
-      <div class="panel panel-default collapse agendaControl">
-        <div class="panel-body">
-          <div class="row hide">
-            <div class="col-md-10">
-              <div class="input-group" data-toggle="tooltip" title="Give your agenda item a title.">
-                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-pencil"></i></span>
-                <input id="txtAgendaTitleQuick" type="text" />
-              </div>
-            </div>
-            <div class="col-md-2">
-              <div id="btnAddAgendaItem" class="round-button-circle pull-right"><i class="fa fa-plus"></i></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <ul id="agendaItems" class="products-list product-list-in-box collapse agendaControl"></ul>
-    </div>
-    <div id="attachmentsControl" class="panel-group" >
-    </div>
-  </div>
+	<div class="row ">
+		<div class="box box-widget widget-user-2" style=" background-color:#ecf0f5; ">
+			<!-- Add the bg color to the header using any of the bg-* classes -->
+			<div class="widget-user-header bg-blue">
+				<div class="widget-user-image">
+					<img class="img-circle" src="@User.ToProfile().ProfileImage" alt="User Avatar">
+				</div>
+				<!-- /.widget-user-image -->
+				<h3 class="widget-user-username">@User.ToProfile().Name</h3>
+				<h5 class="widget-user-desc"><b>Role :</b> Organiser</h5>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div id="attendeesControl" class="panel-group">
+		</div>
+		<div id="agendaControl" class="panel-group">
+			<div class="panel panel-default">
+				<a data-toggle="collapse" data-target=".agendaControl" style="cursor: pointer;">
+					<div class="panel-body" style="background-color: darkgrey;">
+						<i class="fa fa-bars fa-2x icon-border" aria-hidden="true"></i>
+						<span style="font-size:20px; font-weight:bold; padding:5px; color:white;">Agenda Topics</span>
+						<span id="totalAgendaTopicsIcon" class="label label-info"></span>
+					</div>
+				</a>
+			</div>
+			<div class="panel panel-default collapse agendaControl">
+				<div class="panel-body">
+					<div class="row hide">
+						<div class="col-md-10">
+							<div class="input-group" data-toggle="tooltip" title="Give your agenda item a title.">
+								<span class="input-group-addon" id="basic-addon1"><i class="fa fa-pencil"></i></span>
+								<input id="txtAgendaTitleQuick" type="text" />
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div id="btnAddAgendaItem" class="round-button-circle pull-right"><i class="fa fa-plus"></i></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<ul id="agendaItems" class="products-list product-list-in-box collapse agendaControl"></ul>
+		</div>
+		<div id="attachmentsControl" class="panel-group">
+		</div>
+	</div>
 </div>
 <div class="col-md-9 row-grey" style="background-color: #ecf0f5;">
-  <div class="row row-white left-tab top-tab">
-    <div class="col-md-12">
-      <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation"><a href="#objectiveTab" aria-controls="objectiveTab" role="tab" data-toggle="tab"><i class="fa fa-globe"></i> Objective</a></li>
-        <li role="presentation"><a href="#outcomeTab" aria-controls="outcomeTab" role="tab" data-toggle="tab"><i class="fa fa-globe"></i> Outcome</a></li>
-        <li role="presentation" class="active"><a href="#agendaTab" aria-controls="agendaTab" role="tab" data-toggle="tab"><i class="fa fa-pencil"></i> Agenda</a></li>
-      </ul>
-      <div class="tab-content">
-        <div role="tabpanel" class="tab-pane " id="objectiveTab">
-          <br />
-          <form>
-            <textarea id="purposeText" class="textarea" placeholder="Write the purpose for your meeting." style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-          </form>
-        </div>
-        <div role="tabpanel" class="tab-pane" id="outcomeTab">
-          <br />
+	<div class="row row-white left-tab top-tab">
+		<div class="col-md-12">
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation"><a href="#objectiveTab" aria-controls="objectiveTab" role="tab" data-toggle="tab"><i class="fa fa-globe"></i> Objective</a></li>
+				<li role="presentation"><a href="#outcomeTab" aria-controls="outcomeTab" role="tab" data-toggle="tab"><i class="fa fa-globe"></i> Outcome</a></li>
+				<li role="presentation" class="active"><a href="#agendaTab" aria-controls="agendaTab" role="tab" data-toggle="tab"><i class="fa fa-pencil"></i> Agenda</a></li>
+			</ul>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane " id="objectiveTab">
+					<br />
+					<form>
+						<textarea id="purposeText" class="textarea" placeholder="Write the purpose for your meeting." style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+					</form>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="outcomeTab">
+					<br />
 
-          <form>
+					<form>
 
-            <textarea id="outcomeText" placeholder="Enter text ..." style="width:100%; min-height:300px;"></textarea>
-            <br><input type="reset" class="hide" value="Reset form!">
-          </form>
-        </div>
-        <div role="tabpanel" class="tab-pane active" id="agendaTab">
-          <br />
-          <div class="row left-tab">
-            <div class="col-md-3 gridHeader ">
-              <div class="input-group bootstrap-timepicker timepicker">
-                <input id="agendaItemTime" type="text" class="form-control input-small">
-                <span class="input-group-addon"><i class="fa fa-hourglass-half"></i></span>
-              </div>
-            </div>
-            <div class="col-md-4  gridHeader">
-              <input id="txtAgendaTitle" type="text" style="font-size: 15px; font-weight: bold;" placeholder="Topic Title" data-toggle="tooltip" title="Give your agenda item a title." />
-            </div>
-            <div class="col-md-1  gridHeader">
-              <div id="btnAddAgendaItemForm" class="round-button-circle pull-right"><i class="fa fa-plus"></i></div>
-            </div>
-            <div class="col-md-3  gridHeader">
-              <select id="attendees_agendaItem" class="js-example-data-array" style="margin-top: 5px;"></select>
-            </div>
-          </div>
-          <div class="row left-tab">
-            <br />
-            <form>
-              <textarea id="agendaText" class="textarea" placeholder="Write your detailed topic information." style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+						<textarea id="outcomeText" placeholder="Enter text ..." style="width:100%; min-height:300px;"></textarea>
+						<br><input type="reset" class="hide" value="Reset form!">
+					</form>
+				</div>
+				<div role="tabpanel" class="tab-pane active" id="agendaTab">
+					<br />
+					<div class="row left-tab">
+						<div class="col-md-3 gridHeader ">
+							<div class="input-group " id="pickerHolder">
+
+							</div>
+						</div>
+						<div class="col-md-4  gridHeader">
+							<input id="txtAgendaTitle" type="text" style="font-size: 15px; font-weight: bold;" placeholder="Topic Title" data-toggle="tooltip" title="Give your agenda item a title." />
+						</div>
+						<div class="col-md-1  gridHeader">
+							<div id="btnAddAgendaItemForm" class="round-button-circle pull-right"><i class="fa fa-plus"></i></div>
+						</div>
+						<div class="col-md-3  gridHeader">
+							<select id="attendees_agendaItem" class="js-example-data-array" style="margin-top: 5px;"></select>
+						</div>
+					</div>
+					<div class="row left-tab">
+						<br />
+						<form>
+							<textarea id="agendaText" class="textarea" placeholder="Write your detailed topic information." style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <div class="col-sm-1 hide">
-  <div id="btnAddAgenda" class="round-button-circle" style="margin-top: -35px; margin-left:-160px;"><i class="fa fa-plus fa-2x"></i></div>
+	<div id="btnAddAgenda" class="round-button-circle" style="margin-top: -35px; margin-left:-160px;"><i class="fa fa-plus fa-2x"></i></div>
 </div>
 <div class="col-sm-1 hide">
-  <div id="btnRemoveAgenda" class="round-button-circle" style="margin-top: -35px; margin-left:-120px; background-color:red"><i class="fa fa-minus fa-2x"></i></div>
+	<div id="btnRemoveAgenda" class="round-button-circle" style="margin-top: -35px; margin-left:-120px; background-color:red"><i class="fa fa-minus fa-2x"></i></div>
 </div>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="reacuranceModel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Custom Recurrence Settings</h4>
-      </div>
-      <div class="modal-body">
-        <div class="container">
-          <style type="text/css">
-            .tabs-left > .nav-tabs > li,
-            .tabs-right > .nav-tabs > li {
-              float: none;
-            }
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Custom Recurrence Settings</h4>
+			</div>
+			<div class="modal-body">
+				<div class="container">
+					<style type="text/css">
+						.tabs-left > .nav-tabs > li,
+						.tabs-right > .nav-tabs > li {
+							float: none;
+						}
 
-              .tabs-left > .nav-tabs > li > a,
-              .tabs-right > .nav-tabs > li > a {
-                min-width: 74px;
-                margin-right: 0;
-                margin-bottom: 3px;
-              }
+							.tabs-left > .nav-tabs > li > a,
+							.tabs-right > .nav-tabs > li > a {
+								min-width: 74px;
+								margin-right: 0;
+								margin-bottom: 3px;
+							}
 
-            .tabs-left > .nav-tabs {
-              float: left;
-              margin-right: 19px;
-              border-right: 1px solid #ddd;
-            }
+						.tabs-left > .nav-tabs {
+							float: left;
+							margin-right: 19px;
+							border-right: 1px solid #ddd;
+						}
 
-              .tabs-left > .nav-tabs > li > a {
-                margin-right: -1px;
-                -webkit-border-radius: 4px 0 0 4px;
-                -moz-border-radius: 4px 0 0 4px;
-                border-radius: 4px 0 0 4px;
-              }
+							.tabs-left > .nav-tabs > li > a {
+								margin-right: -1px;
+								-webkit-border-radius: 4px 0 0 4px;
+								-moz-border-radius: 4px 0 0 4px;
+								border-radius: 4px 0 0 4px;
+							}
 
-                .tabs-left > .nav-tabs > li > a:hover,
-                .tabs-left > .nav-tabs > li > a:focus {
-                  border-color: #eeeeee #dddddd #eeeeee #eeeeee;
-                }
+								.tabs-left > .nav-tabs > li > a:hover,
+								.tabs-left > .nav-tabs > li > a:focus {
+									border-color: #eeeeee #dddddd #eeeeee #eeeeee;
+								}
 
-              .tabs-left > .nav-tabs .active > a,
-              .tabs-left > .nav-tabs .active > a:hover,
-              .tabs-left > .nav-tabs .active > a:focus {
-                border-color: #ddd transparent #ddd #ddd;
-                *border-right-color: #ffffff;
-              }
-          </style>
-          <div class="col-12">
-            <form>
-              <div class="col-md-12">
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-md-2 col-form-label">Start Time</label>
-                  <div class="col-md-4">
-                    <select class="form-control " id="inlineFormInput">
-                      <option>12:00 AM</option>
-                      <option>12:30 AM</option>
-                      <option>01:00 AM</option>
-                      <option>01:30 AM</option>
-                      <option>02:00 AM</option>
-                      <option>02:30 AM</option>
-                      <option>03:00 AM</option>
-                      <option>03:30 AM</option>
-                      <option>04:00 AM</option>
-                      <option>04:30 AM</option>
-                      <option>05:00 AM</option>
-                      <option>05:30 AM</option>
-                      <option>06:00 AM</option>
-                      <option>06:30 AM</option>
-                      <option>07:00 AM</option>
-                      <option>07:30 AM</option>
-                      <option>08:00 AM</option>
-                      <option>08:30 AM</option>
-                      <option>09:00 AM</option>
-                      <option>09:30 AM</option>
-                      <option>10:00 AM</option>
-                      <option>10:30 AM</option>
-                      <option>11:00 AM</option>
-                      <option>11:30 AM</option>
-                      <option>12:00 PM</option>
-                      <option>12:30 PM</option>
-                      <option>01:00 PM</option>
-                      <option>01:30 PM</option>
-                      <option>02:00 PM</option>
-                      <option>02:30 PM</option>
-                      <option>03:00 PM</option>
-                      <option>03:30 PM</option>
-                      <option>04:00 PM</option>
-                      <option>04:30 PM</option>
-                      <option>05:00 PM</option>
-                      <option>05:30 PM</option>
-                      <option>06:00 PM</option>
-                      <option>06:30 PM</option>
-                      <option>07:00 PM</option>
-                      <option>07:30 PM</option>
-                      <option>08:00 PM</option>
-                      <option>08:30 PM</option>
-                      <option>09:00 PM</option>
-                      <option>09:30 PM</option>
-                      <option>10:00 PM</option>
-                      <option>10:30 PM</option>
-                      <option>11:00 PM</option>
-                      <option>11:30 PM</option>
-                      <option>12:00 PM</option>
-                      <option>02:30 PM</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-md-2 col-form-label">End Time</label>
-                  <div class="col-md-4">
-                    <select class="form-control " id="inlineFormInput">
-                      <option>12:00 AM</option>
-                      <option>12:30 AM</option>
-                      <option>01:00 AM</option>
-                      <option>01:30 AM</option>
-                      <option>02:00 AM</option>
-                      <option>02:30 AM</option>
-                      <option>03:00 AM</option>
-                      <option>03:30 AM</option>
-                      <option>04:00 AM</option>
-                      <option>04:30 AM</option>
-                      <option>05:00 AM</option>
-                      <option>05:30 AM</option>
-                      <option>06:00 AM</option>
-                      <option>06:30 AM</option>
-                      <option>07:00 AM</option>
-                      <option>07:30 AM</option>
-                      <option>08:00 AM</option>
-                      <option>08:30 AM</option>
-                      <option>09:00 AM</option>
-                      <option>09:30 AM</option>
-                      <option>10:00 AM</option>
-                      <option>10:30 AM</option>
-                      <option>11:00 AM</option>
-                      <option>11:30 AM</option>
-                      <option>12:00 PM</option>
-                      <option>12:30 PM</option>
-                      <option>01:00 PM</option>
-                      <option>01:30 PM</option>
-                      <option>02:00 PM</option>
-                      <option>02:30 PM</option>
-                      <option>03:00 PM</option>
-                      <option>03:30 PM</option>
-                      <option>04:00 PM</option>
-                      <option>04:30 PM</option>
-                      <option>05:00 PM</option>
-                      <option>05:30 PM</option>
-                      <option>06:00 PM</option>
-                      <option>06:30 PM</option>
-                      <option>07:00 PM</option>
-                      <option>07:30 PM</option>
-                      <option>08:00 PM</option>
-                      <option>08:30 PM</option>
-                      <option>09:00 PM</option>
-                      <option>09:30 PM</option>
-                      <option>10:00 PM</option>
-                      <option>10:30 PM</option>
-                      <option>11:00 PM</option>
-                      <option>11:30 PM</option>
-                      <option>12:00 PM</option>
-                      <option>02:30 PM</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="example-text-input" class="col-md-2 col-form-label">Duration</label>
-                  <div class="col-md-4">
-                    <select class="form-control " id="inlineFormInput">
-                      <option>0 Minutes</option>
-                      <option>5 Minutes</option>
-                      <option>10 Minutes</option>
-                      <option>15 Minutes</option>
-                      <option>30 Minutes</option>
-                      <option>1 Hour</option>
-                      <option>2 Hours</option>
-                      <option>3 Hours</option>
-                      <option>4 Hours</option>
-                      <option>5 Hours</option>
-                      <option>6 Hours</option>
-                      <option>7 Hours</option>
-                      <option>8 Hours</option>
-                      <option>9 Hours</option>
-                      <option>10 Hours</option>
-                      <option>11 Hours</option>
-                      <option>0.5 Days</option>
-                      <option>18 Hours</option>
-                      <option>1 Days</option>
-                      <option>2 Days</option>
-                      <option>3 Days</option>
-                      <option>4 Days</option>
-                      <option>1 Week</option>
-                      <option>2 Weeks</option>
-                    </select>
-                  </div>
-                </div>
+							.tabs-left > .nav-tabs .active > a,
+							.tabs-left > .nav-tabs .active > a:hover,
+							.tabs-left > .nav-tabs .active > a:focus {
+								border-color: #ddd transparent #ddd #ddd;
+								*border-right-color: #ffffff;
+							}
+					</style>
+					<div class="col-12">
+						<form>
+							<div class="col-md-12">
+								<div class="form-group row">
+									<label for="example-text-input" class="col-md-2 col-form-label">Start Time</label>
+									<div class="col-md-4">
+										<select class="form-control " id="inlineFormInput">
+											<option>12:00 AM</option>
+											<option>12:30 AM</option>
+											<option>01:00 AM</option>
+											<option>01:30 AM</option>
+											<option>02:00 AM</option>
+											<option>02:30 AM</option>
+											<option>03:00 AM</option>
+											<option>03:30 AM</option>
+											<option>04:00 AM</option>
+											<option>04:30 AM</option>
+											<option>05:00 AM</option>
+											<option>05:30 AM</option>
+											<option>06:00 AM</option>
+											<option>06:30 AM</option>
+											<option>07:00 AM</option>
+											<option>07:30 AM</option>
+											<option>08:00 AM</option>
+											<option>08:30 AM</option>
+											<option>09:00 AM</option>
+											<option>09:30 AM</option>
+											<option>10:00 AM</option>
+											<option>10:30 AM</option>
+											<option>11:00 AM</option>
+											<option>11:30 AM</option>
+											<option>12:00 PM</option>
+											<option>12:30 PM</option>
+											<option>01:00 PM</option>
+											<option>01:30 PM</option>
+											<option>02:00 PM</option>
+											<option>02:30 PM</option>
+											<option>03:00 PM</option>
+											<option>03:30 PM</option>
+											<option>04:00 PM</option>
+											<option>04:30 PM</option>
+											<option>05:00 PM</option>
+											<option>05:30 PM</option>
+											<option>06:00 PM</option>
+											<option>06:30 PM</option>
+											<option>07:00 PM</option>
+											<option>07:30 PM</option>
+											<option>08:00 PM</option>
+											<option>08:30 PM</option>
+											<option>09:00 PM</option>
+											<option>09:30 PM</option>
+											<option>10:00 PM</option>
+											<option>10:30 PM</option>
+											<option>11:00 PM</option>
+											<option>11:30 PM</option>
+											<option>12:00 PM</option>
+											<option>02:30 PM</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="example-text-input" class="col-md-2 col-form-label">End Time</label>
+									<div class="col-md-4">
+										<select class="form-control " id="inlineFormInput">
+											<option>12:00 AM</option>
+											<option>12:30 AM</option>
+											<option>01:00 AM</option>
+											<option>01:30 AM</option>
+											<option>02:00 AM</option>
+											<option>02:30 AM</option>
+											<option>03:00 AM</option>
+											<option>03:30 AM</option>
+											<option>04:00 AM</option>
+											<option>04:30 AM</option>
+											<option>05:00 AM</option>
+											<option>05:30 AM</option>
+											<option>06:00 AM</option>
+											<option>06:30 AM</option>
+											<option>07:00 AM</option>
+											<option>07:30 AM</option>
+											<option>08:00 AM</option>
+											<option>08:30 AM</option>
+											<option>09:00 AM</option>
+											<option>09:30 AM</option>
+											<option>10:00 AM</option>
+											<option>10:30 AM</option>
+											<option>11:00 AM</option>
+											<option>11:30 AM</option>
+											<option>12:00 PM</option>
+											<option>12:30 PM</option>
+											<option>01:00 PM</option>
+											<option>01:30 PM</option>
+											<option>02:00 PM</option>
+											<option>02:30 PM</option>
+											<option>03:00 PM</option>
+											<option>03:30 PM</option>
+											<option>04:00 PM</option>
+											<option>04:30 PM</option>
+											<option>05:00 PM</option>
+											<option>05:30 PM</option>
+											<option>06:00 PM</option>
+											<option>06:30 PM</option>
+											<option>07:00 PM</option>
+											<option>07:30 PM</option>
+											<option>08:00 PM</option>
+											<option>08:30 PM</option>
+											<option>09:00 PM</option>
+											<option>09:30 PM</option>
+											<option>10:00 PM</option>
+											<option>10:30 PM</option>
+											<option>11:00 PM</option>
+											<option>11:30 PM</option>
+											<option>12:00 PM</option>
+											<option>02:30 PM</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="example-text-input" class="col-md-2 col-form-label">Duration</label>
+									<div class="col-md-4">
+										<select class="form-control " id="inlineFormInput">
+											<option>0 Minutes</option>
+											<option>5 Minutes</option>
+											<option>10 Minutes</option>
+											<option>15 Minutes</option>
+											<option>30 Minutes</option>
+											<option>1 Hour</option>
+											<option>2 Hours</option>
+											<option>3 Hours</option>
+											<option>4 Hours</option>
+											<option>5 Hours</option>
+											<option>6 Hours</option>
+											<option>7 Hours</option>
+											<option>8 Hours</option>
+											<option>9 Hours</option>
+											<option>10 Hours</option>
+											<option>11 Hours</option>
+											<option>0.5 Days</option>
+											<option>18 Hours</option>
+											<option>1 Days</option>
+											<option>2 Days</option>
+											<option>3 Days</option>
+											<option>4 Days</option>
+											<option>1 Week</option>
+											<option>2 Weeks</option>
+										</select>
+									</div>
+								</div>
 
-                <!-- tabs left -->
-                <div class="tabbable tabs-left">
-                  <ul class="nav nav-tabs">
-                    <li class="active"><a href="#daily" data-toggle="tab">Daily</a></li>
-                    <li><a href="#weekly" data-toggle="tab">Weekly</a></li>
-                    <li><a href="#monthly" data-toggle="tab">Monthly</a></li>
-                  </ul>
-                  <div class="tab-content">
-                    <div class="tab-pane active" id="daily">
-                      <div class="form-group row">
-                        <div class="col-md-8">
-                          <div class="tabbable tabs-left">
-                            <ul class="nav nav-tabs">
-                              <li class="active"><a href="#dayNumber" data-toggle="tab">Every</a></li>
-                              <li><a href="#everyDay" data-toggle="tab">Weekday</a></li>
-                            </ul>
-                            <div class="tab-content">
-                              <div class="tab-pane active" id="dayNumber">
-                                <div class="col-md-1"><input type="text" style="width: 30px;" id="noOfDays" /></div>
-                                <div class="col-md-3"><span style="padding-left:5px;"> days (s)</span></div>
-                              </div>
-                              <div class="tab-pane" id="everyDay">
-                                <input style="width:20px;" type="radio" id="everyweekday" /> <span style="position: relative; top: -17px; left: 30px;">Every weekday</span> <br />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="tab-pane" id="weekly">
-                      <div class="col-md-8">
-                        <div class="row">
-                          <div class="col-md-2">
-                            Recur every
-                          </div>
-                          <div class="col-md-1">
-                            <input type="text" style="width: 50px;" />
-                          </div>
-                          <div class="col-md-2">
-                            week (s) on
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-8">
-                            <fieldset>
-                              <input type="checkbox" name="weekday" value="monday" />Monday <br />
-                              <input type="checkbox" name="weekday" value="tuesday" />Tuesday <br />
-                              <input type="checkbox" name="weekday" value="wednesday" />Wednesday <br />
-                              <input type="checkbox" name="weekday" value="thursday" />Thursday <br />
-                              <input type="checkbox" name="weekday" value="friday" />Friday <br />
-                              <input type="checkbox" name="weekday" value="saturday" />Saturday <br />
-                              <input type="checkbox" name="weekday" value="sunday" />Sunday <br />
-                            </fieldset>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="tab-pane" id="monthly">
-                      <div class="form-group row">
-                        <div class="col-md-10">
-                          <div class="tabbable tabs-left">
-                            <ul class="nav nav-tabs">
-                              <li class="active"><a href="#monthday" data-toggle="tab">Day</a></li>
-                              <li><a href="#monthdate" data-toggle="tab">Date</a></li>
-                            </ul>
-                            <div class="tab-content">
-                              <div class="tab-pane active" id="monthday">
-                                <div class="col-md-1"><input type="text" class="form-control " style="width:40px;" /></div>
-                                <div class="col-md-1">of every</div>
-                                <div class="col-md-1"><input type="text" class="form-control " style="width:40px;" /></div>
-                                <div>month (s)</div>
-                              </div>
-                              <div class="tab-pane " id="monthdate">
-                                <div class="col-md-1">The</div>
-                                <div class="col-md-2">
-                                  <select class="form-control ">
-                                    <option>second</option>
-                                  </select>
-                                </div>
-                                <div class="col-md-2">
-                                  <select class="form-control ">
-                                    <option>Monday</option>
-                                  </select>
-                                </div>
-                                <div class="col-md-1">of every</div>
-                                <div class="col-md-1">
-                                  <input type="text" class="form-control " style="width:40px;" />
-                                </div>
-                                <div class="col-md-2">month (s)</div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+								<!-- tabs left -->
+								<div class="tabbable tabs-left">
+									<ul class="nav nav-tabs">
+										<li class="active"><a href="#daily" data-toggle="tab">Daily</a></li>
+										<li><a href="#weekly" data-toggle="tab">Weekly</a></li>
+										<li><a href="#monthly" data-toggle="tab">Monthly</a></li>
+									</ul>
+									<div class="tab-content">
+										<div class="tab-pane active" id="daily">
+											<div class="form-group row">
+												<div class="col-md-8">
+													<div class="tabbable tabs-left">
+														<ul class="nav nav-tabs">
+															<li class="active"><a href="#dayNumber" data-toggle="tab">Every</a></li>
+															<li><a href="#everyDay" data-toggle="tab">Weekday</a></li>
+														</ul>
+														<div class="tab-content">
+															<div class="tab-pane active" id="dayNumber">
+																<div class="col-md-1"><input type="text" style="width: 30px;" id="noOfDays" /></div>
+																<div class="col-md-3"><span style="padding-left:5px;"> days (s)</span></div>
+															</div>
+															<div class="tab-pane" id="everyDay">
+																<input style="width:20px;" type="radio" id="everyweekday" /> <span style="position: relative; top: -17px; left: 30px;">Every weekday</span> <br />
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="tab-pane" id="weekly">
+											<div class="col-md-8">
+												<div class="row">
+													<div class="col-md-2">
+														Recur every
+													</div>
+													<div class="col-md-1">
+														<input type="text" style="width: 50px;" />
+													</div>
+													<div class="col-md-2">
+														week (s) on
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-8">
+														<fieldset>
+															<input type="checkbox" name="weekday" value="monday" />Monday <br />
+															<input type="checkbox" name="weekday" value="tuesday" />Tuesday <br />
+															<input type="checkbox" name="weekday" value="wednesday" />Wednesday <br />
+															<input type="checkbox" name="weekday" value="thursday" />Thursday <br />
+															<input type="checkbox" name="weekday" value="friday" />Friday <br />
+															<input type="checkbox" name="weekday" value="saturday" />Saturday <br />
+															<input type="checkbox" name="weekday" value="sunday" />Sunday <br />
+														</fieldset>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="tab-pane" id="monthly">
+											<div class="form-group row">
+												<div class="col-md-10">
+													<div class="tabbable tabs-left">
+														<ul class="nav nav-tabs">
+															<li class="active"><a href="#monthday" data-toggle="tab">Day</a></li>
+															<li><a href="#monthdate" data-toggle="tab">Date</a></li>
+														</ul>
+														<div class="tab-content">
+															<div class="tab-pane active" id="monthday">
+																<div class="col-md-1"><input type="text" class="form-control " style="width:40px;" /></div>
+																<div class="col-md-1">of every</div>
+																<div class="col-md-1"><input type="text" class="form-control " style="width:40px;" /></div>
+																<div>month (s)</div>
+															</div>
+															<div class="tab-pane " id="monthdate">
+																<div class="col-md-1">The</div>
+																<div class="col-md-2">
+																	<select class="form-control ">
+																		<option>second</option>
+																	</select>
+																</div>
+																<div class="col-md-2">
+																	<select class="form-control ">
+																		<option>Monday</option>
+																	</select>
+																</div>
+																<div class="col-md-1">of every</div>
+																<div class="col-md-1">
+																	<input type="text" class="form-control " style="width:40px;" />
+																</div>
+																<div class="col-md-2">month (s)</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
 
-                    </div>
-                    <div class="tab-pane" id="yearly">
-                      Year
-                    </div>
-                  </div>
-                </div>
-                <!-- /tabs -->
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button id="btnSetRecurrence" type="button" class="btn btn-primary" data-dismiss="modal">Set Recurrence</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+										</div>
+										<div class="tab-pane" id="yearly">
+											Year
+										</div>
+									</div>
+								</div>
+								<!-- /tabs -->
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<button id="btnSetRecurrence" type="button" class="btn btn-primary" data-dismiss="modal">Set Recurrence</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <!-- FastClick -->
 <script src="~/plugins/fastclick/fastclick.js"></script>
 
 <script type="text/javascript">
-  var MinutzTitle = "Minutz : Meeting Creator";
-  minutz.properties.infoIcon = 'fa fa-info';
-  minutz.properties.zones = [];
-  minutz.properties.availibleAttendees = [];
-  minutz.properties.weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-
-  //Controllers
-  minutz.functions.datepickers = function (control) {
-    $('#' + control).datepicker({
-      calendarWeeks: true,
-      autoclose: true,
-      todayHighlight: true,
-      datesDisabled: ['03/06/2017', '03/21/2017'],
-      toggleActive: true,
-      defaultViewDate: { year: 1977, month: 04, day: 25 }
-    });
-  };
-  minutz.functions.timepicker = function (control) {
-    $('#' + control).timepicker();
-    $('#' + control).on("focus", function () {
-      $("timeInput").timepicker("hideWidget");
-    });
-  };
-
-  //Editors
-  minutz.controls.agendaTextEditor = $('#agendaText').trumbowyg();
-  minutz.controls.outcomeTextEditor = $('#outcomeText').trumbowyg();
-  minutz.controls.objectiveTextEditor = $('#purposeText').trumbowyg();
-
-  //Text Controls
-  minutz.controls.agendaTitle = $("#txtAgendaTitle");
-  minutz.controls.location = $("#txtLocation");
-  minutz.controls.formal = $('#toggle-formal').bootstrapToggle({ on: 'Formal', off: 'Informal' });
-  minutz.controls.agendaTitleQuick = $("#txtAgendaTitleQuick");
-  minutz.controls.meetingTags = $("#txtTags");
-  minutz.controls.meetingDuration = {};
-
-  //Buttons
-  minutz.controls.addAgendaButton = $("#btnAddAgendaItem");
-  minutz.controls.addAgendaButtonForm = $("#btnAddAgendaItemForm");
-  minutz.controls.btnSetRecurrence = $("#btnSetRecurrence");
-
-  //Date
-  minutz.controls.meetingDate = $('#txtDate').datepicker({
-    calendarWeeks: true,
-    autoclose: true,
-    dateFormat: "yy-m-dd",
-    todayHighlight: true,
-    datesDisabled: ['03/06/2017', '03/21/2017'],
-    toggleActive: true,
-    defaultViewDate: { year: 1977, month: 04, day: 25 }
-  });
-  minutz.controls.meetingDate = $('#txtStartDate').datepicker({
-    calendarWeeks: true,
-    dateFormat: "yy-m-dd",
-    autoclose: true,
-    todayHighlight: true,
-    datesDisabled: ['03/06/2017', '03/21/2017'],
-    toggleActive: true,
-    defaultViewDate: { year: 1977, month: 04, day: 25 }
-  });
-  minutz.controls.meetingDate = $('#txtEndDate').datepicker({
-    calendarWeeks: true,
-    dateFormat: "yy-m-dd",
-    autoclose: true,
-    todayHighlight: true,
-    datesDisabled: ['03/06/2017', '03/21/2017'],
-    toggleActive: true,
-    defaultViewDate: { year: 1977, month: 04, day: 25 }
-  });
-
-  minutz.controls.meetingTime = $('#meetingTime').timepicker();
-
-  //Change Events
-  minutz.controls.agendaTextEditor.on("tbwblur", function () {
-    var current = minutz.functions.find(meeting.MeetingAgendaCollection, meeting.SelectedAgendaItemId)
-    current.AgendaText = $('#agendaText').trumbowyg('html');// minutz.functions.get.value('agendaText');
-    console.log(current);
-    console.log($('#agendaText').val());
-  });
-  minutz.controls.agendaTitle.blur(function ()
-  {
-    $("#agendaItems li").each(function (index) {
-      var listItemId = $($(this)[0]).attr('id').split('_')[1];
-      var oldText = $('.' + listItemId).text();
-      console.log(oldText);
-      var newtext = $("#txtAgendaTitleQuick").val();
-      console.log(newtext);
-      if (listItemId == meeting.SelectedAgendaItemId)
-      {
-        $('.' + listItemId).text(newtext);
-      }
-    });
-    console.log('agenda title ');
-  });
-  minutz.controls.agendaTitle.on('change keydown paste input', function () {
-    minutz.functions.updateAgendaTextControl($("#txtAgendaTitle").val());
-  });
-  minutz.controls.agendaTitleQuick.on('change keydown paste input', function () {
-    minutz.functions.updateAgendaText(minutz.functions.getValue('txtAgendaTitleQuick'));
-  });
-
-  minutz.controls.location.blur(function () { console.log('location'); });
-  minutz.controls.meetingDate.on("change", function () { minutz.functions.save(); });
-  minutz.controls.meetingTime.on("change", function () { minutz.functions.save(); });
-  minutz.controls.meetingTags.blur(function () { minutz.functions.save(); });
-
-  //Click
-  minutz.controls.addAgendaButton.click(function () {
-    var collapes = $('#agendaControl').hasClass('collapse');
-    var isExpanded = $('#agendaControl').attr("aria-expanded");
-    var newItem = minutz.functions.CreateAgendaItem();
-    minutz.functions.agendaItemAddClick(newItem.Id, newItem.Duration);
-    minutz.functions.agendaSelect(newItem.Id);
-  });
-  minutz.controls.addAgendaButtonForm.click(function () {
-    var isExpanded = $('#agendaControl').attr("aria-expanded");
-    console.log(isExpanded);
-    var newItem = minutz.functions.CreateAgendaItem();
-    minutz.functions.agendaItemAddClick(newItem.Id, newItem.Duration);
-    minutz.functions.agendaSelect(newItem.Id);
-  });
-
-  minutz.controls.btnSetRecurrence.click(function () {
-    var d = $('#txtStartDate');
-    d.datepicker({ dateFormat: "yy-m-dd" });
-    var m = $('#txtDate');
-    m.datepicker({ dateFormat: "yy-m-dd" });
-    m.datepicker('setDate', d.datepicker('getDate'))
-    //m.datepicker.trigger('change');
-    minutz.functions.save();
-  });
-
-  minutz.functions.updateAgendaText = function (text) {
-    $("#txtAgendaTitle").val(text);
-  };
-
-
-  $(function () {
-   
-    if (document.location.search.length) {
-      if (document.location.search.match("id").length > 0) {
-        var query = document.location.search.match("id").input.split('?')[1];
-        if (query.includes("id"))
-        {
-          var id = query.split('=')[1];
-          minutz.functions.getAjax(id);
-        }
-      }
-    } else {
-      meeting.Id = minutz.functions.createId();
-    }
-
-    
-    minutz.functions.meetingAttendeesAjax(meeting.Id);
-    _initPickers();
-
-    $("#btnSave").click(function ()
-    {
-      minutz.functions.save();
-    });
-
-    $("#repeatType li a").click(function () {
-      $("#repeatTypeText").text($(this).text());
-      meeting.IsReacurance = _isReacurance($(this).text());
-      meeting.ReacuranceType = $(this).text();
-      $('#reacuranceModel').modal({ keyboard: false, width: 900 });
-
-    });
-
-    $('#meetingNameGroup input').blur(function () {
-      if ($(this).val())
-        $(this).addClass('used');
-      else
-        $(this).removeClass('used');
-    });
-
-    $('#attendeesControl').load('/Meeting/AttendeesControl?meetingId=' + 1, 1, function (responseText, textStatus, jqXHR) {
-      var meetingId = 1;
-
-      //$('#attendees_agendaItem').select2({
-      //  placeholder: "Assign to attendee",
-      //  ajax: {
-      //      url: "/Meeting/Attendees?meetingId=" + meetingId,
-      //      dataType: 'json',
-      //    delay: 250,
-      //    data: function (params) {
-      //      return {
-      //        q: params.term, // search term
-      //        page: params.page
-      //      };
-      //    },
-      //    processResults: function (data) {
-      //      availibleAttendees = [];
-      //      availibleAttendees = data;
-      //      var newData = [];
-      //      for (var i = 0; i < data.length; i++) {
-      //        newData.push({ id: data[i].identity, text: data[i].fullName });
-      //      }
-
-      //      return {
-      //        results: newData
-      //      };
-      //    },
-      //    cache: true
-      //  },
-      //  width: '100%'
-      //});
-
-    });
-
-    $('#attachmentsControl').load('/Meeting/AttachmentsControl?meetingId=' + 1, 1, function (responseText, textStatus, jqXHR) {
-
-    });
-
-    $('#timeZones').select2({
-      data: minutz.properties.zones,
-      width: '100%'
-    });
-
-    
-    $("#agendaItemTime").val(109460);
-    $("#agendaItemTime").duration_picker({
-      formatter: function (s) {
-        console.log($("#agendaItemTime").val());
-        $("#agendaItems li").each(function (index) {
-          var listItemId = $($(this)[0]).attr('id').split('_')[1];
-          if (listItemId == meeting.SelectedAgendaItemId) {
-            var t = $("#agendaItemTime").val();
-            var myDate = new Date(null, null, null, null, null, t).toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
-            //var myDate = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
-            $('#time_' + listItemId).text(myDate);
-          }
-         });
-        return s;
-      }
-    });
-    $("#txtDuration").duration_picker({
-      formatter: function (s) {
-        //console.log(s);
-        return s;
-      }
-    });
-  });
-
-
-
-  $(document).on('blur', '.timepicker', function () {
-    $(this).timepicker('hideWidget');
-  });
-
-  minutz.functions.setAttendees = function () {
-    $('#attendees_agendaItem').select2({
-      data: minutz.properties.availibleAttendees,
-      width: '100%'
-    });
-  };
-
-  minutz.functions.CreateAgendaItem = function () {
-    var id = minutz.functions.createId();
-    var durationValue = 0;
-    var itemObject = MeetingAgendaItem(id, meeting.Id, $("#txtAgendaTitle").val(), $("#agendaText").val(), 'meetingattendeeId', Date.now(), false, durationValue);
-    meeting.MeetingAgendaCollection.push(itemObject);
-    return itemObject;
-  };
-
-  minutz.functions.meetingAttendeesAjax = function (id) {
-    $.ajax({
-      url: '/Meeting/Attendees?meetingId=' + id,
-      dataType: 'json',
-      type: 'GET',
-      context: document.body
-    }).done(function (data) {
-      var newData = [];
-      for (var i = 0; i < data.length; i++) {
-        minutz.properties.availibleAttendees.push({ id: data[i].identity, text: data[i].fullName });
-      }
-      minutz.functions.setAttendees();
-    });
-  };
-
-  function MeetingAgendaItem(id, referanceId, agendaHeading, agendaText, meetingAttendeeId, createdDate, isComplete, duration) {
-    return {
-      id: id,
-      referanceId: referanceId,
-      agendaHeading: agendaHeading,
-      agendaText: agendaText,
-      meetingAttendeeId: meetingAttendeeId,
-      duration: duration,
-      createdDate: createdDate,
-      isComplete: isComplete
-    };
-  };
-
-  minutz.functions.updateAgendaTextToModel = function () {
-    for (var i = 0; i < meeting.MeetingAgendaCollection.length; i++) {
-      var currentAgenda = meeting.MeetingAgendaCollection[i];
-      if (currentAgenda.Id == meeting.SelectedAgendaItemId) {
-        var controlName = "agenda" + currentAgenda.Id;
-        //var currentAgendaText = $("#" + controlName).val();
-        meeting.MeetingAgendaCollection[i].AgendaText = minutz.functions.get.wysihtml5('agendaText');
-      }
-
-    }
-  };
-
-  function _getAgendaAttachments() {
-    return [];
-  };
-
-  function _updateUi(data) {
-    console.log(data);
-    $("#txtMeetingName").val(data.name);
-    $("#repeatTypeText").text(data.reacuranceType);
-    $('#txtLocation').val(data.location);
-    $('#txtDuration').val(data.duration);
-    $("#cbIsPrivate").prop("checked", data.isPrivate);
-    $("#cbIsFormal").prop("checked", data.isFormal);
-    var meetingDate = new Date(data.date);
-    $('#txtDate').data({ date: meetingDate }).datepicker('update').children("input").val(meetingDate);
-
-    $('#meetingTime').val(data.time);
-    $("#txtTags").val(_toString(data.tag));
-    $('#purposeText').val(data.purpose);
-    $('#outcomeText').val(data.outcome);
-
-    meeting.Id = data.id;
-    meeting.Name = data.name;
-    meeting.IsReacurance = data.isReacurance;
-    meeting.ReacuranceType = data.reacuranceType;
-    meeting.date = data.date;
-    meeting.Time = data.time;
-    meeting.Duration = data.duration;
-    meeting.Tag = data.tag;
-    meeting.IsPrivate = data.isPrivate;
-    meeting.IsFormal = data.isFormal;
-    meeting.Purpose = data.purpose;
-    meeting.Outcome = data.outcome;
-
-    meeting.MeetingAgendaCollection = data.meetingAgendaCollection;
-    
-    $("#agendaItems li").remove();
-    for (var a = 0; a < meeting.MeetingAgendaCollection.length; a++)
-    {
-      var agendaItem = meeting.MeetingAgendaCollection[a];
-      var number = a + 1;
-      minutz.functions.addHtml('agendaItems', minutz.functions.getAgendaItemHtml(agendaItem.agendaHeading, agendaItem.id, agendaItem.duration,number));
-    }
-    console.log(meeting);
-    $("#agendaItems").sortable();
-  };
-
-  minutz.functions.updateMainModelProperties = function () {
-    meeting.Tag = minutz.functions.toArray(minutz.functions.get.value('txtTags'));
-    meeting.IsPrivate = $("#cbIsPrivate").prop("checked");
-    meeting.IsFormal = $("#cbIsFormal").prop("checked");
-    meeting.Name = minutz.functions.get.value('txtMeetingName');
-    meeting.Location = minutz.functions.get.value('txtLocation');
-    meeting.Date = minutz.functions.get.datepicker('txtDate');
-    meeting.Time = minutz.functions.get.value('meetingTime');
-    meeting.Duration = minutz.functions.get.value('txtDuration');
-    meeting.ReacuranceType = minutz.functions.get.text('repeatTypeText');
-    meeting.IsReacurance = _isReacurance(minutz.functions.get.text('repeatTypeText'));
-    meeting.Purpose = minutz.functions.get.value('purposeText');
-    meeting.Outcome = minutz.functions.get.value('outcomeText');
-
-    //minutz.functions.find(meeting.MeetingAgendaCollection, meeting.SelectedAgendaItemId).AgendaText = minutz.functions.get.value('agendaText');
-  };
-
-  minutz.functions.toArray = function (str) {
-    return str.split(',');
-  };
-
-  function _toString(strArray) {
-    return strArray.join(';');
-  };
-
-  function _isReacurance(reacuranceType) {
-    if (reacuranceType == "none") {
-      return false;
-    }
-    return true;
-  };
-
-  function _initPickers() {
-    minutz.functions.getTimeZones();
-    //minutz.controls.meetingDuration = $('#txtDuration').durationPicker({
-    //  lang: 'en', showSeconds: false, showDays: false, onChanged: function () {
-    //    console.log('test');
-    //    $('.popover').hide();
-    //  }
-    //});
-    
-   // minutz.controls.agendaItemTimepicker = $('#agendaItemTime').durationPicker({ lang: 'en', showSeconds: false, showDays: false });
-    $('#agendaItemTime').change(function () {
-      var agendaItem = minutz.functions.find(meeting.MeetingAgendaCollection, meeting.SelectedAgendaItemId);
-      if (agendaItem === undefined || agendaItem === null) {
-
-      } else {
-        agendaItem.Duration = $('#agendaItemTime').val();
-
-        var minutes = Math.floor(agendaItem.Duration / 1000 / 60);
-        var mo = moment.duration(minutes, 'minutes');
-        $("#badge_" + agendaItem.Id).html('');
-        $("#badge_" + agendaItem.Id).html(mo._data.hours + ' hours & ' + mo._data.minutes + ' min');
-      }
-      console.log($('#agendaItemTime').val());
-    
-    });
-  };
-
-  minutz.functions.displayAgendaItem = function (baseObject) {
-    var selectedItem = minutz.functions.find(meeting.MeetingAgendaCollection, baseObject.id);
-    meeting.SelectedAgendaItemId = selectedItem.id;
-    minutz.functions.setValue('txtAgendaTitle', selectedItem.agendaHeading);
-    $('#agendaText').trumbowyg('html', selectedItem.agendaText);
-    console.log('current :' + $("#agendaItemTime").val());
-    
-    $("#agendaItemTime").val(0);
-
-    console.log('new :' + $("#agendaItemTime").val());
-  };
-
-  //minutz.functions.durationpicker = function (controlname) {
-  //  var x = '#' + controlname;
-  //  console.log(x);
-  //  $(x).durationPicker({
-  //    lang: 'en',
-  //    showSeconds: false,
-  //    showDays: false
-  //  });
-  //};
-
-  minutz.functions.save = function () {
-    //minutz.functions.updateAgendaTextToModel();
-    minutz.functions.updateMainModelProperties();
-
-    if (minutz.functions.saveAjax()) {
-      minutz.functions.notifyMe(MinutzTitle, "The updates were saved successfully.", "fa fa-info");
-
-    } else {
-      minutz.functions.notifyMe(MinutzTitle, "Oops something went wrong.", "fa fa-info")
-    }
-  };
-
-  minutz.functions.getAjax = function (id)
-  {
-    $.ajax({
-      type: minutz.properties.GET,
-      url: "Meeting/GetMeeting?id=" + id,
-      data: meeting,
-      success: function (data) {
-       _updateUi(data); 
-      },
-      error: function (XMLHttpRequest, textStatus, errorThrown) {
-        //minutz.functions.notifyMe(MinutzTitle, textStatus + "  " + errorThrown, minutz.properties.infoIcon);
-      },
-      dataType: minutz.properties.JSON
-    });
-  };
-
-  minutz.functions.saveAjax = function () {
-    $("#txtSave").text("Loading");
-    $.ajax({
-      type: minutz.properties.POST,
-      url: "Meeting/Save",
-      data: meeting,
-      success: function (data) {
-        _updateUi(data);
-        $("#txtSave").text("Saved");
-      },
-      error: function (XMLHttpRequest, textStatus, errorThrown) {
-        //minutz.functions.notifyMe(MinutzTitle, textStatus + "  " + errorThrown, minutz.properties.infoIcon);
-        $("#txtSave").text("Save");
-      },
-      dataType: minutz.properties.JSON
-    });
-
-    return true;
-  };
-
-  function createDropZone() {
-    var dropZone = document.getElementById('drop-zone');
-    var uploadForm = document.getElementById('js-upload-form');
-
-    var startUpload = function (files) {
-      console.log(files)
-    }
-
-    uploadForm.addEventListener('submit', function (e) {
-      var uploadFiles = document.getElementById('js-upload-files').files;
-      e.preventDefault()
-
-      startUpload(uploadFiles)
-    })
-
-    dropZone.ondrop = function (e) {
-      e.preventDefault();
-      this.className = 'upload-drop-zone';
-
-      startUpload(e.dataTransfer.files)
-    }
-
-    dropZone.ondragover = function () {
-      this.className = 'upload-drop-zone drop';
-      return false;
-    }
-
-    dropZone.ondragleave = function () {
-      this.className = 'upload-drop-zone';
-      return false;
-    }
-  };
-
-  minutz.functions.deleteAgendaQuickItem = function (id) {
-    var index = minutz.functions.findIndex(meeting.MeetingAgendaCollection, id);
+	var MinutzTitle = "Minutz : Meeting Creator";
+	minutz.properties.infoIcon = 'fa fa-info';
+	minutz.properties.zones = [];
+	minutz.properties.availibleAttendees = [];
+	minutz.properties.weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+	//Controllers
+	minutz.functions.datepickers = function (control) {
+		$('#' + control).datepicker({
+			calendarWeeks: true,
+			autoclose: true,
+			todayHighlight: true,
+			datesDisabled: ['03/06/2017', '03/21/2017'],
+			toggleActive: true,
+			defaultViewDate: { year: 1977, month: 04, day: 25 }
+		});
+	};
+	minutz.functions.timepicker = function (control) {
+		$('#' + control).timepicker();
+		$('#' + control).on("focus", function () {
+			$("timeInput").timepicker("hideWidget");
+		});
+	};
+
+	//Editors
+	minutz.controls.agendaTextEditor = $('#agendaText').trumbowyg();
+	minutz.controls.outcomeTextEditor = $('#outcomeText').trumbowyg();
+	minutz.controls.objectiveTextEditor = $('#purposeText').trumbowyg();
+
+	//Text Controls
+	minutz.controls.agendaTitle = $("#txtAgendaTitle");
+	minutz.controls.location = $("#txtLocation");
+	minutz.controls.formal = $('#toggle-formal').bootstrapToggle({ on: 'Formal', off: 'Informal' });
+	minutz.controls.agendaTitleQuick = $("#txtAgendaTitleQuick");
+	minutz.controls.meetingTags = $("#txtTags");
+	minutz.controls.meetingDuration = {};
+
+	//Buttons
+	minutz.controls.addAgendaButton = $("#btnAddAgendaItem");
+	minutz.controls.addAgendaButtonForm = $("#btnAddAgendaItemForm");
+	minutz.controls.btnSetRecurrence = $("#btnSetRecurrence");
+
+	//Date
+	minutz.controls.meetingDate = $('#txtDate').datepicker({
+		calendarWeeks: true,
+		autoclose: true,
+		dateFormat: "yy-m-dd",
+		todayHighlight: true,
+		datesDisabled: ['03/06/2017', '03/21/2017'],
+		toggleActive: true,
+		defaultViewDate: { year: 1977, month: 04, day: 25 }
+	});
+	minutz.controls.meetingDate = $('#txtStartDate').datepicker({
+		calendarWeeks: true,
+		dateFormat: "yy-m-dd",
+		autoclose: true,
+		todayHighlight: true,
+		datesDisabled: ['03/06/2017', '03/21/2017'],
+		toggleActive: true,
+		defaultViewDate: { year: 1977, month: 04, day: 25 }
+	});
+	minutz.controls.meetingDate = $('#txtEndDate').datepicker({
+		calendarWeeks: true,
+		dateFormat: "yy-m-dd",
+		autoclose: true,
+		todayHighlight: true,
+		datesDisabled: ['03/06/2017', '03/21/2017'],
+		toggleActive: true,
+		defaultViewDate: { year: 1977, month: 04, day: 25 }
+	});
+
+	minutz.controls.meetingTime = $('#meetingTime').timepicker();
+
+	//Change Events
+	minutz.controls.agendaTextEditor.on("tbwblur", function () {
+		var current = minutz.functions.find(meeting.MeetingAgendaCollection, meeting.SelectedAgendaItemId)
+		current.agendaText = $('#agendaText').trumbowyg('html');// minutz.functions.get.value('agendaText');
+		console.log(current);
+		console.log($('#agendaText').val());
+	});
+	minutz.controls.agendaTitle.blur(function () {
+		$("#agendaItems li").each(function (index) {
+			var listItemId = $($(this)[0]).attr('id').split('_')[1];
+			var oldText = $('.' + listItemId).text();
+			console.log(oldText);
+			var newtext = $("#txtAgendaTitleQuick").val();
+			console.log(newtext);
+			if (listItemId == meeting.SelectedAgendaItemId) {
+				$('.' + listItemId).text(newtext);
+			}
+		});
+		console.log('agenda title ');
+	});
+	minutz.controls.agendaTitle.on('change keydown paste input', function () {
+		minutz.functions.updateAgendaTextControl($("#txtAgendaTitle").val());
+	});
+	minutz.controls.agendaTitleQuick.on('change keydown paste input', function () {
+		minutz.functions.updateAgendaText(minutz.functions.getValue('txtAgendaTitleQuick'));
+	});
+
+	minutz.controls.location.blur(function () { console.log('location'); });
+	minutz.controls.meetingDate.on("change", function () { minutz.functions.save(); });
+	minutz.controls.meetingTime.on("change", function () { minutz.functions.save(); });
+	minutz.controls.meetingTags.blur(function () { minutz.functions.save(); });
+
+	//Click
+	//minutz.controls.addAgendaButton.click(function () {
+	//  var collapes = $('#agendaControl').hasClass('collapse');
+	//  var isExpanded = $('#agendaControl').attr("aria-expanded");
+	//  var newItem = minutz.functions.CreateAgendaItem();
+	//  minutz.functions.agendaItemAddClick(newItem.Id, newItem.Duration);
+	//  minutz.functions.agendaSelect(newItem.Id);
+	//});
+	minutz.controls.addAgendaButtonForm.click(function () {
+		meeting.SelectedAgendaItemId = "";
+		var isExpanded = $('#agendaControl').attr("aria-expanded");
+		console.log(isExpanded);
+		var newItem = minutz.functions.CreateAgendaItem();
+
+		var t = $("#agendaItemTime").val();
+		var myDate = new Date(null, null, null, null, null, t).toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+
+		minutz.functions.agendaItemAddClick(newItem.Id, myDate);
+		minutz.functions.agendaSelect(newItem.Id);
+	});
+
+	minutz.controls.btnSetRecurrence.click(function () {
+		var d = $('#txtStartDate');
+		d.datepicker({ dateFormat: "yy-m-dd" });
+		var m = $('#txtDate');
+		m.datepicker({ dateFormat: "yy-m-dd" });
+		m.datepicker('setDate', d.datepicker('getDate'))
+		//m.datepicker.trigger('change');
+		minutz.functions.save();
+	});
+
+	minutz.functions.updateAgendaText = function (text) {
+		$("#txtAgendaTitle").val(text);
+	};
+
+
+	$(function () {
+
+		if (document.location.search.length) {
+			if (document.location.search.match("id").length > 0) {
+				var query = document.location.search.match("id").input.split('?')[1];
+				if (query.includes("id")) {
+					var id = query.split('=')[1];
+					minutz.functions.getAjax(id);
+				}
+			}
+		} else {
+			meeting.Id = minutz.functions.createId();
+		}
+
+
+		minutz.functions.meetingAttendeesAjax(meeting.Id);
+		_initPickers();
+
+		$("#btnSave").click(function () {
+			minutz.functions.save();
+		});
+
+		$("#repeatType li a").click(function () {
+			$("#repeatTypeText").text($(this).text());
+			meeting.IsReacurance = _isReacurance($(this).text());
+			meeting.ReacuranceType = $(this).text();
+			$('#reacuranceModel').modal({ keyboard: false, width: 900 });
+
+		});
+
+		$('#meetingNameGroup input').blur(function () {
+			if ($(this).val())
+				$(this).addClass('used');
+			else
+				$(this).removeClass('used');
+		});
+
+		$('#attendeesControl').load('/Meeting/AttendeesControl?meetingId=' + 1, 1, function (responseText, textStatus, jqXHR) {
+			var meetingId = 1;
+
+			//$('#attendees_agendaItem').select2({
+			//  placeholder: "Assign to attendee",
+			//  ajax: {
+			//      url: "/Meeting/Attendees?meetingId=" + meetingId,
+			//      dataType: 'json',
+			//    delay: 250,
+			//    data: function (params) {
+			//      return {
+			//        q: params.term, // search term
+			//        page: params.page
+			//      };
+			//    },
+			//    processResults: function (data) {
+			//      availibleAttendees = [];
+			//      availibleAttendees = data;
+			//      var newData = [];
+			//      for (var i = 0; i < data.length; i++) {
+			//        newData.push({ id: data[i].identity, text: data[i].fullName });
+			//      }
+
+			//      return {
+			//        results: newData
+			//      };
+			//    },
+			//    cache: true
+			//  },
+			//  width: '100%'
+			//});
+
+		});
+
+		$('#attachmentsControl').load('/Meeting/AttachmentsControl?meetingId=' + 1, 1, function (responseText, textStatus, jqXHR) {
+
+		});
+
+		$('#timeZones').select2({
+			data: minutz.properties.zones,
+			width: '100%'
+		});
+
+
+		$("#pickerHolder").append(minutz.functions.getTimeControl());
+
+		//$("#agendaItemTime").val(109460);
+		$("#agendaItemTime").duration_picker();
+		$("#txtDuration").duration_picker({
+			formatter: function (s) {
+				//console.log(s);
+				return s;
+			}
+		});
+	});
+
+
+
+	$(document).on('blur', '.timepicker', function () {
+		$(this).timepicker('hideWidget');
+	});
+
+	minutz.functions.setAttendees = function () {
+		$('#attendees_agendaItem').select2({
+			data: minutz.properties.availibleAttendees,
+			width: '100%'
+		});
+	};
+
+	minutz.functions.CreateAgendaItem = function () {
+		var id = minutz.functions.createId();
+	
+		var t = $("#agendaItemTime").val();
+		var myDate = new Date(null, null, null, null, null, t).toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+
+		var jDate = minutz.functions.dateTimeNow();
+		var itemObject = MeetingAgendaItem(id, meeting.Id, $("#txtAgendaTitle").val(), $("#agendaText").val(), 'meetingattendeeId', jDate, false, t);
+		meeting.MeetingAgendaCollection.push(itemObject);
+		return itemObject;
+	};
+
+	minutz.functions.dateTimeNow = function ()
+	{
+		var d = new Date();
+
+		var month = d.getMonth() + 1;
+		var day = d.getDate();
+
+		var output = d.getFullYear() + '/' +
+			(('' + month).length < 2 ? '0' : '') + month + '/' +
+			(('' + day).length < 2 ? '0' : '') + day;
+		return output;
+	 };
+
+	minutz.functions.meetingAttendeesAjax = function (id) {
+		$.ajax({
+			url: '/Meeting/Attendees?meetingId=' + id,
+			dataType: 'json',
+			type: 'GET',
+			context: document.body
+		}).done(function (data) {
+			var newData = [];
+			for (var i = 0; i < data.length; i++) {
+				minutz.properties.availibleAttendees.push({ id: data[i].identity, text: data[i].fullName });
+			}
+			minutz.functions.setAttendees();
+		});
+	};
+
+	function MeetingAgendaItem(id, referanceId, agendaHeading, agendaText, meetingAttendeeId, createdDate, isComplete, duration) {
+		return {
+			id: id,
+			referanceId: referanceId,
+			agendaHeading: agendaHeading,
+			agendaText: agendaText,
+			meetingAttendeeId: meetingAttendeeId,
+			duration: duration,
+			createdDate: createdDate,
+			isComplete: isComplete
+		};
+	};
+
+	minutz.functions.updateAgendaTextToModel = function () {
+		for (var i = 0; i < meeting.MeetingAgendaCollection.length; i++) {
+			var currentAgenda = meeting.MeetingAgendaCollection[i];
+			if (currentAgenda.Id == meeting.SelectedAgendaItemId) {
+				var controlName = "agenda" + currentAgenda.Id;
+				//var currentAgendaText = $("#" + controlName).val();
+				meeting.MeetingAgendaCollection[i].AgendaText = minutz.functions.get.wysihtml5('agendaText');
+			}
+
+		}
+	};
+
+	function _getAgendaAttachments() {
+		return [];
+	};
+
+	function _updateUi(data) {
+		console.log(data);
+		$("#txtMeetingName").val(data.name);
+		$("#repeatTypeText").text(data.reacuranceType);
+		$('#txtLocation').val(data.location);
+		$('#txtDuration').val(data.duration);
+		$("#cbIsPrivate").prop("checked", data.isPrivate);
+		$("#cbIsFormal").prop("checked", data.isFormal);
+		var meetingDate = new Date(data.date);
+		$('#txtDate').data({ date: meetingDate }).datepicker('update').children("input").val(meetingDate);
+
+		$('#meetingTime').val(data.time);
+		$("#txtTags").val(_toString(data.tag));
+		$('#purposeText').val(data.purpose);
+		$('#outcomeText').val(data.outcome);
+
+		meeting.Id = data.id;
+		meeting.Name = data.name;
+		meeting.IsReacurance = data.isReacurance;
+		meeting.ReacuranceType = data.reacuranceType;
+		meeting.date = data.date;
+		meeting.Time = data.time;
+		meeting.Duration = data.duration;
+		meeting.Tag = data.tag;
+		meeting.IsPrivate = data.isPrivate;
+		meeting.IsFormal = data.isFormal;
+		meeting.Purpose = data.purpose;
+		meeting.Outcome = data.outcome;
+
+		meeting.MeetingAgendaCollection = data.meetingAgendaCollection;
+
+		$("#agendaItems li").remove();
+		for (var a = 0; a < meeting.MeetingAgendaCollection.length; a++) {
+			var agendaItem = meeting.MeetingAgendaCollection[a];
+			var number = a + 1;
+
+			var t = $("#agendaItemTime").val();
+			var myDate = new Date(null, null, null, null, null, agendaItem.duration).toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+
+			minutz.functions.addHtml('agendaItems', minutz.functions.getAgendaItemHtml(agendaItem.agendaHeading, agendaItem.id, myDate, number));
+		}
+		console.log(meeting);
+		$("#agendaItems").sortable();
+	};
+
+	minutz.functions.updateMainModelProperties = function () {
+		meeting.Tag = minutz.functions.toArray(minutz.functions.get.value('txtTags'));
+		meeting.IsPrivate = $("#cbIsPrivate").prop("checked");
+		meeting.IsFormal = $("#cbIsFormal").prop("checked");
+		meeting.Name = minutz.functions.get.value('txtMeetingName');
+		meeting.Location = minutz.functions.get.value('txtLocation');
+		meeting.Date = $("#txtDate").val(); //minutz.functions.get.datepicker('txtDate');
+		meeting.Time = minutz.functions.get.value('meetingTime');
+		meeting.Duration = minutz.functions.get.value('txtDuration');
+		meeting.ReacuranceType = minutz.functions.get.text('repeatTypeText');
+		meeting.IsReacurance = _isReacurance(minutz.functions.get.text('repeatTypeText'));
+		meeting.Purpose = minutz.functions.get.value('purposeText');
+		meeting.Outcome = minutz.functions.get.value('outcomeText');
+
+		for (var agendaIndex = 0; agendaIndex < meeting.MeetingAgendaCollection.length; agendaIndex++) {
+			if (meeting.MeetingAgendaCollection[agendaIndex].Id == meeting.SelectedAgendaItemId) {
+				meeting.MeetingAgendaCollection[agendaIndex].AgendaText = $('#agendaText').trumbowyg('html');
+			}
+		}
+
+		//minutz.functions.find(meeting.MeetingAgendaCollection, meeting.SelectedAgendaItemId).AgendaText = minutz.functions.get.value('agendaText');
+	};
+
+	minutz.functions.toArray = function (str) {
+		return str.split(',');
+	};
+
+	function _toString(strArray) {
+		return strArray.join(';');
+	};
+
+	function _isReacurance(reacuranceType) {
+		if (reacuranceType == "none") {
+			return false;
+		}
+		return true;
+	};
+
+	function _initPickers() {
+		minutz.functions.getTimeZones();
+		//minutz.controls.meetingDuration = $('#txtDuration').durationPicker({
+		//  lang: 'en', showSeconds: false, showDays: false, onChanged: function () {
+		//    console.log('test');
+		//    $('.popover').hide();
+		//  }
+		//});
+
+		// minutz.controls.agendaItemTimepicker = $('#agendaItemTime').durationPicker({ lang: 'en', showSeconds: false, showDays: false });
+		$('#agendaItemTime').change(function () {
+			var agendaItem = minutz.functions.find(meeting.MeetingAgendaCollection, meeting.SelectedAgendaItemId);
+			if (agendaItem === undefined || agendaItem === null) {
+
+			} else {
+				agendaItem.Duration = $('#agendaItemTime').val();
+
+				var minutes = Math.floor(agendaItem.Duration / 1000 / 60);
+				var mo = moment.duration(minutes, 'minutes');
+				$("#badge_" + agendaItem.Id).html('');
+				$("#badge_" + agendaItem.Id).html(mo._data.hours + ' hours & ' + mo._data.minutes + ' min');
+			}
+			console.log($('#agendaItemTime').val());
+
+		});
+	};
+
+	minutz.functions.getTimeControl = function () {
+		return '<input id="agendaItemTime" type="text" class="form-control input-small">'
+			+ '<span class="input-group-addon"><i class="fa fa-hourglass-half"></i></span>';
+	};
+
+	minutz.functions.displayAgendaItem = function (baseObject) {
+		var selectedItem = minutz.functions.find(meeting.MeetingAgendaCollection, baseObject.id);
+		meeting.SelectedAgendaItemId = selectedItem.id;
+		minutz.functions.setValue('txtAgendaTitle', selectedItem.agendaHeading);
+		$('#agendaText').trumbowyg('html', selectedItem.agendaText);
+		console.log('current :' + $("#agendaItemTime").val());
+
+		$("#pickerHolder").empty();
+		$("#pickerHolder").append(minutz.functions.getTimeControl());
+
+		$("#agendaItemTime").val(600);
+		$("#agendaItemTime").duration_picker({
+			formatter: function (s) {
+				console.log($("#agendaItemTime").val());
+				$("#agendaItems li").each(function (index) {
+					var listItemId = $($(this)[0]).attr('id').split('_')[1];
+					if (listItemId == meeting.SelectedAgendaItemId) {
+						var t = $("#agendaItemTime").val();
+						var myDate = new Date(null, null, null, null, null, t).toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+						$('#time_' + listItemId).text(myDate);
+
+						for (var agendaIndex = 0; agendaIndex < meeting.MeetingAgendaCollection.length; agendaIndex++) {
+							if (meeting.MeetingAgendaCollection[agendaIndex].id == listItemId) {
+								meeting.MeetingAgendaCollection[agendaIndex].duration = t;
+							}
+						}
+
+					}
+				});
+				return s;
+			}
+		});
+
+
+
+		console.log('new :' + $("#agendaItemTime").val());
+	};
+
+	//minutz.functions.durationpicker = function (controlname) {
+	//  var x = '#' + controlname;
+	//  console.log(x);
+	//  $(x).durationPicker({
+	//    lang: 'en',
+	//    showSeconds: false,
+	//    showDays: false
+	//  });
+	//};
+
+	minutz.functions.save = function () {
+		//minutz.functions.updateAgendaTextToModel();
+		minutz.functions.updateMainModelProperties();
+
+		if (minutz.functions.saveAjax()) {
+			minutz.functions.notifyMe(MinutzTitle, "The updates were saved successfully.", "fa fa-info");
+
+		} else {
+			minutz.functions.notifyMe(MinutzTitle, "Oops something went wrong.", "fa fa-info")
+		}
+	};
+
+	minutz.functions.getAjax = function (id) {
+		$.ajax({
+			type: minutz.properties.GET,
+			url: "Meeting/GetMeeting?id=" + id,
+			data: meeting,
+			success: function (data) {
+				_updateUi(data);
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//minutz.functions.notifyMe(MinutzTitle, textStatus + "  " + errorThrown, minutz.properties.infoIcon);
+			},
+			dataType: minutz.properties.JSON
+		});
+	};
+
+	minutz.functions.saveAjax = function () {
+		$("#txtSave").text("Loading");
+		$.ajax({
+			type: minutz.properties.POST,
+			url: "Meeting/Save",
+			data: meeting,
+			success: function (data) {
+				_updateUi(data);
+				$("#txtSave").text("Saved");
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//minutz.functions.notifyMe(MinutzTitle, textStatus + "  " + errorThrown, minutz.properties.infoIcon);
+				$("#txtSave").text("Save");
+			},
+			dataType: minutz.properties.JSON
+		});
+
+		return true;
+	};
+
+	function createDropZone() {
+		var dropZone = document.getElementById('drop-zone');
+		var uploadForm = document.getElementById('js-upload-form');
+
+		var startUpload = function (files) {
+			console.log(files)
+		}
+
+		uploadForm.addEventListener('submit', function (e) {
+			var uploadFiles = document.getElementById('js-upload-files').files;
+			e.preventDefault()
+
+			startUpload(uploadFiles)
+		})
+
+		dropZone.ondrop = function (e) {
+			e.preventDefault();
+			this.className = 'upload-drop-zone';
+
+			startUpload(e.dataTransfer.files)
+		}
+
+		dropZone.ondragover = function () {
+			this.className = 'upload-drop-zone drop';
+			return false;
+		}
+
+		dropZone.ondragleave = function () {
+			this.className = 'upload-drop-zone';
+			return false;
+		}
+	};
+
+	minutz.functions.deleteAgendaQuickItem = function (id) {
+		var index = minutz.functions.findIndex(meeting.MeetingAgendaCollection, id);
 		meeting.MeetingAgendaCollection.splice(index, 1);
 		//DeleteAgenda
 		$("#txtSave").text("Loading");
 		$.ajax({
 			type: minutz.properties.POST,
-			url: "Meeting/DeleteAgenda?agendaId="+ id,
+			url: "Meeting/DeleteAgenda?agendaId=" + id,
 			success: function (data) {
 				$("#_" + id).remove();
 				$("#txtSave").text("Saved");
@@ -1639,80 +1691,80 @@
 		});
 
 		return true;
-    
-  };
 
-  minutz.functions.updateAgendaTextControl = function (text) {
-    minutz.functions.setValue('txtAgendaTitleQuick', text);
-  };
+	};
 
-  minutz.functions.agendaItemAddClick = function (id, duration) {
-    minutz.functions.addHtml('agendaItems', minutz.functions.getAgendaItemHtml($("#txtAgendaTitleQuick").val(), id, duration, meeting.MeetingAgendaCollection.length));
-    minutz.functions.setValue('txtAgendaTitleQuick', '');
-    minutz.functions.durationpicker('timer_' + id);
-  };
+	minutz.functions.updateAgendaTextControl = function (text) {
+		minutz.functions.setValue('txtAgendaTitleQuick', text);
+	};
 
-  minutz.functions.agendaClearQuickItems = function () {
-    $("#agendaItems li").each(function (index, value) {
-      $(value).css(minutz.properties.backgroundColor, minutz.properties.white);
-    });
-  };
+	minutz.functions.agendaItemAddClick = function (id, duration) {
+		minutz.functions.addHtml('agendaItems', minutz.functions.getAgendaItemHtml($("#txtAgendaTitleQuick").val(), id, duration, meeting.MeetingAgendaCollection.length));
+		minutz.functions.setValue('txtAgendaTitleQuick', '');
+		//minutz.functions.durationpicker('timer_' + id);
+	};
 
-  minutz.functions.getSelectedAgenda = function (id) {
-    var result;
-    minutz.functions.agendaClearQuickItems();
-    $("#agendaItems li").each(function (index, value) {
-      var baseAgendaObject = {
-        id: $(value).find('div.title').attr("data-id"),
-        title: $(value).find('div.title').text(),
-        //duration: $(value).find('input.timer').val()
-      };
-      if (baseAgendaObject.id == id) {
-        $(value).css(minutz.properties.backgroundColor, minutz.properties.lightGrey);
-        result = baseAgendaObject;
-      }
-    });
-    return result;
-  };
+	minutz.functions.agendaClearQuickItems = function () {
+		$("#agendaItems li").each(function (index, value) {
+			$(value).css(minutz.properties.backgroundColor, minutz.properties.white);
+		});
+	};
 
-  minutz.functions.agendaSelect = function (id) {
-    var selected = minutz.functions.getSelectedAgenda(id);
-    minutz.functions.displayAgendaItem(selected);
-  };
+	minutz.functions.getSelectedAgenda = function (id) {
+		var result;
+		minutz.functions.agendaClearQuickItems();
+		$("#agendaItems li").each(function (index, value) {
+			var baseAgendaObject = {
+				id: $(value).find('div.title').attr("data-id"),
+				title: $(value).find('div.title').text(),
+				//duration: $(value).find('input.timer').val()
+			};
+			if (baseAgendaObject.id == id) {
+				$(value).css(minutz.properties.backgroundColor, minutz.properties.lightGrey);
+				result = baseAgendaObject;
+			}
+		});
+		return result;
+	};
 
-  minutz.functions.getAgendaItemHtml = function (title, id, time, number) {
-    //var number = meeting.MeetingAgendaCollection.length;
-    return '<li id="_' + id + '" class="item">'
-      + '<br /><div class="row" style="cursor: pointer;" >'
-      + '<div class="col-md-7" >'
-      + '<div onclick="minutz.functions.agendaSelect(\'' + id + '\')" class="title" data-id="' + id + '" style="padding-left:10px; text-overflow: ellipsis;  overflow: hidden; white-space: nowrap;"><span class="badge" ">' + number + ' </span><span class="' + id +' "> ' + title + '</span></div>'
-      + '</div>'
-      + '<div class="col-md-3">'
-      + '<div >'
-      + '<span id="time_' + id + '" class="badge">' + (time / 60) + ' min</span>'
-      + '</div>'
-      + '</div>'
-      + '<div class="col-md-1"><i class="fa fa-trash fa-2x pull-right" style=" cursor: pointer;color: grey; " aria-hidden="true" onclick="minutz.functions.deleteAgendaQuickItem(\'' + id + '\')" ></i></div>'
-    '</div><br /></li>';
-  };
-  //window.setInterval(function () { minutz.functions.save(); }, 60000);
+	minutz.functions.agendaSelect = function (id) {
+		var selected = minutz.functions.getSelectedAgenda(id);
+		minutz.functions.displayAgendaItem(selected);
+	};
 
-  minutz.functions.getTimeZones = function () {
-    var zoneNames = moment.tz.names();
-    for (var q = 0; q < zoneNames.length; q++) {
-      minutz.properties.zones.push({ data: moment().tz(zoneNames[q]), id: zoneNames[q], attr: moment().tz(zoneNames[q]).format("Z z"), text: '( ' + moment().tz(zoneNames[q]).format("Z z") + ' )  ' + zoneNames[q].split("/")[1] });
-    }
-  };
+	minutz.functions.getAgendaItemHtml = function (title, id, time, number) {
+		//var number = meeting.MeetingAgendaCollection.length;
+		return '<li id="_' + id + '" class="item">'
+			+ '<br /><div class="row" style="cursor: pointer;" >'
+			+ '<div class="col-md-7" >'
+			+ '<div onclick="minutz.functions.agendaSelect(\'' + id + '\')" class="title" data-id="' + id + '" style="padding-left:10px; text-overflow: ellipsis;  overflow: hidden; white-space: nowrap;"><span class="badge" ">' + number + ' </span><span class="' + id + ' "> ' + title + '</span></div>'
+			+ '</div>'
+			+ '<div class="col-md-3">'
+			+ '<div >'
+			+ '<span id="time_' + id + '" class="badge">' + time + '</span>'
+			+ '</div>'
+			+ '</div>'
+			+ '<div class="col-md-1"><i class="fa fa-trash fa-2x pull-right" style=" cursor: pointer;color: grey; " aria-hidden="true" onclick="minutz.functions.deleteAgendaQuickItem(\'' + id + '\')" ></i></div>'
+		'</div><br /></li>';
+	};
+	//window.setInterval(function () { minutz.functions.save(); }, 60000);
 
-  //File Upload response from the server
-  Dropzone.options.dropzoneForm = {
-    init: function () {
-      this.on("complete", function (data) {
-        //var res = eval('(' + data.xhr.responseText + ')');
-        meeting.MeetingAttachmentCollection.push(data.name);
-        minutz.functions.addattachmentHtml(data.name);
-        //var res = JSON.parse(data.xhr.responseText);
-      });
-    }
-  };
+	minutz.functions.getTimeZones = function () {
+		var zoneNames = moment.tz.names();
+		for (var q = 0; q < zoneNames.length; q++) {
+			minutz.properties.zones.push({ data: moment().tz(zoneNames[q]), id: zoneNames[q], attr: moment().tz(zoneNames[q]).format("Z z"), text: '( ' + moment().tz(zoneNames[q]).format("Z z") + ' )  ' + zoneNames[q].split("/")[1] });
+		}
+	};
+
+	//File Upload response from the server
+	Dropzone.options.dropzoneForm = {
+		init: function () {
+			this.on("complete", function (data) {
+				//var res = eval('(' + data.xhr.responseText + ')');
+				meeting.MeetingAttachmentCollection.push(data.name);
+				minutz.functions.addattachmentHtml(data.name);
+				//var res = JSON.parse(data.xhr.responseText);
+			});
+		}
+	};
 </script>
