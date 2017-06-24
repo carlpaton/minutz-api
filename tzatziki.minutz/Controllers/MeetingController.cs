@@ -91,6 +91,16 @@ namespace tzatziki.minutz.Controllers
       return Json(meeting);
     }
 
+		[HttpPost]
+		[Authorize]
+		public JsonResult DeleteAgenda(string agendaId)
+		{
+			var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
+			var schema = user.InstanceId.ToSchemaString();
+			_meetingService.DeleteAgenda(AppSettings.ConnectionStrings.AzureConnection, schema, agendaId);
+			return Json(agendaId);
+		}
+
     public ActionResult AttendeesControl(int meetingId)
     {
       var model = GetUsers();
@@ -113,20 +123,32 @@ namespace tzatziki.minutz.Controllers
       return Json(GetUsers());
     }
 
-    [HttpPost]
-    public async Task<JsonResult> FileUpload()
+		[Authorize]
+		[HttpPost]
+    public async Task<JsonResult> FileUpload(string meetingId)
     {
-      var uploads = Path.Combine(_environment.WebRootPath, "uploads");
+			var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
+			var schema = user.InstanceId.ToSchemaString();
+
+			var uploads = Path.Combine(_environment.WebRootPath, "uploads");
       var uploadedFiles = new List<string>();
       foreach (var file in Request.Form.Files)
       {
         if (file.Length > 0)
         {
-          using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
-          {
-            await file.CopyToAsync(fileStream);
-            uploadedFiles.Add(file.FileName);
-          }
+					using (var binaryReader = new BinaryReader(Request.Form.Files[0].OpenReadStream()))
+					{
+						byte[] result;
+						result = binaryReader.ReadBytes((int)Request.Form.Files[0].Length);
+						//_meetingService.SaveFile(AppSettings.ConnectionStrings.AzureConnection, schema, user, file.FileName, result, meetingId);
+					}
+					uploadedFiles.Add(file.FileName);
+
+					//using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
+     //     {
+					//	await file.CopyToAsync(fileStream);
+						
+     //     }
         }
       }
       return Json(uploadedFiles);

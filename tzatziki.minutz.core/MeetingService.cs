@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using tzatziki.minutz.interfaces;
 using tzatziki.minutz.models.Auth;
 using tzatziki.minutz.models.Entities;
@@ -22,5 +23,15 @@ namespace tzatziki.minutz.core
     {
       return _meetingRepository.Get(connectionString, schema, user);
     }
-  }
+
+		public void DeleteAgenda(string connectionString, string schema, string agendaItemId)
+		{
+			_meetingRepository.DeleteMeetingAgendaItem(connectionString, schema, agendaItemId);
+		}
+
+		public void SaveFile(string connectionString, string schema, UserProfile user, string fileName, byte[] data, string meetingId)
+		{
+			_meetingRepository.SaveFile(connectionString, schema, user, fileName, data,meetingId);
+		}
+	}
 }

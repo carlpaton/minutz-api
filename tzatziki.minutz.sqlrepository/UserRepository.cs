@@ -52,6 +52,25 @@ namespace tzatziki.minutz.sqlrepository
       return users.FirstOrDefault(i => i.Identity == userProfile.UserId);
     }
 
+    public bool ResetAccount(UserProfile userProfile, string connectionString, string schema)
+    {
+      try
+      {
+        using (SqlConnection con = new SqlConnection(connectionString))
+        {
+          con.Open();
+          var command = new SqlCommand($"EXEC [app].[resetAccount]'{schema}','{userProfile.InstanceId.ToString().Replace("-", string.Empty)}','{userProfile.InstanceId.ToString()}'", con);
+          command.ExecuteNonQuery();
+          con.Close();
+          return true;
+        }
+      }
+      catch (Exception )
+      {
+        return false;
+      }
+    }
+
     public IEnumerable<User> GetUsers(string connectionString, string schema)
     {
       return ToList(schema, connectionString);

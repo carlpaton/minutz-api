@@ -8,5 +8,10 @@ namespace tzatziki.minutz.core
     {
       return $"account_{instanceId.ToString().Replace("-", string.Empty)}";
     }
+
+    public static string ToInstanceString(this Guid instanceId)
+    {
+      return $"{instanceId.ToString().Replace("-", string.Empty)}";
+    }
   }
 }

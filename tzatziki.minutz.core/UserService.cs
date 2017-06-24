@@ -18,5 +18,10 @@ namespace tzatziki.minutz.core
     {
       return _userRepository.Get(user, appsettings.ConnectionStrings.AzureConnection, user.InstanceId.ToSchemaString());
     }
+
+    public bool ResetAccount(UserProfile user, AppSettings appsettings)
+    {
+      return _userRepository.ResetAccount(user, appsettings.ConnectionStrings.AzureConnection, user.InstanceId.ToSchemaString());
+    }
   }
 }
