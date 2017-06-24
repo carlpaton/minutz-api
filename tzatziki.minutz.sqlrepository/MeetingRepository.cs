@@ -58,6 +58,48 @@ namespace tzatziki.minutz.sqlrepository
 			}
 		}
 
+		public void SaveFile(string connectionString, string schema, UserProfile user,string fileName, byte[] data ,string meetingId)
+		{
+			var createdDate = DateTime.UtcNow;
+			var meetingAttendeeId = Guid.NewGuid();
+			var entry = new MeetingAttachmentItem
+			{
+				Date = createdDate,
+				FileData = data,
+				FileName = fileName,
+				Id = Guid.NewGuid(),
+				MeetingAttendeeId = meetingAttendeeId,
+				ReferanceId = meetingAttendeeId
+			};
+			using (SqlConnection con = new SqlConnection(connectionString))
+			{
+				using (SqlCommand command = new SqlCommand("app.insertFile", con))
+				{
+					try {
+						con.Open();
+						//string sql = "usp_imageloader_add_test";
+						//SqlCommand cmd = new SqlCommand(sql, dbConnection);
+						command.CommandType = System.Data.CommandType.StoredProcedure;
+						command.Parameters.AddWithValue("@p_data", data).SqlDbType = SqlDbType.Binary;
+						command.Parameters.AddWithValue("@p_id", meetingId).SqlDbType = SqlDbType.VarChar;
+						command.Parameters.AddWithValue("@p_name", fileName).SqlDbType = SqlDbType.VarChar;
+						command.Parameters.AddWithValue("@p_date", createdDate).SqlDbType = SqlDbType.DateTime2;
+						command.Parameters.AddWithValue("@p_ref", meetingId).SqlDbType = SqlDbType.VarChar;
+						command.Parameters.AddWithValue("@p_user", user.ClientID).SqlDbType = SqlDbType.VarChar;
+						command.Parameters.AddWithValue("@p_schema", schema).SqlDbType = SqlDbType.VarChar;
+						command.Connection.Open();
+						command.ExecuteNonQuery();
+						command.Connection.Close();
+						con.Close();
+					} catch (Exception ex)
+					{
+						var q = ex;
+					}
+				
+				}
+			}
+		}
+
 		public IEnumerable<Meeting> Get(string connectionString, string schema, UserProfile user)
 		{
 			var result = new List<Meeting>();
@@ -595,14 +637,15 @@ namespace tzatziki.minutz.sqlrepository
 		}
 		internal string InsertMeetingAttachmentStatement(string schema, MeetingAttachmentItem meetingAttachmentItem)
 		{
-			return $@"INSERT INTO [{schema}].[{_meetingAttachment}] VALUES (
-        '{meetingAttachmentItem.Id}',
-        '{meetingAttachmentItem.ReferanceId}',
-        '{meetingAttachmentItem.FileName.EmptyIfNull()}',
-        '{meetingAttachmentItem.MeetingAttendeeId}',
-        '{meetingAttachmentItem.Date.ToString()}'
-        )";
+			return $@"SELECT '{meetingAttachmentItem.Id}' AS Id,
+						'{meetingAttachmentItem.ReferanceId}' AS ReferanceId,
+						'{meetingAttachmentItem.FileName.EmptyIfNull()}' AS FileName,
+						'{meetingAttachmentItem.MeetingAttendeeId}' AS MeetingAttendeeId,
+						'{meetingAttachmentItem.Date.ToString()}' AS Date,
+						'Content = CAST('{meetingAttachmentItem.FileData.ToString()}' AS VARBINARY(MAX)) AS FileData'
+						INTO [{schema}].[{_meetingAttachment}]";
 		}
+		
 
 		///DELETE STATEMENTS
 		internal string DeleteMeetingAgendaItemStatement(string schema, string agendaItemId)

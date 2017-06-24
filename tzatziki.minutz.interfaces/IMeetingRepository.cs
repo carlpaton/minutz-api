@@ -21,5 +21,7 @@ namespace tzatziki.minutz.interfaces
 
 		void DeleteMeetingAgendaItem(string connectionString, string schema, string agendaItemId);
 
+		void SaveFile(string connectionString, string schema, UserProfile user, string fileName, byte[] data, string meetingId);
+
 	}
 }

@@ -1262,10 +1262,33 @@
 				if (query.includes("id")) {
 					var id = query.split('=')[1];
 					minutz.functions.getAjax(id);
+
+					Dropzone.options.dropzoneForm = {
+						url: "/Meeting/FileUpload?meetingId=" + id,
+						init: function () {
+							this.on("complete", function (data) {
+								//var res = eval('(' + data.xhr.responseText + ')');
+								meeting.MeetingAttachmentCollection.push(data.name);
+								minutz.functions.addattachmentHtml(data.name);
+								//var res = JSON.parse(data.xhr.responseText);
+							});
+						}
+					};
 				}
 			}
 		} else {
-			meeting.Id = minutz.functions.createId();
+			meeting.Id = minutz.functions.createId(); 
+			Dropzone.options.dropzoneForm = {
+				url: "/Meeting/FileUpload?meetingId=" + meeting.Id,
+				init: function () {
+					this.on("complete", function (data) {
+						//var res = eval('(' + data.xhr.responseText + ')');
+						meeting.MeetingAttachmentCollection.push(data.name);
+						minutz.functions.addattachmentHtml(data.name);
+						//var res = JSON.parse(data.xhr.responseText);
+					});
+				}
+			};
 		}
 
 
@@ -1348,6 +1371,8 @@
 			
 			$('#txtDate').datepicker("setDate", minutz.functions.dateTimeNow());
 		}
+
+		
 	});
 
 	$(document).on('blur', '.timepicker', function () {
@@ -1762,14 +1787,5 @@
 	};
 
 	//File Upload response from the server
-	Dropzone.options.dropzoneForm = {
-		init: function () {
-			this.on("complete", function (data) {
-				//var res = eval('(' + data.xhr.responseText + ')');
-				meeting.MeetingAttachmentCollection.push(data.name);
-				minutz.functions.addattachmentHtml(data.name);
-				//var res = JSON.parse(data.xhr.responseText);
-			});
-		}
-	};
+	
 </script>
