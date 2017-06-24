@@ -1159,7 +1159,7 @@
 	minutz.controls.meetingDate = $('#txtDate').datepicker({
 		calendarWeeks: true,
 		autoclose: true,
-		dateFormat: "yy-m-dd",
+		format: "DD, d MM, yy",
 		todayHighlight: true,
 		datesDisabled: ['03/06/2017', '03/21/2017'],
 		toggleActive: true,
@@ -1167,7 +1167,7 @@
 	});
 	minutz.controls.meetingDate = $('#txtStartDate').datepicker({
 		calendarWeeks: true,
-		dateFormat: "yy-m-dd",
+		format: "DD, d MM, yy",
 		autoclose: true,
 		todayHighlight: true,
 		datesDisabled: ['03/06/2017', '03/21/2017'],
@@ -1176,7 +1176,7 @@
 	});
 	minutz.controls.meetingDate = $('#txtEndDate').datepicker({
 		calendarWeeks: true,
-		dateFormat: "yy-m-dd",
+		format: "DD, d MM, yy",
 		autoclose: true,
 		todayHighlight: true,
 		datesDisabled: ['03/06/2017', '03/21/2017'],
@@ -1241,9 +1241,9 @@
 
 	minutz.controls.btnSetRecurrence.click(function () {
 		var d = $('#txtStartDate');
-		d.datepicker({ dateFormat: "yy-m-dd" });
+		d.datepicker({ dateFormat: "dd/mm/yy" });
 		var m = $('#txtDate');
-		m.datepicker({ dateFormat: "yy-m-dd" });
+		m.datepicker({ dateFormat: "dd/mm/yy" });
 		m.datepicker('setDate', d.datepicker('getDate'))
 		//m.datepicker.trigger('change');
 		minutz.functions.save();
