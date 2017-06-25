@@ -7,6 +7,9 @@
 		padding: 5px;
 		color: white;
 	}
+	.buttonAdd {
+		cursor: pointer;
+	}
 	.buttonAdd .fa-stack-2x {
 		background-color: #0073b7 !important;
 		color: #0073b7 !important;
@@ -38,7 +41,7 @@
 					<select id="attendees" class="form-control js-example-data-array" ></select>
 				</div>
 			</div>
-			<div id="btnAddAttendee" class="col-md-2">
+			<div id="btnAddAttendee" class="col-md-2" data-toggle="modal" data-target="#attendeeModal">
 				<span class="fa-stack fa-lg buttonAdd">
 					<i class="fa fa-circle-thin fa-stack-2x"></i>
 					<i class="fa fa-plus fa-stack-1x"></i>
@@ -49,6 +52,85 @@
 </div>
 <div id="attendeeCollapse" class=" collapse attendeeControl">
 	<ul id="attendeeList" class="products-list product-list-in-box"></ul>
+</div>
+<!-- Modal -->
+<div id="attendeeModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Modal Header</h4>
+			</div>
+			<div class="modal-body">
+				<div class="col-sm-12">
+					<table id="example1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
+						<thead>
+							<tr role="row">
+							<th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 222px;">First Name</th>
+							<th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 271px;">Last Name</th>
+							<th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 241px;">Email</th>
+						</thead>
+						<tbody>
+							<tr role="row" class="odd">
+								<td class="sorting_1">Gecko</td>
+								<td>Firefox 1.0</td>
+								<td>Win 98+ / OSX.2+</td>
+								<td>1.7</td>
+								<td>A</td>
+							</tr>
+							<tr role="row" class="even">
+								<td class="sorting_1">Gecko</td>
+								<td>Firefox 1.5</td>
+								<td>Win 98+ / OSX.2+</td>
+								<td>1.8</td>
+								<td>A</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-sm-12">
+					<form class="form-horizontal">
+						<div class="box-body">
+							<div class="form-group">
+								<label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+
+								<div class="col-sm-10">
+									<input type="email" class="form-control" id="inputEmail3" placeholder="Email" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+
+								<div class="col-sm-10">
+									<input type="password" class="form-control" id="inputPassword3" placeholder="Password" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">
+									<div class="checkbox">
+										<label>
+											<input type="checkbox"> Remember me
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- /.box-body -->
+						<div class="box-footer">
+							<button type="submit" class="btn btn-default">Cancel</button>
+							<button type="submit" class="btn btn-info pull-right">Sign in</button>
+						</div>
+						<!-- /.box-footer -->
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+
+	</div>
 </div>
 <script type="text/javascript">
 	var img = "https://lh3.googleusercontent.com/-Me7IFI2HKzM/AAAAAAAAAAI/AAAAAAAARwo/Gc40a_hpsSI/photo.jpg";
