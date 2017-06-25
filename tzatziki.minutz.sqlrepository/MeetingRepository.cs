@@ -191,28 +191,31 @@ namespace tzatziki.minutz.sqlrepository
 			var result = new List<Meeting>();
 			if (_tableService.Initiate(connectionString, schema, _meetingTableName, _createMeetingSchemaStoredProcedure))
 			{
-				using (SqlConnection con = new SqlConnection(connectionString))
+				if (schema != "account_00000000000000000000000000000000")
 				{
-					con.Open();
-					using (SqlCommand command = new SqlCommand(SelectMeetingStatement(schema, filter), con))
+					using (SqlConnection con = new SqlConnection(connectionString))
 					{
-						using (SqlDataReader reader = command.ExecuteReader())
+						con.Open();
+						using (SqlCommand command = new SqlCommand(SelectMeetingStatement(schema, filter), con))
 						{
-							while (reader.Read())
+							using (SqlDataReader reader = command.ExecuteReader())
 							{
-								var meeting = ToMeeting(reader);
-								var collectionFilter = $" ReferanceId = '{meeting.Id}'";
-								meeting.MeetingAgendaCollection = ToMeetingAgenda(connectionString, schema, collectionFilter).ToList();
-								meeting.MeetingAttendeeCollection = ToMeetingAttendee(connectionString, schema, collectionFilter).ToList();
-								meeting.MeetingNoteCollection = ToMeetingNote(connectionString, schema, collectionFilter).ToList();
-								meeting.MeetingAttachmentCollection = ToMeetingAttachment(connectionString, schema, collectionFilter).ToList();
+								while (reader.Read())
+								{
+									var meeting = ToMeeting(reader);
+									var collectionFilter = $" ReferanceId = '{meeting.Id}'";
+									meeting.MeetingAgendaCollection = ToMeetingAgenda(connectionString, schema, collectionFilter).ToList();
+									meeting.MeetingAttendeeCollection = ToMeetingAttendee(connectionString, schema, collectionFilter).ToList();
+									meeting.MeetingNoteCollection = ToMeetingNote(connectionString, schema, collectionFilter).ToList();
+									meeting.MeetingAttachmentCollection = ToMeetingAttachment(connectionString, schema, collectionFilter).ToList();
 
-								result.Add(meeting);
+									result.Add(meeting);
 
+								}
 							}
 						}
+						con.Close();
 					}
-					con.Close();
 				}
 			}
 			return result;

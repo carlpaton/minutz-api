@@ -7,7 +7,10 @@
 
 - input [material-design-input-boxes](https://scotch.io/tutorials/google-material-design-input-boxes-in-css3)
 
+## Environment Variables
 
+- SQLCONNECTION=Server=tcp:127.0.0.1,1433;User ID=sa;pwd=Password1234;database=minutz;
+- ASPNETCORE_ENVIRONMENT=Development
 
 ## Database 
 

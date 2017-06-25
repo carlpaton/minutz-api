@@ -1,4 +1,4 @@
-
+@inject tzatziki.minutz.interfaces.IProfileService personService
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -51,15 +51,18 @@
         </span>
       </a>
     </li>
-    <li class="treeview">
-      <a asp-controller="Meeting" asp-action="Index">
-        <i class="fa fa-files-o"></i>
-        <span>Meeting</span>
-        <span class="pull-right-container">
-          <span class="label label-primary pull-right hide">4</span>
-        </span>
-      </a>
-    </li>
+		@if (User.ToProfile(personService).InstanceId != Guid.Empty)
+		{
+			<li class="treeview">
+				<a asp-controller="Meeting" asp-action="Index">
+					<i class="fa fa-files-o"></i>
+					<span>Meeting</span>
+					<span class="pull-right-container">
+						<span class="label label-primary pull-right hide">4</span>
+					</span>
+				</a>
+			</li>
+		}
     <li class="treeview">
       <a asp-controller="Home" asp-action="Index">
         <i class="fa fa-calendar"></i> <span>Calender</span>

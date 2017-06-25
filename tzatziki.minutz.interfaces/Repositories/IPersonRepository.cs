@@ -1,4 +1,5 @@
-﻿using tzatziki.minutz.models.Auth;
+﻿using System;
+using tzatziki.minutz.models.Auth;
 
 namespace tzatziki.minutz.interfaces.Repositories
 {
@@ -11,5 +12,8 @@ namespace tzatziki.minutz.interfaces.Repositories
     UserProfile InsertInstanceIdForUser(UserProfile user, string connectionString);
 
     RoleEnum GetRole(string identifier, string connectionString, UserProfile profile);
-  }
+
+		Guid GetInstanceIdForUser(string userIdentifier, string connectionString, string schema = "app");
+
+	}
 }

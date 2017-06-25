@@ -133,5 +133,20 @@ namespace tzatziki.minutz.sqlrepository
         }
       }
     }
-  }
+
+		public Guid GetInstanceIdForUser(string userIdentifier, string connectionString, string schema = "app")
+		{
+			using (var context = new DBConnectorContext(connectionString, schema))
+			{
+				context.Database.EnsureCreated();
+				var user = context.Person.FirstOrDefault(i => i.Identityid == userIdentifier);
+				if (user == null)
+					return Guid.Empty;
+				if (user.InstanceId == null)
+					return Guid.Empty;
+				
+				return Guid.Parse(user.InstanceId);
+			}
+		}
+	}
 }

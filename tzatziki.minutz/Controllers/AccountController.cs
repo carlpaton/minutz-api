@@ -96,9 +96,9 @@ namespace tzatziki.minutz.Controllers
       var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
       user.InstanceId = Guid.NewGuid();
       user = this.ProfileService.Update(user, AppSettings);
-      var instance = this.Instanceservice.Get(user, AppSettings.ConnectionStrings.AzureConnection);
+      var instance = this.Instanceservice.Get(user, Environment.GetEnvironmentVariable("SQLCONNECTION"));
       var instanceUser = this.UserService.CopyPersonToUser(user, AppSettings);
-			return RedirectToAction("Index", "Dashboard");
+			return RedirectToAction("Logout", "Account");
 		}
 
     [Authorize]
@@ -107,7 +107,7 @@ namespace tzatziki.minutz.Controllers
       var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
       var schema = user.InstanceId.ToSchemaString();
       var instanceUser = this.UserService.ResetAccount(user, AppSettings);
-      return RedirectToAction("Index", "Dashboard");
+      return RedirectToAction("Logout", "Account");
     }
   }
 }

@@ -75,5 +75,10 @@ namespace tzatziki.minutz.core
     {
       return _personRepository.InsertInstanceIdForUser(user, Environment.GetEnvironmentVariable("SQLCONNECTION"));
     }
+
+		public Guid GetInstanceIdForUser(string userIdentifier, string connectionString)
+		{
+			return _personRepository.GetInstanceIdForUser(userIdentifier, connectionString);
+		}
   }
 }

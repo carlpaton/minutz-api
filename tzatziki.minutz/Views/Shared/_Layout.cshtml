@@ -1,4 +1,5 @@
 ﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+@inject tzatziki.minutz.interfaces.IProfileService personService
 <!DOCTYPE html>
 <html>
 <head>
@@ -643,9 +644,9 @@
   <script>
     window.intercomSettings = {
       app_id: "oili1ns3",
-      name: "@User.ToProfile().Name", 	// Full name
-      email: "@User.ToProfile().EmailAddress}", 		// Email address
-      created_at: "@User.ToProfile().Created_At",			// Signup date as a Unix timestamp (When Person was created in Minutz)
+      name: "@User.ToProfile(personService).Name", 	// Full name
+      email: "@User.ToProfile(personService).EmailAddress}", 		// Email address
+      created_at: "@User.ToProfile(personService).Created_At",			// Signup date as a Unix timestamp (When Person was created in Minutz)
       "VFPage": window.location			// VisualForce page
     };
   </script>
