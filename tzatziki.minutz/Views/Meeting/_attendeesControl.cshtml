@@ -1,10 +1,31 @@
 @model List<tzatziki.minutz.models.Entities.User>
 
+<style type="text/css">
+	.attendeesLabel {
+		font-size: 1.2em ;
+		font-weight: bold;
+		padding: 5px;
+		color: white;
+	}
+	.buttonAdd .fa-stack-2x {
+		background-color: #0073b7 !important;
+		color: #0073b7 !important;
+	}
+	.buttonAdd .fa-plus {
+		color: white !important;
+	}
+	.select2-container .select2-selection--single {
+		min-width: 300px;
+	}
+</style>
 <div class="panel panel-default">
 	<a data-toggle="collapse" data-target=".attendeeControl" style="cursor: pointer;">
 		<div class="panel-body" style="background-color: darkgrey;">
-			<i class="fa fa-user fa-2x icon-border" aria-hidden="true"></i>
-			<span style="font-size:20px; font-weight:bold; padding:5px; color:white;">Attendees</span>
+			<span class="fa-stack fa-lg">
+				<i class="fa fa-circle-thin fa-stack-2x"></i>
+				<i class="fa fa-user fa-stack-1x"></i>
+			</span>
+			<span class="attendeesLabel">Attendees</span>
 			<span id="totalAttenddesIcon" class="label label-info"></span>
 		</div>
 	</a>
@@ -14,12 +35,14 @@
 		<div class="row">
 			<div class="col-md-10">
 				<div class="input-group" data-toggle="tooltip" title="Add or remove attendees to your meeting.">
-					<span class="input-group-addon" id="basic-addon1"><i class="fa fa-user"></i></span>
-					<select id="attendees" class="form-control js-example-data-array" style="width: 150px;"></select>
+					<select id="attendees" class="form-control js-example-data-array" ></select>
 				</div>
 			</div>
-			<div class="col-md-2">
-				<div id="btnAddAttendee" class="round-button-circle pull-right"><i class="fa fa-plus"></i></div>
+			<div id="btnAddAttendee" class="col-md-2">
+				<span class="fa-stack fa-lg buttonAdd">
+					<i class="fa fa-circle-thin fa-stack-2x"></i>
+					<i class="fa fa-plus fa-stack-1x"></i>
+				</span>
 			</div>
 		</div>
 	</div>
@@ -76,9 +99,7 @@
 			},
 			width: '100%'
 		});
-
-		$("#btnAddAttendee").click(function () {
-
+		$('#attendees').on("select2:select", function (e) {
 			var identity = $("#attendees").select2('data')[0].id;
 			console.log(identity);
 			console.log(meeting.Id);
@@ -117,9 +138,15 @@
 					$("#attendeeList").append(createUserListItem(user));
 					$("#totalAttenddesIcon").text(meeting.MeetingAttendeeCollection.length);
 				}
-
 			}
+		});
 
+
+		$("#btnAddAttendee").click(function () {
+
+			
+
+			
 			//add user to meeting object
 		});
 
