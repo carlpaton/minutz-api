@@ -98,8 +98,8 @@ namespace tzatziki.minutz.Controllers
       user = this.ProfileService.Update(user, AppSettings);
       var instance = this.Instanceservice.Get(user, AppSettings.ConnectionStrings.AzureConnection);
       var instanceUser = this.UserService.CopyPersonToUser(user, AppSettings);
-      return View("Index", user);
-    }
+			return RedirectToAction("Index", "Dashboard");
+		}
 
     [Authorize]
     public ActionResult ResetAccount()
