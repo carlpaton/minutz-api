@@ -6,7 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>@ViewData["Title"] - tzatziki.minutz</title>
   <environment names="Development"></environment>
-  <environment names="Staging,Production"></environment>
+  <environment names="Staging"></environment>
+	<environment names="Testing"></environment>
+	<environment names="Production"></environment>
   <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
@@ -158,7 +160,11 @@
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
               <li style="font-size: 20px; padding-top: 10px; position: absolute; left: 50px;">
-                @ViewData["Title"]
+               
+								<environment names="Development">Dev - @ViewData["Title"]</environment>
+								<environment names="Staging">Stage - @ViewData["Title"]</environment>
+								<environment names="Testing">Test - @ViewData["Title"]</environment>
+								<environment names="Production">@ViewData["Title"]</environment>
               </li>
               <!-- Messages: style can be found in dropdown.less-->
               <li class="dropdown messages-menu topmenuitem hide">

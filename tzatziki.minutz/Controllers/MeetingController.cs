@@ -53,7 +53,7 @@ namespace tzatziki.minutz.Controllers
     {
       var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
       var schema = user.InstanceId.ToSchemaString();
-      var data = _meetingService.Get(AppSettings.ConnectionStrings.AzureConnection, schema, user);
+      var data = _meetingService.Get(schema, user);
       return Json(data);
     }
 
@@ -63,7 +63,7 @@ namespace tzatziki.minutz.Controllers
     {
       var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
       var schema = user.InstanceId.ToSchemaString();
-      var data = _meetingService.Get(AppSettings.ConnectionStrings.AzureConnection, schema, new Meeting { Id =  Guid.Parse(id)  }, true);
+      var data = _meetingService.Get(schema, new Meeting { Id =  Guid.Parse(id)  }, true);
       return Json(data);
     }
 
@@ -87,7 +87,7 @@ namespace tzatziki.minutz.Controllers
       if (meeting.MeetingAttendeeCollection == null) meeting.MeetingAttendeeCollection = new List<MeetingAttendee>();
       if (meeting.MeetingNoteCollection == null) meeting.MeetingNoteCollection = new List<MeetingNoteItem>();
 
-      _meetingService.Get(AppSettings.ConnectionStrings.AzureConnection,schema, meeting);
+      _meetingService.Get(schema, meeting);
       return Json(meeting);
     }
 
@@ -97,7 +97,7 @@ namespace tzatziki.minutz.Controllers
 		{
 			var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
 			var schema = user.InstanceId.ToSchemaString();
-			_meetingService.DeleteAgenda(AppSettings.ConnectionStrings.AzureConnection, schema, agendaId);
+			_meetingService.DeleteAgenda(schema, agendaId);
 			return Json(agendaId);
 		}
 

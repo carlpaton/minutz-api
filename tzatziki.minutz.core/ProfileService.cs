@@ -41,7 +41,7 @@ namespace tzatziki.minutz.core
       var user = _personRepository.Get(claims.FirstOrDefault(c => c.Type == "user_id").Value,
                                         claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value,
                                         claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value,
-                                        appsettings.ConnectionStrings.AzureConnection);
+																				Environment.GetEnvironmentVariable("SQLCONNECTION"));
       user.ProfileImage = claims.FirstOrDefault(c => c.Type == "picture")?.Value;
       user.ClientID = claims.FirstOrDefault(c => c.Type == "clientID")?.Value;
       user.Created_At = tokenStringHelper.ConvertTokenStringToDate(claims.FirstOrDefault(c => c.Type == "created_at")?.Value);
@@ -73,7 +73,7 @@ namespace tzatziki.minutz.core
 
     public UserProfile Update(UserProfile user, AppSettings appsettings)
     {
-      return _personRepository.InsertInstanceIdForUser(user, appsettings.ConnectionStrings.AzureConnection);
+      return _personRepository.InsertInstanceIdForUser(user, Environment.GetEnvironmentVariable("SQLCONNECTION"));
     }
   }
 }

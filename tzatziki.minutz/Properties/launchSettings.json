@@ -1,4 +1,4 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -19,7 +19,8 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "SQLCONNECTION": "Server=tcp:127.0.0.1,1433;User ID=sa;pwd=Password1234;database=minutz;"
       },
       "applicationUrl": "http://localhost:52038"
     }
