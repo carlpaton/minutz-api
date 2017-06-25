@@ -1,22 +1,22 @@
-﻿using System;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using tzatziki.minutz.core;
-using tzatziki.minutz.interfaces;
 using tzatziki.minutz.interfaces.Repositories;
-using tzatziki.minutz.models;
-using tzatziki.minutz.models.Auth;
+using Microsoft.Extensions.Configuration;
 using tzatziki.minutz.sqlrepository;
 using tzatziki.minutz.auth0.service;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using tzatziki.minutz.models.Auth;
+using tzatziki.minutz.interfaces;
+using Microsoft.AspNetCore.Http;
+using tzatziki.minutz.models;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using tzatziki.minutz.core;
+using System;
 
 namespace tzatziki.minutz
 {
@@ -56,7 +56,9 @@ namespace tzatziki.minutz
       services.AddTransient<IUserService, UserService>();
       services.AddTransient<IAuth0Repository, Repository>();
       services.AddTransient<IMeetingService, MeetingService>();
-    }
+			services.AddTransient<ISettingService, SettingService>();
+			
+		}
 
     public void Configure(IApplicationBuilder app,
                           IHostingEnvironment env,

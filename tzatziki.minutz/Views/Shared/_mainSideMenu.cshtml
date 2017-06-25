@@ -1,4 +1,5 @@
 @inject tzatziki.minutz.interfaces.IProfileService personService
+@inject tzatziki.minutz.interfaces.ISettingService settingService
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -42,6 +43,18 @@
        
     </li>
     <li class="header">MAIN NAVIGATION</li>
+		@if (settingService.SystemAdminCollection.Contains(User.ToProfile(personService).EmailAddress))
+		{
+			<li class="treeview">
+				<a asp-controller="Admin" asp-action="Index">
+					<i class="fa fa-cogs"></i>
+					<span>Admin</span>
+					<span class="pull-right-container">
+						<span class="label label-primary pull-right hide">4</span>
+					</span>
+				</a>
+			</li>
+		}
     <li class="active treeview">
       <a asp-controller="Dashboard" asp-action="Index">
         <i class="fa fa-dashboard"></i>

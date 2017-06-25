@@ -19,8 +19,16 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
+        "ACTIONSACCOUNT": "actions@minutz.co",
+        "MINUTESPASSWORD": "Minutz2017",
+        "ACTIONSPASSWORD": "Minutz2017",
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "SQLCONNECTION": "Server=tcp:127.0.0.1,1433;User ID=sa;pwd=Password1234;database=minutz;"
+        "MINUTESACCOUNT": "minutes@minutz.co",
+        "SQLCONNECTION": "Server=tcp:127.0.0.1,1433;User ID=sa;pwd=Password1234;database=minutz;",
+        "SMTPPORT": "465",
+        "INVITESACCOUNT": "invites@minutz.co",
+        "SMTPDOMAIN": "cp6.domains.co.za",
+        "INVITESPASSWORD": "Minutz2017"
       },
       "applicationUrl": "http://localhost:52038"
     }
