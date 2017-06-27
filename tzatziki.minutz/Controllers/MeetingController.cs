@@ -20,19 +20,22 @@ namespace tzatziki.minutz.Controllers
   {
     private IHostingEnvironment _environment;
     private readonly IMeetingService _meetingService;
+		private readonly IPersonService _personService;
 
-    public MeetingController(
+		public MeetingController(
       ITokenStringHelper tokenStringHelper,
       IProfileService profileService,
       IInstanceService instanceService,
       IOptions<AppSettings> settings,
       IUserService userService, 
       IHostingEnvironment environment,
-      IMeetingService meetingService
+			IPersonService personService,
+			IMeetingService meetingService
     ) : base(settings, profileService, tokenStringHelper, instanceService, userService)
     {
       _environment = environment;
       _meetingService = meetingService;
+			_personService = personService;
     }
 
     public IActionResult Index()
@@ -118,24 +121,28 @@ namespace tzatziki.minutz.Controllers
     }
 
     [HttpGet]
-    public JsonResult Attendees(int meetingId)
+		[Authorize]
+    public JsonResult Attendees(string meetingId)
     {
-      return Json(GetUsers());
+			var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
+			var schema = user.InstanceId.ToSchemaString();
+			var meeting = _meetingService.Get(schema, new Meeting { Id = Guid.Parse(meetingId) }, true);
+			return Json(meeting.MeetingAttendeeCollection);
     }
 
 		[Authorize]
 		[HttpPost]
-    public async Task<JsonResult> FileUpload(string meetingId)
-    {
+		public JsonResult FileUpload(string meetingId)
+		{
 			var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
 			var schema = user.InstanceId.ToSchemaString();
 
 			var uploads = Path.Combine(_environment.WebRootPath, "uploads");
-      var uploadedFiles = new List<string>();
-      foreach (var file in Request.Form.Files)
-      {
-        if (file.Length > 0)
-        {
+			var uploadedFiles = new List<string>();
+			foreach (var file in Request.Form.Files)
+			{
+				if (file.Length > 0)
+				{
 					using (var binaryReader = new BinaryReader(Request.Form.Files[0].OpenReadStream()))
 					{
 						byte[] result;
@@ -145,16 +152,16 @@ namespace tzatziki.minutz.Controllers
 					uploadedFiles.Add(file.FileName);
 
 					//using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
-     //     {
+					//     {
 					//	await file.CopyToAsync(fileStream);
-						
-     //     }
-        }
-      }
-      return Json(uploadedFiles);
-    }
 
-    private string GetName()
+					//     }
+				}
+			}
+			return Json(uploadedFiles);
+		}
+
+		private string GetName()
     {
       return "MeetingName" + new Random().Next();
     }

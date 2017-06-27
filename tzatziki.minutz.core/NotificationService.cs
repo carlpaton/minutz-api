@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using tzatziki.minutz.interfaces;
+﻿using tzatziki.minutz.interfaces;
 
 namespace tzatziki.minutz.core
 {
-	public class NotificationService
+	public class NotificationService : INotificationService
 	{
 		private readonly ISettingService _settingService;
 		public NotificationService(ISettingService settingService)
@@ -13,6 +10,9 @@ namespace tzatziki.minutz.core
 			_settingService = settingService;
 		}
 
-		
+		public bool InvitePerson()
+		{
+			return true;
+		}
 	}
 }

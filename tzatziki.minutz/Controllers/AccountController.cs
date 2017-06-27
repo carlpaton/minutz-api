@@ -10,19 +10,25 @@ using tzatziki.minutz.models;
 using tzatziki.minutz.models.Auth;
 using System;
 using tzatziki.minutz.core;
+using tzatziki.minutz.models.Entities;
+using System.Collections.Generic;
 
 namespace tzatziki.minutz.Controllers
 {
   public class AccountController : BaseController
   {
-    public AccountController(
+		private readonly IPersonService _personService;
+
+		public AccountController(
       ITokenStringHelper tokenStringHelper,
       IProfileService profileService,
       IInstanceService instanceService,
-      IOptions<AppSettings> settings,
+			IPersonService personService,
+			IOptions<AppSettings> settings,
       IUserService userService) : base(settings, profileService, tokenStringHelper, instanceService, userService)
     {
-    }
+			_personService = personService;
+		}
 
     [Authorize]
     public IActionResult Index()
@@ -66,7 +72,35 @@ namespace tzatziki.minutz.Controllers
       return View();
     }
 
-    public IActionResult SaveProfile(UserProfile model)
+		[HttpGet]
+		[Authorize]
+		public JsonResult People()
+		{
+			var data = _personService.GetSystemUsers(Environment.GetEnvironmentVariable("SQLCONNECTION"));
+			return Json(data);
+		}
+
+		[HttpGet]
+		[Authorize]
+		public JsonResult AccountPeople()
+		{
+			var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
+			var schema = user.InstanceId.ToSchemaString();
+			var data = _personService.GetSchemaUsers(Environment.GetEnvironmentVariable("SQLCONNECTION"),schema);
+			return Json(data);
+		}
+
+		[HttpPost]
+		[Authorize]
+		public JsonResult InvitePerson(Person person)
+		{
+			var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
+			var schema = user.InstanceId.ToSchemaString();
+			var data = _personService.InvitePerson(person,Environment.GetEnvironmentVariable("SQLCONNECTION"),schema);
+			return Json(data);
+		}
+
+		public IActionResult SaveProfile(UserProfile model)
     {
       return View("Index", model);
     }

@@ -2,21 +2,25 @@
 
 <style type="text/css">
 	.attendeesLabel {
-		font-size: 1.2em ;
+		font-size: 1.2em;
 		font-weight: bold;
 		padding: 5px;
 		color: white;
 	}
+
 	.buttonAdd {
 		cursor: pointer;
 	}
-	.buttonAdd .fa-stack-2x {
-		background-color: #0073b7 !important;
-		color: #0073b7 !important;
-	}
-	.buttonAdd .fa-plus {
-		color: white !important;
-	}
+
+		.buttonAdd .fa-stack-2x {
+			background-color: #0073b7 !important;
+			color: #0073b7 !important;
+		}
+
+		.buttonAdd .fa-plus {
+			color: white !important;
+		}
+
 	.select2-container .select2-selection--single {
 		min-width: 300px;
 	}
@@ -38,7 +42,7 @@
 		<div class="row">
 			<div class="col-md-10">
 				<div class="input-group" data-toggle="tooltip" title="Add or remove attendees to your meeting.">
-					<select id="attendees" class="form-control js-example-data-array" ></select>
+					<select id="attendees" class="form-control js-example-data-array"></select>
 				</div>
 			</div>
 			<div id="btnAddAttendee" class="col-md-2" data-toggle="modal" data-target="#attendeeModal">
@@ -67,11 +71,11 @@
 					<table id="example1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
 						<thead>
 							<tr role="row">
-							<th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 222px;">First Name</th>
-							<th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 271px;">Last Name</th>
-							<th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 241px;">Email</th>
+								<th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 222px;">First Name</th>
+								<th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 271px;">Last Name</th>
+								<th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 241px;">Email</th>
 						</thead>
-						<tbody>
+						<tbody id="tbPeople">
 							<tr role="row" class="odd">
 								<td class="sorting_1">Gecko</td>
 								<td>Firefox 1.0</td>
@@ -147,12 +151,23 @@
 	};
 
 	$(function () {
-		var meetingId = 0;
+		GetAttendees();
 
+		var meetingId = "";
+		if (document.location.search.length) {
+			if (document.location.search.match("id").length > 0) {
+				var query = document.location.search.match("id").input.split('?')[1];
+				if (query.includes("id"))
+				{
+					meetingId = query.split('=')[1];
+				}
+			}
+		}
 
 		$('#attendees').select2({
 			ajax: {
-				url: "/Meeting/Attendees?meetingId=" + meetingId,
+				url: document.location.origin + "/Account/AccountPeople",
+				//url: "/Meeting/Attendees?meetingId=" + meetingId,
 				dataType: 'json',
 				delay: 250,
 				data: function (params) {
@@ -167,7 +182,7 @@
 					var newData = [];
 					console.log(data);
 					for (var i = 0; i < data.length; i++) {
-						newData.push({ id: data[i].identity, text: data[i].fullName });
+						newData.push({ id: data[i].userId, text: data[i].name });
 					}
 
 					return {
@@ -183,25 +198,25 @@
 			console.log(identity);
 			console.log(meeting.Id);
 			for (var i = 0; i < availibleAttendees.length; i++) {
-				if (availibleAttendees[i].identity == identity) {
+				if (availibleAttendees[i].userId == identity) {
 					var x = availibleAttendees[i];
 					var guid = minutz.functions.createId();
 					var user = {
 						active: x.active,
-						email: x.email,
+						email: x.emailAddress,
 						firstName: x.firstName,
-						fullName: x.fullName,
+						fullName: x.name,
 						id: guid,
-						identity: x.identity,
-						Identity: x.identity,
-						image: x.image,
+						identity: x.userId,
+						Identity: x.userId,
+						image: img, //x.image,
 						lastName: x.lastName,
 						role: x.role,
 						Role: x.role,
-						personIdentity: x.identity,
+						personIdentity: x.userId,
 						ReferanceId: meeting.Id,
 						referanceId: meeting.Id,
-						Id: x.id
+						Id: guid
 					};
 					for (var q = 0; q < meeting.MeetingAttendeeCollection.length; q++) {
 						var check = meeting.MeetingAttendeeCollection[q];
@@ -236,8 +251,34 @@
 				+ '</li>';
 		};
 
-		function GetAvailiblePeople()
+		function GetAttendees()
 		{
+			$.ajax({
+				type: minutz.properties.GET,
+				url: document.location.origin + "/Account/People",
+				success: function (data)
+				{
+					console.log(data);
+					$('#tbPeople').html('');
+					for (var i = 0; i < data.length; i++)
+					{
+						$('#tbPeople').append(
+							'<tr role="row" class="odd">'
+							+ '<td class="sorting_1">' + data[i].firstName+'</td>'
+							+ '<td>' + data[i].lastName +'</td>'
+							+ '<td>' + data[i].email+'</td>'
+							+ '<td></td>'
+							+ '<td></td>'
+							+ '</tr>'
+						);
+					}
+				},
+				error: function (XMLHttpRequest, textStatus, errorThrown) { },
+				dataType: minutz.properties.JSON
+			});
+		 };
+
+		function GetAvailiblePeople() {
 			$.ajax({
 				type: minutz.properties.GET,
 				url: document.location.origin + "/Account/People",
@@ -264,10 +305,9 @@
 								var userId = data.meetingAttendeeCollection[attendeeIdex].personIdentity;
 
 								for (var orginalUserIndex = 0; orginalUserIndex < users.length; orginalUserIndex++) {
-									if (userId == users[orginalUserIndex].identity)
-									{
+									if (userId == users[orginalUserIndex].identity) {
 										$("#attendeeList").append(createUserListItem(users[orginalUserIndex]));
-									 }
+									}
 								}
 							}
 							$("#totalAttenddesIcon").text(data.meetingAttendeeCollection.length);

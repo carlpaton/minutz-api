@@ -583,6 +583,8 @@ namespace tzatziki.minutz.sqlrepository
 			var isPrivate = meeting.IsPrivate == true ? 1 : 0;
 			var isLocked = meeting.IsLocked == true ? 1 : 0;
 			var meetingDate = meeting.Date == DateTime.MinValue ? DateTime.UtcNow.ToString() : meeting.Date.ToUniversalTime().ToString();
+			if (string.IsNullOrEmpty(meeting.Name))
+				meeting.Name = $"Meeting {DateTime.UtcNow.ToString()}";
 
 			return $@"INSERT INTO [{schema}].[{_meetingTableName}] VALUES (
         '{meeting.Id}',
@@ -594,7 +596,7 @@ namespace tzatziki.minutz.sqlrepository
         '{meeting.Duration.EmptyIfNull()}',
         {isReacurance},
         {isPrivate},
-        '{meeting.ReacuranceType}',
+        '{meeting.ReacuranceType.EmptyIfNull()}',
         {isLocked},
         {isFormal},
         '{meeting.TimeZone.EmptyIfNull()}',

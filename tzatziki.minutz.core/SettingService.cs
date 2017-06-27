@@ -28,7 +28,7 @@ namespace tzatziki.minutz.core
 						Environment.GetEnvironmentVariable(INVITESACCOUNT),
 						Environment.GetEnvironmentVariable(INVITESPASSWORD));
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{
 					throw new Exception($"EnvironmentVariable for: {INVITESACCOUNT} cannot be found.");
 				}
@@ -48,7 +48,7 @@ namespace tzatziki.minutz.core
 						Environment.GetEnvironmentVariable(ACTIONSACCOUNT),
 						Environment.GetEnvironmentVariable(ACTIONSPASSWORD));
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{
 					throw new Exception($"EnvironmentVariable for: {ACTIONSACCOUNT} cannot be found.");
 				}
@@ -68,7 +68,7 @@ namespace tzatziki.minutz.core
 						Environment.GetEnvironmentVariable(MINUTESACCOUNT),
 						Environment.GetEnvironmentVariable(MINUTESPASSWORD));
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{
 					throw new Exception($"EnvironmentVariable for: {MINUTESACCOUNT} cannot be found.");
 				}
@@ -88,7 +88,7 @@ namespace tzatziki.minutz.core
 						Environment.GetEnvironmentVariable(SMTPDOMAIN),
 						Environment.GetEnvironmentVariable(SMTPPORT));
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{
 					throw new Exception($"EnvironmentVariable for: {MINUTESACCOUNT} cannot be found.");
 				}

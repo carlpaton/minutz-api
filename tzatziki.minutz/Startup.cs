@@ -57,6 +57,8 @@ namespace tzatziki.minutz
       services.AddTransient<IAuth0Repository, Repository>();
       services.AddTransient<IMeetingService, MeetingService>();
 			services.AddTransient<ISettingService, SettingService>();
+			services.AddTransient<IPersonService, PersonService>();
+			services.AddTransient<INotificationService, NotificationService>();
 			
 		}
 
