@@ -46,6 +46,21 @@ namespace tzatziki.minutz.core
       user.ClientID = claims.FirstOrDefault(c => c.Type == "clientID")?.Value;
       user.Created_At = tokenStringHelper.ConvertTokenStringToDate(claims.FirstOrDefault(c => c.Type == "created_at")?.Value);
       user.Updated_At = tokenStringHelper.ConvertTokenStringToDate(claims.FirstOrDefault(c => c.Type == "updated_at")?.Value);
+			if (string.IsNullOrEmpty(user.FirstName))
+			{
+				var split = user.Name.Split(' ');
+				if (split.Length > 1)
+				{
+					user.FirstName = split[0];
+					user.LastName = split[1];
+				}
+				else
+				{
+					user.FirstName = split[0];
+				}
+
+			}
+			
       return user;
     }
 

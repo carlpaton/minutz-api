@@ -22,7 +22,7 @@
 		}
 
 	.select2-container .select2-selection--single {
-		min-width: 300px;
+		min-width: 270px;
 	}
 </style>
 <div class="panel panel-default">
@@ -76,20 +76,7 @@
 								<th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 241px;">Email</th>
 						</thead>
 						<tbody id="tbPeople">
-							<tr role="row" class="odd">
-								<td class="sorting_1">Gecko</td>
-								<td>Firefox 1.0</td>
-								<td>Win 98+ / OSX.2+</td>
-								<td>1.7</td>
-								<td>A</td>
-							</tr>
-							<tr role="row" class="even">
-								<td class="sorting_1">Gecko</td>
-								<td>Firefox 1.5</td>
-								<td>Win 98+ / OSX.2+</td>
-								<td>1.8</td>
-								<td>A</td>
-							</tr>
+							
 						</tbody>
 					</table>
 				</div>
@@ -107,7 +94,7 @@
 								<label for="txtPersonLastName" class="col-sm-2 control-label">Last Name</label>
 
 								<div class="col-sm-10">
-									<input type="text" class="form-control" id="txtPersonLastName" placeholder="Email" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+									<input type="text" class="form-control" id="txtPersonLastName" placeholder="Last Name" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
 								</div>
 							</div>
 							<div class="form-group">
@@ -157,8 +144,7 @@
 		if (document.location.search.length) {
 			if (document.location.search.match("id").length > 0) {
 				var query = document.location.search.match("id").input.split('?')[1];
-				if (query.includes("id"))
-				{
+				if (query.includes("id")) {
 					meetingId = query.split('=')[1];
 				}
 			}
@@ -220,7 +206,7 @@
 					};
 					for (var q = 0; q < meeting.MeetingAttendeeCollection.length; q++) {
 						var check = meeting.MeetingAttendeeCollection[q];
-						if (check.identity == x.identity) {
+						if (check.email == x.emailAddress) {
 							var index = meeting.MeetingAttendeeCollection.indexOf(q);
 							meeting.MeetingAttendeeCollection.splice(index, 1);
 							$("#" + check.id).remove();
@@ -233,6 +219,49 @@
 					$("#totalAttenddesIcon").text(meeting.MeetingAttendeeCollection.length);
 				}
 			}
+		});
+
+		$("#btnPersonToUserAdd").click(function () {
+			var person = {};
+			person.FirstName = $("#txtPersonFirstName").val();
+			person.LastName = $("#txtPersonLastName").val();
+			person.FullName = $("#txtPersonFirstName").val() + '  ' + $("#txtPersonLastName").val();
+			person.Email = $("#txtPersonEmail").val();
+			person.Role = "Attendee";
+			person.Active = 0;
+
+			$.ajax({
+				type: minutz.properties.POST,
+				dataType: minutz.properties.JSON,
+				url: document.location.origin + "/Account/InvitePerson",
+				data: person,
+				success: function (data) {
+					console.log(data);
+					var person = {};
+					person.FirstName = $("#txtPersonFirstName").val();
+					person.LastName = $("#txtPersonLastName").val();
+					person.FullName = $("#txtPersonFirstName").val() + '  ' + $("#txtPersonLastName").val();
+					person.Email = $("#txtPersonEmail").val();
+					person.Role = "Attendee";
+					person.Active = 0;
+
+					$('#tbPeople').append(
+						'<tr role="row" class="odd">'
+						+ '<td class="sorting_1">' + person.FirstName + '</td>'
+						+ '<td>' + person.LastName + '</td>'
+						+ '<td>' + person.Email + '</td>'
+						+ '<td></td>'
+						+ '<td></td>'
+						+ '</tr>'
+					);
+
+					
+					$("#txtPersonFirstName").val('');
+					$("#txtPersonLastName").val('');
+					$("#txtPersonEmail").val('');
+				 },
+				error: function (XMLHttpRequest, textStatus, errorThrown) { },
+			});
 		});
 
 		function createUserListItem(user) {
@@ -251,22 +280,19 @@
 				+ '</li>';
 		};
 
-		function GetAttendees()
-		{
+		function GetAttendees() {
 			$.ajax({
 				type: minutz.properties.GET,
-				url: document.location.origin + "/Account/People",
-				success: function (data)
-				{
+				url: document.location.origin + "/Account/AccountPeople",
+				success: function (data) {
 					console.log(data);
 					$('#tbPeople').html('');
-					for (var i = 0; i < data.length; i++)
-					{
+					for (var i = 0; i < data.length; i++) {
 						$('#tbPeople').append(
 							'<tr role="row" class="odd">'
-							+ '<td class="sorting_1">' + data[i].firstName+'</td>'
-							+ '<td>' + data[i].lastName +'</td>'
-							+ '<td>' + data[i].email+'</td>'
+							+ '<td class="sorting_1">' + data[i].firstName + '</td>'
+							+ '<td>' + data[i].lastName + '</td>'
+							+ '<td>' + data[i].emailAddress + '</td>'
 							+ '<td></td>'
 							+ '<td></td>'
 							+ '</tr>'
@@ -276,7 +302,7 @@
 				error: function (XMLHttpRequest, textStatus, errorThrown) { },
 				dataType: minutz.properties.JSON
 			});
-		 };
+		};
 
 		function GetAvailiblePeople() {
 			$.ajax({

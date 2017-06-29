@@ -39,6 +39,7 @@ namespace tzatziki.minutz.core
 		public bool InvitePerson(Person person,string connectionString, string schema)
 		{
 			//_notificationService
+			if (string.IsNullOrEmpty(person.Identityid)) person.Identityid = System.Guid.NewGuid().ToString();
 			var successful = _personRepository.InvitePerson(person,connectionString, schema);
 			if (successful)
 				_notificationService.InvitePerson();

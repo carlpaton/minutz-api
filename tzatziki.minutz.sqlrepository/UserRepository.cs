@@ -101,7 +101,7 @@ namespace tzatziki.minutz.sqlrepository
       return $@"INSERT INTO [{schema}].[User]
                 ([Identity],[FirstName],[LastName],[FullName],[Email],[Role],[Active])
                 VALUES
-                ('{user.UserId}','','','{user.Name}','{user.EmailAddress}','{user.Role}',1)";
+                ('{user.UserId}','{user.FirstName}','{user.LastName}','{user.Name}','{user.EmailAddress}','{user.Role}',1)";
     }
 
     internal string UpdateUserSatement(string schema, UserProfile user)

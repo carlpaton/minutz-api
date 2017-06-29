@@ -24,16 +24,34 @@ namespace tzatziki.minutz.sqlrepository
 				{
 					InstanceId = string.IsNullOrEmpty(user.InstanceId) ? Guid.Empty : Guid.Parse(user.InstanceId),
 					UserId = user.Identityid,
-					Name = user.FirstName,
+					Name = $"{user.FirstName} {user.LastName}",
+					FirstName = user.FirstName,
+					LastName = user.LastName,
 					EmailAddress = user.Email
 				};
 			}
+
+			
 			var newUserObject = new UserProfile
 			{
 				EmailAddress = email,
 				UserId = identifier,
 				Name = name
 			};
+
+			var split = name.Split(' ');
+			if (split.Length > 1)
+			{
+				newUserObject.FirstName = split[0];
+				newUserObject.LastName = split[1];
+				
+			}
+			if (split.Length == 1)
+			{
+				newUserObject.FirstName = name;
+				newUserObject.LastName = string.Empty;
+			}
+
 			CreateUser(connectionString, newUserObject);
 			return newUserObject;
 		}
@@ -117,7 +135,9 @@ namespace tzatziki.minutz.sqlrepository
 				context.Database.EnsureCreated();
 				var userObject = new Person
 				{
-					FirstName = profile.Name,
+					FirstName = profile.FirstName,
+					LastName = profile.LastName,
+					FullName = $"{profile.FirstName} {profile.LastName}",
 					Email = profile.EmailAddress,
 					Identityid = profile.UserId,
 					Role = RoleEnum.Attendee.ToString(),
@@ -172,11 +192,15 @@ namespace tzatziki.minutz.sqlrepository
 					{
 						command.ExecuteNonQuery();
 					}
+					using (SqlCommand command = new SqlCommand(_insertUsersStatement(person, "app"), con))
+					{
+						command.ExecuteNonQuery();
+					}
 					con.Close();
 				}
 				return true;
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
 				return false;
 			}
@@ -224,9 +248,19 @@ namespace tzatziki.minutz.sqlrepository
 
 		internal string _insertSchemaUsersStatement(Person person, string schema)
 		{
+			var active = person.Active == true ? 1 : 0;
 			return $@"INSERT INTO
 							[minutz].[{schema}].[User]
-							VALUES('{person.Identityid}','{person.FirstName}','{person.LastName}','{person.FullName}','{person.Email}','Attendee',1)
+							VALUES('{person.Identityid}','{person.FirstName}','{person.LastName}','{person.FullName}','{person.Email}','{person.Role}',{active})
+							";
+		}
+
+		internal string _insertUsersStatement(Person person, string schema)
+		{
+			var active = person.Active == true ? 1 : 0;
+			return $@"INSERT INTO
+							[minutz].[{schema}].[Person]
+							VALUES('{person.Identityid}','{person.FirstName}','{person.LastName}','{person.FullName}','{person.Email}','{person.Role}',{active},null)
 							";
 		}
 	}
