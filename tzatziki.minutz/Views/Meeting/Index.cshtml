@@ -1483,9 +1483,11 @@
 
 		$('#meetingTime').val(data.time);
 		$("#txtTags").val(_toString(data.tag));
-		$('#purposeText').val(data.purpose);
-		$('#outcomeText').val(data.outcome);
+		//$('#purposeText').val(data.purpose);
+		//$('#outcomeText').val(data.outcome);
 
+		$('#purposeText').trumbowyg('html', data.purpose);
+		$('#outcomeText').trumbowyg('html', data.outcome);
 
 		$("#txtDuration").duration_picker();
 
@@ -1531,8 +1533,8 @@
 		meeting.Duration = minutz.functions.get.value('txtDuration');
 		meeting.ReacuranceType = minutz.functions.get.text('repeatTypeText');
 		meeting.IsReacurance = _isReacurance(minutz.functions.get.text('repeatTypeText'));
-		meeting.Purpose = minutz.functions.get.value('purposeText');
-		meeting.Outcome = minutz.functions.get.value('outcomeText');
+		meeting.Purpose = $('#purposeText').trumbowyg('html');// minutz.functions.get.value('purposeText');
+		meeting.Outcome = $('#outcomeText').trumbowyg('html'); //minutz.functions.get.value('outcomeText');
 
 		for (var agendaIndex = 0; agendaIndex < meeting.MeetingAgendaCollection.length; agendaIndex++) {
 			if (meeting.MeetingAgendaCollection[agendaIndex].Id == meeting.SelectedAgendaItemId) {
