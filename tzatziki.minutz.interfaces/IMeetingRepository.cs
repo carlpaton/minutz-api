@@ -13,7 +13,7 @@ namespace tzatziki.minutz.interfaces
     /// <param name="schema"></param>
     /// <param name="meeting"></param>
     /// <returns></returns>
-    Meeting Get(string connectionString, string schema, Meeting meeting, bool read = false);
+    Meeting Get(string connectionString, string schema, Meeting meeting, string callingUserId ,bool read = false);
 
     IEnumerable<Meeting> Get(string connectionString, string schema, UserProfile user);
 

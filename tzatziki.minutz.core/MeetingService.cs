@@ -14,9 +14,9 @@ namespace tzatziki.minutz.core
       _meetingRepository = meetingRepository;
     }
 
-    public Meeting Get( string schema, Meeting meeting, bool read = false)
+    public Meeting Get( string schema, Meeting meeting, string callingUserId ,bool read = false)
     {
-      return _meetingRepository.Get(Environment.GetEnvironmentVariable("SQLCONNECTION"), schema, meeting, read);
+      return _meetingRepository.Get(Environment.GetEnvironmentVariable("SQLCONNECTION"), schema, meeting, callingUserId,read);
     }
 
     public IEnumerable<Meeting> Get(string schema, UserProfile user)

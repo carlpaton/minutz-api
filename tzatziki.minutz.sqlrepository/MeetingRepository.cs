@@ -113,13 +113,14 @@ namespace tzatziki.minutz.sqlrepository
 			return result;
 		}
 
-		public Meeting Get(string connectionString, string schema, Meeting meeting, bool read = false)
-		{
+		public Meeting Get(string connectionString, string schema, Meeting meeting, string callingUserId ,bool read = false)
+		{ 
 			if (_tableService.Initiate(connectionString, schema, _meetingTableName, _createMeetingSchemaStoredProcedure))
 			{
 				var instance = ToMeeting(connectionString, schema, $" Id = '{meeting.Id}'");
 				if (instance == null)
 				{
+					if (string.IsNullOrEmpty(meeting.MeetingOwnerId)) meeting.MeetingOwnerId = callingUserId;
 					instance = ToMeeting(connectionString, schema, meeting, false);
 					var collectionFilter = $" ReferanceId = '{instance.Id}'";
 					instance.MeetingAgendaCollection = ToMeetingAgenda(connectionString, schema, collectionFilter).ToList();
@@ -442,6 +443,7 @@ namespace tzatziki.minutz.sqlrepository
 							using (SqlCommand command = new SqlCommand(InsertMeetingStatement(schema, meeting), con))
 							{
 								command.ExecuteNonQuery();
+								if (meeting.MeetingAgendaCollection == null) meeting.MeetingAgendaCollection = new List<MeetingAgendaItem>();
 								foreach (var agendaItem in meeting.MeetingAgendaCollection)
 								{
 									using (SqlCommand agendaItemsCommand = new SqlCommand(InsertMeetingAgendaItemStatement(schema, agendaItem), con))
@@ -449,6 +451,7 @@ namespace tzatziki.minutz.sqlrepository
 										agendaItemsCommand.ExecuteNonQuery();
 									}
 								}
+								if (meeting.MeetingAttachmentCollection == null) meeting.MeetingAttachmentCollection = new List<MeetingAttachmentItem>();
 								foreach (var agendaAttachment in meeting.MeetingAttachmentCollection)
 								{
 									using (SqlCommand attachmentCommand = new SqlCommand(InsertMeetingAttachmentStatement(schema, agendaAttachment), con))
@@ -456,6 +459,7 @@ namespace tzatziki.minutz.sqlrepository
 										attachmentCommand.ExecuteNonQuery();
 									}
 								}
+								if (meeting.MeetingNoteCollection == null) meeting.MeetingNoteCollection = new List<MeetingNoteItem>();
 								foreach (var meetingNote in meeting.MeetingNoteCollection)
 								{
 									using (SqlCommand noteCommand = new SqlCommand(InsertMeetingNoteStatement(schema, meetingNote), con))
@@ -585,7 +589,7 @@ namespace tzatziki.minutz.sqlrepository
 			var meetingDate = meeting.Date == DateTime.MinValue ? DateTime.UtcNow.ToString() : meeting.Date.ToUniversalTime().ToString();
 			if (string.IsNullOrEmpty(meeting.Name))
 				meeting.Name = $"Meeting {DateTime.UtcNow.ToString()}";
-
+			if(meeting.Tag == null) meeting.Tag = new string[] { };
 			return $@"INSERT INTO [{schema}].[{_meetingTableName}] VALUES (
         '{meeting.Id}',
         '{meeting.Name.EmptyIfNull()}',
