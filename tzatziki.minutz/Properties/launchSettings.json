@@ -1,4 +1,4 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -19,7 +19,16 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ACTIONSACCOUNT": "actions@minutz.co",
+        "MINUTESPASSWORD": "Minutz2017",
+        "ACTIONSPASSWORD": "Minutz2017",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "MINUTESACCOUNT": "minutes@minutz.co",
+        "SQLCONNECTION": "Server=tcp:127.0.0.1,1433;User ID=sa;pwd=Password1234;database=minutz;",
+        "SMTPPORT": "465",
+        "INVITESACCOUNT": "invites@minutz.co",
+        "SMTPDOMAIN": "cp6.domains.co.za",
+        "INVITESPASSWORD": "Minutz2017"
       },
       "applicationUrl": "http://localhost:52038"
     }

@@ -1,9 +1,21 @@
 @model tzatziki.minutz.models.Entities.Meeting
+@inject tzatziki.minutz.interfaces.IProfileService personService
 @{
 	ViewData["Title"] = "Create Meeting";
 }
 <link rel="stylesheet" href="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 <style>
+	a {
+		color: black !important;
+		
+	}
+
+	.fa-stack-2x {
+		background-color: white !important;
+		border-radius: 100% !important;
+		color: white !important;
+	}
+	
 	#reacuranceModel .modal-dialog {
 		width: 70%;
 	}
@@ -697,10 +709,10 @@
 			<!-- Add the bg color to the header using any of the bg-* classes -->
 			<div class="widget-user-header bg-blue">
 				<div class="widget-user-image">
-					<img class="img-circle" src="@User.ToProfile().ProfileImage" alt="User Avatar">
+					<img class="img-circle" src="@User.ToProfile(personService).ProfileImage" alt="User Avatar">
 				</div>
 				<!-- /.widget-user-image -->
-				<h3 class="widget-user-username">@User.ToProfile().Name</h3>
+				<h3 class="widget-user-username">@User.ToProfile(personService).Name</h3>
 				<h5 class="widget-user-desc"><b>Role :</b> Organiser</h5>
 			</div>
 		</div>
@@ -1278,6 +1290,10 @@
 			}
 		} else {
 			meeting.Id = minutz.functions.createId(); 
+			window.location.search += 'id=' + meeting.Id;
+			console.log(meeting.Id);
+
+
 			Dropzone.options.dropzoneForm = {
 				url: "/Meeting/FileUpload?meetingId=" + meeting.Id,
 				init: function () {
@@ -1292,7 +1308,7 @@
 		}
 
 
-		minutz.functions.meetingAttendeesAjax(meeting.Id);
+		//minutz.functions.meetingAttendeesAjax(meeting.Id);
 		_initPickers();
 
 		$("#btnSave").click(function () {
@@ -1314,8 +1330,8 @@
 				$(this).removeClass('used');
 		});
 
-		$('#attendeesControl').load('/Meeting/AttendeesControl?meetingId=' + 1, 1, function (responseText, textStatus, jqXHR) {
-			var meetingId = 1;
+		$('#attendeesControl').load('/Meeting/AttendeesControl?meetingId=' + meeting.Id, 1, function (responseText, textStatus, jqXHR) {
+			//var meetingId = 1;
 
 			//$('#attendees_agendaItem').select2({
 			//  placeholder: "Assign to attendee",
@@ -1408,20 +1424,20 @@
 		return d;
 	 };
 
-	minutz.functions.meetingAttendeesAjax = function (id) {
-		$.ajax({
-			url: '/Meeting/Attendees?meetingId=' + id,
-			dataType: 'json',
-			type: 'GET',
-			context: document.body
-		}).done(function (data) {
-			var newData = [];
-			for (var i = 0; i < data.length; i++) {
-				minutz.properties.availibleAttendees.push({ id: data[i].identity, text: data[i].fullName });
-			}
-			minutz.functions.setAttendees();
-		});
-	};
+	//minutz.functions.meetingAttendeesAjax = function (id) {
+	//	$.ajax({
+	//		url: '/Meeting/Attendees?meetingId=' + id,
+	//		dataType: 'json',
+	//		type: 'GET',
+	//		context: document.body
+	//	}).done(function (data) {
+	//		var newData = [];
+	//		for (var i = 0; i < data.length; i++) {
+	//			minutz.properties.availibleAttendees.push({ id: data[i].identity, text: data[i].fullName });
+	//		}
+	//		minutz.functions.setAttendees();
+	//	});
+	//};
 
 	function MeetingAgendaItem(id, referanceId, agendaHeading, agendaText, meetingAttendeeId, createdDate, isComplete, duration) {
 		return {

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using tzatziki.minutz.core;
 using tzatziki.minutz.interfaces;
@@ -9,7 +10,8 @@ namespace tzatziki.minutz
 {
   public static class UserExtentions
   {
-    public static UserProfile ToProfile(this ClaimsPrincipal User,
+
+		public static UserProfile ToProfile(this ClaimsPrincipal User,
                               IProfileService profileService,
                               ITokenStringHelper tokenStringHelper,
                               AppSettings settings)
@@ -18,9 +20,10 @@ namespace tzatziki.minutz
       return profileService.GetFromClaims(claims, tokenStringHelper, settings);
     }
 
-    public static UserProfile ToProfile(this ClaimsPrincipal User)
+    public static UserProfile ToProfile(this ClaimsPrincipal User, IProfileService profileService)
     {
-      var claims = User.Claims.ToList();
+
+			var claims = User.Claims.ToList();
 
       var tokenStringHelper = new TokenStringHelper();
       var model = new UserProfile
@@ -34,7 +37,11 @@ namespace tzatziki.minutz
         Updated_At = tokenStringHelper.ConvertTokenStringToDate(claims.FirstOrDefault(c => c.Type == "updated_at")?.Value),
         Role = User.Claims.FirstOrDefault(i => i.Type == System.Security.Claims.ClaimTypes.Role).Value
       };
-      if (model.ProfileImage == null)
+
+			var connectionString = Environment.GetEnvironmentVariable("SQLCONNECTION");
+			var instanceId = profileService.GetInstanceIdForUser(model.UserId, connectionString);
+			model.InstanceId = instanceId;
+			if (model.ProfileImage == null)
       {
         model.ProfileImage = "img/defaultuser.jpg";
       }

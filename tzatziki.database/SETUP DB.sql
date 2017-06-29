@@ -90,6 +90,7 @@ CREATE TABLE [app].[Instance] (
 END
 GO
 
+
 USE [minutz]
 IF EXISTS(SELECT 1 FROM [minutz].[INFORMATION_SCHEMA].[ROUTINES] WHERE routine_type = 'PROCEDURE' AND SPECIFIC_NAME = 'createInstanceSchema')
 BEGIN
@@ -115,7 +116,15 @@ CREATE PROCEDURE app.createInstanceUser
   AS
   Begin
     declare @sql nvarchar(4000) =
-    'CREATE TABLE ' + @tenant +'.[User] (
+    '
+	CREATE TABLE [' + @tenant +'].[MeetingNotificationSettings] (
+        [Id] uniqueidentifier NOT NULL,
+        [Message] VARCHAR (MAX) NOT NULL,
+        [Key] VARCHAR (50) NULL,
+        [CreatedDate] DATETIME2 NULL
+	)
+
+	CREATE TABLE ' + @tenant +'.[User] (
         [Id] INT IDENTITY (1, 1) NOT NULL,
         [Identity] VARCHAR (MAX) NOT NULL,
         [FirstName]  VARCHAR (255) NULL,
@@ -139,7 +148,8 @@ CREATE PROCEDURE [app].[createMeetingSchema]
   AS
   Begin
     DECLARE @sql NVARCHAR(4000) =
-'CREATE TABLE [' + @tenant +'].[Meeting] (
+'
+CREATE TABLE [' + @tenant +'].[Meeting] (
         [Id] uniqueidentifier NOT NULL,
         [Name] VARCHAR (MAX) NOT NULL,
         [Location] VARCHAR (255) NULL,
@@ -247,6 +257,9 @@ CREATE PROCEDURE [app].[resetAccount]
 BEGIN
 DELETE FROM [minutz].[app].[Instance] WHERE Name = @instanceName
 DELETE FROM [minutz].[app].[Person] WHERE InstanceId = @instanceId
+
+IF EXISTS(SELECT 1 FROM [minutz].[INFORMATION_SCHEMA].[TABLES] WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME = 'MeetingNotificationSettings')
+EXEC ('DROP TABLE ' + @schema + '.MeetingNotificationSettings')
 
 IF EXISTS(SELECT 1 FROM [minutz].[INFORMATION_SCHEMA].[TABLES] WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME = 'Meeting')
 EXEC ('DROP TABLE ' + @schema + '.Meeting')

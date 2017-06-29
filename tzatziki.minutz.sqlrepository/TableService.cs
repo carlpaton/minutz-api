@@ -64,7 +64,11 @@ namespace tzatziki.minutz.sqlrepository
           con.Open();
           using (SqlCommand command = new SqlCommand($"EXEC [{_appSchema}].[{sqlStatement}]@tenant={schema}", con))
           {
-            command.ExecuteNonQuery();
+						if(schema != "account_00000000000000000000000000000000")
+						{
+							command.ExecuteNonQuery();
+						}
+            
             result = true;
           }
           con.Close();

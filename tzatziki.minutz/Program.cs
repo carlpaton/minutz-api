@@ -16,7 +16,6 @@ namespace tzatziki.minutz
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
                 .UseApplicationInsights()
-                //.UseUrls("http://localhost:5555")
                 .Build();
 
             host.Run();

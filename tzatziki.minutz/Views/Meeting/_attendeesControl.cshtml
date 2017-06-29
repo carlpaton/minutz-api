@@ -1,10 +1,38 @@
 @model List<tzatziki.minutz.models.Entities.User>
 
+<style type="text/css">
+	.attendeesLabel {
+		font-size: 1.2em;
+		font-weight: bold;
+		padding: 5px;
+		color: white;
+	}
+
+	.buttonAdd {
+		cursor: pointer;
+	}
+
+		.buttonAdd .fa-stack-2x {
+			background-color: #0073b7 !important;
+			color: #0073b7 !important;
+		}
+
+		.buttonAdd .fa-plus {
+			color: white !important;
+		}
+
+	.select2-container .select2-selection--single {
+		min-width: 270px;
+	}
+</style>
 <div class="panel panel-default">
 	<a data-toggle="collapse" data-target=".attendeeControl" style="cursor: pointer;">
 		<div class="panel-body" style="background-color: darkgrey;">
-			<i class="fa fa-user fa-2x icon-border" aria-hidden="true"></i>
-			<span style="font-size:20px; font-weight:bold; padding:5px; color:white;">Attendees</span>
+			<span class="fa-stack fa-lg">
+				<i class="fa fa-circle-thin fa-stack-2x"></i>
+				<i class="fa fa-user fa-stack-1x"></i>
+			</span>
+			<span class="attendeesLabel">Attendees</span>
 			<span id="totalAttenddesIcon" class="label label-info"></span>
 		</div>
 	</a>
@@ -14,18 +42,83 @@
 		<div class="row">
 			<div class="col-md-10">
 				<div class="input-group" data-toggle="tooltip" title="Add or remove attendees to your meeting.">
-					<span class="input-group-addon" id="basic-addon1"><i class="fa fa-user"></i></span>
-					<select id="attendees" class="form-control js-example-data-array" style="width: 150px;"></select>
+					<select id="attendees" class="form-control js-example-data-array"></select>
 				</div>
 			</div>
-			<div class="col-md-2">
-				<div id="btnAddAttendee" class="round-button-circle pull-right"><i class="fa fa-plus"></i></div>
+			<div id="btnAddAttendee" class="col-md-2" data-toggle="modal" data-target="#attendeeModal">
+				<span class="fa-stack fa-lg buttonAdd">
+					<i class="fa fa-circle-thin fa-stack-2x"></i>
+					<i class="fa fa-plus fa-stack-1x"></i>
+				</span>
 			</div>
 		</div>
 	</div>
 </div>
 <div id="attendeeCollapse" class=" collapse attendeeControl">
 	<ul id="attendeeList" class="products-list product-list-in-box"></ul>
+</div>
+<!-- Modal -->
+<div id="attendeeModal" class="modal fade " role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Invite / Add Users</h4>
+			</div>
+			<div class="modal-body">
+				<div class="col-sm-12">
+					<table id="example1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
+						<thead>
+							<tr role="row">
+								<th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 222px;">First Name</th>
+								<th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 271px;">Last Name</th>
+								<th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 241px;">Email</th>
+						</thead>
+						<tbody id="tbPeople">
+							
+						</tbody>
+					</table>
+				</div>
+				<div class="col-sm-12">
+					<form class="form-horizontal">
+						<div class="box-body">
+							<div class="form-group">
+								<label for="txtPersonFirstName" class="col-sm-2 control-label">First Name</label>
+
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="txtPersonFirstName" placeholder="First Name" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="txtPersonLastName" class="col-sm-2 control-label">Last Name</label>
+
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="txtPersonLastName" placeholder="Last Name" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="txtPersonEmail" class="col-sm-2 control-label">Email</label>
+
+								<div class="col-sm-10">
+									<input type="email" class="form-control" id="txtPersonEmail" placeholder="Email" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+								</div>
+							</div>
+						</div>
+						<!-- /.box-body -->
+						<div class="box-footer">
+							<div id="btnPersonToUserAdd" class="btn btn-info">Add</div>
+						</div>
+						<!-- /.box-footer -->
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+
+	</div>
 </div>
 <script type="text/javascript">
 	var img = "https://lh3.googleusercontent.com/-Me7IFI2HKzM/AAAAAAAAAAI/AAAAAAAARwo/Gc40a_hpsSI/photo.jpg";
@@ -45,12 +138,22 @@
 	};
 
 	$(function () {
-		var meetingId = 0;
+		GetAttendees();
 
+		var meetingId = "";
+		if (document.location.search.length) {
+			if (document.location.search.match("id").length > 0) {
+				var query = document.location.search.match("id").input.split('?')[1];
+				if (query.includes("id")) {
+					meetingId = query.split('=')[1];
+				}
+			}
+		}
 
 		$('#attendees').select2({
 			ajax: {
-				url: "/Meeting/Attendees?meetingId=" + meetingId,
+				url: document.location.origin + "/Account/AccountPeople",
+				//url: "/Meeting/Attendees?meetingId=" + meetingId,
 				dataType: 'json',
 				delay: 250,
 				data: function (params) {
@@ -65,7 +168,7 @@
 					var newData = [];
 					console.log(data);
 					for (var i = 0; i < data.length; i++) {
-						newData.push({ id: data[i].identity, text: data[i].fullName });
+						newData.push({ id: data[i].userId, text: data[i].name });
 					}
 
 					return {
@@ -76,36 +179,34 @@
 			},
 			width: '100%'
 		});
-
-		$("#btnAddAttendee").click(function () {
-
+		$('#attendees').on("select2:select", function (e) {
 			var identity = $("#attendees").select2('data')[0].id;
 			console.log(identity);
 			console.log(meeting.Id);
 			for (var i = 0; i < availibleAttendees.length; i++) {
-				if (availibleAttendees[i].identity == identity) {
+				if (availibleAttendees[i].userId == identity) {
 					var x = availibleAttendees[i];
 					var guid = minutz.functions.createId();
 					var user = {
 						active: x.active,
-						email: x.email,
+						email: x.emailAddress,
 						firstName: x.firstName,
-						fullName: x.fullName,
+						fullName: x.name,
 						id: guid,
-						identity: x.identity,
-						Identity: x.identity,
-						image: x.image,
+						identity: x.userId,
+						Identity: x.userId,
+						image: img, //x.image,
 						lastName: x.lastName,
 						role: x.role,
 						Role: x.role,
-						personIdentity: x.identity,
+						personIdentity: x.userId,
 						ReferanceId: meeting.Id,
 						referanceId: meeting.Id,
-						Id: x.id
+						Id: guid
 					};
 					for (var q = 0; q < meeting.MeetingAttendeeCollection.length; q++) {
 						var check = meeting.MeetingAttendeeCollection[q];
-						if (check.identity == x.identity) {
+						if (check.email == x.emailAddress) {
 							var index = meeting.MeetingAttendeeCollection.indexOf(q);
 							meeting.MeetingAttendeeCollection.splice(index, 1);
 							$("#" + check.id).remove();
@@ -117,10 +218,50 @@
 					$("#attendeeList").append(createUserListItem(user));
 					$("#totalAttenddesIcon").text(meeting.MeetingAttendeeCollection.length);
 				}
-
 			}
+		});
 
-			//add user to meeting object
+		$("#btnPersonToUserAdd").click(function () {
+			var person = {};
+			person.FirstName = $("#txtPersonFirstName").val();
+			person.LastName = $("#txtPersonLastName").val();
+			person.FullName = $("#txtPersonFirstName").val() + '  ' + $("#txtPersonLastName").val();
+			person.Email = $("#txtPersonEmail").val();
+			person.Role = "Attendee";
+			person.Active = 0;
+
+			$.ajax({
+				type: minutz.properties.POST,
+				dataType: minutz.properties.JSON,
+				url: document.location.origin + "/Account/InvitePerson",
+				data: person,
+				success: function (data) {
+					console.log(data);
+					var person = {};
+					person.FirstName = $("#txtPersonFirstName").val();
+					person.LastName = $("#txtPersonLastName").val();
+					person.FullName = $("#txtPersonFirstName").val() + '  ' + $("#txtPersonLastName").val();
+					person.Email = $("#txtPersonEmail").val();
+					person.Role = "Attendee";
+					person.Active = 0;
+
+					$('#tbPeople').append(
+						'<tr role="row" class="odd">'
+						+ '<td class="sorting_1">' + person.FirstName + '</td>'
+						+ '<td>' + person.LastName + '</td>'
+						+ '<td>' + person.Email + '</td>'
+						+ '<td></td>'
+						+ '<td></td>'
+						+ '</tr>'
+					);
+
+					
+					$("#txtPersonFirstName").val('');
+					$("#txtPersonLastName").val('');
+					$("#txtPersonEmail").val('');
+				 },
+				error: function (XMLHttpRequest, textStatus, errorThrown) { },
+			});
 		});
 
 		function createUserListItem(user) {
@@ -139,6 +280,39 @@
 				+ '</li>';
 		};
 
+		function GetAttendees() {
+			$.ajax({
+				type: minutz.properties.GET,
+				url: document.location.origin + "/Account/AccountPeople",
+				success: function (data) {
+					console.log(data);
+					$('#tbPeople').html('');
+					for (var i = 0; i < data.length; i++) {
+						$('#tbPeople').append(
+							'<tr role="row" class="odd">'
+							+ '<td class="sorting_1">' + data[i].firstName + '</td>'
+							+ '<td>' + data[i].lastName + '</td>'
+							+ '<td>' + data[i].emailAddress + '</td>'
+							+ '<td></td>'
+							+ '<td></td>'
+							+ '</tr>'
+						);
+					}
+				},
+				error: function (XMLHttpRequest, textStatus, errorThrown) { },
+				dataType: minutz.properties.JSON
+			});
+		};
+
+		function GetAvailiblePeople() {
+			$.ajax({
+				type: minutz.properties.GET,
+				url: document.location.origin + "/Account/People",
+				success: function (data) { },
+				error: function (XMLHttpRequest, textStatus, errorThrown) { },
+				dataType: minutz.properties.JSON
+			});
+		};
 
 		if (document.location.search.length) {
 			var id = document.location.search.split("=")[1];
@@ -157,10 +331,9 @@
 								var userId = data.meetingAttendeeCollection[attendeeIdex].personIdentity;
 
 								for (var orginalUserIndex = 0; orginalUserIndex < users.length; orginalUserIndex++) {
-									if (userId == users[orginalUserIndex].identity)
-									{
+									if (userId == users[orginalUserIndex].identity) {
 										$("#attendeeList").append(createUserListItem(users[orginalUserIndex]));
-									 }
+									}
 								}
 							}
 							$("#totalAttenddesIcon").text(data.meetingAttendeeCollection.length);
@@ -177,7 +350,6 @@
 				dataType: minutz.properties.JSON
 			});
 		}
-
 	});
 
 	function getUrlVars() {

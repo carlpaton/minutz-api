@@ -14,24 +14,24 @@ namespace tzatziki.minutz.core
       _meetingRepository = meetingRepository;
     }
 
-    public Meeting Get(string connectionString, string schema, Meeting meeting, bool read = false)
+    public Meeting Get( string schema, Meeting meeting, bool read = false)
     {
-      return _meetingRepository.Get(connectionString, schema, meeting, read);
+      return _meetingRepository.Get(Environment.GetEnvironmentVariable("SQLCONNECTION"), schema, meeting, read);
     }
 
-    public IEnumerable<Meeting> Get(string connectionString, string schema, UserProfile user)
+    public IEnumerable<Meeting> Get(string schema, UserProfile user)
     {
-      return _meetingRepository.Get(connectionString, schema, user);
+      return _meetingRepository.Get(Environment.GetEnvironmentVariable("SQLCONNECTION"), schema, user);
     }
 
-		public void DeleteAgenda(string connectionString, string schema, string agendaItemId)
+		public void DeleteAgenda(string schema, string agendaItemId)
 		{
-			_meetingRepository.DeleteMeetingAgendaItem(connectionString, schema, agendaItemId);
+			_meetingRepository.DeleteMeetingAgendaItem(Environment.GetEnvironmentVariable("SQLCONNECTION"), schema, agendaItemId);
 		}
 
-		public void SaveFile(string connectionString, string schema, UserProfile user, string fileName, byte[] data, string meetingId)
+		public void SaveFile(string schema, UserProfile user, string fileName, byte[] data, string meetingId)
 		{
-			_meetingRepository.SaveFile(connectionString, schema, user, fileName, data,meetingId);
+			_meetingRepository.SaveFile(Environment.GetEnvironmentVariable("SQLCONNECTION"), schema, user, fileName, data,meetingId);
 		}
 	}
 }

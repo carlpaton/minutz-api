@@ -12,15 +12,18 @@ namespace tzatziki.minutz.Controllers
   [Authorize]
   public class HomeController : BaseController
   {
-    //private readonly IInstanceRepository _instanceRepository;
+		//private readonly IInstanceRepository _instanceRepository;
+		private IProfileService _profileService;
 
-    public HomeController(
+
+		public HomeController(
       ITokenStringHelper tokenStringHelper,
       IProfileService profileService,
       IInstanceService instanceService,
       IOptions<AppSettings> settings,
       IUserService userService) : base(settings, profileService, tokenStringHelper, instanceService, userService)
     {
+			_profileService = profileService;
       //_instanceRepository = instanceRepository;
     }
 
@@ -49,13 +52,13 @@ namespace tzatziki.minutz.Controllers
 
     public ActionResult UserSwitcher()
     {
-      var model = User.ToProfile();
+      var model = User.ToProfile(_profileService);
       return PartialView("~/Views/Shared/_userSwitcher.cshtml", model);
     }
 
     public ActionResult MainMenu()
     {
-      var model = User.ToProfile();
+      var model = User.ToProfile(_profileService);
       return PartialView("~/Views/Shared/_mainSideMenu.cshtml", model);
     }
   }

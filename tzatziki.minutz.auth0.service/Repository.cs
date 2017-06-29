@@ -3,6 +3,7 @@ using System.Security.Claims;
 using tzatziki.minutz.models;
 using Microsoft.Extensions.Options;
 using tzatziki.minutz.interfaces;
+using System;
 
 namespace tzatziki.minutz.auth0.service
 {
@@ -20,7 +21,7 @@ namespace tzatziki.minutz.auth0.service
         {
           var userProfile = profileService.GetFromClaims(identity.Claims, tokenStringHelper, appsettings.Value);
           identity.AddClaim(new Claim(ClaimTypes.Role, personRepository.GetRole(identity.FindFirst("user_id").Value,
-                                                                                appsettings.Value.ConnectionStrings.AzureConnection,
+																																								Environment.GetEnvironmentVariable("SQLCONNECTION"),
                                                                                 userProfile).ToString()));
         }
       }
