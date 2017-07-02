@@ -802,9 +802,9 @@
 				<div role="tabpanel" class="tab-pane active" id="agendaTab">
 					<br />
 					<div class="row left-tab">
-						<div class="col-md-3 gridHeader ">
-							<div class="input-group " id="pickerHolder">
-
+						<div class="col-md-2 gridHeader ">
+							<div class="input-group " >
+								<select id="ddlItemDuration" class="form-control js-example-data-array"></select>
 							</div>
 						</div>
 						<div class="col-md-4  gridHeader">
@@ -1136,7 +1136,6 @@
 		toggleActive: true,
 		defaultViewDate: { year: 1977, month: 04, day: 25 }
 	});
-
 	minutz.controls.meetingTime = $('#meetingTime').timepicker();
 	minutz.controls.reacuranceType = $("#ddlReacuranceType");
 
@@ -1358,34 +1357,11 @@
 		$('#attendeesControl').load('/Meeting/AttendeesControl?meetingId=' + meeting.Id, 1, function (responseText, textStatus, jqXHR) {
 			//var meetingId = 1;
 
-			//$('#attendees_agendaItem').select2({
-			//  placeholder: "Assign to attendee",
-			//  ajax: {
-			//      url: "/Meeting/Attendees?meetingId=" + meetingId,
-			//      dataType: 'json',
-			//    delay: 250,
-			//    data: function (params) {
-			//      return {
-			//        q: params.term, // search term
-			//        page: params.page
-			//      };
-			//    },
-			//    processResults: function (data) {
-			//      availibleAttendees = [];
-			//      availibleAttendees = data;
-			//      var newData = [];
-			//      for (var i = 0; i < data.length; i++) {
-			//        newData.push({ id: data[i].identity, text: data[i].fullName });
-			//      }
-
-			//      return {
-			//        results: newData
-			//      };
-			//    },
-			//    cache: true
-			//  },
-			//  width: '100%'
-			//});
+			$('#attendees_agendaItem').select2({
+			  placeholder: "Assign to attendee",
+				data: meeting.MeetingAttendeeCollection,
+			  width: '100%'
+			});
 
 		});
 
@@ -1399,7 +1375,10 @@
 			data: minutz.properties.meetingDurationRanges,
 			width: '100%'
 		});
-
+		$('#ddlItemDuration').select2({
+			data: minutz.properties.meetingDurationRanges,
+			width: '120px'
+		});
 
 		$("#pickerHolder").append(minutz.functions.getTimeControl());
 
