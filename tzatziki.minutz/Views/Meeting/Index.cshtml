@@ -1398,10 +1398,7 @@
 
 		});
 
-		$('#timeZones').select2({
-			data: minutz.properties.zones,
-			width: '100%'
-		});
+		$('#timeZones').timezones();
 
 		$('#ddlDuration').select2({
 			data: minutz.properties.meetingDurationRanges,
