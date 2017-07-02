@@ -708,7 +708,7 @@
 			</div>
 			<div class="col-md-3">
 				<div style="padding-top:6px; text-align:left;">
-					<div id="txtReacuranceInfo">some info</div>
+					<div id="txtReacuranceInfo"></div>
 				</div>
 			</div>
 		</div>
@@ -745,9 +745,12 @@
 			<div class="panel panel-default">
 				<a data-toggle="collapse" data-target=".agendaControl" style="cursor: pointer;">
 					<div class="panel-body" style="background-color: darkgrey;">
-						<i class="fa fa-bars fa-2x icon-border" aria-hidden="true"></i>
-						<span style="font-size:20px; font-weight:bold; padding:5px; color:white;">Agenda Topics</span>
-						<span id="totalAgendaTopicsIcon" class="label label-info"></span>
+						<span class="fa-stack fa-lg">
+							<i class="fa fa-circle-thin fa-stack-2x"></i>
+							<i class="fa fa-bars fa-stack-1x"></i>
+						</span>
+						<span class="attendeesLabel">Agenda Topics</span>
+						<span id="totalAgendaItemsIcon" class="label label-info"></span>
 					</div>
 				</a>
 			</div>
@@ -873,12 +876,12 @@
 							</div>
 							<div class="row">
 								<div class="col-md-2"><div style="padding-top: 7px;">Start date</div></div>
-								<div class="col-md-3"><input type="text" class="form-control" id="txtEveryDayStartDate"></div>
+								<div class="col-md-4"><input type="text" class="form-control" id="txtEveryDayStartDate"></div>
 								<div class="col-md-1"></div>
 							</div>
 							<div class="row">
 								<div class="col-md-2"><div style="padding-top: 7px;">End date</div></div>
-								<div class="col-md-3"><input type="text" class="form-control" id="txtEveryDayEndDate"></div>
+								<div class="col-md-4"><input type="text" class="form-control" id="txtEveryDayEndDate"></div>
 								<div class="col-md-1"><div style="padding-top: 7px;">after</div></div>
 								<div class="col-md-2"><input type="text" class="form-control" id="txtEveryDayOccuranceNumber"></div>
 								<div class="col-md-2"><div style="padding-top: 7px;">occurences</div></div>
@@ -901,12 +904,12 @@
 							</div>
 							<div class="row">
 								<div class="col-md-2"><div style="padding-top: 7px;">Start date</div></div>
-								<div class="col-md-3"><input type="text" class="form-control" id="txtEveryWeekStartDate"></div>
+								<div class="col-md-4"><input type="text" class="form-control" id="txtEveryWeekStartDate"></div>
 								<div class="col-md-1"></div>
 							</div>
 							<div class="row">
 								<div class="col-md-2"><div style="padding-top: 7px;">End date</div></div>
-								<div class="col-md-3"><input type="text" class="form-control" id="txtEveryWeekEndDate"></div>
+								<div class="col-md-4"><input type="text" class="form-control" id="txtEveryWeekEndDate"></div>
 								<div class="col-md-1"><div style="padding-top: 7px;">after</div></div>
 								<div class="col-md-2"><input type="text" class="form-control" id="txtEveryWeekOccuranceNumber"></div>
 								<div class="col-md-2"><div style="padding-top: 7px;">occurences</div></div>
@@ -948,12 +951,12 @@
 							</div>
 							<div class="row">
 								<div class="col-md-2"><div style="padding-top: 7px;">Start date</div></div>
-								<div class="col-md-3"><input type="text" class="form-control" id="txtEveryMonthStartDate"></div>
+								<div class="col-md-4"><input type="text" class="form-control" id="txtEveryMonthStartDate"></div>
 								<div class="col-md-1"></div>
 							</div>
 							<div class="row">
 								<div class="col-md-2"><div style="padding-top: 7px;">End date</div></div>
-								<div class="col-md-3"><input type="text" class="form-control" id="txtEveryMonthEndDate"></div>
+								<div class="col-md-4"><input type="text" class="form-control" id="txtEveryMonthEndDate"></div>
 								<div class="col-md-1"><div style="padding-top: 7px;">after</div></div>
 								<div class="col-md-2"><input type="text" class="form-control" id="txtEveryMonthOccuranceNumber"></div>
 								<div class="col-md-2"><div style="padding-top: 7px;">occurences</div></div>
@@ -1203,45 +1206,58 @@
 		//m.datepicker({ dateFormat: "dd/mm/yy" });
 		//m.datepicker('setDate', d.datepicker('getDate'))
 		//m.datepicker.trigger('change');
-		var reacurance = {};
-		reacurance.type = $("#ddlReacuranceType").val();
-		
-		if (reacurance.type == "Daily") {
-			reacurance.number = $("#txtEveryDayNumber").val();
-			reacurance.startDate = $("#txtEveryDayStartDate").val();
-			reacurance.endDate = $("#txtEveryDayEndDate").val();
-			reacurance.occuranceNumber = $("#txtEveryDayOccuranceNumber").val();
+		meeting.reacurance = {};
+		meeting.reacurance.type = $("#ddlReacuranceType").val();
+		if (meeting.reacurance.type == "None")
+		{
+			meeting.reacurance.number = 0;
+			meeting.reacurance.startDate = minutz.functions.get.today();
+			meeting.reacurance.endDate = minutz.functions.get.today();
+			meeting.reacurance.occuranceNumber = 1;
+			meeting.reacurance.weekOnWeekDay = 0;
+			meeting.reacurance.monthOnDay = "";
+			meeting.reacurance.MonthOnWeekDayNumber = "";
 
-			reacurance.weekOnWeekDay = 0;
-			reacurance.monthOnDay = "";
-			reacurance.MonthOnWeekDayNumber = "";
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:<strong/>Once off.");
+		 }
+		if (meeting.reacurance.type == "Daily") {
+			meeting.reacurance.number = $("#txtEveryDayNumber").val();
+			meeting.reacurance.startDate = $("#txtEveryDayStartDate").val();
+			meeting.reacurance.endDate = $("#txtEveryDayEndDate").val();
+			meeting.reacurance.occuranceNumber = $("#txtEveryDayOccuranceNumber").val();
+
+			meeting.reacurance.weekOnWeekDay = 0;
+			meeting.reacurance.monthOnDay = "";
+			meeting.reacurance.MonthOnWeekDayNumber = "";
 
 			//$('#txtDate').datepicker("setDate", meetingDate);
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:</strong>Daily starts " + $("#txtEveryDayStartDate").val());
 		}
-		if (reacurance.type == "Weekly") {
+		if (meeting.reacurance.type == "Weekly") {
 			//week
-			reacurance.number = $("#txtEveryWeekNumber").val();
-			reacurance.startDate = $("#txtEveryWeekStartDate").val();
-			reacurance.endDate = $("#txtEveryWeekEndDate").val();
-			reacurance.occuranceNumber = $("#txtEveryWeekOccuranceNumber").val();
-			reacurance.weekOnWeekDay = $("#ddlEveryWeekOnWeekDay").val();
+			meeting.reacurance.number = $("#txtEveryWeekNumber").val();
+			meeting.reacurance.startDate = $("#txtEveryWeekStartDate").val();
+			meeting.reacurance.endDate = $("#txtEveryWeekEndDate").val();
+			meeting.reacurance.occuranceNumber = $("#txtEveryWeekOccuranceNumber").val();
+			meeting.reacurance.weekOnWeekDay = $("#ddlEveryWeekOnWeekDay").val();
 
-			reacurance.monthOnDay = "";
-			reacurance.MonthOnWeekDayNumber = "";
-
+			meeting.reacurance.monthOnDay = "";
+			meeting.reacurance.MonthOnWeekDayNumber = "";
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:</strong>Weekly starts :" + $("#txtEveryWeekStartDate").val());
 		}
-		if (reacurance.type == "Monthly") {
+		if (meeting.reacurance.type == "Monthly") {
 			//month
-			reacurance.number = $("#txtEveryMonthNumber").val();
-			reacurance.startDate = $("#txtEveryMonthStartDate").val();
-			reacurance.endDate = $("#txtEveryMonthEndDate").val();
-			reacurance.occuranceNumber = $("#txtEveryMonthOccuranceNumber").val();
-			reacurance.weekOnWeekDay = $("#ddlEveryMonthOnWeekDay").val();
-			reacurance.monthOnDay = $("#ddlEveryMonthOnDay").val();
-			reacurance.MonthOnWeekDayNumber = $("#ddlEveryMonthOnWeekDayNumber").val();
+			meeting.reacurance.number = $("#txtEveryMonthNumber").val();
+			meeting.reacurance.startDate = $("#txtEveryMonthStartDate").val();
+			meeting.reacurance.endDate = $("#txtEveryMonthEndDate").val();
+			meeting.reacurance.occuranceNumber = $("#txtEveryMonthOccuranceNumber").val();
+			meeting.reacurance.weekOnWeekDay = $("#ddlEveryMonthOnWeekDay").val();
+			meeting.reacurance.monthOnDay = $("#ddlEveryMonthOnDay").val();
+			meeting.reacurance.MonthOnWeekDayNumber = $("#ddlEveryMonthOnWeekDayNumber").val();
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:</strong>Monthly starts :" + $("#txtEveryMonthStartDate").val());
 		}
 
-		console.log(reacurance);
+		console.log(meeting.reacurance);
 		//minutz.functions.save();
 
 	});
@@ -1255,28 +1271,28 @@
 		$("#divYearly").hide();
 		$("#divNone").hide();
 		$("#divDaily").hide();
-		$('#txtEveryDayStartDate').datepicker().on('changeDate', function (ev) {
+		$('#txtEveryDayStartDate').datepicker({ format: "DD, d MM, yy"}).on('changeDate', function (ev) {
 			$('#txtEveryDayStartDate').datepicker('hide');
 		});;
-		$('#txtEveryDayEndDate').datepicker().on('changeDate', function (ev) {
+		$('#txtEveryDayEndDate').datepicker({ format: "DD, d MM, yy" }).on('changeDate', function (ev) {
 			$('#txtEveryDayEndDate').datepicker('hide');
 		});;
-		$('#txtEveryWeekStartDate').datepicker().on('changeDate', function (ev) {
+		$('#txtEveryWeekStartDate').datepicker({ format: "DD, d MM, yy" }).on('changeDate', function (ev) {
 			$('#txtEveryWeekStartDate').datepicker('hide');
 		});;
-		$('#txtEveryWeekEndDate').datepicker().on('changeDate', function (ev) {
+		$('#txtEveryWeekEndDate').datepicker({ format: "DD, d MM, yy" }).on('changeDate', function (ev) {
 			$('#txtEveryWeekEndDate').datepicker('hide');
 		});;
-		$('#txtEveryMonthEndDate').datepicker().on('changeDate', function (ev) {
+		$('#txtEveryMonthEndDate').datepicker({ format: "DD, d MM, yy" }).on('changeDate', function (ev) {
 			$('#txtEveryMonthEndDate').datepicker('hide');
 		});;
-		$('#txtEveryMonthStartDate').datepicker().on('changeDate', function (ev) {
+		$('#txtEveryMonthStartDate').datepicker({ format: "DD, d MM, yy" }).on('changeDate', function (ev) {
 			$('#txtEveryMonthStartDate').datepicker('hide');
 		});;
 	 };
 
 	$(function () {
-
+		meeting.reacurance = {};
 		if (document.location.search.length) {
 			if (document.location.search.match("id").length > 0) {
 				var query = document.location.search.match("id").input.split('?')[1];
@@ -1400,6 +1416,7 @@
 		}
 		minutz.functions.resetDivReacuranceTypes();
 		var ddlReacuranceTypeid = '#div' + $("#ddlReacuranceType").val();
+		meeting.reacurance.type = $("#ddlReacuranceType").val();
 		$(ddlReacuranceTypeid).show();
 	});
 
