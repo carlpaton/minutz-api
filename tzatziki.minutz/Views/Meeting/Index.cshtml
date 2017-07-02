@@ -598,7 +598,10 @@
 			padding-bottom: 5px;
 		}
 	}
-
+	.row {
+	  margin-right: 0px !important;
+		margin-left: -5px !important;
+	}
 	.panel-body {
 		padding: 5px !important;
 	}
@@ -698,26 +701,31 @@
 					<span>Print</span>
 				</a>
 			</div>
-		</div>
-		<div class="col-md-2">
-			<div class="input-group" data-toggle="tooltip" title="Select a timezone for the meeting." style="width: 275px;">
-				<span class="input-group-addon" id="basic-addon1"><i class="fa fa-globe"></i></span>
-				<select id="timeZones" class="form-control js-example-data-array" style="width: 275px; text-align:center;"></select>
+			<div class="col-md-3">
+				<div  style="padding-top:6px; text-align:left;">
+					<div id="txtInfo" >some info</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div style="padding-top:6px; text-align:left;">
+					<div id="txtReacuranceInfo">some info</div>
+				</div>
 			</div>
 		</div>
-		<div class="col-md-2 ">
-			<div style="margin-left:-10px;">
-			
+		<div class="col-md-6">
+			<div class="col-md-2">
+				<div class="input-group" data-toggle="tooltip" title="Select a timezone for the meeting.">
+					<span class="input-group-addon" id="basic-addon1"><i class="fa fa-globe"></i></span>
+					<select id="timeZones" class="form-control js-example-data-array" style="width: 250px; "></select>
+				</div>
 			</div>
 		</div>
-		<div class="col-md-2">
-			
-		</div>
+	
 	</div>
 </div>
 
 <div class="col-md-3 row-grey" style="background-color: #ecf0f5;">
-	<div class="row ">
+	<div class="row hide">
 		<div class="box box-widget widget-user-2" style=" background-color:#ecf0f5; ">
 			<!-- Add the bg color to the header using any of the bg-* classes -->
 			<div class="widget-user-header bg-blue">
@@ -1556,8 +1564,8 @@
 
 	minutz.functions.updateMainModelProperties = function () {
 		meeting.Tag = minutz.functions.toArray(minutz.functions.get.value('txtTags'));
-		meeting.IsPrivate = $("#cbIsPrivate").prop("checked");
-		meeting.IsFormal = $("#cbIsFormal").prop("checked");
+		meeting.IsPrivate = $("#toggle-private").prop("checked");
+		meeting.IsFormal = $("#toggle-formal").prop("checked");
 		meeting.Name = minutz.functions.get.value('txtMeetingName');
 		meeting.Location = minutz.functions.get.value('txtLocation');
 		meeting.Date = $("#txtDate").val(); //minutz.functions.get.datepicker('txtDate');
@@ -1568,6 +1576,9 @@
 		meeting.Purpose = $('#purposeText').trumbowyg('html');// minutz.functions.get.value('purposeText');
 		meeting.Outcome = $('#outcomeText').trumbowyg('html'); //minutz.functions.get.value('outcomeText');
 
+		var selectedTimeZoneDate = moment.tz($("#timeZones").val())._d//full date object
+		meeting.TimeZone = $("#timeZones").val();
+		meeting.TimeZoneOffSet = moment.tz($("#timeZones").val())._offset;//in minutes
 		for (var agendaIndex = 0; agendaIndex < meeting.MeetingAgendaCollection.length; agendaIndex++) {
 			if (meeting.MeetingAgendaCollection[agendaIndex].Id == meeting.SelectedAgendaItemId) {
 				meeting.MeetingAgendaCollection[agendaIndex].AgendaText = $('#agendaText').trumbowyg('html');
