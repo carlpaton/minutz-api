@@ -1174,30 +1174,6 @@
 		reacurance.type = $("#ddlReacuranceType").val();
 		var id = '#div' + reacurance.type;
 		$(id).show();
-
-		//daily
-	  //txtEveryDayNumber
-		//txtEveryDayStartDate
-		//txtEveryDayEndDate
-		//txtEveryDayOccuranceNumber
-		//$('#txtDate').datepicker("setDate", meetingDate);
-
-		//week
-		//txtEveryWeekStartDate
-		//txtEveryWeekEndDate
-		//txtEveryWeekOccuranceNumber
-		//ddlEveryWeekOnWeekDay
-
-
-		//month
-
-		//ddlEveryMonthOnDay
-		//ddlEveryMonthOnWeekDay
-		//ddlEveryMonthOnWeekDayNumber
-		//txtEveryMonthEndDate
-		//txtEveryMonthOccuranceNumber
-		//txtEveryMonthStartDate
-
 	});
 	//Click
 	//minutz.controls.addAgendaButton.click(function () {
@@ -1220,13 +1196,54 @@
 		minutz.functions.agendaSelect(newItem.Id);
 	});
 	minutz.controls.btnSetRecurrence.click(function () {
-		var d = $('#txtStartDate');
-		d.datepicker({ dateFormat: "dd/mm/yy" });
-		var m = $('#txtDate');
-		m.datepicker({ dateFormat: "dd/mm/yy" });
-		m.datepicker('setDate', d.datepicker('getDate'))
+
+		//var d = $('#txtStartDate');
+		//d.datepicker({ dateFormat: "dd/mm/yy" });
+		//var m = $('#txtDate');
+		//m.datepicker({ dateFormat: "dd/mm/yy" });
+		//m.datepicker('setDate', d.datepicker('getDate'))
 		//m.datepicker.trigger('change');
-		minutz.functions.save();
+		var reacurance = {};
+		reacurance.type = $("#ddlReacuranceType").val();
+		
+		if (reacurance.type == "Daily") {
+			reacurance.number = $("#txtEveryDayNumber").val();
+			reacurance.startDate = $("#txtEveryDayStartDate").val();
+			reacurance.endDate = $("#txtEveryDayEndDate").val();
+			reacurance.occuranceNumber = $("#txtEveryDayOccuranceNumber").val();
+
+			reacurance.weekOnWeekDay = 0;
+			reacurance.monthOnDay = "";
+			reacurance.MonthOnWeekDayNumber = "";
+
+			//$('#txtDate').datepicker("setDate", meetingDate);
+		}
+		if (reacurance.type == "Weekly") {
+			//week
+			reacurance.number = $("#txtEveryWeekNumber").val();
+			reacurance.startDate = $("#txtEveryWeekStartDate").val();
+			reacurance.endDate = $("#txtEveryWeekEndDate").val();
+			reacurance.occuranceNumber = $("#txtEveryWeekOccuranceNumber").val();
+			reacurance.weekOnWeekDay = $("#ddlEveryWeekOnWeekDay").val();
+
+			reacurance.monthOnDay = "";
+			reacurance.MonthOnWeekDayNumber = "";
+
+		}
+		if (reacurance.type == "Monthly") {
+			//month
+			reacurance.number = $("#txtEveryMonthNumber").val();
+			reacurance.startDate = $("#txtEveryMonthStartDate").val();
+			reacurance.endDate = $("#txtEveryMonthEndDate").val();
+			reacurance.occuranceNumber = $("#txtEveryMonthOccuranceNumber").val();
+			reacurance.weekOnWeekDay = $("#ddlEveryMonthOnWeekDay").val();
+			reacurance.monthOnDay = $("#ddlEveryMonthOnDay").val();
+			reacurance.MonthOnWeekDayNumber = $("#ddlEveryMonthOnWeekDayNumber").val();
+		}
+
+		console.log(reacurance);
+		//minutz.functions.save();
+
 	});
 
 	minutz.functions.updateAgendaText = function (text) {
@@ -1238,10 +1255,24 @@
 		$("#divYearly").hide();
 		$("#divNone").hide();
 		$("#divDaily").hide();
-		$('#txtEveryDayStartDate').datepicker();
-		$('#txtEveryDayEndDate').datepicker();
-		$('#txtEveryWeekStartDate').datepicker();
-		$('#txtEveryWeekEndDate').datepicker();
+		$('#txtEveryDayStartDate').datepicker().on('changeDate', function (ev) {
+			$('#txtEveryDayStartDate').datepicker('hide');
+		});;
+		$('#txtEveryDayEndDate').datepicker().on('changeDate', function (ev) {
+			$('#txtEveryDayEndDate').datepicker('hide');
+		});;
+		$('#txtEveryWeekStartDate').datepicker().on('changeDate', function (ev) {
+			$('#txtEveryWeekStartDate').datepicker('hide');
+		});;
+		$('#txtEveryWeekEndDate').datepicker().on('changeDate', function (ev) {
+			$('#txtEveryWeekEndDate').datepicker('hide');
+		});;
+		$('#txtEveryMonthEndDate').datepicker().on('changeDate', function (ev) {
+			$('#txtEveryMonthEndDate').datepicker('hide');
+		});;
+		$('#txtEveryMonthStartDate').datepicker().on('changeDate', function (ev) {
+			$('#txtEveryMonthStartDate').datepicker('hide');
+		});;
 	 };
 
 	$(function () {
