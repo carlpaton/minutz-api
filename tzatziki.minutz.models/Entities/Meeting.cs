@@ -23,7 +23,8 @@ namespace tzatziki.minutz.models.Entities
     public bool IsPrivate { get; set; }
     public bool IsFormal { get; set; }
     public string TimeZone { get; set; }
-    public string[] Tag { get; set; }
+		public int TimeZoneOffSet { get; set; }
+		public string[] Tag { get; set; }
     public List<MeetingAttendee> MeetingAttendeeCollection { get; set; }
     public string Purpose { get; set; }
     public string Outcome { get; set; }

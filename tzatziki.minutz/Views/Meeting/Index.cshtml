@@ -1153,20 +1153,20 @@
 	minutz.properties.weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 	minutz.properties.meetingDurationRanges = [
 		{ id:1, data: 5, text: "5 min" },
-		{ id: 2, data: 5, text: "10 min" },
-		{ id: 3,data: 5, text: "15 min" },
-		{ id: 4,data: 5, text: "30 min" },
-		{ id: 5,data: 5, text: "45 min" },
-		{ id: 6,data: 5, text: "1 hour" },
-		{ id: 7,data: 5, text: "2 hours" },
-		{ id: 8,data: 5, text: "3 hours" },
-		{ id: 9,data: 5, text: "4 hours" },
-		{ id: 10,data: 5, text: "5 hours" },
-		{ id: 11,data: 5, text: "6 hours" },
-		{ id: 12,data: 5, text: "7 hours" },
-		{ id: 13,data: 5, text: "8 hours" },
-		{ id: 14,data: 5, text: "9 hours" },
-		{ id: 15,data: 5, text: "10 hours" }];
+		{ id: 2, data: 10, text: "10 min" },
+		{ id: 3,data: 15, text: "15 min" },
+		{ id: 4,data: 30, text: "30 min" },
+		{ id: 5,data: 45, text: "45 min" },
+		{ id: 6,data: 60, text: "1 hour" },
+		{ id: 7,data: 120, text: "2 hours" },
+		{ id: 8,data: 180, text: "3 hours" },
+		{ id: 9,data: 240, text: "4 hours" },
+		{ id: 10,data: 300, text: "5 hours" },
+		{ id: 11,data: 360, text: "6 hours" },
+		{ id: 12,data: 420, text: "7 hours" },
+		{ id: 13,data: 480, text: "8 hours" },
+		{ id: 14,data: 540, text: "9 hours" },
+		{ id: 15,data: 600, text: "10 hours" }];
 
 	//Controllers
 	minutz.functions.datepickers = function (control) {
@@ -1514,9 +1514,10 @@
 		$("#repeatTypeText").text(data.reacuranceType);
 		$('#txtLocation').val(data.location);
 		$('#txtDuration').val(data.duration);
-		$("#cbIsPrivate").prop("checked", data.isPrivate);
-		$("#cbIsFormal").prop("checked", data.isFormal);
+		$("#toggle-private").prop("checked", data.isPrivate);
+		$("#toggle-formal").prop("checked", data.isFormal);
 		
+		$("#timeZones").val(data.TimeZone);
 		var meetingDate = new Date(data.date);
 		$('#txtDate').datepicker("setDate", meetingDate);
 		
@@ -1543,7 +1544,8 @@
 		meeting.IsFormal = data.isFormal;
 		meeting.Purpose = data.purpose;
 		meeting.Outcome = data.outcome;
-
+		meeting.TimeZoneOffSet = data.TimeZoneOffSet;
+		meeting.TimeZone = data.TimeZone;
 		meeting.MeetingAgendaCollection = data.meetingAgendaCollection;
 
 		$("#agendaItems li").remove();
@@ -1570,7 +1572,7 @@
 		meeting.Location = minutz.functions.get.value('txtLocation');
 		meeting.Date = $("#txtDate").val(); //minutz.functions.get.datepicker('txtDate');
 		meeting.Time = minutz.functions.get.value('meetingTime');
-		meeting.Duration = minutz.functions.get.value('txtDuration');
+		meeting.Duration = minutz.functions.get.value('ddlDuration');
 		meeting.ReacuranceType = minutz.functions.get.text('repeatTypeText');
 		meeting.IsReacurance = _isReacurance(minutz.functions.get.text('repeatTypeText'));
 		meeting.Purpose = $('#purposeText').trumbowyg('html');// minutz.functions.get.value('purposeText');
