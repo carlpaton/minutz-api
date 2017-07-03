@@ -703,7 +703,7 @@
 			</div>
 			<div class="col-md-3">
 				<div  style="padding-top:6px; text-align:left;">
-					<div id="txtInfo" >some info</div>
+					<div id="txtInfo" ></div>
 				</div>
 			</div>
 			<div class="col-md-3">
@@ -1675,22 +1675,13 @@
 		console.log('new :' + $("#agendaItemTime").val());
 	};
 
-	//minutz.functions.durationpicker = function (controlname) {
-	//  var x = '#' + controlname;
-	//  console.log(x);
-	//  $(x).durationPicker({
-	//    lang: 'en',
-	//    showSeconds: false,
-	//    showDays: false
-	//  });
-	//};
-
 	minutz.functions.save = function () {
 		//minutz.functions.updateAgendaTextToModel();
 		minutz.functions.updateMainModelProperties();
 
 		if (minutz.functions.saveAjax()) {
 			minutz.functions.notifyMe(MinutzTitle, "The updates were saved successfully.", "fa fa-info");
+			$("#txtInfo").html("Saved at: " + moment().fromNow() );
 
 		} else {
 			minutz.functions.notifyMe(MinutzTitle, "Oops something went wrong.", "fa fa-info")

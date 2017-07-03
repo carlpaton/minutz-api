@@ -50,7 +50,7 @@ namespace tzatziki.minutz.core.tests
 			var updateMeeting = result.FirstOrDefault(i=> i.Id == Guid.Parse(MeetingId));
 			updateMeeting.MeetingAgendaCollection = null;
 			updateMeeting.Name = "Unit Testing";
-			var update = _meetingRepository.Get(_connectionSting, _schema, updateMeeting, false);
+			var update = _meetingRepository.Get(_connectionSting, _schema, updateMeeting,string.Empty, false);
 		}
 
 		[TestMethod]
@@ -62,7 +62,7 @@ namespace tzatziki.minutz.core.tests
 			updateMeeting.MeetingAgendaCollection = new System.Collections.Generic.List<models.Entities.MeetingAgendaItem>();
 			updateMeeting.MeetingAttachmentCollection = null;
 			updateMeeting.Name = "Unit Testing";
-			var update = _meetingRepository.Get(_connectionSting, _schema, updateMeeting, false);
+			var update = _meetingRepository.Get(_connectionSting, _schema, updateMeeting, string.Empty,false);
 		}
 
 		[TestMethod]
@@ -76,7 +76,7 @@ namespace tzatziki.minutz.core.tests
 			updateMeeting.MeetingNoteCollection = null;
 
 			updateMeeting.Name = "Unit Testing";
-			var update = _meetingRepository.Get(_connectionSting, _schema, updateMeeting, false);
+			var update = _meetingRepository.Get(_connectionSting, _schema, updateMeeting, string.Empty,false);
 		}
 
 		[TestMethod]
@@ -88,7 +88,7 @@ namespace tzatziki.minutz.core.tests
 			updateMeeting.MeetingAttachmentCollection = new System.Collections.Generic.List<models.Entities.MeetingAttachmentItem>();
 			updateMeeting.MeetingNoteCollection = new System.Collections.Generic.List<models.Entities.MeetingNoteItem >();
 			updateMeeting.Name = "Unit Testing";
-			var update = _meetingRepository.Get(_connectionSting, _schema, updateMeeting, false);
+			var update = _meetingRepository.Get(_connectionSting, _schema, updateMeeting, string.Empty,false);
 
 			Assert.IsNotNull(update);
 			Assert.AreEqual(updateMeeting.Name, update.Name);
@@ -113,7 +113,7 @@ namespace tzatziki.minutz.core.tests
 
 			updateMeeting.MeetingAgendaCollection.FirstOrDefault().AgendaText = "Unit Testing Agenda Item";
 
-			var update = _meetingRepository.Get(_connectionSting, _schema, updateMeeting, false);
+			var update = _meetingRepository.Get(_connectionSting, _schema, updateMeeting, string.Empty,false);
 
 			//Assert.IsNotNull(update);
 			Assert.AreEqual(updateMeeting.MeetingAgendaCollection.FirstOrDefault(i=> i.Id == Guid.Parse(MeetingAgendaItemId)).AgendaText, "Unit Testing Agenda Item");
@@ -144,7 +144,7 @@ namespace tzatziki.minutz.core.tests
 			};
 			updateMeeting.MeetingAgendaCollection.Add(newItem);
 
-			var update = _meetingRepository.Get(_connectionSting, _schema, updateMeeting, false);
+			var update = _meetingRepository.Get(_connectionSting, _schema, updateMeeting, string.Empty,false);
 
 			Assert.IsTrue(update.MeetingAgendaCollection.Count > 1);
 		}
@@ -165,7 +165,7 @@ namespace tzatziki.minutz.core.tests
 			};
 			updateMeeting.MeetingAttendeeCollection.Add(newItem);
 
-			var update = _meetingRepository.Get(_connectionSting, _schema, updateMeeting, false);
+			var update = _meetingRepository.Get(_connectionSting, _schema, updateMeeting, string.Empty,false);
 
 			Assert.IsTrue(update.MeetingAttendeeCollection.Count == 1);
 		}
