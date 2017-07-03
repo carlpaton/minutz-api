@@ -1482,10 +1482,17 @@
 		$("#repeatTypeText").text(data.reacuranceType);
 		$('#txtLocation').val(data.location);
 		$('#txtDuration').val(data.duration);
-		$("#toggle-private").prop("checked", data.isPrivate);
-		$("#toggle-formal").prop("checked", data.isFormal);
+
+		if (data.isPrivate)
+		{
+			$("#toggle-private").bootstrapToggle('on');
+		}
+		if (data.isFormal) {
+			$("#toggle-formal").bootstrapToggle('on');
+		}
 		
-		$("#timeZones").val(data.TimeZone);
+		
+		$("#timeZones").val(data.timeZone);
 		var meetingDate = new Date(data.date);
 		$('#txtDate').datepicker("setDate", meetingDate);
 		
@@ -1513,8 +1520,23 @@
 		meeting.Purpose = data.purpose;
 		meeting.Outcome = data.outcome;
 		meeting.TimeZoneOffSet = data.TimeZoneOffSet;
-		meeting.TimeZone = data.TimeZone;
+		meeting.TimeZone = data.timeZone;
 		meeting.MeetingAgendaCollection = data.meetingAgendaCollection;
+
+		if (data.duration === undefined)
+		{
+			data.duration = 60;
+		}
+
+		for (var d = 0; d < minutz.properties.meetingDurationRanges.length; d++)
+		{
+			if (minutz.properties.meetingDurationRanges[d].data == data.duration)
+			{
+				$("#ddlDuration").select2("trigger", "select", { data: { id: minutz.properties.meetingDurationRanges[d].id } });
+			}
+		}
+		
+
 
 		$("#agendaItems li").remove();
 		for (var a = 0; a < meeting.MeetingAgendaCollection.length; a++) {
@@ -1540,7 +1562,17 @@
 		meeting.Location = minutz.functions.get.value('txtLocation');
 		meeting.Date = $("#txtDate").val(); //minutz.functions.get.datepicker('txtDate');
 		meeting.Time = minutz.functions.get.value('meetingTime');
-		meeting.Duration = minutz.functions.get.value('ddlDuration');
+		var selectedDuration = minutz.functions.get.value('ddlDuration');
+		for (var q = 0; q < minutz.properties.meetingDurationRanges.length; q++)
+		{
+			if (minutz.properties.meetingDurationRanges[q].id == selectedDuration)
+			{
+				meeting.Duration = minutz.properties.meetingDurationRanges[q].data;
+			}
+		}
+
+
+		
 		meeting.ReacuranceType = "";//todo:Fix //minutz.functions.get.text('repeatTypeText');
 		meeting.IsReacurance = _isReacurance(minutz.functions.get.text('repeatTypeText'));
 		meeting.Purpose = $('#purposeText').trumbowyg('html');// minutz.functions.get.value('purposeText');
