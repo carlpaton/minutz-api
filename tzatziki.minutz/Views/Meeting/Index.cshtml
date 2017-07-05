@@ -1205,59 +1205,60 @@
 		//m.datepicker({ dateFormat: "dd/mm/yy" });
 		//m.datepicker('setDate', d.datepicker('getDate'))
 		//m.datepicker.trigger('change');
-		meeting.reacurance = {};
-		meeting.reacurance.type = $("#ddlReacuranceType").val();
-		if (meeting.reacurance.type == "None")
+		meeting.Reacurance = {};
+		meeting.Reacurance.Type = $("#ddlReacuranceType").val();
+		if (meeting.Reacurance.Type == "None")
 		{
-			meeting.reacurance.number = 0;
-			meeting.reacurance.startDate = minutz.functions.get.today();
-			meeting.reacurance.endDate = minutz.functions.get.today();
-			meeting.reacurance.occuranceNumber = 1;
-			meeting.reacurance.weekOnWeekDay = 0;
-			meeting.reacurance.monthOnDay = "";
-			meeting.reacurance.MonthOnWeekDayNumber = "";
+			meeting.Reacurance.Number = 0;
+			meeting.Reacurance.StartDate = minutz.functions.get.today();
+			meeting.Reacurance.EndDate = minutz.functions.get.today();
+			meeting.Reacurance.OccuranceNumber = 1;
+			meeting.Reacurance.WeekOnWeekDay = 0;
+			meeting.Reacurance.MonthOnDay = "";
+			meeting.Reacurance.MonthOnWeekDayNumber = "";
 
 			$("#txtReacuranceInfo").html("<strong>Meeting Type:<strong/>Once off.");
 		 }
-		if (meeting.reacurance.type == "Daily") {
-			meeting.reacurance.number = $("#txtEveryDayNumber").val();
-			meeting.reacurance.startDate = $("#txtEveryDayStartDate").val();
-			meeting.reacurance.endDate = $("#txtEveryDayEndDate").val();
-			meeting.reacurance.occuranceNumber = $("#txtEveryDayOccuranceNumber").val();
+		if (meeting.Reacurance.Type == "Daily") {
+			
+			meeting.Reacurance.Number = $("#txtEveryDayNumber").val();
+			meeting.Reacurance.StartDate = $("#txtEveryDayStartDate").datepicker("getDate");
+			meeting.Reacurance.EndDate = $("#txtEveryDayEndDate").datepicker("getDate");
+			meeting.Reacurance.OccuranceNumber = $("#txtEveryDayOccuranceNumber").val();
 
-			meeting.reacurance.weekOnWeekDay = 0;
-			meeting.reacurance.monthOnDay = "";
-			meeting.reacurance.MonthOnWeekDayNumber = "";
+			meeting.Reacurance.WeekOnWeekDay = 0;
+			meeting.Reacurance.MonthOnDay = "";
+			meeting.Reacurance.MonthOnWeekDayNumber = "";
 
 			//$('#txtDate').datepicker("setDate", meetingDate);
 			$("#txtReacuranceInfo").html("<strong>Meeting Type:</strong>Daily starts " + $("#txtEveryDayStartDate").val());
 		}
-		if (meeting.reacurance.type == "Weekly") {
+		if (meeting.Reacurance.Type == "Weekly") {
 			//week
-			meeting.reacurance.number = $("#txtEveryWeekNumber").val();
-			meeting.reacurance.startDate = $("#txtEveryWeekStartDate").val();
-			meeting.reacurance.endDate = $("#txtEveryWeekEndDate").val();
-			meeting.reacurance.occuranceNumber = $("#txtEveryWeekOccuranceNumber").val();
-			meeting.reacurance.weekOnWeekDay = $("#ddlEveryWeekOnWeekDay").val();
+			meeting.Reacurance.Number = $("#txtEveryWeekNumber").val();
+			meeting.Reacurance.StartDate = $("#txtEveryWeekStartDate").datepicker("getDate");
+			meeting.Reacurance.EndDate = $("#txtEveryWeekEndDate").datepicker("getDate");
+			meeting.Reacurance.OccuranceNumber = $("#txtEveryWeekOccuranceNumber").val();
+			meeting.Reacurance.WeekOnWeekDay = $("#ddlEveryWeekOnWeekDay").val();
 
-			meeting.reacurance.monthOnDay = "";
-			meeting.reacurance.MonthOnWeekDayNumber = "";
+			meeting.Reacurance.MonthOnDay = "";
+			meeting.Reacurance.MonthOnWeekDayNumber = "";
 			$("#txtReacuranceInfo").html("<strong>Meeting Type:</strong>Weekly starts :" + $("#txtEveryWeekStartDate").val());
 		}
-		if (meeting.reacurance.type == "Monthly") {
+		if (meeting.Reacurance.Type == "Monthly") {
 			//month
-			meeting.reacurance.number = $("#txtEveryMonthNumber").val();
-			meeting.reacurance.startDate = $("#txtEveryMonthStartDate").val();
-			meeting.reacurance.endDate = $("#txtEveryMonthEndDate").val();
-			meeting.reacurance.occuranceNumber = $("#txtEveryMonthOccuranceNumber").val();
-			meeting.reacurance.weekOnWeekDay = $("#ddlEveryMonthOnWeekDay").val();
-			meeting.reacurance.monthOnDay = $("#ddlEveryMonthOnDay").val();
-			meeting.reacurance.MonthOnWeekDayNumber = $("#ddlEveryMonthOnWeekDayNumber").val();
+			meeting.Reacurance.Number = $("#txtEveryMonthNumber").val();
+			meeting.Reacurance.StartDate = $("#txtEveryMonthStartDate").datepicker("getDate");
+			meeting.Reacurance.EndDate = $("#txtEveryMonthEndDate").datepicker("getDate");
+			meeting.Reacurance.OccuranceNumber = $("#txtEveryMonthOccuranceNumber").val();
+			meeting.Reacurance.WeekOnWeekDay = $("#ddlEveryMonthOnWeekDay").val();
+			meeting.Reacurance.MonthOnDay = $("#ddlEveryMonthOnDay").val();
+			meeting.Reacurance.MonthOnWeekDayNumber = $("#ddlEveryMonthOnWeekDayNumber").val();
 			$("#txtReacuranceInfo").html("<strong>Meeting Type:</strong>Monthly starts :" + $("#txtEveryMonthStartDate").val());
 		}
 
-		console.log(meeting.reacurance);
-		//minutz.functions.save();
+		console.log(meeting.Reacurance);
+		minutz.functions.save();
 
 	});
 
@@ -1491,7 +1492,6 @@
 			$("#toggle-formal").bootstrapToggle('on');
 		}
 		
-		
 		$("#timeZones").val(data.timeZone);
 		var meetingDate = new Date(data.date);
 		$('#txtDate').datepicker("setDate", meetingDate);
@@ -1522,6 +1522,15 @@
 		meeting.TimeZoneOffSet = data.TimeZoneOffSet;
 		meeting.TimeZone = data.timeZone;
 		meeting.MeetingAgendaCollection = data.meetingAgendaCollection;
+		meeting.Reacurance = {};// data.reacurance;
+		meeting.Reacurance.Type = data.reacurance.type;
+		meeting.Reacurance.Number = data.reacurance.number;
+		meeting.Reacurance.StartDate = data.reacurance.startDate;
+		meeting.Reacurance.EndDate = data.reacurance.endDate;
+		meeting.Reacurance.OccuranceNumber = data.reacurance.occuranceNumber;
+		meeting.Reacurance.WeekOnWeekDay = data.reacurance.weekOnWeekDay;
+		meeting.Reacurance.MonthOnDay = data.reacurance.monthOnDay;
+		meeting.Reacurance.MonthOnWeekDayNumber = data.reacurance.monthOnWeekDayNumber;
 
 		if (data.duration === undefined)
 		{
@@ -1536,8 +1545,6 @@
 			}
 		}
 		
-
-
 		$("#agendaItems li").remove();
 		for (var a = 0; a < meeting.MeetingAgendaCollection.length; a++) {
 			var agendaItem = meeting.MeetingAgendaCollection[a];
@@ -1548,6 +1555,46 @@
 
 			minutz.functions.addHtml('agendaItems', minutz.functions.getAgendaItemHtml(agendaItem.agendaHeading, agendaItem.id, myDate, number));
 		}
+
+		minutz.functions.resetDivReacuranceTypes();
+		console.log(meeting);
+		if (meeting.Reacurance.Type == "None")
+		{
+			$("#divNone").show();
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:<strong/>Once off.");
+		 }
+		if (meeting.Reacurance.Type == "Daily") {
+			$("#divDaily").show();
+			$("#txtEveryDayNumber").val(meeting.Reacurance.Number);
+			$('#txtEveryDayStartDate').datepicker("setDate", meeting.Reacurance.StartDate);
+			$('#txtEveryDayEndDate').datepicker("setDate", meeting.Reacurance.EndDate);
+			$("#txtEveryDayOccuranceNumber").val(meeting.Reacurance.OccuranceNumber);
+
+			//$('#txtDate').datepicker("setDate", meetingDate);
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:</strong>Daily starts " + $("#txtEveryDayStartDate").val());
+		}
+		if (meeting.Reacurance.Type == "Weekly") {
+			$("#divWeekly").show();
+			$("#txtEveryWeekNumber").val(meeting.Reacurance.Number );
+			$('#txtEveryWeekStartDate').datepicker("setDate", meeting.Reacurance.StartDate);
+			$('#txtEveryWeekEndDate').datepicker("setDate", meeting.Reacurance.EndDate);
+			$("#txtEveryWeekOccuranceNumber").val(meeting.Reacurance.OccuranceNumber);
+			$("#ddlEveryWeekOnWeekDay").val(meeting.Reacurance.WeekOnWeekDay);
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:</strong>Weekly starts :" + $("#txtEveryWeekStartDate").val());
+		}
+		if (meeting.Reacurance.Type == "Monthly") {
+			$("#divMonthly").show();
+			$('#txtEveryMonthStartDate').datepicker("setDate", meeting.Reacurance.StartDate);
+			$('#txtEveryMonthEndDate').datepicker("setDate", meeting.Reacurance.EndDate);
+			$("#txtEveryMonthNumber").val(meeting.Reacurance.Number);
+ 			$("#txtEveryMonthOccuranceNumber").val(meeting.Reacurance.OccuranceNumber);
+			$("#ddlEveryMonthOnWeekDay").val(meeting.Reacurance.WeekOnWeekDay);
+			$("#ddlEveryMonthOnDay").val(meeting.Reacurance.MonthOnDay);
+			$("#ddlEveryMonthOnWeekDayNumber").val(meeting.Reacurance.MonthOnWeekDayNumber);
+
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:</strong>Monthly starts :" + $("#txtEveryMonthStartDate").val());
+		}
+
 		console.log(meeting);
 		$("#agendaItems").sortable();
 
@@ -1560,8 +1607,9 @@
 		meeting.IsFormal = $("#toggle-formal").prop("checked");
 		meeting.Name = minutz.functions.get.value('txtMeetingName');
 		meeting.Location = minutz.functions.get.value('txtLocation');
-		meeting.Date = $("#txtDate").val(); //minutz.functions.get.datepicker('txtDate');
+		meeting.Date = moment($("#txtDate").datepicker("getDate")).format("YYYY-MM-DD");
 		meeting.Time = minutz.functions.get.value('meetingTime');
+
 		var selectedDuration = minutz.functions.get.value('ddlDuration');
 		for (var q = 0; q < minutz.properties.meetingDurationRanges.length; q++)
 		{
@@ -1571,10 +1619,8 @@
 			}
 		}
 
-
-		
-		meeting.ReacuranceType = "";//todo:Fix //minutz.functions.get.text('repeatTypeText');
-		meeting.IsReacurance = _isReacurance(minutz.functions.get.text('repeatTypeText'));
+		//meeting.ReacuranceType = "";//todo:Fix //minutz.functions.get.text('repeatTypeText');
+		//meeting.IsReacurance = _isReacurance(minutz.functions.get.text('repeatTypeText'));
 		meeting.Purpose = $('#purposeText').trumbowyg('html');// minutz.functions.get.value('purposeText');
 		meeting.Outcome = $('#outcomeText').trumbowyg('html'); //minutz.functions.get.value('outcomeText');
 
@@ -1585,6 +1631,56 @@
 			if (meeting.MeetingAgendaCollection[agendaIndex].Id == meeting.SelectedAgendaItemId) {
 				meeting.MeetingAgendaCollection[agendaIndex].AgendaText = $('#agendaText').trumbowyg('html');
 			}
+		}
+
+		if (meeting.Reacurance.Type == "None")
+		{
+			meeting.Reacurance.Number = 0;
+			meeting.Reacurance.StartDate = minutz.functions.get.today();
+			meeting.Reacurance.EndDate = minutz.functions.get.today();
+			meeting.Reacurance.OccuranceNumber = 1;
+			meeting.Reacurance.WeekOnWeekDay = 0;
+			meeting.Reacurance.MonthOnDay = "";
+			meeting.Reacurance.MonthOnWeekDayNumber = "";
+
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:<strong/>Once off.");
+		 }
+		if (meeting.Reacurance.Type == "Daily") {
+			
+			meeting.Reacurance.Number = $("#txtEveryDayNumber").val();
+			meeting.Reacurance.StartDate = moment($("#txtEveryDayStartDate").datepicker("getDate")).format("YYYY-MM-DD");
+			meeting.Reacurance.EndDate = moment($("#txtEveryDayEndDate").datepicker("getDate")).format("YYYY-MM-DD");
+			meeting.Reacurance.OccuranceNumber = $("#txtEveryDayOccuranceNumber").val();
+
+			meeting.Reacurance.WeekOnWeekDay = 0;
+			meeting.Reacurance.MonthOnDay = "";
+			meeting.Reacurance.MonthOnWeekDayNumber = "";
+
+			//$('#txtDate').datepicker("setDate", meetingDate);
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:</strong>Daily starts " + $("#txtEveryDayStartDate").val());
+		}
+		if (meeting.Reacurance.Type == "Weekly") {
+			//week
+			meeting.Reacurance.Number = $("#txtEveryWeekNumber").val();
+			meeting.Reacurance.StartDate = moment($("#txtEveryWeekStartDate").datepicker("getDate")).format("YYYY-MM-DD");
+			meeting.Reacurance.EndDate = moment($("#txtEveryWeekEndDate").datepicker("getDate")).format("YYYY-MM-DD");
+			meeting.Reacurance.OccuranceNumber = $("#txtEveryWeekOccuranceNumber").val();
+			meeting.Reacurance.WeekOnWeekDay = $("#ddlEveryWeekOnWeekDay").val();
+
+			meeting.Reacurance.MonthOnDay = "";
+			meeting.Reacurance.MonthOnWeekDayNumber = "";
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:</strong>Weekly starts :" + $("#txtEveryWeekStartDate").val());
+		}
+		if (meeting.Reacurance.Type == "Monthly") {
+			//month
+			meeting.Reacurance.Number = $("#txtEveryMonthNumber").val();
+			meeting.Reacurance.StartDate = moment($("#txtEveryMonthStartDate").datepicker("getDate")).format("YYYY-MM-DD");
+			meeting.Reacurance.EndDate = moment($("#txtEveryMonthEndDate").datepicker("getDate")).format("YYYY-MM-DD");
+			meeting.Reacurance.OccuranceNumber = $("#txtEveryMonthOccuranceNumber").val();
+			meeting.Reacurance.WeekOnWeekDay = $("#ddlEveryMonthOnWeekDay").val();
+			meeting.Reacurance.MonthOnDay = $("#ddlEveryMonthOnDay").val();
+			meeting.Reacurance.MonthOnWeekDayNumber = $("#ddlEveryMonthOnWeekDayNumber").val();
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:</strong>Monthly starts :" + $("#txtEveryMonthStartDate").val());
 		}
 
 		//minutz.functions.find(meeting.MeetingAgendaCollection, meeting.SelectedAgendaItemId).AgendaText = minutz.functions.get.value('agendaText');

@@ -9,7 +9,6 @@ namespace tzatziki.minutz.models.Entities
     /// IsLocked this is tell the UI if the meeting is readonly for running the meeting
     /// </summary>
     public bool IsLocked { get; set; }
-
     public Guid Id { get; set; }
     public string MeetingOwnerId { get; set; }
     public string Name { get; set; }
@@ -32,5 +31,6 @@ namespace tzatziki.minutz.models.Entities
     public List<ActionItem> MeetingActionCollection { get; set; }
     public List<MeetingNoteItem> MeetingNoteCollection { get; set; }
     public List<MeetingAttachmentItem> MeetingAttachmentCollection { get; set; }
-  }
+		public MeetingReacurance Reacurance { get; set; }
+	}
 }
