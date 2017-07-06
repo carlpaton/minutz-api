@@ -10,5 +10,6 @@ namespace tzatziki.minutz.interfaces
     IEnumerable<Meeting> Get(string schema, UserProfile user);
 		void DeleteAgenda(string schema, string agendaItemId);
 		MeetingAttachmentItem SaveFile(string schema, UserProfile user, string fileName, byte[] data, string meetingId);
+		KeyValuePair<string, byte[]> GetFileData(string schema, string fileId);
 	}
 }

@@ -1304,10 +1304,8 @@
 						url: "/Meeting/FileUpload?meetingId=" + id,
 						init: function () {
 							this.on("complete", function (data) {
-								//var res = eval('(' + data.xhr.responseText + ')');
-								meeting.MeetingAttachmentCollection.push(data.name);
-								minutz.functions.addattachmentHtml(data.name);
-								//var res = JSON.parse(data.xhr.responseText);
+								meeting.MeetingAttachmentCollection.push($.parseJSON(data.xhr.response)[0]);
+								minutz.functions.addattachmentHtml($.parseJSON(data.xhr.response)[0]);
 							});
 						}
 					};

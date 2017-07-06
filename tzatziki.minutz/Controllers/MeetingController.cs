@@ -182,9 +182,13 @@ namespace tzatziki.minutz.Controllers
 			return Json(uploadedFiles);
 		}
 
+		[Authorize]
 		public FileResult GetFile(string id)
 		{
-			return File(new byte[10],"");
+			var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
+			var schema = user.InstanceId.ToSchemaString();
+			var file = _meetingService.GetFileData(schema, id);
+			return File(file.Value,$"application/{file.Key.Split('.')[1]}",file.Key);
 		}
 
 		private string GetName()

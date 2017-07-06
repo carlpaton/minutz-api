@@ -58,6 +58,26 @@ namespace tzatziki.minutz.sqlrepository
 			}
 		}
 
+		public KeyValuePair<string, byte[]> GetFileData(string connectionString, string schema, string fileId)
+		{
+			using (SqlConnection con = new SqlConnection(connectionString))
+			{
+				con.Open();
+				using (SqlCommand command = new SqlCommand($"SELECT FileData, FileName FROM [{schema}].[MeetingAttachment] WHERE Id = '{fileId}'", con))
+				{
+					using (SqlDataReader reader = command.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							return  FileData(reader);
+						}
+					}
+				}
+				con.Close();
+			}
+			return new KeyValuePair<string, byte[]>();
+		}
+
 		public MeetingAttachmentItem SaveFile(string connectionString, string schema, UserProfile user, string fileName, byte[] data, string meetingId)
 		{
 			var createdDate = DateTime.UtcNow;
@@ -69,7 +89,7 @@ namespace tzatziki.minutz.sqlrepository
 				FileName = fileName,
 				Id = Guid.NewGuid(),
 				MeetingAttendeeId = meetingAttendeeId,
-				ReferanceId = Guid.Parse( meetingId)
+				ReferanceId = Guid.Parse(meetingId)
 			};
 			try
 			{
@@ -660,6 +680,13 @@ namespace tzatziki.minutz.sqlrepository
 		}
 
 		///DATA READER
+		internal KeyValuePair<string, byte[]> FileData(SqlDataReader dataReader)
+		{
+			var fileName = dataReader["fileName"].ToString();
+			System.IO.MemoryStream memoryStream = new System.IO.MemoryStream();
+			var data = (byte[])dataReader["fileData"];
+			return new KeyValuePair<string, byte[]>(fileName,data);
+		}
 
 		internal Meeting ToMeeting(SqlDataReader dataReader)
 		{

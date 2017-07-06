@@ -33,5 +33,10 @@ namespace tzatziki.minutz.core
 		{
 			return _meetingRepository.SaveFile(Environment.GetEnvironmentVariable("SQLCONNECTION"), schema, user, fileName, data,meetingId);
 		}
+
+		public KeyValuePair<string, byte[]> GetFileData(string schema, string fileId)
+		{
+			return _meetingRepository.GetFileData(Environment.GetEnvironmentVariable("SQLCONNECTION"), schema, fileId);
+		}
 	}
 }

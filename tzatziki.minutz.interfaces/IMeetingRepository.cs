@@ -23,5 +23,6 @@ namespace tzatziki.minutz.interfaces
 
 		MeetingAttachmentItem SaveFile(string connectionString, string schema, UserProfile user, string fileName, byte[] data, string meetingId);
 
+		KeyValuePair<string, byte[]> GetFileData(string connectionString, string schema, string fileId);
 	}
 }
