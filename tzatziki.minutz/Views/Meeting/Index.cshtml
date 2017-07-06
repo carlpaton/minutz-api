@@ -5,9 +5,17 @@
 }
 <link rel="stylesheet" href="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 <style>
+
+	.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+		padding-right: 5px !important;
+		padding-left: 5px !important;
+	}
+
+	.breadcrumb {
+		margin-bottom: 0px !important;
+	}
 	a {
 		color: black !important;
-		
 	}
 
 	.fa-stack-2x {
@@ -590,7 +598,10 @@
 			padding-bottom: 5px;
 		}
 	}
-
+	.row {
+	  margin-right: 0px !important;
+		margin-left: -5px !important;
+	}
 	.panel-body {
 		padding: 5px !important;
 	}
@@ -607,6 +618,11 @@
 		padding-bottom: 10px;
 	}
 </style>
+<ol class="breadcrumb">
+	<li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+	<li class="breadcrumb-item">Meetings</li>
+	<li class="breadcrumb-item active">Create Meeting </li>
+</ol>
 <div class="container-fluid">
 	@*This is top heading row row*@
 	<div class="row row-white">
@@ -636,7 +652,6 @@
 						</div>
 					</div>
 					<div class="col-md-4 row-padding" data-toggle="tooltip" title="The time the meeting is required to begin.">
-
 						<div class="input-group bootstrap-timepicker timepicker">
 							<input id="meetingTime" type="text" class="form-control input-small">
 							<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
@@ -644,27 +659,28 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-6" >
 				<div class="row">
-					<div class="col-md-4 row-padding">
-						<input type="text" placeholder="Pick Duration..." id="txtDuration" >
-
-						<div class="input-group bootstrap-timepicker timepicker hide" data-toggle="tooltip" title="The duration of the meeting.">
-							<input id="txtDuration2" type="text" class="form-control input-small">
-							<span class="input-group-addon"><i class="fa fa-hourglass-half"></i></span>
-						</div>
+					<div class="col-md-2 row-padding" >
+						<select id="ddlDuration" class="form-control js-example-data-array" ></select>
 					</div>
 					<div class="col-md-1 row-padding">
-						<div class="input-group" data-toggle="tooltip" title="How often will the meeting be held?">
-							<div class="btn" style="position: relative; top: -9px;" data-toggle="modal" data-target="#reacuranceModel"><span class="input-group-addon"><i class="fa fa-refresh"></i></span></div>
-
-						</div>
+						<button data-toggle="modal" data-target="#reacuranceModel" class="btn btn-success"><i class="fa fa-refresh"></i></button>
 					</div>
 					<div class="col-md-4 row-padding">
 						<div class="input-group" data-toggle="tooltip" title="Give your meeting tags, separated by ',' ">
 							<span class="input-group-addon" id="basic-addon1"><i class="fa fa-tags"></i></span>
 							<input id="txtTags" type="text" class="form-control" placeholder="Add a tag" aria-describedby="basic-addon1">
 						</div>
+					</div>
+					<div class="col-md-2 row-padding">
+						<input type="checkbox" id="toggle-formal">
+					</div>
+					<div class="col-md-2 row-padding">
+						<input type="checkbox" id="toggle-private">
+					</div>
+					<div class="col-md-1 row-padding">
+						<div id="btnSave" class="btn btn-success"><span id="txtSave">Save</span></div>
 					</div>
 				</div>
 			</div>
@@ -685,26 +701,31 @@
 					<span>Print</span>
 				</a>
 			</div>
-		</div>
-		<div class="col-md-2">
-			<div class="input-group" data-toggle="tooltip" title="Select a timezone for the meeting." style="width: 275px;">
-				<span class="input-group-addon" id="basic-addon1"><i class="fa fa-globe"></i></span>
-				<select id="timeZones" class="form-control js-example-data-array" style="width: 275px; text-align:center;"></select>
+			<div class="col-md-3">
+				<div  style="padding-top:6px; text-align:left;">
+					<div id="txtInfo" ></div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div style="padding-top:6px; text-align:left;">
+					<div id="txtReacuranceInfo"></div>
+				</div>
 			</div>
 		</div>
-		<div class="col-md-2 ">
-			<div style="margin-left:-10px;">
-				<input type="checkbox" id="toggle-formal">
+		<div class="col-md-6">
+			<div class="col-md-2">
+				<div class="input-group" data-toggle="tooltip" title="Select a timezone for the meeting.">
+					<span class="input-group-addon" id="basic-addon1"><i class="fa fa-globe"></i></span>
+					<select id="timeZones" class="form-control js-example-data-array" style="width: 250px; "></select>
+				</div>
 			</div>
 		</div>
-		<div class="col-md-2">
-			<div id="btnSave" class="btn btn-success"><span id="txtSave">Save</span></div>
-		</div>
+	
 	</div>
 </div>
 
 <div class="col-md-3 row-grey" style="background-color: #ecf0f5;">
-	<div class="row ">
+	<div class="row hide">
 		<div class="box box-widget widget-user-2" style=" background-color:#ecf0f5; ">
 			<!-- Add the bg color to the header using any of the bg-* classes -->
 			<div class="widget-user-header bg-blue">
@@ -724,9 +745,12 @@
 			<div class="panel panel-default">
 				<a data-toggle="collapse" data-target=".agendaControl" style="cursor: pointer;">
 					<div class="panel-body" style="background-color: darkgrey;">
-						<i class="fa fa-bars fa-2x icon-border" aria-hidden="true"></i>
-						<span style="font-size:20px; font-weight:bold; padding:5px; color:white;">Agenda Topics</span>
-						<span id="totalAgendaTopicsIcon" class="label label-info"></span>
+						<span class="fa-stack fa-lg">
+							<i class="fa fa-circle-thin fa-stack-2x"></i>
+							<i class="fa fa-bars fa-stack-1x"></i>
+						</span>
+						<span class="attendeesLabel">Agenda Topics</span>
+						<span id="totalAgendaItemsIcon" class="label label-info"></span>
 					</div>
 				</a>
 			</div>
@@ -778,9 +802,9 @@
 				<div role="tabpanel" class="tab-pane active" id="agendaTab">
 					<br />
 					<div class="row left-tab">
-						<div class="col-md-3 gridHeader ">
-							<div class="input-group " id="pickerHolder">
-
+						<div class="col-md-2 gridHeader ">
+							<div class="input-group " >
+								<select id="ddlItemDuration" class="form-control js-example-data-array"></select>
 							</div>
 						</div>
 						<div class="col-md-4  gridHeader">
@@ -820,298 +844,198 @@
 			</div>
 			<div class="modal-body">
 				<div class="container">
-					<style type="text/css">
-						.tabs-left > .nav-tabs > li,
-						.tabs-right > .nav-tabs > li {
-							float: none;
-						}
-
-							.tabs-left > .nav-tabs > li > a,
-							.tabs-right > .nav-tabs > li > a {
-								min-width: 74px;
-								margin-right: 0;
-								margin-bottom: 3px;
-							}
-
-						.tabs-left > .nav-tabs {
-							float: left;
-							margin-right: 19px;
-							border-right: 1px solid #ddd;
-						}
-
-							.tabs-left > .nav-tabs > li > a {
-								margin-right: -1px;
-								-webkit-border-radius: 4px 0 0 4px;
-								-moz-border-radius: 4px 0 0 4px;
-								border-radius: 4px 0 0 4px;
-							}
-
-								.tabs-left > .nav-tabs > li > a:hover,
-								.tabs-left > .nav-tabs > li > a:focus {
-									border-color: #eeeeee #dddddd #eeeeee #eeeeee;
-								}
-
-							.tabs-left > .nav-tabs .active > a,
-							.tabs-left > .nav-tabs .active > a:hover,
-							.tabs-left > .nav-tabs .active > a:focus {
-								border-color: #ddd transparent #ddd #ddd;
-								*border-right-color: #ffffff;
-							}
-					</style>
-					<div class="col-12">
-						<form>
-							<div class="col-md-12">
-								<div class="form-group row">
-									<label for="example-text-input" class="col-md-2 col-form-label">Start Time</label>
-									<div class="col-md-4">
-										<select class="form-control " id="inlineFormInput">
-											<option>12:00 AM</option>
-											<option>12:30 AM</option>
-											<option>01:00 AM</option>
-											<option>01:30 AM</option>
-											<option>02:00 AM</option>
-											<option>02:30 AM</option>
-											<option>03:00 AM</option>
-											<option>03:30 AM</option>
-											<option>04:00 AM</option>
-											<option>04:30 AM</option>
-											<option>05:00 AM</option>
-											<option>05:30 AM</option>
-											<option>06:00 AM</option>
-											<option>06:30 AM</option>
-											<option>07:00 AM</option>
-											<option>07:30 AM</option>
-											<option>08:00 AM</option>
-											<option>08:30 AM</option>
-											<option>09:00 AM</option>
-											<option>09:30 AM</option>
-											<option>10:00 AM</option>
-											<option>10:30 AM</option>
-											<option>11:00 AM</option>
-											<option>11:30 AM</option>
-											<option>12:00 PM</option>
-											<option>12:30 PM</option>
-											<option>01:00 PM</option>
-											<option>01:30 PM</option>
-											<option>02:00 PM</option>
-											<option>02:30 PM</option>
-											<option>03:00 PM</option>
-											<option>03:30 PM</option>
-											<option>04:00 PM</option>
-											<option>04:30 PM</option>
-											<option>05:00 PM</option>
-											<option>05:30 PM</option>
-											<option>06:00 PM</option>
-											<option>06:30 PM</option>
-											<option>07:00 PM</option>
-											<option>07:30 PM</option>
-											<option>08:00 PM</option>
-											<option>08:30 PM</option>
-											<option>09:00 PM</option>
-											<option>09:30 PM</option>
-											<option>10:00 PM</option>
-											<option>10:30 PM</option>
-											<option>11:00 PM</option>
-											<option>11:30 PM</option>
-											<option>12:00 PM</option>
-											<option>02:30 PM</option>
-										</select>
-									</div>
-								</div>
-								<div class="form-group row">
-									<label for="example-text-input" class="col-md-2 col-form-label">End Time</label>
-									<div class="col-md-4">
-										<select class="form-control " id="inlineFormInput">
-											<option>12:00 AM</option>
-											<option>12:30 AM</option>
-											<option>01:00 AM</option>
-											<option>01:30 AM</option>
-											<option>02:00 AM</option>
-											<option>02:30 AM</option>
-											<option>03:00 AM</option>
-											<option>03:30 AM</option>
-											<option>04:00 AM</option>
-											<option>04:30 AM</option>
-											<option>05:00 AM</option>
-											<option>05:30 AM</option>
-											<option>06:00 AM</option>
-											<option>06:30 AM</option>
-											<option>07:00 AM</option>
-											<option>07:30 AM</option>
-											<option>08:00 AM</option>
-											<option>08:30 AM</option>
-											<option>09:00 AM</option>
-											<option>09:30 AM</option>
-											<option>10:00 AM</option>
-											<option>10:30 AM</option>
-											<option>11:00 AM</option>
-											<option>11:30 AM</option>
-											<option>12:00 PM</option>
-											<option>12:30 PM</option>
-											<option>01:00 PM</option>
-											<option>01:30 PM</option>
-											<option>02:00 PM</option>
-											<option>02:30 PM</option>
-											<option>03:00 PM</option>
-											<option>03:30 PM</option>
-											<option>04:00 PM</option>
-											<option>04:30 PM</option>
-											<option>05:00 PM</option>
-											<option>05:30 PM</option>
-											<option>06:00 PM</option>
-											<option>06:30 PM</option>
-											<option>07:00 PM</option>
-											<option>07:30 PM</option>
-											<option>08:00 PM</option>
-											<option>08:30 PM</option>
-											<option>09:00 PM</option>
-											<option>09:30 PM</option>
-											<option>10:00 PM</option>
-											<option>10:30 PM</option>
-											<option>11:00 PM</option>
-											<option>11:30 PM</option>
-											<option>12:00 PM</option>
-											<option>02:30 PM</option>
-										</select>
-									</div>
-								</div>
-								<div class="form-group row">
-									<label for="example-text-input" class="col-md-2 col-form-label">Duration</label>
-									<div class="col-md-4">
-										<select class="form-control " id="inlineFormInput">
-											<option>0 Minutes</option>
-											<option>5 Minutes</option>
-											<option>10 Minutes</option>
-											<option>15 Minutes</option>
-											<option>30 Minutes</option>
-											<option>1 Hour</option>
-											<option>2 Hours</option>
-											<option>3 Hours</option>
-											<option>4 Hours</option>
-											<option>5 Hours</option>
-											<option>6 Hours</option>
-											<option>7 Hours</option>
-											<option>8 Hours</option>
-											<option>9 Hours</option>
-											<option>10 Hours</option>
-											<option>11 Hours</option>
-											<option>0.5 Days</option>
-											<option>18 Hours</option>
-											<option>1 Days</option>
-											<option>2 Days</option>
-											<option>3 Days</option>
-											<option>4 Days</option>
-											<option>1 Week</option>
-											<option>2 Weeks</option>
-										</select>
-									</div>
-								</div>
-
-								<!-- tabs left -->
-								<div class="tabbable tabs-left">
-									<ul class="nav nav-tabs">
-										<li class="active"><a href="#daily" data-toggle="tab">Daily</a></li>
-										<li><a href="#weekly" data-toggle="tab">Weekly</a></li>
-										<li><a href="#monthly" data-toggle="tab">Monthly</a></li>
-									</ul>
-									<div class="tab-content">
-										<div class="tab-pane active" id="daily">
-											<div class="form-group row">
-												<div class="col-md-8">
-													<div class="tabbable tabs-left">
-														<ul class="nav nav-tabs">
-															<li class="active"><a href="#dayNumber" data-toggle="tab">Every</a></li>
-															<li><a href="#everyDay" data-toggle="tab">Weekday</a></li>
-														</ul>
-														<div class="tab-content">
-															<div class="tab-pane active" id="dayNumber">
-																<div class="col-md-1"><input type="text" style="width: 30px;" id="noOfDays" /></div>
-																<div class="col-md-3"><span style="padding-left:5px;"> days (s)</span></div>
-															</div>
-															<div class="tab-pane" id="everyDay">
-																<input style="width:20px;" type="radio" id="everyweekday" /> <span style="position: relative; top: -17px; left: 30px;">Every weekday</span> <br />
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="tab-pane" id="weekly">
-											<div class="col-md-8">
-												<div class="row">
-													<div class="col-md-2">
-														Recur every
-													</div>
-													<div class="col-md-1">
-														<input type="text" style="width: 50px;" />
-													</div>
-													<div class="col-md-2">
-														week (s) on
-													</div>
-												</div>
-												<div class="row">
-													<div class="col-md-8">
-														<fieldset>
-															<input type="checkbox" name="weekday" value="monday" />Monday <br />
-															<input type="checkbox" name="weekday" value="tuesday" />Tuesday <br />
-															<input type="checkbox" name="weekday" value="wednesday" />Wednesday <br />
-															<input type="checkbox" name="weekday" value="thursday" />Thursday <br />
-															<input type="checkbox" name="weekday" value="friday" />Friday <br />
-															<input type="checkbox" name="weekday" value="saturday" />Saturday <br />
-															<input type="checkbox" name="weekday" value="sunday" />Sunday <br />
-														</fieldset>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="tab-pane" id="monthly">
-											<div class="form-group row">
-												<div class="col-md-10">
-													<div class="tabbable tabs-left">
-														<ul class="nav nav-tabs">
-															<li class="active"><a href="#monthday" data-toggle="tab">Day</a></li>
-															<li><a href="#monthdate" data-toggle="tab">Date</a></li>
-														</ul>
-														<div class="tab-content">
-															<div class="tab-pane active" id="monthday">
-																<div class="col-md-1"><input type="text" class="form-control " style="width:40px;" /></div>
-																<div class="col-md-1">of every</div>
-																<div class="col-md-1"><input type="text" class="form-control " style="width:40px;" /></div>
-																<div>month (s)</div>
-															</div>
-															<div class="tab-pane " id="monthdate">
-																<div class="col-md-1">The</div>
-																<div class="col-md-2">
-																	<select class="form-control ">
-																		<option>second</option>
-																	</select>
-																</div>
-																<div class="col-md-2">
-																	<select class="form-control ">
-																		<option>Monday</option>
-																	</select>
-																</div>
-																<div class="col-md-1">of every</div>
-																<div class="col-md-1">
-																	<input type="text" class="form-control " style="width:40px;" />
-																</div>
-																<div class="col-md-2">month (s)</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-
-										</div>
-										<div class="tab-pane" id="yearly">
-											Year
-										</div>
-									</div>
-								</div>
-								<!-- /tabs -->
+			<div class="col-md-6">
+				<form role="form">
+					<div class="form-group">
+						<div class="col-md-6">
+							<div class="row">
+								<label>Recurrence Type</label>
+								<select id="ddlReacuranceType" class="form-control">
+									<option>Daily</option>
+									<option>Weekly</option>
+									<option>Monthly</option>
+									<option class="hide">Yearly</option>
+									<option>None</option>
+								</select>
 							</div>
-						</form>
+						</div>
 					</div>
+					<div id="divDaily">
+						<div class="col-md-12">
+							<div class="row" style="height:5px;"></div>
+							<div class="row">
+								<div class="col-md-2">
+									<div style="padding-top: 7px;">Every</div>
+								</div>
+								<div class="col-md-2">
+									<input type="text" class="form-control" id="txtEveryDayNumber" >
+								</div>
+								<div class="col-md-2">
+									<div style="padding-top: 7px;">day</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2"><div style="padding-top: 7px;">Start date</div></div>
+								<div class="col-md-4"><input type="text" class="form-control" id="txtEveryDayStartDate"></div>
+								<div class="col-md-1"></div>
+							</div>
+							<div class="row">
+								<div class="col-md-2"><div style="padding-top: 7px;">End date</div></div>
+								<div class="col-md-4"><input type="text" class="form-control" id="txtEveryDayEndDate"></div>
+								<div class="col-md-1"><div style="padding-top: 7px;">after</div></div>
+								<div class="col-md-2"><input type="text" class="form-control" id="txtEveryDayOccuranceNumber"></div>
+								<div class="col-md-2"><div style="padding-top: 7px;">occurences</div></div>
+							</div>
+						</div>
+					</div>
+					<div id="divWeekly">
+						<div class="col-md-12">
+							<div class="row" style="height:5px;"></div>
+							<div class="row">
+								<div class="col-md-2">
+									<div style="padding-top: 7px;">Every</div>
+								</div>
+								<div class="col-md-2">
+									<input type="text" class="form-control" id="txtEveryWeekNumber">
+								</div>
+								<div class="col-md-2">
+									<div style="padding-top: 7px;">day</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2"><div style="padding-top: 7px;">Start date</div></div>
+								<div class="col-md-4"><input type="text" class="form-control" id="txtEveryWeekStartDate"></div>
+								<div class="col-md-1"></div>
+							</div>
+							<div class="row">
+								<div class="col-md-2"><div style="padding-top: 7px;">End date</div></div>
+								<div class="col-md-4"><input type="text" class="form-control" id="txtEveryWeekEndDate"></div>
+								<div class="col-md-1"><div style="padding-top: 7px;">after</div></div>
+								<div class="col-md-2"><input type="text" class="form-control" id="txtEveryWeekOccuranceNumber"></div>
+								<div class="col-md-2"><div style="padding-top: 7px;">occurences</div></div>
+							</div>
+							<div class="row">
+								<div class="col-md-2">
+									<div style="padding-top: 7px;">On</div>
+								</div>
+								<div class="col-md-3">
+									<select id="ddlEveryWeekOnWeekDay" class="form-control">
+										<option>Monday</option>
+										<option>Tuesday</option>
+										<option>Wednesday</option>
+										<option>Thursday</option>
+										<option>Friday</option>
+										<option>Saturday</option>
+										<option>Sunday</option>
+									</select>
+								</div>
+								<div class="col-md-2">
+									
+								</div>
+							</div>
+						</div>
+						</div>
+					<div id="divMonthly">
+						<div class="col-md-12">
+							<div class="row" style="height:5px;"></div>
+							<div class="row">
+								<div class="col-md-2">
+									<div style="padding-top: 7px;">Every</div>
+								</div>
+								<div class="col-md-2">
+									<input type="text" class="form-control" id="txtEveryMonthNumber">
+								</div>
+								<div class="col-md-2">
+									<div style="padding-top: 7px;">day</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2"><div style="padding-top: 7px;">Start date</div></div>
+								<div class="col-md-4"><input type="text" class="form-control" id="txtEveryMonthStartDate"></div>
+								<div class="col-md-1"></div>
+							</div>
+							<div class="row">
+								<div class="col-md-2"><div style="padding-top: 7px;">End date</div></div>
+								<div class="col-md-4"><input type="text" class="form-control" id="txtEveryMonthEndDate"></div>
+								<div class="col-md-1"><div style="padding-top: 7px;">after</div></div>
+								<div class="col-md-2"><input type="text" class="form-control" id="txtEveryMonthOccuranceNumber"></div>
+								<div class="col-md-2"><div style="padding-top: 7px;">occurences</div></div>
+							</div>
+							<div class="row">
+								<div class="col-md-2">
+									<div style="padding-top: 7px;">On</div>
+								</div>
+								<div class="col-md-4">
+									<select id="ddlEveryMonthOnWeekDayNumber" class="form-control">
+										<option>Day of the Month</option>
+										<option>1</option>
+										<option>2</option>
+										<option>3</option>
+										<option>4</option>
+										<option>5</option>
+										<option>6</option>
+										<option>7</option>
+										<option>8</option>
+										<option>9</option>
+										<option>10</option>
+										<option>11</option>
+										<option>12</option>
+										<option>13</option>
+										<option>14</option>
+										<option>15</option>
+										<option>16</option>
+										<option>17</option>
+										<option>18</option>
+										<option>19</option>
+										<option>20</option>
+										<option>21</option>
+										<option>22</option>
+										<option>23</option>
+										<option>24</option>
+										<option>25</option>
+										<option>26</option>
+										<option>27</option>
+										<option>28</option>
+										<option>29</option>
+										<option>30</option>
+										<option>31</option>
+									</select>
+								</div>
+								<div class="col-md-3">
+
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2"><div style="padding-top: 7px;">Or</div></div>
+								<div class="col-md-4">
+									<select id="ddlEveryMonthOnDay" class="form-control">
+										<option>Select day</option>
+										<option>1st</option>
+										<option>2nd</option>
+										<option>3rd</option>
+										<option>4th</option>
+										<option>5th</option>
+									</select>
+								</div>
+								<div class="col-md-4">
+									<select id="ddlEveryMonthOnWeekDay" class="form-control">
+										<option>Day of the week</option>
+										<option>Monday</option>
+										<option>Tuesday</option>
+										<option>Wednesday</option>
+										<option>Thursday</option>
+										<option>Friday</option>
+										<option>Saturday</option>
+										<option>Sunday</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="divYearly" >Yearly</div>
+					<div id="divNone"></div>
+				</form>
+			</div>			
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -1130,6 +1054,22 @@
 	minutz.properties.zones = [];
 	minutz.properties.availibleAttendees = [];
 	minutz.properties.weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+	minutz.properties.meetingDurationRanges = [
+		{ id:1, data: 5, text: "5 min" },
+		{ id: 2, data: 10, text: "10 min" },
+		{ id: 3,data: 15, text: "15 min" },
+		{ id: 4,data: 30, text: "30 min" },
+		{ id: 5,data: 45, text: "45 min" },
+		{ id: 6,data: 60, text: "1 hour" },
+		{ id: 7,data: 120, text: "2 hours" },
+		{ id: 8,data: 180, text: "3 hours" },
+		{ id: 9,data: 240, text: "4 hours" },
+		{ id: 10,data: 300, text: "5 hours" },
+		{ id: 11,data: 360, text: "6 hours" },
+		{ id: 12,data: 420, text: "7 hours" },
+		{ id: 13,data: 480, text: "8 hours" },
+		{ id: 14,data: 540, text: "9 hours" },
+		{ id: 15,data: 600, text: "10 hours" }];
 
 	//Controllers
 	minutz.functions.datepickers = function (control) {
@@ -1158,6 +1098,7 @@
 	minutz.controls.agendaTitle = $("#txtAgendaTitle");
 	minutz.controls.location = $("#txtLocation");
 	minutz.controls.formal = $('#toggle-formal').bootstrapToggle({ on: 'Formal', off: 'Informal' });
+	minutz.controls.private = $('#toggle-private').bootstrapToggle({ on: 'Private', off: 'Public' });
 	minutz.controls.agendaTitleQuick = $("#txtAgendaTitleQuick");
 	minutz.controls.meetingTags = $("#txtTags");
 	minutz.controls.meetingDuration = {};
@@ -1195,8 +1136,8 @@
 		toggleActive: true,
 		defaultViewDate: { year: 1977, month: 04, day: 25 }
 	});
-
 	minutz.controls.meetingTime = $('#meetingTime').timepicker();
+	minutz.controls.reacuranceType = $("#ddlReacuranceType");
 
 	//Change Events
 	minutz.controls.agendaTextEditor.on("tbwblur", function () {
@@ -1229,7 +1170,13 @@
 	minutz.controls.meetingDate.on("change", function () { minutz.functions.save(); });
 	minutz.controls.meetingTime.on("change", function () { minutz.functions.save(); });
 	minutz.controls.meetingTags.blur(function () { minutz.functions.save(); });
-
+	minutz.controls.reacuranceType.on("change", function () {
+		minutz.functions.resetDivReacuranceTypes();
+		var reacurance = {};
+		reacurance.type = $("#ddlReacuranceType").val();
+		var id = '#div' + reacurance.type;
+		$(id).show();
+	});
 	//Click
 	//minutz.controls.addAgendaButton.click(function () {
 	//  var collapes = $('#agendaControl').hasClass('collapse');
@@ -1250,24 +1197,102 @@
 		minutz.functions.agendaItemAddClick(newItem.Id, myDate);
 		minutz.functions.agendaSelect(newItem.Id);
 	});
-
 	minutz.controls.btnSetRecurrence.click(function () {
-		var d = $('#txtStartDate');
-		d.datepicker({ dateFormat: "dd/mm/yy" });
-		var m = $('#txtDate');
-		m.datepicker({ dateFormat: "dd/mm/yy" });
-		m.datepicker('setDate', d.datepicker('getDate'))
+
+		//var d = $('#txtStartDate');
+		//d.datepicker({ dateFormat: "dd/mm/yy" });
+		//var m = $('#txtDate');
+		//m.datepicker({ dateFormat: "dd/mm/yy" });
+		//m.datepicker('setDate', d.datepicker('getDate'))
 		//m.datepicker.trigger('change');
+		meeting.Reacurance = {};
+		meeting.Reacurance.Type = $("#ddlReacuranceType").val();
+		if (meeting.Reacurance.Type == "None")
+		{
+			meeting.Reacurance.Number = 0;
+			meeting.Reacurance.StartDate = minutz.functions.get.today();
+			meeting.Reacurance.EndDate = minutz.functions.get.today();
+			meeting.Reacurance.OccuranceNumber = 1;
+			meeting.Reacurance.WeekOnWeekDay = 0;
+			meeting.Reacurance.MonthOnDay = "";
+			meeting.Reacurance.MonthOnWeekDayNumber = "";
+
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:<strong/>Once off.");
+		 }
+		if (meeting.Reacurance.Type == "Daily") {
+			
+			meeting.Reacurance.Number = $("#txtEveryDayNumber").val();
+			meeting.Reacurance.StartDate = $("#txtEveryDayStartDate").datepicker("getDate");
+			meeting.Reacurance.EndDate = $("#txtEveryDayEndDate").datepicker("getDate");
+			meeting.Reacurance.OccuranceNumber = $("#txtEveryDayOccuranceNumber").val();
+
+			meeting.Reacurance.WeekOnWeekDay = 0;
+			meeting.Reacurance.MonthOnDay = "";
+			meeting.Reacurance.MonthOnWeekDayNumber = "";
+
+			//$('#txtDate').datepicker("setDate", meetingDate);
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:</strong>Daily starts " + $("#txtEveryDayStartDate").val());
+		}
+		if (meeting.Reacurance.Type == "Weekly") {
+			//week
+			meeting.Reacurance.Number = $("#txtEveryWeekNumber").val();
+			meeting.Reacurance.StartDate = $("#txtEveryWeekStartDate").datepicker("getDate");
+			meeting.Reacurance.EndDate = $("#txtEveryWeekEndDate").datepicker("getDate");
+			meeting.Reacurance.OccuranceNumber = $("#txtEveryWeekOccuranceNumber").val();
+			meeting.Reacurance.WeekOnWeekDay = $("#ddlEveryWeekOnWeekDay").val();
+
+			meeting.Reacurance.MonthOnDay = "";
+			meeting.Reacurance.MonthOnWeekDayNumber = "";
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:</strong>Weekly starts :" + $("#txtEveryWeekStartDate").val());
+		}
+		if (meeting.Reacurance.Type == "Monthly") {
+			//month
+			meeting.Reacurance.Number = $("#txtEveryMonthNumber").val();
+			meeting.Reacurance.StartDate = $("#txtEveryMonthStartDate").datepicker("getDate");
+			meeting.Reacurance.EndDate = $("#txtEveryMonthEndDate").datepicker("getDate");
+			meeting.Reacurance.OccuranceNumber = $("#txtEveryMonthOccuranceNumber").val();
+			meeting.Reacurance.WeekOnWeekDay = $("#ddlEveryMonthOnWeekDay").val();
+			meeting.Reacurance.MonthOnDay = $("#ddlEveryMonthOnDay").val();
+			meeting.Reacurance.MonthOnWeekDayNumber = $("#ddlEveryMonthOnWeekDayNumber").val();
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:</strong>Monthly starts :" + $("#txtEveryMonthStartDate").val());
+		}
+
+		console.log(meeting.Reacurance);
 		minutz.functions.save();
+
 	});
 
 	minutz.functions.updateAgendaText = function (text) {
 		$("#txtAgendaTitle").val(text);
 	};
-
+	minutz.functions.resetDivReacuranceTypes = function () {
+		$("#divWeekly").hide();
+		$("#divMonthly").hide();
+		$("#divYearly").hide();
+		$("#divNone").hide();
+		$("#divDaily").hide();
+		$('#txtEveryDayStartDate').datepicker({ format: "DD, d MM, yy"}).on('changeDate', function (ev) {
+			$('#txtEveryDayStartDate').datepicker('hide');
+		});;
+		$('#txtEveryDayEndDate').datepicker({ format: "DD, d MM, yy" }).on('changeDate', function (ev) {
+			$('#txtEveryDayEndDate').datepicker('hide');
+		});;
+		$('#txtEveryWeekStartDate').datepicker({ format: "DD, d MM, yy" }).on('changeDate', function (ev) {
+			$('#txtEveryWeekStartDate').datepicker('hide');
+		});;
+		$('#txtEveryWeekEndDate').datepicker({ format: "DD, d MM, yy" }).on('changeDate', function (ev) {
+			$('#txtEveryWeekEndDate').datepicker('hide');
+		});;
+		$('#txtEveryMonthEndDate').datepicker({ format: "DD, d MM, yy" }).on('changeDate', function (ev) {
+			$('#txtEveryMonthEndDate').datepicker('hide');
+		});;
+		$('#txtEveryMonthStartDate').datepicker({ format: "DD, d MM, yy" }).on('changeDate', function (ev) {
+			$('#txtEveryMonthStartDate').datepicker('hide');
+		});;
+	 };
 
 	$(function () {
-
+		meeting.reacurance = {};
 		if (document.location.search.length) {
 			if (document.location.search.match("id").length > 0) {
 				var query = document.location.search.match("id").input.split('?')[1];
@@ -1333,34 +1358,11 @@
 		$('#attendeesControl').load('/Meeting/AttendeesControl?meetingId=' + meeting.Id, 1, function (responseText, textStatus, jqXHR) {
 			//var meetingId = 1;
 
-			//$('#attendees_agendaItem').select2({
-			//  placeholder: "Assign to attendee",
-			//  ajax: {
-			//      url: "/Meeting/Attendees?meetingId=" + meetingId,
-			//      dataType: 'json',
-			//    delay: 250,
-			//    data: function (params) {
-			//      return {
-			//        q: params.term, // search term
-			//        page: params.page
-			//      };
-			//    },
-			//    processResults: function (data) {
-			//      availibleAttendees = [];
-			//      availibleAttendees = data;
-			//      var newData = [];
-			//      for (var i = 0; i < data.length; i++) {
-			//        newData.push({ id: data[i].identity, text: data[i].fullName });
-			//      }
-
-			//      return {
-			//        results: newData
-			//      };
-			//    },
-			//    cache: true
-			//  },
-			//  width: '100%'
-			//});
+			$('#attendees_agendaItem').select2({
+			  placeholder: "Assign to attendee",
+				data: meeting.MeetingAttendeeCollection,
+			  width: '100%'
+			});
 
 		});
 
@@ -1368,11 +1370,16 @@
 
 		});
 
-		$('#timeZones').select2({
-			data: minutz.properties.zones,
+		$('#timeZones').timezones();
+
+		$('#ddlDuration').select2({
+			data: minutz.properties.meetingDurationRanges,
 			width: '100%'
 		});
-
+		$('#ddlItemDuration').select2({
+			data: minutz.properties.meetingDurationRanges,
+			width: '120px'
+		});
 
 		$("#pickerHolder").append(minutz.functions.getTimeControl());
 
@@ -1387,8 +1394,10 @@
 			
 			$('#txtDate').datepicker("setDate", minutz.functions.dateTimeNow());
 		}
-
-		
+		minutz.functions.resetDivReacuranceTypes();
+		var ddlReacuranceTypeid = '#div' + $("#ddlReacuranceType").val();
+		meeting.reacurance.type = $("#ddlReacuranceType").val();
+		$(ddlReacuranceTypeid).show();
 	});
 
 	$(document).on('blur', '.timepicker', function () {
@@ -1474,9 +1483,16 @@
 		$("#repeatTypeText").text(data.reacuranceType);
 		$('#txtLocation').val(data.location);
 		$('#txtDuration').val(data.duration);
-		$("#cbIsPrivate").prop("checked", data.isPrivate);
-		$("#cbIsFormal").prop("checked", data.isFormal);
+
+		if (data.isPrivate)
+		{
+			$("#toggle-private").bootstrapToggle('on');
+		}
+		if (data.isFormal) {
+			$("#toggle-formal").bootstrapToggle('on');
+		}
 		
+		$("#timeZones").val(data.timeZone);
 		var meetingDate = new Date(data.date);
 		$('#txtDate').datepicker("setDate", meetingDate);
 		
@@ -1503,9 +1519,32 @@
 		meeting.IsFormal = data.isFormal;
 		meeting.Purpose = data.purpose;
 		meeting.Outcome = data.outcome;
-
+		meeting.TimeZoneOffSet = data.TimeZoneOffSet;
+		meeting.TimeZone = data.timeZone;
 		meeting.MeetingAgendaCollection = data.meetingAgendaCollection;
+		meeting.Reacurance = {};// data.reacurance;
+		meeting.Reacurance.Type = data.reacurance.type;
+		meeting.Reacurance.Number = data.reacurance.number;
+		meeting.Reacurance.StartDate = data.reacurance.startDate;
+		meeting.Reacurance.EndDate = data.reacurance.endDate;
+		meeting.Reacurance.OccuranceNumber = data.reacurance.occuranceNumber;
+		meeting.Reacurance.WeekOnWeekDay = data.reacurance.weekOnWeekDay;
+		meeting.Reacurance.MonthOnDay = data.reacurance.monthOnDay;
+		meeting.Reacurance.MonthOnWeekDayNumber = data.reacurance.monthOnWeekDayNumber;
 
+		if (data.duration === undefined)
+		{
+			data.duration = 60;
+		}
+
+		for (var d = 0; d < minutz.properties.meetingDurationRanges.length; d++)
+		{
+			if (minutz.properties.meetingDurationRanges[d].data == data.duration)
+			{
+				$("#ddlDuration").select2("trigger", "select", { data: { id: minutz.properties.meetingDurationRanges[d].id } });
+			}
+		}
+		
 		$("#agendaItems li").remove();
 		for (var a = 0; a < meeting.MeetingAgendaCollection.length; a++) {
 			var agendaItem = meeting.MeetingAgendaCollection[a];
@@ -1516,6 +1555,46 @@
 
 			minutz.functions.addHtml('agendaItems', minutz.functions.getAgendaItemHtml(agendaItem.agendaHeading, agendaItem.id, myDate, number));
 		}
+
+		minutz.functions.resetDivReacuranceTypes();
+		console.log(meeting);
+		if (meeting.Reacurance.Type == "None")
+		{
+			$("#divNone").show();
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:<strong/>Once off.");
+		 }
+		if (meeting.Reacurance.Type == "Daily") {
+			$("#divDaily").show();
+			$("#txtEveryDayNumber").val(meeting.Reacurance.Number);
+			$('#txtEveryDayStartDate').datepicker("setDate", meeting.Reacurance.StartDate);
+			$('#txtEveryDayEndDate').datepicker("setDate", meeting.Reacurance.EndDate);
+			$("#txtEveryDayOccuranceNumber").val(meeting.Reacurance.OccuranceNumber);
+
+			//$('#txtDate').datepicker("setDate", meetingDate);
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:</strong>Daily starts " + $("#txtEveryDayStartDate").val());
+		}
+		if (meeting.Reacurance.Type == "Weekly") {
+			$("#divWeekly").show();
+			$("#txtEveryWeekNumber").val(meeting.Reacurance.Number );
+			$('#txtEveryWeekStartDate').datepicker("setDate", meeting.Reacurance.StartDate);
+			$('#txtEveryWeekEndDate').datepicker("setDate", meeting.Reacurance.EndDate);
+			$("#txtEveryWeekOccuranceNumber").val(meeting.Reacurance.OccuranceNumber);
+			$("#ddlEveryWeekOnWeekDay").val(meeting.Reacurance.WeekOnWeekDay);
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:</strong>Weekly starts :" + $("#txtEveryWeekStartDate").val());
+		}
+		if (meeting.Reacurance.Type == "Monthly") {
+			$("#divMonthly").show();
+			$('#txtEveryMonthStartDate').datepicker("setDate", meeting.Reacurance.StartDate);
+			$('#txtEveryMonthEndDate').datepicker("setDate", meeting.Reacurance.EndDate);
+			$("#txtEveryMonthNumber").val(meeting.Reacurance.Number);
+ 			$("#txtEveryMonthOccuranceNumber").val(meeting.Reacurance.OccuranceNumber);
+			$("#ddlEveryMonthOnWeekDay").val(meeting.Reacurance.WeekOnWeekDay);
+			$("#ddlEveryMonthOnDay").val(meeting.Reacurance.MonthOnDay);
+			$("#ddlEveryMonthOnWeekDayNumber").val(meeting.Reacurance.MonthOnWeekDayNumber);
+
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:</strong>Monthly starts :" + $("#txtEveryMonthStartDate").val());
+		}
+
 		console.log(meeting);
 		$("#agendaItems").sortable();
 
@@ -1524,22 +1603,84 @@
 
 	minutz.functions.updateMainModelProperties = function () {
 		meeting.Tag = minutz.functions.toArray(minutz.functions.get.value('txtTags'));
-		meeting.IsPrivate = $("#cbIsPrivate").prop("checked");
-		meeting.IsFormal = $("#cbIsFormal").prop("checked");
+		meeting.IsPrivate = $("#toggle-private").prop("checked");
+		meeting.IsFormal = $("#toggle-formal").prop("checked");
 		meeting.Name = minutz.functions.get.value('txtMeetingName');
 		meeting.Location = minutz.functions.get.value('txtLocation');
-		meeting.Date = $("#txtDate").val(); //minutz.functions.get.datepicker('txtDate');
+		meeting.Date = moment($("#txtDate").datepicker("getDate")).format("YYYY-MM-DD");
 		meeting.Time = minutz.functions.get.value('meetingTime');
-		meeting.Duration = minutz.functions.get.value('txtDuration');
-		meeting.ReacuranceType = minutz.functions.get.text('repeatTypeText');
-		meeting.IsReacurance = _isReacurance(minutz.functions.get.text('repeatTypeText'));
+
+		var selectedDuration = minutz.functions.get.value('ddlDuration');
+		for (var q = 0; q < minutz.properties.meetingDurationRanges.length; q++)
+		{
+			if (minutz.properties.meetingDurationRanges[q].id == selectedDuration)
+			{
+				meeting.Duration = minutz.properties.meetingDurationRanges[q].data;
+			}
+		}
+
+		//meeting.ReacuranceType = "";//todo:Fix //minutz.functions.get.text('repeatTypeText');
+		//meeting.IsReacurance = _isReacurance(minutz.functions.get.text('repeatTypeText'));
 		meeting.Purpose = $('#purposeText').trumbowyg('html');// minutz.functions.get.value('purposeText');
 		meeting.Outcome = $('#outcomeText').trumbowyg('html'); //minutz.functions.get.value('outcomeText');
 
+		var selectedTimeZoneDate = moment.tz($("#timeZones").val())._d//full date object
+		meeting.TimeZone = $("#timeZones").val();
+		meeting.TimeZoneOffSet = moment.tz($("#timeZones").val())._offset;//in minutes
 		for (var agendaIndex = 0; agendaIndex < meeting.MeetingAgendaCollection.length; agendaIndex++) {
 			if (meeting.MeetingAgendaCollection[agendaIndex].Id == meeting.SelectedAgendaItemId) {
 				meeting.MeetingAgendaCollection[agendaIndex].AgendaText = $('#agendaText').trumbowyg('html');
 			}
+		}
+
+		if (meeting.Reacurance.Type == "None")
+		{
+			meeting.Reacurance.Number = 0;
+			meeting.Reacurance.StartDate = minutz.functions.get.today();
+			meeting.Reacurance.EndDate = minutz.functions.get.today();
+			meeting.Reacurance.OccuranceNumber = 1;
+			meeting.Reacurance.WeekOnWeekDay = 0;
+			meeting.Reacurance.MonthOnDay = "";
+			meeting.Reacurance.MonthOnWeekDayNumber = "";
+
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:<strong/>Once off.");
+		 }
+		if (meeting.Reacurance.Type == "Daily") {
+			
+			meeting.Reacurance.Number = $("#txtEveryDayNumber").val();
+			meeting.Reacurance.StartDate = moment($("#txtEveryDayStartDate").datepicker("getDate")).format("YYYY-MM-DD");
+			meeting.Reacurance.EndDate = moment($("#txtEveryDayEndDate").datepicker("getDate")).format("YYYY-MM-DD");
+			meeting.Reacurance.OccuranceNumber = $("#txtEveryDayOccuranceNumber").val();
+
+			meeting.Reacurance.WeekOnWeekDay = 0;
+			meeting.Reacurance.MonthOnDay = "";
+			meeting.Reacurance.MonthOnWeekDayNumber = "";
+
+			//$('#txtDate').datepicker("setDate", meetingDate);
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:</strong>Daily starts " + $("#txtEveryDayStartDate").val());
+		}
+		if (meeting.Reacurance.Type == "Weekly") {
+			//week
+			meeting.Reacurance.Number = $("#txtEveryWeekNumber").val();
+			meeting.Reacurance.StartDate = moment($("#txtEveryWeekStartDate").datepicker("getDate")).format("YYYY-MM-DD");
+			meeting.Reacurance.EndDate = moment($("#txtEveryWeekEndDate").datepicker("getDate")).format("YYYY-MM-DD");
+			meeting.Reacurance.OccuranceNumber = $("#txtEveryWeekOccuranceNumber").val();
+			meeting.Reacurance.WeekOnWeekDay = $("#ddlEveryWeekOnWeekDay").val();
+
+			meeting.Reacurance.MonthOnDay = "";
+			meeting.Reacurance.MonthOnWeekDayNumber = "";
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:</strong>Weekly starts :" + $("#txtEveryWeekStartDate").val());
+		}
+		if (meeting.Reacurance.Type == "Monthly") {
+			//month
+			meeting.Reacurance.Number = $("#txtEveryMonthNumber").val();
+			meeting.Reacurance.StartDate = moment($("#txtEveryMonthStartDate").datepicker("getDate")).format("YYYY-MM-DD");
+			meeting.Reacurance.EndDate = moment($("#txtEveryMonthEndDate").datepicker("getDate")).format("YYYY-MM-DD");
+			meeting.Reacurance.OccuranceNumber = $("#txtEveryMonthOccuranceNumber").val();
+			meeting.Reacurance.WeekOnWeekDay = $("#ddlEveryMonthOnWeekDay").val();
+			meeting.Reacurance.MonthOnDay = $("#ddlEveryMonthOnDay").val();
+			meeting.Reacurance.MonthOnWeekDayNumber = $("#ddlEveryMonthOnWeekDayNumber").val();
+			$("#txtReacuranceInfo").html("<strong>Meeting Type:</strong>Monthly starts :" + $("#txtEveryMonthStartDate").val());
 		}
 
 		//minutz.functions.find(meeting.MeetingAgendaCollection, meeting.SelectedAgendaItemId).AgendaText = minutz.functions.get.value('agendaText');
@@ -1630,22 +1771,13 @@
 		console.log('new :' + $("#agendaItemTime").val());
 	};
 
-	//minutz.functions.durationpicker = function (controlname) {
-	//  var x = '#' + controlname;
-	//  console.log(x);
-	//  $(x).durationPicker({
-	//    lang: 'en',
-	//    showSeconds: false,
-	//    showDays: false
-	//  });
-	//};
-
 	minutz.functions.save = function () {
 		//minutz.functions.updateAgendaTextToModel();
 		minutz.functions.updateMainModelProperties();
 
 		if (minutz.functions.saveAjax()) {
 			minutz.functions.notifyMe(MinutzTitle, "The updates were saved successfully.", "fa fa-info");
+			$("#txtInfo").html("Saved at: " + moment().fromNow() );
 
 		} else {
 			minutz.functions.notifyMe(MinutzTitle, "Oops something went wrong.", "fa fa-info")

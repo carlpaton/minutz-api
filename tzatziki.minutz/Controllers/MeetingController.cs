@@ -67,6 +67,11 @@ namespace tzatziki.minutz.Controllers
       var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
       var schema = user.InstanceId.ToSchemaString();
       var data = _meetingService.Get(schema, new Meeting { Id =  Guid.Parse(id)  }, user.UserId, true);
+			data.Reacurance = new MeetingReacurance();
+			if (!string.IsNullOrEmpty(data.ReacuranceType))
+			{
+				data.Reacurance = Newtonsoft.Json.JsonConvert.DeserializeObject<MeetingReacurance>(data.ReacuranceType);
+			}
       return Json(data);
     }
 
@@ -81,7 +86,7 @@ namespace tzatziki.minutz.Controllers
         meeting.Id = Guid.NewGuid();
       var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
       var schema = user.InstanceId.ToSchemaString();
-
+			meeting.ReacuranceType = Newtonsoft.Json.JsonConvert.SerializeObject(meeting.Reacurance);
       if (meeting.MeetingOwnerId == null) meeting.MeetingOwnerId = user.UserId;
 
       if (meeting.MeetingAgendaCollection == null) meeting.MeetingAgendaCollection = new List<MeetingAgendaItem>();
@@ -91,6 +96,7 @@ namespace tzatziki.minutz.Controllers
       if (meeting.MeetingNoteCollection == null) meeting.MeetingNoteCollection = new List<MeetingNoteItem>();
 
       _meetingService.Get(schema, meeting, user.UserId);
+			meeting.Reacurance = Newtonsoft.Json.JsonConvert.DeserializeObject<MeetingReacurance>(meeting.ReacuranceType);
       return Json(meeting);
     }
 
@@ -127,6 +133,12 @@ namespace tzatziki.minutz.Controllers
 			var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
 			var schema = user.InstanceId.ToSchemaString();
 			var meeting = _meetingService.Get(schema, new Meeting { Id = Guid.Parse(meetingId) }, user.UserId,true);
+			meeting.Reacurance = new MeetingReacurance();
+			if (!string.IsNullOrEmpty(meeting.ReacuranceType))
+			{
+				meeting.Reacurance = Newtonsoft.Json.JsonConvert.DeserializeObject<MeetingReacurance>(meeting.ReacuranceType);
+			}
+			
 			return Json(meeting.MeetingAttendeeCollection);
     }
 

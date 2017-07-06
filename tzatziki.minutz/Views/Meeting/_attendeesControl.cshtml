@@ -22,7 +22,7 @@
 		}
 
 	.select2-container .select2-selection--single {
-		min-width: 270px;
+		/*min-width: 270px;*/
 	}
 </style>
 <div class="panel panel-default">
@@ -177,7 +177,7 @@
 				},
 				cache: true
 			},
-			width: '100%'
+			width: '250px'
 		});
 		$('#attendees').on("select2:select", function (e) {
 			var identity = $("#attendees").select2('data')[0].id;

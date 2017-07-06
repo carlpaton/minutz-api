@@ -9,7 +9,6 @@ namespace tzatziki.minutz.models.Entities
     /// IsLocked this is tell the UI if the meeting is readonly for running the meeting
     /// </summary>
     public bool IsLocked { get; set; }
-
     public Guid Id { get; set; }
     public string MeetingOwnerId { get; set; }
     public string Name { get; set; }
@@ -23,7 +22,8 @@ namespace tzatziki.minutz.models.Entities
     public bool IsPrivate { get; set; }
     public bool IsFormal { get; set; }
     public string TimeZone { get; set; }
-    public string[] Tag { get; set; }
+		public int TimeZoneOffSet { get; set; }
+		public string[] Tag { get; set; }
     public List<MeetingAttendee> MeetingAttendeeCollection { get; set; }
     public string Purpose { get; set; }
     public string Outcome { get; set; }
@@ -31,5 +31,6 @@ namespace tzatziki.minutz.models.Entities
     public List<ActionItem> MeetingActionCollection { get; set; }
     public List<MeetingNoteItem> MeetingNoteCollection { get; set; }
     public List<MeetingAttachmentItem> MeetingAttachmentCollection { get; set; }
-  }
+		public MeetingReacurance Reacurance { get; set; }
+	}
 }
