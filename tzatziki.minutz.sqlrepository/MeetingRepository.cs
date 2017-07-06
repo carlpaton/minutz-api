@@ -49,7 +49,7 @@ namespace tzatziki.minutz.sqlrepository
 		{
 			using (SqlConnection con = new SqlConnection(connectionString))
 			{
-				using (SqlCommand command = new SqlCommand(DeleteMeetingAgendaItemStatement(schema,agendaItemId), con))
+				using (SqlCommand command = new SqlCommand(DeleteMeetingAgendaItemStatement(schema, agendaItemId), con))
 				{
 					con.Open();
 					command.ExecuteNonQuery();
@@ -58,7 +58,7 @@ namespace tzatziki.minutz.sqlrepository
 			}
 		}
 
-		public void SaveFile(string connectionString, string schema, UserProfile user,string fileName, byte[] data ,string meetingId)
+		public void SaveFile(string connectionString, string schema, UserProfile user, string fileName, byte[] data, string meetingId)
 		{
 			var createdDate = DateTime.UtcNow;
 			var meetingAttendeeId = Guid.NewGuid();
@@ -69,34 +69,28 @@ namespace tzatziki.minutz.sqlrepository
 				FileName = fileName,
 				Id = Guid.NewGuid(),
 				MeetingAttendeeId = meetingAttendeeId,
-				ReferanceId = meetingAttendeeId
-			};
-			using (SqlConnection con = new SqlConnection(connectionString))
+				ReferanceId = Guid.Parse( meetingId)
+			}; try
 			{
-				using (SqlCommand command = new SqlCommand("app.insertFile", con))
+				using (SqlConnection con = new SqlConnection(connectionString))
 				{
-					try {
-						con.Open();
-						//string sql = "usp_imageloader_add_test";
-						//SqlCommand cmd = new SqlCommand(sql, dbConnection);
-						command.CommandType = System.Data.CommandType.StoredProcedure;
-						command.Parameters.AddWithValue("@p_data", data).SqlDbType = SqlDbType.Binary;
-						command.Parameters.AddWithValue("@p_id", meetingId).SqlDbType = SqlDbType.VarChar;
-						command.Parameters.AddWithValue("@p_name", fileName).SqlDbType = SqlDbType.VarChar;
-						command.Parameters.AddWithValue("@p_date", createdDate).SqlDbType = SqlDbType.DateTime2;
-						command.Parameters.AddWithValue("@p_ref", meetingId).SqlDbType = SqlDbType.VarChar;
-						command.Parameters.AddWithValue("@p_user", user.ClientID).SqlDbType = SqlDbType.VarChar;
-						command.Parameters.AddWithValue("@p_schema", schema).SqlDbType = SqlDbType.VarChar;
-						command.Connection.Open();
-						command.ExecuteNonQuery();
-						command.Connection.Close();
-						con.Close();
-					} catch (Exception ex)
+					using (SqlCommand command = new SqlCommand($"INSERT INTO [{schema}].[MeetingAttachment] VALUES(@Id,@ReferanceId, @FileName,@MeetingAttendeeId, @Date,@FileData)", con))
 					{
-						var q = ex;
+						con.Open();
+						command.Parameters.Add("@Id", SqlDbType.UniqueIdentifier).Value = Guid.NewGuid();
+						command.Parameters.Add("@ReferanceId", SqlDbType.UniqueIdentifier).Value = entry.ReferanceId;
+						command.Parameters.Add("@FileName", SqlDbType.VarChar).Value = entry.FileName;
+						command.Parameters.Add("@MeetingAttendeeId", SqlDbType.UniqueIdentifier).Value = entry.MeetingAttendeeId;
+						command.Parameters.Add("@Date", SqlDbType.DateTime2).Value = entry.Date;
+						command.Parameters.Add("@FileData", SqlDbType.VarBinary, data.Length).Value = data;
+						command.ExecuteNonQuery();
+						con.Close();
 					}
-				
 				}
+			}
+			catch (Exception ex)
+			{
+				var q = ex;
 			}
 		}
 
@@ -113,8 +107,8 @@ namespace tzatziki.minutz.sqlrepository
 			return result;
 		}
 
-		public Meeting Get(string connectionString, string schema, Meeting meeting, string callingUserId ,bool read = false)
-		{ 
+		public Meeting Get(string connectionString, string schema, Meeting meeting, string callingUserId, bool read = false)
+		{
 			if (_tableService.Initiate(connectionString, schema, _meetingTableName, _createMeetingSchemaStoredProcedure))
 			{
 				var instance = ToMeeting(connectionString, schema, $" Id = '{meeting.Id}'");
@@ -589,7 +583,7 @@ namespace tzatziki.minutz.sqlrepository
 			var meetingDate = meeting.Date == DateTime.MinValue ? DateTime.UtcNow.ToString() : meeting.Date.ToUniversalTime().ToString();
 			if (string.IsNullOrEmpty(meeting.Name))
 				meeting.Name = $"Meeting {DateTime.UtcNow.ToString()}";
-			if(meeting.Tag == null) meeting.Tag = new string[] { };
+			if (meeting.Tag == null) meeting.Tag = new string[] { };
 			return $@"INSERT INTO [{schema}].[{_meetingTableName}] VALUES (
         '{meeting.Id}',
         '{meeting.Name.EmptyIfNull()}',
@@ -654,14 +648,14 @@ namespace tzatziki.minutz.sqlrepository
 						'Content = CAST('{meetingAttachmentItem.FileData.ToString()}' AS VARBINARY(MAX)) AS FileData'
 						INTO [{schema}].[{_meetingAttachment}]";
 		}
-		
+
 
 		///DELETE STATEMENTS
 		internal string DeleteMeetingAgendaItemStatement(string schema, string agendaItemId)
 		{
 			return $@"DELETE FROM [{schema}].[MeetingAgenda] WHERE Id = '{agendaItemId}'";
 		}
-	
+
 		///DATA READER
 
 		internal Meeting ToMeeting(SqlDataReader dataReader)

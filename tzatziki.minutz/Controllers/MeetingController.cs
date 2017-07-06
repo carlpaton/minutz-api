@@ -159,7 +159,8 @@ namespace tzatziki.minutz.Controllers
 					{
 						byte[] result;
 						result = binaryReader.ReadBytes((int)Request.Form.Files[0].Length);
-						//_meetingService.SaveFile(AppSettings.ConnectionStrings.AzureConnection, schema, user, file.FileName, result, meetingId);
+						
+						_meetingService.SaveFile(schema, user, file.FileName, result, meetingId);
 					}
 					uploadedFiles.Add(file.FileName);
 
