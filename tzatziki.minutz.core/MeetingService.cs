@@ -29,9 +29,9 @@ namespace tzatziki.minutz.core
 			_meetingRepository.DeleteMeetingAgendaItem(Environment.GetEnvironmentVariable("SQLCONNECTION"), schema, agendaItemId);
 		}
 
-		public void SaveFile(string schema, UserProfile user, string fileName, byte[] data, string meetingId)
+		public MeetingAttachmentItem SaveFile(string schema, UserProfile user, string fileName, byte[] data, string meetingId)
 		{
-			_meetingRepository.SaveFile(Environment.GetEnvironmentVariable("SQLCONNECTION"), schema, user, fileName, data,meetingId);
+			return _meetingRepository.SaveFile(Environment.GetEnvironmentVariable("SQLCONNECTION"), schema, user, fileName, data,meetingId);
 		}
 	}
 }

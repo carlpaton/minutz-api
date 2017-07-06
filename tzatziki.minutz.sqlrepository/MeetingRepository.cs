@@ -58,7 +58,7 @@ namespace tzatziki.minutz.sqlrepository
 			}
 		}
 
-		public void SaveFile(string connectionString, string schema, UserProfile user, string fileName, byte[] data, string meetingId)
+		public MeetingAttachmentItem SaveFile(string connectionString, string schema, UserProfile user, string fileName, byte[] data, string meetingId)
 		{
 			var createdDate = DateTime.UtcNow;
 			var meetingAttendeeId = Guid.NewGuid();
@@ -70,14 +70,15 @@ namespace tzatziki.minutz.sqlrepository
 				Id = Guid.NewGuid(),
 				MeetingAttendeeId = meetingAttendeeId,
 				ReferanceId = Guid.Parse( meetingId)
-			}; try
+			};
+			try
 			{
 				using (SqlConnection con = new SqlConnection(connectionString))
 				{
 					using (SqlCommand command = new SqlCommand($"INSERT INTO [{schema}].[MeetingAttachment] VALUES(@Id,@ReferanceId, @FileName,@MeetingAttendeeId, @Date,@FileData)", con))
 					{
 						con.Open();
-						command.Parameters.Add("@Id", SqlDbType.UniqueIdentifier).Value = Guid.NewGuid();
+						command.Parameters.Add("@Id", SqlDbType.UniqueIdentifier).Value = entry.Id;
 						command.Parameters.Add("@ReferanceId", SqlDbType.UniqueIdentifier).Value = entry.ReferanceId;
 						command.Parameters.Add("@FileName", SqlDbType.VarChar).Value = entry.FileName;
 						command.Parameters.Add("@MeetingAttendeeId", SqlDbType.UniqueIdentifier).Value = entry.MeetingAttendeeId;
@@ -87,10 +88,12 @@ namespace tzatziki.minutz.sqlrepository
 						con.Close();
 					}
 				}
+				return entry;
 			}
 			catch (Exception ex)
 			{
 				var q = ex;
+				throw new Exception(ex.Message);
 			}
 		}
 
