@@ -150,7 +150,7 @@ namespace tzatziki.minutz.Controllers
 			var schema = user.InstanceId.ToSchemaString();
 
 			var uploads = Path.Combine(_environment.WebRootPath, "uploads");
-			var uploadedFiles = new List<string>();
+			var uploadedFiles = new List<MeetingAttachmentItem>();
 			foreach (var file in Request.Form.Files)
 			{
 				if (file.Length > 0)
@@ -159,18 +159,36 @@ namespace tzatziki.minutz.Controllers
 					{
 						byte[] result;
 						result = binaryReader.ReadBytes((int)Request.Form.Files[0].Length);
-						//_meetingService.SaveFile(AppSettings.ConnectionStrings.AzureConnection, schema, user, file.FileName, result, meetingId);
+						
+						var entry = _meetingService.SaveFile(schema, user, file.FileName, result, meetingId);
+						entry.FileData = null;
+						uploadedFiles.Add(entry);
 					}
-					uploadedFiles.Add(file.FileName);
-
-					//using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
-					//     {
-					//	await file.CopyToAsync(fileStream);
-
-					//     }
 				}
 			}
 			return Json(uploadedFiles);
+		}
+
+		[Authorize]
+		[HttpGet]
+		public JsonResult MeetingAttachments(string meetingId)
+		{
+			var uploadedFiles = new List<MeetingAttachmentItem>();
+			if (!string.IsNullOrEmpty(meetingId))
+			{
+				var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
+				var schema = user.InstanceId.ToSchemaString();
+			}
+			return Json(uploadedFiles);
+		}
+
+		[Authorize]
+		public FileResult GetFile(string id)
+		{
+			var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
+			var schema = user.InstanceId.ToSchemaString();
+			var file = _meetingService.GetFileData(schema, id);
+			return File(file.Value,$"application/{file.Key.Split('.')[1]}",file.Key);
 		}
 
 		private string GetName()

@@ -47,22 +47,52 @@
 <script>
   $(function ()
   {
-    $("div#dropzoneForm").dropzone();
+		$("div#dropzoneForm").dropzone();
+
+		var meetingId = "";
+		if (document.location.search.length) {
+			if (document.location.search.match("id").length > 0) {
+				var query = document.location.search.match("id").input.split('?')[1];
+				if (query.includes("id")) {
+					meetingId = query.split('=')[1];
+					GetAttachments(meetingId);
+				}
+			}
+		}
+
   });
 
-  minutz.functions.addattachmentHtml = function (filename)
+	function GetAttachments(id) {
+		$.ajax({
+			type: minutz.properties.GET,
+			url: document.location.origin + "/Meeting/GetMeeting?id=" + id,
+			success: function (data) {
+				console.log('meeting attachments');
+				console.log(data);
+				$("#fileAttachmentList").html();
+				for (var d = 0; d < data.meetingAttachmentCollection.length; d++)
+				{
+					$("#fileAttachmentList").append(_createHtml(data.meetingAttachmentCollection[d]));
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) { },
+			dataType: minutz.properties.JSON
+		});
+	};
+
+  minutz.functions.addattachmentHtml = function (file)
   {
-    $("#fileAttachmentList").append(_createHtml(filename));
+    $("#fileAttachmentList").append(_createHtml(file));
   };
 
-  function _createHtml(fileName)
+  function _createHtml(file)
   {
     return '<li class="item">'
       + '<div class="product-img">'
       + '<i class="fa fa-file-o fa-2x" style="padding-left: 10px;" aria-hidden="true"></i>'
       + '</div>'
       + '<div class="product-info">'
-      + '<a href="javascript:void(0)" class="product-title">' + fileName
+			+ '<a target="_blank" href="' + document.location.origin +'/Meeting/GetFile?id='+ file.id +'" class="product-title">' + file.fileName
       + '</a>'
       + '<span class="product-description">'
       + 'Linked to Agenda'
