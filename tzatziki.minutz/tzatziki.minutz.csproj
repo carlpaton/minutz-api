@@ -9,9 +9,9 @@
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
     <ApplicationInsightsResourceId>/subscriptions/bcebf865-8d42-4174-bbf0-09e42e512912/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/tzatziki.minutz</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/09562e8f-28c9-4be8-85ba-7f8709380719/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/tzatziki.minutz</ApplicationInsightsAnnotationResourceId>
-    <AssemblyVersion>2.4.1.0</AssemblyVersion>
-    <FileVersion>2.4.1.0</FileVersion>
-    <Version>2.4.1.0</Version>
+    <AssemblyVersion>2.4.1.4</AssemblyVersion>
+    <FileVersion>2.4.1.4</FileVersion>
+    <Version>2.4.1.4</Version>
     <Copyright>Tzatziki 2017</Copyright>
     <PackageTags>meeting, minutz</PackageTags>
     <Company>Tzatziki</Company>

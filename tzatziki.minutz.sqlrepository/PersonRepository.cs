@@ -243,14 +243,14 @@ namespace tzatziki.minutz.sqlrepository
 
 		internal string _getSchemaUsersStatement(string schema)
 		{
-			return $@"SELECT * FROM [minutz].[{schema}].[User]";
+			return $@"SELECT * FROM [{schema}].[User]";
 		}
 
 		internal string _insertSchemaUsersStatement(Person person, string schema)
 		{
 			var active = person.Active == true ? 1 : 0;
 			return $@"INSERT INTO
-							[minutz].[{schema}].[User]
+							[{schema}].[User]
 							VALUES('{person.Identityid}','{person.FirstName}','{person.LastName}','{person.FullName}','{person.Email}','{person.Role}',{active})
 							";
 		}
@@ -259,7 +259,7 @@ namespace tzatziki.minutz.sqlrepository
 		{
 			var active = person.Active == true ? 1 : 0;
 			return $@"INSERT INTO
-							[minutz].[{schema}].[Person]
+							[{schema}].[Person]
 							VALUES('{person.Identityid}','{person.FirstName}','{person.LastName}','{person.FullName}','{person.Email}','{person.Role}',{active},null)
 							";
 		}

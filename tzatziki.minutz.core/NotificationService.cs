@@ -1,5 +1,6 @@
 ﻿using MailKit.Net.Smtp;
 using MimeKit;
+using System;
 using tzatziki.minutz.interfaces;
 
 namespace tzatziki.minutz.core
@@ -7,6 +8,55 @@ namespace tzatziki.minutz.core
 	public class NotificationService : INotificationService
 	{
 		private readonly ISettingService _settingService;
+
+		public string MinutesAccount
+		{
+			get
+			{
+				try
+				{
+					var account = Environment.GetEnvironmentVariable("MINUTESACCOUNT");
+					return account;
+				}
+				catch (Exception)
+				{
+					throw new NullReferenceException("MINUTESACCOUNT Environment Variable was not found.");
+				}
+			}
+		}
+
+		public string AcctionAccount
+		{
+			get
+			{
+				try
+				{
+					var account = Environment.GetEnvironmentVariable("ACTIONSACCOUNT");
+					return account;
+				}
+				catch (Exception)
+				{
+					throw new NullReferenceException("ACTIONSACCOUNT Environment Variable was not found.");
+				}
+			}
+		}
+
+		public string InvitesAccount
+		{
+			get
+			{
+				try
+				{
+					var account = Environment.GetEnvironmentVariable("INVITESACCOUNT");
+					return account;
+				}
+				catch (Exception)
+				{
+					throw new NullReferenceException("INVITESACCOUNT Environment Variable was not found.");
+				}
+			}
+		}
+
 		public NotificationService(ISettingService settingService)
 		{
 			_settingService = settingService;
@@ -14,28 +64,18 @@ namespace tzatziki.minutz.core
 
 		public bool InvitePerson()
 		{
-			var bodyBuilder = new BodyBuilder();
-			bodyBuilder.HtmlBody = @"<b>This is bold and this is <i>italic</i></b>";
-			//message.Body = bodyBuilder.ToMessageBody();
-
-			var message = new MimeMessage();
-			message.From.Add(new MailboxAddress("Minutz", "leeroya@gmail.com"));
-			message.To.Add(new MailboxAddress("Lee-Roy Ashworth", "leeroya@gmail.com"));
-			message.Subject = "Hello World - A mail from ASPNET Core";
-			message.Body = new TextPart("plain")
+			try
 			{
-				Text = "Hello World - A mail from ASPNET Core"
-			};
-			using (var client = new SmtpClient())
-			{
-				client.Connect("smtp.gmail.com", 587, false);
-				client.Authenticate("leeroya@gmail.com", "7qwWi8gIzrI6");
-				//client.AuthenticationMechanisms.Remove("XOAUTH2");
-				// Note: since we don't have an OAuth2 token, disable 	// the XOAUTH2 authentication mechanism.     client.Authenticate("anuraj.p@example.com", "password");
-				client.Send(message);
-				client.Disconnect(true);
+				var q = new HttpService();
+				q.Send(Environment.GetEnvironmentVariable("MAILURL"),
+							 Environment.GetEnvironmentVariable("MAILUSER"), 
+							 Environment.GetEnvironmentVariable("MAILAPIKEY"));
+				return true;
 			}
-			return true;
+			catch (Exception)
+			{
+				return false;
+			}
 		}
 	}
 }
