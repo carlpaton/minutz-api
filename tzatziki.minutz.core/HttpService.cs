@@ -1,13 +1,14 @@
-﻿using System;
-using System.Text;
-using System.Net.Http;
+﻿using tzatziki.minutz.models.Interfaces;
 using tzatziki.minutz.interfaces;
+using System.Net.Http;
+using System.Text;
+using System;
 
 namespace tzatziki.minutz.core
 {
 	public class HttpService :IHttpService
 	{
-		public HttpResponseMessage Send(string url, string username, string password)
+		public HttpResponseMessage SendMessage(string url, string username, string password, IMessageModel message)
 		{
 			var client = new HttpClient();
 			var byteArray = Encoding.ASCII.GetBytes($"{username}:{password}");
@@ -15,10 +16,10 @@ namespace tzatziki.minutz.core
 
 			HttpResponseMessage response = client.PostAsync(url, new MultipartFormDataContent
 			{
-				{new StringContent("invitations@minutz.net"),"from" },
-				{new StringContent("leeroya@gmail.com"),"to" },
-				{new StringContent("test from code"),"subject" },
-				{new StringContent("<b>Some text</b>"),"html" }
+				{new StringContent(message.From.Value),message.From.Key},
+				{new StringContent(message.To.Value),message.To.Key},
+				{new StringContent(message.Subject.Value),message.Subject.Key },
+				{new StringContent(message.Body.Value),message.Body.Key }
 			}).Result;
 			return response;
 		}

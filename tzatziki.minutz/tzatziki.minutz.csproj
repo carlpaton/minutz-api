@@ -61,6 +61,9 @@
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Dashboard\" />
     <Folder Include="Views\Admin\" />
+    <Folder Include="Views\EmailMessage\" />
+    <Folder Include="Views\EmailMessage\" />
+    <Folder Include="Views\EmailMessage\" />
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
   <ItemGroup>

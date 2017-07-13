@@ -2,6 +2,7 @@
 using MimeKit;
 using System;
 using tzatziki.minutz.interfaces;
+using tzatziki.minutz.models;
 
 namespace tzatziki.minutz.core
 {
@@ -62,14 +63,23 @@ namespace tzatziki.minutz.core
 			_settingService = settingService;
 		}
 
-		public bool InvitePerson()
+		public bool InvitePerson(string email, string message, IHttpService httpService)
 		{
 			try
 			{
-				var q = new HttpService();
-				q.Send(Environment.GetEnvironmentVariable("MAILURL"),
-							 Environment.GetEnvironmentVariable("MAILUSER"), 
-							 Environment.GetEnvironmentVariable("MAILAPIKEY"));
+				var body = message;
+				var subject = "Minutz invitation";
+				httpService.SendMessage(Environment.GetEnvironmentVariable("MAILURL"),
+							 Environment.GetEnvironmentVariable("MAILUSER"),
+							 Environment.GetEnvironmentVariable("MAILAPIKEY")
+							 , new MessageModel
+							 {
+								 To = new System.Collections.Generic.KeyValuePair<string, string>("to", email ),
+								 From = new System.Collections.Generic.KeyValuePair<string, string>("from", InvitesAccount),
+								 Subject = new System.Collections.Generic.KeyValuePair<string, string>("subject", subject ),
+								 Body = new System.Collections.Generic.KeyValuePair<string, string>("html", body)
+							 }
+							 );
 				return true;
 			}
 			catch (Exception)

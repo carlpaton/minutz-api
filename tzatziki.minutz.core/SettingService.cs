@@ -6,7 +6,6 @@ namespace tzatziki.minutz.core
 {
 	public class SettingService: ISettingService
 	{
-
 		/// <summary>
 		/// Key is SMTP Domain, Value is the Port
 		/// </summary>

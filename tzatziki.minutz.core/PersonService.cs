@@ -1,9 +1,8 @@
 ﻿using tzatziki.minutz.interfaces.Repositories;
 using tzatziki.minutz.models.Entities;
+using tzatziki.minutz.models.Auth;
 using System.Collections.Generic;
 using tzatziki.minutz.interfaces;
-using tzatziki.minutz.models.Auth;
-
 
 namespace tzatziki.minutz.core
 {
@@ -11,12 +10,15 @@ namespace tzatziki.minutz.core
 	{
 		private readonly IPersonRepository _personRepository;
 		private readonly INotificationService _notificationService;
+		private readonly IHttpService _httpService;
 
 		public PersonService(IPersonRepository personRepository, 
-												 INotificationService notificationService)
+												 INotificationService notificationService, 
+												 IHttpService httpService)
 		{
 			_personRepository = personRepository;
 			_notificationService = notificationService;
+			_httpService = httpService;
 		}
 
 		public IEnumerable<UserProfile> GetSchemaUsers(string connectionString, string schema)
@@ -36,13 +38,12 @@ namespace tzatziki.minutz.core
 		/// <param name="connectionString"></param>
 		/// <param name="schema"></param>
 		/// <returns></returns>
-		public bool InvitePerson(Person person,string connectionString, string schema)
+		public bool InvitePerson(Person person, string message ,string connectionString, string schema)
 		{
-			//_notificationService
 			if (string.IsNullOrEmpty(person.Identityid)) person.Identityid = System.Guid.NewGuid().ToString();
 			var successful = _personRepository.InvitePerson(person,connectionString, schema);
 			if (successful)
-				_notificationService.InvitePerson();
+				_notificationService.InvitePerson(person.Email, message,_httpService);
 			return successful;
 		}
 	}

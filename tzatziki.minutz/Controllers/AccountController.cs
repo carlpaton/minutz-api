@@ -11,13 +11,14 @@ using tzatziki.minutz.models.Auth;
 using System;
 using tzatziki.minutz.core;
 using tzatziki.minutz.models.Entities;
-using System.Collections.Generic;
+using tzatziki.minutz.Interfaces;
 
 namespace tzatziki.minutz.Controllers
 {
   public class AccountController : BaseController
   {
 		private readonly IPersonService _personService;
+		private readonly IViewRenderService _viewRenderService;
 
 		public AccountController(
       ITokenStringHelper tokenStringHelper,
@@ -25,9 +26,10 @@ namespace tzatziki.minutz.Controllers
       IInstanceService instanceService,
 			IPersonService personService,
 			IOptions<AppSettings> settings,
-      IUserService userService) : base(settings, profileService, tokenStringHelper, instanceService, userService)
+      IUserService userService, IViewRenderService viewRenderService) : base(settings, profileService, tokenStringHelper, instanceService, userService)
     {
 			_personService = personService;
+			_viewRenderService = viewRenderService;
 		}
 
     [Authorize]
@@ -96,7 +98,9 @@ namespace tzatziki.minutz.Controllers
 		{
 			var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
 			var schema = user.InstanceId.ToSchemaString();
-			var data = _personService.InvitePerson(person,Environment.GetEnvironmentVariable("SQLCONNECTION"),schema);
+			var data = _personService.InvitePerson(person, 
+																						 GetInviteMessage(person),
+																						 Environment.GetEnvironmentVariable("SQLCONNECTION"),schema);
 			return Json(data);
 		}
 
@@ -105,7 +109,12 @@ namespace tzatziki.minutz.Controllers
       return View("Index", model);
     }
 
-    [Authorize]
+		public string GetInviteMessage(Person person)
+		{
+			return _viewRenderService.RenderToStringAsync("EmailMessage/InvitePerson", person).Result;
+		}
+
+		[Authorize]
     public ActionResult _userProfileForm()
     {
       var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);

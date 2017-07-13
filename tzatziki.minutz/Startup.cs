@@ -17,6 +17,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using tzatziki.minutz.core;
 using System;
+using tzatziki.minutz.Interfaces;
+using tzatziki.minutz.Services;
 
 namespace tzatziki.minutz
 {
@@ -48,9 +50,11 @@ namespace tzatziki.minutz
       services.AddTransient<IInstanceRepository, InstanceRepository>();
       services.AddTransient<IPersonRepository, PersonRepository>();
       services.AddTransient<IUserRepository, UserRepository>();
-      //services
+			//services
 
-      services.AddTransient<ITokenStringHelper, TokenStringHelper>();
+			services.AddTransient<IViewRenderService, ViewRenderService>();
+			services.AddTransient<IHttpService, HttpService>();
+			services.AddTransient<ITokenStringHelper, TokenStringHelper>();
       services.AddTransient<IProfileService, ProfileService>();
       services.AddTransient<IInstanceService, InstanceService>();
       services.AddTransient<IUserService, UserService>();
