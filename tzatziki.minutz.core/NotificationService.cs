@@ -1,8 +1,6 @@
-﻿using MailKit.Net.Smtp;
-using MimeKit;
-using System;
-using tzatziki.minutz.interfaces;
+﻿using tzatziki.minutz.interfaces;
 using tzatziki.minutz.models;
+using System;
 
 namespace tzatziki.minutz.core
 {

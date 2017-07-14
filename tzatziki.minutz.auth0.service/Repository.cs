@@ -1,8 +1,8 @@
 ﻿using tzatziki.minutz.interfaces.Repositories;
-using System.Security.Claims;
-using tzatziki.minutz.models;
 using Microsoft.Extensions.Options;
 using tzatziki.minutz.interfaces;
+using System.Security.Claims;
+using tzatziki.minutz.models;
 using System;
 
 namespace tzatziki.minutz.auth0.service
