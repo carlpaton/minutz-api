@@ -130,6 +130,10 @@ namespace tzatziki.minutz.sqlrepository
 
 		internal Person CreateUser(string connectionString, UserProfile profile, string schema = "app")
 		{
+
+
+
+
 			using (var context = new DBConnectorContext(connectionString, schema))
 			{
 				context.Database.EnsureCreated();
