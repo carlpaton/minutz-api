@@ -12,6 +12,7 @@ using System;
 using tzatziki.minutz.core;
 using tzatziki.minutz.models.Entities;
 using tzatziki.minutz.Interfaces;
+using System.Net;
 
 namespace tzatziki.minutz.Controllers
 {
@@ -157,6 +158,7 @@ namespace tzatziki.minutz.Controllers
       user.InstanceId = Guid.NewGuid();
       user = this.ProfileService.Update(user, AppSettings);
       var instance = this.Instanceservice.Get(user, Environment.GetEnvironmentVariable("SQLCONNECTION"));
+			
       var instanceUser = this.UserService.CopyPersonToUser(user, AppSettings);
 			return RedirectToAction("Logout", "Account");
 		}

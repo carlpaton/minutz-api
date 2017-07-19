@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net;
 using tzatziki.minutz.interfaces.Repositories;
 using tzatziki.minutz.models.Auth;
 using tzatziki.minutz.models.Entities;
@@ -100,17 +101,25 @@ namespace tzatziki.minutz.sqlrepository
 
     internal string InsertUserStatement(string schema, UserProfile user)
     {
-      return $@"INSERT INTO [{schema}].[User]
-                ([Identity],[FirstName],[LastName],[FullName],[Email],[Role],[Active])
+			var profileImage = user.ProfileImage;
+			if (user.ProfileImage.Contains("https://"))
+				profileImage = WebUtility.UrlEncode(user.ProfileImage);
+
+			return $@"INSERT INTO [{schema}].[User]
+                ([Identity],[FirstName],[LastName],[FullName],[ProfilePicture],[Email],[Role],[Active])
                 VALUES
-                ('{user.UserId}','{user.FirstName}','{user.LastName}','{user.Name}','{user.EmailAddress}','{user.Role}',1)";
+                ('{user.UserId}','{user.FirstName}','{user.LastName}','{user.Name}','{profileImage}','{user.EmailAddress}','{user.Role}',1)";
     }
 
     internal string UpdateUserSatement(string schema, UserProfile user)
     {
-      var active = user.Active == true ? 1 : 0;
+			var profileImage = user.ProfileImage;
+			if (user.ProfileImage.Contains("https://"))
+				profileImage = WebUtility.UrlEncode(user.ProfileImage);
+
+			var active = user.Active == true ? 1 : 0;
       return $@"UPDATE [{schema}].[User]
-                SET [FirstName] = '{user.FirstName}', [LastName] = '{user.LastName}', [FullName] = '{user.Name}', [Email] = '{user.EmailAddress}', [Role] = '{user.Role}', [Active] = {active}
+                SET [FirstName] = '{user.FirstName}', [LastName] = '{user.LastName}', [FullName] = '{user.Name}', [ProfilePicture]= '{profileImage}' ,[Email] = '{user.EmailAddress}', [Role] = '{user.Role}', [Active] = {active}
                 WHERE [Identity] = '{user.UserId}' ";
     }
 
@@ -216,6 +225,7 @@ namespace tzatziki.minutz.sqlrepository
         FirstName = dataReader["FirstName"].ToString(),
         FullName = dataReader["FullName"].ToString(),
         Identity = dataReader["Identity"].ToString(),
+				Image = WebUtility.HtmlDecode(dataReader["ProfilePicture"].ToString()),
         LastName = dataReader["LastName"].ToString(),
         Role = dataReader["Role"].ToString()
       };
