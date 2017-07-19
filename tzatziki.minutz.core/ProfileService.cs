@@ -38,11 +38,16 @@ namespace tzatziki.minutz.core
 
     internal UserProfile Initilise(IEnumerable<Claim> claims, ITokenStringHelper tokenStringHelper, AppSettings appsettings)
     {
-      var user = _personRepository.Get(claims.FirstOrDefault(c => c.Type == "user_id").Value,
+			if (claims.FirstOrDefault(c => c.Type == "picture") == null)
+			{
+				claims.ToList().Add(new Claim("picture", appsettings.DefaultProfilePicture));
+			}
+			var user = _personRepository.Get(claims.FirstOrDefault(c => c.Type == "user_id").Value,
                                         claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value,
                                         claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value,
+																				claims.FirstOrDefault(c => c.Type == "picture").Value,
 																				Environment.GetEnvironmentVariable("SQLCONNECTION"));
-      user.ProfileImage = claims.FirstOrDefault(c => c.Type == "picture")?.Value;
+      //user.ProfileImage = claims.FirstOrDefault(c => c.Type == "picture")?.Value;
       user.ClientID = claims.FirstOrDefault(c => c.Type == "clientID")?.Value;
       user.Created_At = tokenStringHelper.ConvertTokenStringToDate(claims.FirstOrDefault(c => c.Type == "created_at")?.Value);
       user.Updated_At = tokenStringHelper.ConvertTokenStringToDate(claims.FirstOrDefault(c => c.Type == "updated_at")?.Value);

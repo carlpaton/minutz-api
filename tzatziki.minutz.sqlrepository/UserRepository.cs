@@ -61,7 +61,9 @@ namespace tzatziki.minutz.sqlrepository
           con.Open();
           var command = new SqlCommand($"EXEC [app].[resetAccount]'{schema}','{userProfile.InstanceId.ToString().Replace("-", string.Empty)}','{userProfile.InstanceId.ToString()}'", con);
           command.ExecuteNonQuery();
-          con.Close();
+					var deleteSchemaCommand = new SqlCommand($"DROP SCHEMA {schema}", con);
+					deleteSchemaCommand.ExecuteNonQuery();
+					con.Close();
           return true;
         }
       }

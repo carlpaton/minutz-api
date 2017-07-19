@@ -20,6 +20,7 @@ using System;
 using tzatziki.minutz.Interfaces;
 using tzatziki.minutz.Services;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace tzatziki.minutz
 {
@@ -140,6 +141,7 @@ namespace tzatziki.minutz
 							if (context.ReturnUri.Contains(meetingService.MeetingReferalQueryStringKey))
 							{
 								var queries = meetingService.ExtractQueries(context.ReturnUri);
+								auth0Repository.Getrole(identity, personRepository, appsettings, profileService, tokenStringHelper,queries.ToList());
 							}
 							else
 							{

@@ -285,6 +285,7 @@
 				type: minutz.properties.GET,
 				url: document.location.origin + "/Account/AccountPeople",
 				success: function (data) {
+					console.log('--get peeps');
 					console.log(data);
 					$('#tbPeople').html('');
 					for (var i = 0; i < data.length; i++) {
@@ -326,12 +327,19 @@
 						type: minutz.properties.GET,
 						url: url,
 						success: function (data) {
+							console.log('got peeps');
 							console.log(data);
 							for (var attendeeIdex = 0; attendeeIdex < data.meetingAttendeeCollection.length; attendeeIdex++) {
 								var userId = data.meetingAttendeeCollection[attendeeIdex].personIdentity;
 
+								console.log('-------------------------------------------------');
+								console.log(data.meetingAttendeeCollection[attendeeIdex]);
+								console.log(users);
+								console.log(users);
+								console.log('-------------------------------------------------');
+
 								for (var orginalUserIndex = 0; orginalUserIndex < users.length; orginalUserIndex++) {
-									if (userId == users[orginalUserIndex].identity) {
+									if (userId == users[orginalUserIndex].personIdentity) {
 										$("#attendeeList").append(createUserListItem(users[orginalUserIndex]));
 									}
 								}

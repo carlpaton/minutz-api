@@ -41,12 +41,13 @@ CREATE TABLE [app].[Person] (
     [FirstName]  VARCHAR (255) NULL,
     [LastName]   VARCHAR (255) NULL,
     [FullName]   VARCHAR (255) NULL,
+    [ProfilePicture]   VARCHAR (255) NULL,
     [Email]      VARCHAR (255) NOT NULL,
     [Role]       VARCHAR (255) NOT NULL,
     [Active]     BIT           NOT NULL,
     [InstanceId] VARCHAR (255) NULL
 )
-
+app.Personapp.Person
 END
 ELSE
 BEGIN
@@ -56,6 +57,7 @@ CREATE TABLE [app].[Person] (
     [FirstName]  VARCHAR (255) NULL,
     [LastName]   VARCHAR (255) NULL,
     [FullName]   VARCHAR (255) NULL,
+    [ProfilePicture]   VARCHAR (255) NULL,    
     [Email]      VARCHAR (255) NOT NULL,
     [Role]       VARCHAR (255) NOT NULL,
     [Active]     BIT           NOT NULL,
@@ -130,6 +132,7 @@ CREATE PROCEDURE app.createInstanceUser
         [FirstName]  VARCHAR (255) NULL,
         [LastName]   VARCHAR (255) NULL,
         [FullName]   VARCHAR (255) NULL,
+        [ProfilePicture]   VARCHAR (255) NULL,        
         [Email]      VARCHAR (255) NOT NULL,
         [Role]       VARCHAR (255) NOT NULL,
         [Active]     BIT           NOT NULL,

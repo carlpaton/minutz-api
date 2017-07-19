@@ -17,5 +17,11 @@ namespace tzatziki.minutz.Controllers
 			var person = new Person { FirstName = "Angelica", LastName = "Ashworth", FullName= "Angelica Ashworth", Role = "Attendee" };
 			return View(person);
 		}
+
+		public IActionResult MeetingInvite()
+		{
+			var person = new Person { FirstName = "Angelica", LastName = "Ashworth", FullName = "Angelica Ashworth", Role = "Attendee" };
+			return View(person);
+		}
 	}
 }

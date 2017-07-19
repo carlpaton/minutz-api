@@ -9,7 +9,7 @@ namespace tzatziki.minutz.interfaces.Repositories
   {
     bool IsPerson(string email);
 
-    UserProfile Get(string identifier, string email, string name, string connectionString);
+    UserProfile Get(string identifier, string email, string name, string picture,string connectionString);
 
     UserProfile InsertInstanceIdForUser(UserProfile user, string connectionString);
 

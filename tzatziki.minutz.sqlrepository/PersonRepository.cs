@@ -15,7 +15,7 @@ namespace tzatziki.minutz.sqlrepository
 			return false;
 		}
 
-		public UserProfile Get(string identifier, string email, string name, string connectionString)
+		public UserProfile Get(string identifier, string email, string name, string picture,string connectionString)
 		{
 			var user = GetUser(identifier, connectionString);
 			if (user != null)
@@ -27,6 +27,7 @@ namespace tzatziki.minutz.sqlrepository
 					Name = $"{user.FirstName} {user.LastName}",
 					FirstName = user.FirstName,
 					LastName = user.LastName,
+					ProfileImage = user.ProfilePicture,
 					EmailAddress = user.Email
 				};
 			}
@@ -36,6 +37,7 @@ namespace tzatziki.minutz.sqlrepository
 			{
 				EmailAddress = email,
 				UserId = identifier,
+				ProfileImage = picture,
 				Name = name
 			};
 
@@ -81,6 +83,7 @@ namespace tzatziki.minutz.sqlrepository
 
 				var dbUser = context.Person.FirstOrDefault(i => i.Identityid == user.UserId);
 				dbUser.InstanceId = user.InstanceId.ToString();
+				dbUser.ProfilePicture = user.ProfileImage;
 				dbUser.Role = RoleEnum.Admin.ToString();
 				user.Role = RoleEnum.Admin.ToString();
 
@@ -130,10 +133,7 @@ namespace tzatziki.minutz.sqlrepository
 
 		internal Person CreateUser(string connectionString, UserProfile profile, string schema = "app")
 		{
-
-
-
-
+			
 			using (var context = new DBConnectorContext(connectionString, schema))
 			{
 				context.Database.EnsureCreated();
@@ -143,6 +143,7 @@ namespace tzatziki.minutz.sqlrepository
 					LastName = profile.LastName,
 					FullName = $"{profile.FirstName} {profile.LastName}",
 					Email = profile.EmailAddress,
+					ProfilePicture = profile.ProfileImage,
 					Identityid = profile.UserId,
 					Role = RoleEnum.Attendee.ToString(),
 					Active = true
@@ -239,6 +240,7 @@ namespace tzatziki.minutz.sqlrepository
 				EmailAddress = dataReader["Email"].ToString(),
 				FirstName = dataReader["FirstName"].ToString(),
 				LastName = dataReader["LastName"].ToString(),
+				ProfileImage = dataReader["ProfilePicture"].ToString(),
 				//Id = Guid.Parse(dataReader["Id"].ToString()),
 				Active = bool.Parse(dataReader["Active"].ToString()),
 				Role = dataReader["Role"].ToString()
@@ -255,7 +257,7 @@ namespace tzatziki.minutz.sqlrepository
 			var active = person.Active == true ? 1 : 0;
 			return $@"INSERT INTO
 							[{schema}].[User]
-							VALUES('{person.Identityid}','{person.FirstName}','{person.LastName}','{person.FullName}','{person.Email}','{person.Role}',{active})
+							VALUES('{person.Identityid}','{person.FirstName}','{person.LastName}','{person.FullName}','{person.ProfilePicture}','{person.Email}','{person.Role}',{active})
 							";
 		}
 
@@ -264,7 +266,7 @@ namespace tzatziki.minutz.sqlrepository
 			var active = person.Active == true ? 1 : 0;
 			return $@"INSERT INTO
 							[{schema}].[Person]
-							VALUES('{person.Identityid}','{person.FirstName}','{person.LastName}','{person.FullName}','{person.Email}','{person.Role}',{active},null)
+							VALUES('{person.Identityid}','{person.FirstName}','{person.LastName}','{person.FullName}','{person.ProfilePicture}','{person.Email}','{person.Role}',{active},null)
 							";
 		}
 	}

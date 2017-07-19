@@ -104,6 +104,18 @@ namespace tzatziki.minutz.Controllers
 			return Json(data);
 		}
 
+		[HttpPost]
+		[Authorize]
+		public JsonResult MeetingInvitePerson(Person person)
+		{
+			var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
+			var schema = user.InstanceId.ToSchemaString();
+			var data = _personService.InvitePerson(person,
+																						 GetInviteMessage(person),
+																						 Environment.GetEnvironmentVariable("SQLCONNECTION"), schema);
+			return Json(data);
+		}
+
 		public IActionResult SaveProfile(UserProfile model)
     {
       return View("Index", model);
@@ -112,6 +124,11 @@ namespace tzatziki.minutz.Controllers
 		public string GetInviteMessage(Person person)
 		{
 			return _viewRenderService.RenderToStringAsync("EmailMessage/InvitePerson", person).Result;
+		}
+
+		public string GetMeetingInvite(Person person)
+		{
+			return _viewRenderService.RenderToStringAsync("EmailMessage/MeetingInvite", person).Result;
 		}
 
 		[Authorize]
