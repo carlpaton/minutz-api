@@ -186,7 +186,7 @@ namespace tzatziki.minutz.sqlrepository
 			}
 		}
 
-		public bool InvitePerson(Person person, string connectionString, string schema)
+		public bool InvitePerson(UserProfile person, string connectionString, string schema)
 		{
 			try
 			{
@@ -252,21 +252,21 @@ namespace tzatziki.minutz.sqlrepository
 			return $@"SELECT * FROM [{schema}].[User]";
 		}
 
-		internal string _insertSchemaUsersStatement(Person person, string schema)
+		internal string _insertSchemaUsersStatement(UserProfile person, string schema)
 		{
 			var active = person.Active == true ? 1 : 0;
 			return $@"INSERT INTO
 							[{schema}].[User]
-							VALUES('{person.Identityid}','{person.FirstName}','{person.LastName}','{person.FullName}','{person.ProfilePicture}','{person.Email}','{person.Role}',{active})
+							VALUES('{person.UserId}','{person.FirstName}','{person.LastName}','{person.Name}','{person.ProfileImage}','{person.EmailAddress}','{person.Role}',{active})
 							";
 		}
 
-		internal string _insertUsersStatement(Person person, string schema)
+		internal string _insertUsersStatement(UserProfile person, string schema)
 		{
 			var active = person.Active == true ? 1 : 0;
 			return $@"INSERT INTO
 							[{schema}].[Person]
-							VALUES('{person.Identityid}','{person.FirstName}','{person.LastName}','{person.FullName}','{person.ProfilePicture}','{person.Email}','{person.Role}',{active},null)
+							VALUES('{person.UserId}','{person.FirstName}','{person.LastName}','{person.Name}','{person.ProfileImage}','{person.EmailAddress}','{person.Role}',{active},null)
 							";
 		}
 	}

@@ -21,6 +21,6 @@ namespace tzatziki.minutz.interfaces.Repositories
 
 		IEnumerable<UserProfile> GetSchemaUsers(string connectionString, string schema);
 
-		bool InvitePerson(Person person, string connectionString, string schema);
+		bool InvitePerson(UserProfile person, string connectionString, string schema);
 	}
 }

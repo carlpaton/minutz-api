@@ -38,12 +38,12 @@ namespace tzatziki.minutz.core
 		/// <param name="connectionString"></param>
 		/// <param name="schema"></param>
 		/// <returns></returns>
-		public bool InvitePerson(Person person, string message ,string connectionString, string schema)
+		public bool InvitePerson(UserProfile person, string message ,string connectionString, string schema)
 		{
-			if (string.IsNullOrEmpty(person.Identityid)) person.Identityid = System.Guid.NewGuid().ToString();
+			if (string.IsNullOrEmpty(person.UserId)) person.UserId = System.Guid.NewGuid().ToString();
 			var successful = _personRepository.InvitePerson(person,connectionString, schema);
 			if (successful)
-				_notificationService.InvitePerson(person.Email, message,_httpService);
+				_notificationService.InvitePerson(person.EmailAddress, message,_httpService);
 			return successful;
 		}
 	}
