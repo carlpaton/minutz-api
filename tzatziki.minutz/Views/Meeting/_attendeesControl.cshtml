@@ -233,8 +233,8 @@
 			$.ajax({
 				type: minutz.properties.POST,
 				dataType: minutz.properties.JSON,
-				url: document.location.origin + "/Account/InvitePerson",
-				data: person,
+				url: document.location.origin + "/Account/InvitePerson?email=" + person.Email + "&firstname=" + person.FirstName + "&lastname=" + person.LastName,
+				//data: person,
 				success: function (data) {
 					console.log(data);
 					var person = {};

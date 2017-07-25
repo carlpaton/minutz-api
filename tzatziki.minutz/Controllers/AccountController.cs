@@ -101,14 +101,25 @@ namespace tzatziki.minutz.Controllers
 
 		[HttpPost]
 		[Authorize]
-		public JsonResult InvitePerson(string personIdentifier)
+		public JsonResult InvitePerson(string email, string firstname, string lastname)
 		{
 			var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
 			var schema = user.InstanceId.ToSchemaString();
-			var person = _personService.GetSchemaUsers(_connectionString, schema).FirstOrDefault(i => i.UserId == personIdentifier);
+			var person = _personService.GetSchemaUsers(_connectionString, schema).FirstOrDefault(i => i.EmailAddress == email);
+			if (person == null)
+			{
+				person = new UserProfile
+				{
+					UserId = System.Guid.NewGuid().ToString(),
+					FirstName = firstname,
+					EmailAddress = email,
+					LastName = lastname,
+					Role = "Invitee"
+				};
+			}
 			var data = _personService.InvitePerson(person, 
 																						 GetInviteMessage(person),
-																						 Environment.GetEnvironmentVariable("SQLCONNECTION"),schema);
+																						 _connectionString,schema);
 			return Json(data);
 		}
 
