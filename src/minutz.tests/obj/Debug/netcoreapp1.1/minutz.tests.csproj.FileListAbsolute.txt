@@ -1,0 +1,13 @@
+C:\dev\src\minutz.tests\bin\Debug\netcoreapp1.1\xunit.runner.visualstudio.dotnetcore.testadapter.dll
+C:\dev\src\minutz.tests\bin\Debug\netcoreapp1.1\xunit.runner.utility.netstandard15.dll
+C:\dev\src\minutz.tests\bin\Debug\netcoreapp1.1\xunit.runner.reporters.netstandard15.dll
+C:\dev\src\minutz.tests\bin\Debug\netcoreapp1.1\minutz.tests.deps.json
+C:\dev\src\minutz.tests\bin\Debug\netcoreapp1.1\minutz.tests.runtimeconfig.json
+C:\dev\src\minutz.tests\bin\Debug\netcoreapp1.1\minutz.tests.runtimeconfig.dev.json
+C:\dev\src\minutz.tests\bin\Debug\netcoreapp1.1\minutz.tests.dll
+C:\dev\src\minutz.tests\bin\Debug\netcoreapp1.1\minutz.tests.pdb
+C:\dev\src\minutz.tests\bin\Debug\netcoreapp1.1\minutz.dll
+C:\dev\src\minutz.tests\bin\Debug\netcoreapp1.1\minutz.pdb
+C:\dev\src\minutz.tests\obj\Debug\netcoreapp1.1\minutz.tests.AssemblyInfo.cs
+C:\dev\src\minutz.tests\obj\Debug\netcoreapp1.1\minutz.tests.dll
+C:\dev\src\minutz.tests\obj\Debug\netcoreapp1.1\minutz.tests.pdb

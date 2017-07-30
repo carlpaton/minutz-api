@@ -1,0 +1,4 @@
+FROM microsoft/dotnet:1.1.2-sdk
+LABEL docker.durban="aspnetcore:1.1.2-sdk"
+RUN ["bash","-c","curl -sL https://deb.nodesource.com/setup_6.x | bash -"]
+RUN ["bash","-c","apt-get install -y nodejs"]
