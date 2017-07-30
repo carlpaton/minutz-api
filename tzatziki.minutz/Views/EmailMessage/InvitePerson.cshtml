@@ -1,0 +1,14 @@
+@model tzatziki.minutz.models.Auth.UserProfile
+@{
+    ViewData["Title"] = "InvitePerson";
+    Layout = "~/Views/Shared/_LayoutMailer.cshtml";
+}
+<div style="width:100%; background-color: #ffffff">
+	<div style="width: 50%; margin: 0 auto; display: table; background-color: #0094ff; ">
+		<h2>InvitePerson</h2>
+		@Model.FirstName
+		@Model.LastName
+		@Model.Role
+	</div>
+</div>
+

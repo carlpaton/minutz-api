@@ -19,16 +19,15 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ACTIONSACCOUNT": "actions@minutz.co",
-        "MINUTESPASSWORD": "Minutz2017",
-        "ACTIONSPASSWORD": "Minutz2017",
+        "MAILURL": "https://api.mailgun.net/v3/minutz.net/messages",
+        "MAILAPIKEY": "key-61f7481d1706076f65f954ff6e261e72",
+        "MAILUSER": "api",
+        "ACTIONSACCOUNT": "actions@minutz.net",
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "MINUTESACCOUNT": "minutes@minutz.co",
+        "MINUTESACCOUNT": "minutes@minutz.net",
         "SQLCONNECTION": "Server=tcp:127.0.0.1,1433;User ID=sa;pwd=Password1234;database=minutz;",
         "SMTPPORT": "465",
-        "INVITESACCOUNT": "invites@minutz.co",
-        "SMTPDOMAIN": "cp6.domains.co.za",
-        "INVITESPASSWORD": "Minutz2017"
+        "INVITESACCOUNT": "invites@minutz.net"
       },
       "applicationUrl": "http://localhost:52038"
     }

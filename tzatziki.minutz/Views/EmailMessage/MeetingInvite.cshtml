@@ -1,0 +1,16 @@
+@model tzatziki.minutz.models.MeetingInviteModel
+@{
+    ViewData["Title"] = "MeetingInvite";
+    Layout = "~/Views/Shared/_LayoutMailer.cshtml";
+}
+
+<h2>MeetingInvite</h2>
+<div style="width:100%; background-color: #ffffff">
+	<div style="width: 50%; margin: 0 auto; display: table; background-color: #0094ff; ">
+		<h2>You are invited to : @Model.Meeting.Name</h2>
+		<div>@Model.Person.FirstName</div>
+		<div>@Model.Person.LastName</div>
+		<div>@Model.Person.Role</div>
+	</div>
+</div>
+

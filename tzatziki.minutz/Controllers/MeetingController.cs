@@ -50,7 +50,17 @@ namespace tzatziki.minutz.Controllers
       return View("MeetingRunner",new Meeting { });
     }
 
-    [HttpGet]
+		public IActionResult MeetingHub()
+		{
+			return View();
+		}
+
+		public IActionResult Invitations()
+		{
+			return View();
+		}
+
+		[HttpGet]
     [Authorize]
     public JsonResult GetMeetings()
     {

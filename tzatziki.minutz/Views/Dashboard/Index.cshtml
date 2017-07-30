@@ -23,9 +23,16 @@
           </div>
           <!-- /.widget-user-image -->
           <h3 class="widget-user-username">@User.ToProfile(personService).Name</h3>
-          <h5 class="widget-user-desc">@User.Claims.FirstOrDefault(i => i.Type == System.Security.Claims.ClaimTypes.Role).Value</h5>
-        </div>
-        <div class="box-footer no-padding">
+          <h5 class="widget-user-desc">
+					@if(User.Claims.FirstOrDefault(i => i.Type == System.Security.Claims.ClaimTypes.Role)!= null)
+					{
+						var role = User.Claims.FirstOrDefault(i => i.Type == System.Security.Claims.ClaimTypes.Role);
+						<span>@role.Value</span>
+					}
+					</h5>
+</div>
+
+<div class="box-footer no-padding">
           <ul class="nav nav-stacked">
             <li><a asp-controller="Home" asp-action="Index">Meetings <span class="pull-right badge bg-blue">10</span></a></li>
             <li><a asp-controller="Home" asp-action="Index">Tasks <span class="pull-right badge bg-aqua">2</span></a></li>
@@ -82,19 +89,20 @@
 
 
     $.ajax({
-      url: '/Meeting/GetMeetings',
+								url: '/Meeting/GetMeetings',
       dataType: 'json',
       type: 'GET',
       context: document.body
-    }).done(function (data) {
-      var newData = [];
-      for (var i = 0; i < data.length; i++) {
-        meetings.push({ id: data[i].Id, text: data[i].Name });
-        var html = '<li><a href="/meeting?id='+ data[i].id +'">'+ data[i].name +'</a></li>';
+
+		}).done(function (data) {
+								var newData = [];
+								for (var i = 0; i < data.length; i++) {
+									meetings.push({ id: data[i].Id, text: data[i].Name });
+								var html = '<li><a href="/meeting?id='+ data[i].id +'">'+ data[i].name +'</a></li>';
         $('#meetingList').append(html);
-      }
-      //minutz.functions.setAttendees();
-    });
+							}
+							//minutz.functions.setAttendees();
+						});
 
   });
 </script>

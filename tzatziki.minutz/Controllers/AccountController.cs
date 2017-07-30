@@ -11,13 +11,17 @@ using tzatziki.minutz.models.Auth;
 using System;
 using tzatziki.minutz.core;
 using tzatziki.minutz.models.Entities;
-using System.Collections.Generic;
+using tzatziki.minutz.Interfaces;
+using System.Net;
 
 namespace tzatziki.minutz.Controllers
 {
   public class AccountController : BaseController
   {
 		private readonly IPersonService _personService;
+		private readonly IViewRenderService _viewRenderService;
+		private readonly IMeetingService _meetingService;
+		private readonly string _connectionString = Environment.GetEnvironmentVariable("SQLCONNECTION");
 
 		public AccountController(
       ITokenStringHelper tokenStringHelper,
@@ -25,9 +29,14 @@ namespace tzatziki.minutz.Controllers
       IInstanceService instanceService,
 			IPersonService personService,
 			IOptions<AppSettings> settings,
-      IUserService userService) : base(settings, profileService, tokenStringHelper, instanceService, userService)
+      IUserService userService, 
+			IViewRenderService viewRenderService, 
+			IMeetingService meetingService) 
+			: base(settings, profileService, tokenStringHelper, instanceService, userService)
     {
 			_personService = personService;
+			_viewRenderService = viewRenderService;
+			_meetingService = meetingService;
 		}
 
     [Authorize]
@@ -92,20 +101,60 @@ namespace tzatziki.minutz.Controllers
 
 		[HttpPost]
 		[Authorize]
-		public JsonResult InvitePerson(Person person)
+		public JsonResult InvitePerson(string email, string firstname, string lastname)
 		{
 			var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
 			var schema = user.InstanceId.ToSchemaString();
-			var data = _personService.InvitePerson(person,Environment.GetEnvironmentVariable("SQLCONNECTION"),schema);
+			var person = _personService.GetSchemaUsers(_connectionString, schema).FirstOrDefault(i => i.EmailAddress == email);
+			if (person == null)
+			{
+				person = new UserProfile
+				{
+					UserId = System.Guid.NewGuid().ToString(),
+					FirstName = firstname,
+					EmailAddress = email,
+					LastName = lastname,
+					Role = "Invitee"
+				};
+			}
+			var data = _personService.InvitePerson(person, 
+																						 GetInviteMessage(person),
+																						 _connectionString,schema);
 			return Json(data);
 		}
+
+		[HttpPost]
+		[Authorize]
+		public JsonResult MeetingInvitePerson(string personIdentifier, string meetingId)
+		{
+			var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
+			var schema = user.InstanceId.ToSchemaString();
+			var meeting = _meetingService.Get(schema, new Meeting { Id = Guid.Parse(meetingId) }, user.UserId, true);
+			var person = _personService.GetSchemaUsers(_connectionString, schema).FirstOrDefault(i => i.UserId == personIdentifier);
+			var data = _personService.InvitePerson(person,
+																						 GetMeetingInvite(person,meeting),
+																						 _connectionString, schema);
+			return Json(data);
+		}
+
 
 		public IActionResult SaveProfile(UserProfile model)
     {
       return View("Index", model);
     }
 
-    [Authorize]
+		public string GetInviteMessage(UserProfile person)
+		{
+			return _viewRenderService.RenderToStringAsync("EmailMessage/InvitePerson", person).Result;
+		}
+
+		public string GetMeetingInvite(UserProfile person, Meeting meeting)
+		{
+			MeetingInviteModel model = new MeetingInviteModel { Person = person, Meeting = meeting };
+			return _viewRenderService.RenderToStringAsync("EmailMessage/MeetingInvite", model).Result;
+		}
+
+		[Authorize]
     public ActionResult _userProfileForm()
     {
       var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
@@ -131,6 +180,7 @@ namespace tzatziki.minutz.Controllers
       user.InstanceId = Guid.NewGuid();
       user = this.ProfileService.Update(user, AppSettings);
       var instance = this.Instanceservice.Get(user, Environment.GetEnvironmentVariable("SQLCONNECTION"));
+			
       var instanceUser = this.UserService.CopyPersonToUser(user, AppSettings);
 			return RedirectToAction("Logout", "Account");
 		}
