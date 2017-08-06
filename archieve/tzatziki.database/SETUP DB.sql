@@ -4,8 +4,8 @@ BEGIN
  ALTER DATABASE minutz set single_user with rollback immediate;
 END
 GO
-USE [master]
-DROP DATABASE minutz ;
+--USE [master]
+--DROP DATABASE minutz ;
 
 IF EXISTS(SELECT 1 FROM master.dbo.sysdatabases WHERE name = 'minutz')
 BEGIN
@@ -47,7 +47,7 @@ CREATE TABLE [app].[Person] (
     [Active]     BIT           NOT NULL,
     [InstanceId] VARCHAR (255) NULL
 )
-app.Personapp.Person
+--app.Personapp.Person
 END
 ELSE
 BEGIN
