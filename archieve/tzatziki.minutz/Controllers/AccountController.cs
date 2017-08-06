@@ -1,43 +1,42 @@
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Authentication;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using tzatziki.minutz.interfaces;
-using tzatziki.minutz.models;
-using tzatziki.minutz.models.Auth;
-using System;
-using tzatziki.minutz.core;
+using Microsoft.AspNetCore.Authorization;
 using tzatziki.minutz.models.Entities;
+using Microsoft.Extensions.Options;
+using tzatziki.minutz.models.Auth;
 using tzatziki.minutz.Interfaces;
-using System.Net;
+using tzatziki.minutz.interfaces;
+using Microsoft.AspNetCore.Mvc;
+using tzatziki.minutz.models;
+using System.Threading.Tasks;
+using tzatziki.minutz.core;
+using System.Linq;
+using System;
 
 namespace tzatziki.minutz.Controllers
 {
   public class AccountController : BaseController
   {
-		private readonly IPersonService _personService;
-		private readonly IViewRenderService _viewRenderService;
-		private readonly IMeetingService _meetingService;
-		private readonly string _connectionString = Environment.GetEnvironmentVariable("SQLCONNECTION");
+    private readonly IPersonService _personService;
+    private readonly IViewRenderService _viewRenderService;
+    private readonly IMeetingService _meetingService;
+    private readonly string _connectionString = Environment.GetEnvironmentVariable("SQLCONNECTION");
 
-		public AccountController(
+    public AccountController(
       ITokenStringHelper tokenStringHelper,
       IProfileService profileService,
       IInstanceService instanceService,
-			IPersonService personService,
-			IOptions<AppSettings> settings,
-      IUserService userService, 
-			IViewRenderService viewRenderService, 
-			IMeetingService meetingService) 
-			: base(settings, profileService, tokenStringHelper, instanceService, userService)
+      IPersonService personService,
+      IOptions<AppSettings> settings,
+      IUserService userService,
+      IViewRenderService viewRenderService,
+      IMeetingService meetingService)
+      : base(settings, profileService, tokenStringHelper, instanceService, userService)
     {
-			_personService = personService;
-			_viewRenderService = viewRenderService;
-			_meetingService = meetingService;
-		}
+      _personService = personService;
+      _viewRenderService = viewRenderService;
+      _meetingService = meetingService;
+    }
 
     [Authorize]
     public IActionResult Index()
@@ -81,80 +80,84 @@ namespace tzatziki.minutz.Controllers
       return View();
     }
 
-		[HttpGet]
-		[Authorize]
-		public JsonResult People()
-		{
-			var data = _personService.GetSystemUsers(Environment.GetEnvironmentVariable("SQLCONNECTION"));
-			return Json(data);
-		}
+    [HttpGet]
+    [Authorize]
+    public JsonResult People()
+    {
+      var data = _personService.GetSystemUsers(Environment.GetEnvironmentVariable("SQLCONNECTION"));
+      return Json(data);
+    }
 
-		[HttpGet]
-		[Authorize]
-		public JsonResult AccountPeople()
-		{
-			var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
-			var schema = user.InstanceId.ToSchemaString();
-			var data = _personService.GetSchemaUsers(Environment.GetEnvironmentVariable("SQLCONNECTION"),schema);
-			return Json(data);
-		}
+    [HttpGet]
+    [Authorize]
+    public JsonResult AccountPeople()
+    {
+      var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
+      var schema = user.InstanceId.ToSchemaString();
+      var data = _personService.GetSchemaUsers(Environment.GetEnvironmentVariable("SQLCONNECTION"), schema).ToList();
+      foreach (var d in data)
+      {
+        d.ProfileImage = System.Net.WebUtility.HtmlDecode(d.ProfileImage);
+      }
+      return Json(data);
+    }
 
-		[HttpPost]
-		[Authorize]
-		public JsonResult InvitePerson(string email, string firstname, string lastname)
-		{
-			var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
-			var schema = user.InstanceId.ToSchemaString();
-			var person = _personService.GetSchemaUsers(_connectionString, schema).FirstOrDefault(i => i.EmailAddress == email);
-			if (person == null)
-			{
-				person = new UserProfile
-				{
-					UserId = System.Guid.NewGuid().ToString(),
-					FirstName = firstname,
-					EmailAddress = email,
-					LastName = lastname,
-					Role = "Invitee"
-				};
-			}
-			var data = _personService.InvitePerson(person, 
-																						 GetInviteMessage(person),
-																						 _connectionString,schema);
-			return Json(data);
-		}
+    [HttpPost]
+    [Authorize]
+    public JsonResult InvitePerson(string email, string firstname, string lastname)
+    {
+      var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
+      var schema = user.InstanceId.ToSchemaString();
+      var person = _personService.GetSchemaUsers(_connectionString, schema).FirstOrDefault(i => i.EmailAddress == email);
+      if (person == null)
+      {
+        person = new UserProfile
+        {
+          UserId = System.Guid.NewGuid().ToString(),
+          FirstName = firstname,
+          EmailAddress = email,
+          LastName = lastname,
+          Role = "Invitee"
+        };
+      }
+      var data = _personService.InvitePerson(person,
+                                             GetInviteMessage(person),
+                                             _connectionString, schema);
+      return Json(data);
+    }
 
-		[HttpPost]
-		[Authorize]
-		public JsonResult MeetingInvitePerson(string personIdentifier, string meetingId)
-		{
-			var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
-			var schema = user.InstanceId.ToSchemaString();
-			var meeting = _meetingService.Get(schema, new Meeting { Id = Guid.Parse(meetingId) }, user.UserId, true);
-			var person = _personService.GetSchemaUsers(_connectionString, schema).FirstOrDefault(i => i.UserId == personIdentifier);
-			var data = _personService.InvitePerson(person,
-																						 GetMeetingInvite(person,meeting),
-																						 _connectionString, schema);
-			return Json(data);
-		}
+    [HttpPost]
+    [Authorize]
+    public JsonResult MeetingInvitePerson(string personIdentifier, string meetingId)
+    {
+      var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
+      var schema = user.InstanceId.ToSchemaString();
+      var meeting = _meetingService.Get(schema, new Meeting { Id = Guid.Parse(meetingId) }, user.UserId, true);
+      var person = _personService.GetSchemaUsers(_connectionString, schema).FirstOrDefault(i => i.UserId == personIdentifier);
+      var data = _personService.InvitePerson(person,
+                                             GetMeetingInvite(person, meeting),
+                                             _connectionString, schema);
+      return Json(data);
+    }
 
 
-		public IActionResult SaveProfile(UserProfile model)
+    public IActionResult SaveProfile(UserProfile model)
     {
       return View("Index", model);
     }
 
-		public string GetInviteMessage(UserProfile person)
-		{
-			return _viewRenderService.RenderToStringAsync("EmailMessage/InvitePerson", person).Result;
-		}
+    public string GetInviteMessage(UserProfile person)
+    {
+      return _viewRenderService.RenderToStringAsync("EmailMessage/InvitePerson", person).Result;
+    }
 
-		public string GetMeetingInvite(UserProfile person, Meeting meeting)
-		{
-			MeetingInviteModel model = new MeetingInviteModel { Person = person, Meeting = meeting };
-			return _viewRenderService.RenderToStringAsync("EmailMessage/MeetingInvite", model).Result;
-		}
+    public string GetMeetingInvite(UserProfile person, Meeting meeting)
+    {
+      MeetingInviteModel model = new MeetingInviteModel { Person = person, Meeting = meeting };
+      return _viewRenderService.RenderToStringAsync("EmailMessage/MeetingInvite", model).Result;
+    }
 
-		[Authorize]
+    [Authorize]
     public ActionResult _userProfileForm()
     {
       var user = this.ProfileService.GetFromClaims(User.Claims, TokenStringHelper, AppSettings);
@@ -180,10 +183,10 @@ namespace tzatziki.minutz.Controllers
       user.InstanceId = Guid.NewGuid();
       user = this.ProfileService.Update(user, AppSettings);
       var instance = this.Instanceservice.Get(user, Environment.GetEnvironmentVariable("SQLCONNECTION"));
-			
+
       var instanceUser = this.UserService.CopyPersonToUser(user, AppSettings);
-			return RedirectToAction("Logout", "Account");
-		}
+      return RedirectToAction("Logout", "Account");
+    }
 
     [Authorize]
     public ActionResult ResetAccount()

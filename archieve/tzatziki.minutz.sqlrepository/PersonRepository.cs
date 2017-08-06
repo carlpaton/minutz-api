@@ -233,7 +233,7 @@ namespace tzatziki.minutz.sqlrepository
 		}
 		internal UserProfile ToUserProfile(SqlDataReader dataReader)
 		{
-			return new UserProfile
+      return new UserProfile
 			{
 				UserId = dataReader["Identity"].ToString(),
 				Name = dataReader["FullName"].ToString(),
