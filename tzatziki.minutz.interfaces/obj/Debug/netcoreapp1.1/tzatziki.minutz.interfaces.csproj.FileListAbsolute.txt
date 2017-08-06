@@ -1,9 +1,0 @@
-C:\ashworx\minutz\tzatziki.minutz.interfaces\bin\Debug\netcoreapp1.1\tzatziki.minutz.interfaces.deps.json
-C:\ashworx\minutz\tzatziki.minutz.interfaces\bin\Debug\netcoreapp1.1\tzatziki.minutz.interfaces.dll
-C:\ashworx\minutz\tzatziki.minutz.interfaces\bin\Debug\netcoreapp1.1\tzatziki.minutz.interfaces.pdb
-C:\ashworx\minutz\tzatziki.minutz.interfaces\bin\Debug\netcoreapp1.1\tzatziki.minutz.models.dll
-C:\ashworx\minutz\tzatziki.minutz.interfaces\bin\Debug\netcoreapp1.1\tzatziki.minutz.models.pdb
-C:\ashworx\minutz\tzatziki.minutz.interfaces\obj\Debug\netcoreapp1.1\tzatziki.minutz.interfaces.csprojResolveAssemblyReference.cache
-C:\ashworx\minutz\tzatziki.minutz.interfaces\obj\Debug\netcoreapp1.1\tzatziki.minutz.interfaces.AssemblyInfo.cs
-C:\ashworx\minutz\tzatziki.minutz.interfaces\obj\Debug\netcoreapp1.1\tzatziki.minutz.interfaces.dll
-C:\ashworx\minutz\tzatziki.minutz.interfaces\obj\Debug\netcoreapp1.1\tzatziki.minutz.interfaces.pdb

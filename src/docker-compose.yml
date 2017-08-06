@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  minutz-api:
+    image: minutz-api
+    ports:
+      - "5555:80"
+    build:
+      context: ./minutz-api
+      dockerfile: Dockerfile
