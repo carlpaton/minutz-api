@@ -1,0 +1,11 @@
+C:\ashworx\minutz\tzatziki.minutz.sqlrepository\bin\Debug\netcoreapp1.1\tzatziki.minutz.sqlrepository.deps.json
+C:\ashworx\minutz\tzatziki.minutz.sqlrepository\bin\Debug\netcoreapp1.1\tzatziki.minutz.sqlrepository.dll
+C:\ashworx\minutz\tzatziki.minutz.sqlrepository\bin\Debug\netcoreapp1.1\tzatziki.minutz.sqlrepository.pdb
+C:\ashworx\minutz\tzatziki.minutz.sqlrepository\bin\Debug\netcoreapp1.1\tzatziki.minutz.interfaces.dll
+C:\ashworx\minutz\tzatziki.minutz.sqlrepository\bin\Debug\netcoreapp1.1\tzatziki.minutz.models.dll
+C:\ashworx\minutz\tzatziki.minutz.sqlrepository\bin\Debug\netcoreapp1.1\tzatziki.minutz.interfaces.pdb
+C:\ashworx\minutz\tzatziki.minutz.sqlrepository\bin\Debug\netcoreapp1.1\tzatziki.minutz.models.pdb
+C:\ashworx\minutz\tzatziki.minutz.sqlrepository\obj\Debug\netcoreapp1.1\tzatziki.minutz.sqlrepository.csprojResolveAssemblyReference.cache
+C:\ashworx\minutz\tzatziki.minutz.sqlrepository\obj\Debug\netcoreapp1.1\tzatziki.minutz.sqlrepository.AssemblyInfo.cs
+C:\ashworx\minutz\tzatziki.minutz.sqlrepository\obj\Debug\netcoreapp1.1\tzatziki.minutz.sqlrepository.dll
+C:\ashworx\minutz\tzatziki.minutz.sqlrepository\obj\Debug\netcoreapp1.1\tzatziki.minutz.sqlrepository.pdb

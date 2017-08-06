@@ -1,0 +1,16 @@
+C:\ashworx\minutz\tzatziki.minutz.auth0.repository.tests\bin\Debug\netcoreapp1.1\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\ashworx\minutz\tzatziki.minutz.auth0.repository.tests\bin\Debug\netcoreapp1.1\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\ashworx\minutz\tzatziki.minutz.auth0.repository.tests\bin\Debug\netcoreapp1.1\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\ashworx\minutz\tzatziki.minutz.auth0.repository.tests\bin\Debug\netcoreapp1.1\tzatziki.minutz.auth0.repository.tests.deps.json
+C:\ashworx\minutz\tzatziki.minutz.auth0.repository.tests\bin\Debug\netcoreapp1.1\tzatziki.minutz.auth0.repository.tests.runtimeconfig.json
+C:\ashworx\minutz\tzatziki.minutz.auth0.repository.tests\bin\Debug\netcoreapp1.1\tzatziki.minutz.auth0.repository.tests.runtimeconfig.dev.json
+C:\ashworx\minutz\tzatziki.minutz.auth0.repository.tests\bin\Debug\netcoreapp1.1\tzatziki.minutz.auth0.repository.tests.dll
+C:\ashworx\minutz\tzatziki.minutz.auth0.repository.tests\bin\Debug\netcoreapp1.1\tzatziki.minutz.auth0.repository.tests.pdb
+C:\ashworx\minutz\tzatziki.minutz.auth0.repository.tests\bin\Debug\netcoreapp1.1\tzatziki.minutz.interfaces.dll
+C:\ashworx\minutz\tzatziki.minutz.auth0.repository.tests\bin\Debug\netcoreapp1.1\tzatziki.minutz.models.dll
+C:\ashworx\minutz\tzatziki.minutz.auth0.repository.tests\bin\Debug\netcoreapp1.1\tzatziki.minutz.interfaces.pdb
+C:\ashworx\minutz\tzatziki.minutz.auth0.repository.tests\bin\Debug\netcoreapp1.1\tzatziki.minutz.models.pdb
+C:\ashworx\minutz\tzatziki.minutz.auth0.repository.tests\obj\Debug\netcoreapp1.1\tzatziki.minutz.auth0.repository.tests.csprojResolveAssemblyReference.cache
+C:\ashworx\minutz\tzatziki.minutz.auth0.repository.tests\obj\Debug\netcoreapp1.1\tzatziki.minutz.auth0.repository.tests.AssemblyInfo.cs
+C:\ashworx\minutz\tzatziki.minutz.auth0.repository.tests\obj\Debug\netcoreapp1.1\tzatziki.minutz.auth0.repository.tests.dll
+C:\ashworx\minutz\tzatziki.minutz.auth0.repository.tests\obj\Debug\netcoreapp1.1\tzatziki.minutz.auth0.repository.tests.pdb

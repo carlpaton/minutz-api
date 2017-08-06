@@ -1,0 +1,7 @@
+C:\ashworx\minutz\tzatziki.minutz.models\bin\Debug\netcoreapp1.1\tzatziki.minutz.models.deps.json
+C:\ashworx\minutz\tzatziki.minutz.models\bin\Debug\netcoreapp1.1\tzatziki.minutz.models.dll
+C:\ashworx\minutz\tzatziki.minutz.models\bin\Debug\netcoreapp1.1\tzatziki.minutz.models.pdb
+C:\ashworx\minutz\tzatziki.minutz.models\obj\Debug\netcoreapp1.1\tzatziki.minutz.models.csprojResolveAssemblyReference.cache
+C:\ashworx\minutz\tzatziki.minutz.models\obj\Debug\netcoreapp1.1\tzatziki.minutz.models.AssemblyInfo.cs
+C:\ashworx\minutz\tzatziki.minutz.models\obj\Debug\netcoreapp1.1\tzatziki.minutz.models.dll
+C:\ashworx\minutz\tzatziki.minutz.models\obj\Debug\netcoreapp1.1\tzatziki.minutz.models.pdb
