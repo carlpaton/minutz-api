@@ -180,11 +180,15 @@
 			width: '250px'
 		});
 		$('#attendees').on("select2:select", function (e) {
-			var identity = $("#attendees").select2('data')[0].id;
+      var identity = $("#attendees").select2('data')[0].id;
+      console.log('attendee select');
 			console.log(identity);
-			console.log(meeting.Id);
+      console.log(meeting.Id);
+      console.log('attendee select 2');
+      console.log(meeting);
 			for (var i = 0; i < availibleAttendees.length; i++) {
-				if (availibleAttendees[i].userId == identity) {
+        if (availibleAttendees[i].userId == identity) {
+          
 					var x = availibleAttendees[i];
 					var guid = minutz.functions.createId();
 					var user = {
@@ -203,10 +207,15 @@
 						ReferanceId: meeting.Id,
 						referanceId: meeting.Id,
 						Id: guid
-					};
+          };
+          
 					for (var q = 0; q < meeting.MeetingAttendeeCollection.length; q++) {
-						var check = meeting.MeetingAttendeeCollection[q];
-						if (check.email == x.emailAddress) {
+            var check = meeting.MeetingAttendeeCollection[q];
+            console.log('----');
+            console.log(meeting.MeetingAttendeeCollection[q]);
+            console.log(x);
+            if (check.email == x.emailAddress) {
+              
 							var index = meeting.MeetingAttendeeCollection.indexOf(q);
 							meeting.MeetingAttendeeCollection.splice(index, 1);
 							$("#" + check.id).remove();
@@ -264,13 +273,15 @@
 			});
 		});
 
-		function createUserListItem(user) {
+    function createUserListItem(user) {
+      console.log(decodeURIComponent(user.profileImage));
+      console.log(user);
 			return '<li id="' + user.id + '" class="item">'
 				+ '<div class="product-img">'
-				+ '<img class="img-circle" height="50" width="50" style="margin-left: 5px;" src="' + user.image + '" alt="Product Image">'
+        + '<img class="img-circle" height="50" width="50" style="margin-left: 5px;" src="' + decodeURIComponent(user.profileImage) + '" alt="Product Image">'
 				+ '</div>'
 				+ '<div class="product-info">'
-				+ '<a href="javascript:void(0)" class="product-title">' + user.fullName
+        + '<a href="javascript:void(0)" class="product-title">' + user.firstName + ' ' + user.lastName
 				+ '</a>'
 				+ '<span class="product-description">'
 				+ '<b>Role :</b>' + user.role
@@ -305,6 +316,44 @@
 			});
 		};
 
+    function GetMeetingInfo(id) {
+      var url = document.location.origin + "/Meeting/GetMeeting?id=" + id;
+      $.ajax({
+        type: minutz.properties.GET,
+        url: url,
+        success: function (data) {
+          var result = { success: true, value: data };
+          console.log(result);
+          return result;
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+          return { success: false, value : errorThrown};
+          //minutz.functions.notifyMe(MinutzTitle, textStatus + "  " + errorThrown, minutz.properties.infoIcon);
+        },
+        dataType: minutz.properties.JSON
+      });
+     };
+
+     function FindAttendees(data, meetingUsers)
+     {
+       console.log('start');
+       for (var attendeeIdex = 0; attendeeIdex < data.length; attendeeIdex++) {
+         var userId = data[attendeeIdex].personIdentity;
+
+         console.log('-------------------------------------------------');
+         console.log(data[attendeeIdex]);
+         console.log(meetingUsers);
+         console.log('-------------------------------------------------');
+
+         for (var orginalUserIndex = 0; orginalUserIndex < meetingUsers.length; orginalUserIndex++) {
+           if (userId == meetingUsers[orginalUserIndex].personIdentity) {
+             $("#attendeeList").append(createUserListItem(meetingUsers[orginalUserIndex]));
+           }
+         }
+       }
+       $("#totalAttenddesIcon").text(data.meetingAttendeeCollection.length);
+     };
+    
 		function GetAvailiblePeople() {
 			$.ajax({
 				type: minutz.properties.GET,
@@ -319,38 +368,40 @@
 			var id = document.location.search.split("=")[1];
 			$.ajax({
 				type: minutz.properties.GET,
-				url: document.location.origin + "/Meeting/Attendees?meetingId=" + id,
+        url: document.location.origin + "/Account/AccountPeople", //"/Meeting/Attendees?meetingId=" + id,
 				success: function (data) {
-					var users = data;
-					var url = document.location.origin + "/Meeting/GetMeeting?id=" + id;
-					$.ajax({
-						type: minutz.properties.GET,
-						url: url,
-						success: function (data) {
-							console.log('got peeps');
-							console.log(data);
-							for (var attendeeIdex = 0; attendeeIdex < data.meetingAttendeeCollection.length; attendeeIdex++) {
-								var userId = data.meetingAttendeeCollection[attendeeIdex].personIdentity;
-
-								console.log('-------------------------------------------------');
-								console.log(data.meetingAttendeeCollection[attendeeIdex]);
-								console.log(users);
-								console.log(users);
-								console.log('-------------------------------------------------');
-
-								for (var orginalUserIndex = 0; orginalUserIndex < users.length; orginalUserIndex++) {
-									if (userId == users[orginalUserIndex].personIdentity) {
-										$("#attendeeList").append(createUserListItem(users[orginalUserIndex]));
-									}
-								}
-							}
-							$("#totalAttenddesIcon").text(data.meetingAttendeeCollection.length);
-						},
-						error: function (XMLHttpRequest, textStatus, errorThrown) {
-							//minutz.functions.notifyMe(MinutzTitle, textStatus + "  " + errorThrown, minutz.properties.infoIcon);
-						},
-						dataType: minutz.properties.JSON
-					});
+          var users = data;
+          var url = document.location.origin + "/Meeting/GetMeeting?id=" + id;
+          $.when($.ajax({
+            type: minutz.properties.GET,
+            url: url,
+            success: function (data) {
+              var result = { success: true, value: data };
+              console.log(result);
+              return result;
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+              return { success: false, value: errorThrown };
+              //minutz.functions.notifyMe(MinutzTitle, textStatus + "  " + errorThrown, minutz.properties.infoIcon);
+            },
+            dataType: minutz.properties.JSON
+          })).then(function (result, textStatus, jqXHR ){
+            if (result)
+            {
+              if (textStatus === 'success') {
+                //console.log(result.meetingAttendeeCollection);//meeting users
+                //console.log(users);
+                for (var userIndex = 0; userIndex < users.length; userIndex++) {
+                  for (var attendeeIndex = 0; attendeeIndex < result.meetingAttendeeCollection.length; attendeeIndex++) {
+                    if (users[userIndex].userId == result.meetingAttendeeCollection[attendeeIndex].personIdentity) {
+                      var user = users[userIndex];
+                      $("#attendeeList").append(createUserListItem(user));
+                    }
+                  }
+                }
+              }
+             }
+          });
 				},
 				error: function (XMLHttpRequest, textStatus, errorThrown) {
 					//minutz.functions.notifyMe(MinutzTitle, textStatus + "  " + errorThrown, minutz.properties.infoIcon);
