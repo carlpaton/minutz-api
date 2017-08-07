@@ -1,0 +1,427 @@
+<ol class="breadcrumb">
+	<li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+	<li class="breadcrumb-item">Meetings</li>
+	<li class="breadcrumb-item active">Create Meeting </li>
+</ol>
+<div class="container-fluid">
+	@*This is top heading row row*@
+	<div class="row row-white">
+		<div class="container-fluid">
+			<div class="col-md-12 meetingHeading">
+				<input id="txtMeetingName" type="text" style="font-size: 30px; font-weight: bold;" placeholder="Meeting Name" data-toggle="tooltip" title="Give your meeting a logical name." />
+			</div>
+		</div>
+	</div>
+
+	@*This is meeting time controler row*@
+	<div class="row row-white">
+		<div class="container-fluid">
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-4 row-padding">
+						<div class="input-group" data-toggle="tooltip" title="The location of the meeting i.e. meeting room name or address.">
+							<span class="input-group-addon" id="basic-addon1"><i class="fa fa-map-marker"></i></span>
+							<input id="txtLocation" type="text" class="form-control" placeholder="Location" aria-describedby="basic-addon1">
+						</div>
+					</div>
+					<div class="col-md-4 row-padding">
+						<div class="input-group date" data-toggle="tooltip" title="The date of the meeting.">
+							<input type="text" id="txtDate" class="form-control"><span class="input-group-addon">
+								<i class="fa fa-calendar"></i>
+							</span>
+						</div>
+					</div>
+					<div class="col-md-4 row-padding" data-toggle="tooltip" title="The time the meeting is required to begin.">
+						<div class="input-group bootstrap-timepicker timepicker">
+							<input id="meetingTime" type="text" class="form-control input-small">
+							<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6" >
+				<div class="row">
+					<div class="col-md-2 row-padding" >
+						<select id="ddlDuration" class="form-control js-example-data-array" ></select>
+					</div>
+					<div class="col-md-1 row-padding">
+						<button data-toggle="modal" data-target="#reacuranceModel" class="btn btn-success"><i class="fa fa-refresh"></i></button>
+					</div>
+					<div class="col-md-4 row-padding">
+						<div class="input-group" data-toggle="tooltip" title="Give your meeting tags, separated by ',' ">
+							<span class="input-group-addon" id="basic-addon1"><i class="fa fa-tags"></i></span>
+							<input id="txtTags" type="text" class="form-control" placeholder="Add a tag" aria-describedby="basic-addon1">
+						</div>
+					</div>
+					<div class="col-md-2 row-padding">
+						<input type="checkbox" id="toggle-formal">
+					</div>
+					<div class="col-md-2 row-padding">
+						<input type="checkbox" id="toggle-private">
+					</div>
+					<div class="col-md-1 row-padding">
+						<div id="btnSave" class="btn btn-success"><span id="txtSave">Save</span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+@*This is invations row*@
+<div class="row row-item row-grey">
+	<div class="container-fluid">
+		<div class="col-md-6">
+			<div class="col-md-3">
+				<a class="btn btn-info"><i class="fa fa-paper-plane-o"></i><span style="padding-left:5px;">Send Invitations</span></a>
+			</div>
+			<div class="col-md-3">
+				<a class="btn " style="background-color:white; color:black;">
+					<i class="fa fa-print"></i>
+					<span>Print</span>
+				</a>
+			</div>
+			<div class="col-md-3">
+				<div  style="padding-top:6px; text-align:left;">
+					<div id="txtInfo" ></div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div style="padding-top:6px; text-align:left;">
+					<div id="txtReacuranceInfo"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="col-md-2">
+				<div class="input-group" data-toggle="tooltip" title="Select a timezone for the meeting.">
+					<span class="input-group-addon" id="basic-addon1"><i class="fa fa-globe"></i></span>
+					<select id="timeZones" class="form-control js-example-data-array" style="width: 250px; "></select>
+				</div>
+			</div>
+		</div>
+	
+	</div>
+</div>
+
+<div class="col-md-3 row-grey" style="background-color: #ecf0f5;">
+	<div class="row hide">
+		<div class="box box-widget widget-user-2" style=" background-color:#ecf0f5; ">
+			<!-- Add the bg color to the header using any of the bg-* classes -->
+			<div class="widget-user-header bg-blue">
+				<div class="widget-user-image">
+					<img class="img-circle" src="@User.ToProfile(personService).ProfileImage" alt="User Avatar">
+				</div>
+				<!-- /.widget-user-image -->
+				<h3 class="widget-user-username">@User.ToProfile(personService).Name</h3>
+				<h5 class="widget-user-desc"><b>Role :</b> Organiser</h5>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div id="attendeesControl" class="panel-group">
+		</div>
+		<div id="agendaControl" class="panel-group">
+			<div class="panel panel-default">
+				<a data-toggle="collapse" data-target=".agendaControl" style="cursor: pointer;">
+					<div class="panel-body" style="background-color: darkgrey;">
+						<span class="fa-stack fa-lg">
+							<i class="fa fa-circle-thin fa-stack-2x"></i>
+							<i class="fa fa-bars fa-stack-1x"></i>
+						</span>
+						<span class="attendeesLabel">Agenda Topics</span>
+						<span id="totalAgendaItemsIcon" class="label label-info"></span>
+					</div>
+				</a>
+			</div>
+			<div class="panel panel-default collapse agendaControl">
+				<div class="panel-body">
+					<div class="row hide">
+						<div class="col-md-10">
+							<div class="input-group" data-toggle="tooltip" title="Give your agenda item a title.">
+								<span class="input-group-addon" id="basic-addon1"><i class="fa fa-pencil"></i></span>
+								<input id="txtAgendaTitleQuick" type="text" />
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div id="btnAddAgendaItem" class="round-button-circle pull-right"><i class="fa fa-plus"></i></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<ul id="agendaItems" class="products-list product-list-in-box collapse agendaControl"></ul>
+		</div>
+		<div id="attachmentsControl" class="panel-group">
+		</div>
+	</div>
+</div>
+<div class="col-md-9 row-grey" style="background-color: #ecf0f5;">
+	<div class="row row-white left-tab top-tab">
+		<div class="col-md-12">
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation"><a href="#objectiveTab" aria-controls="objectiveTab" role="tab" data-toggle="tab"><i class="fa fa-globe"></i> Objective</a></li>
+				<li role="presentation"><a href="#outcomeTab" aria-controls="outcomeTab" role="tab" data-toggle="tab"><i class="fa fa-globe"></i> Outcome</a></li>
+				<li role="presentation" class="active"><a href="#agendaTab" aria-controls="agendaTab" role="tab" data-toggle="tab"><i class="fa fa-pencil"></i> Agenda</a></li>
+			</ul>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane " id="objectiveTab">
+					<br />
+					<form>
+						<textarea id="purposeText" class="textarea" placeholder="Write the purpose for your meeting." style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+					</form>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="outcomeTab">
+					<br />
+
+					<form>
+
+						<textarea id="outcomeText" placeholder="Enter text ..." style="width:100%; min-height:300px;"></textarea>
+						<br><input type="reset" class="hide" value="Reset form!">
+					</form>
+				</div>
+				<div role="tabpanel" class="tab-pane active" id="agendaTab">
+					<br />
+					<div class="row left-tab">
+						<div class="col-md-2 gridHeader ">
+							<div class="input-group " >
+								<select id="ddlItemDuration" class="form-control js-example-data-array"></select>
+							</div>
+						</div>
+						<div class="col-md-4  gridHeader">
+							<input id="txtAgendaTitle" type="text" style="font-size: 15px; font-weight: bold;" placeholder="Topic Title" data-toggle="tooltip" title="Give your agenda item a title." />
+						</div>
+						<div class="col-md-1  gridHeader">
+							<div id="btnAddAgendaItemForm" class="round-button-circle pull-right"><i class="fa fa-plus"></i></div>
+						</div>
+						<div class="col-md-3  gridHeader">
+							<select id="attendees_agendaItem" class="js-example-data-array" style="margin-top: 5px;"></select>
+						</div>
+					</div>
+					<div class="row left-tab">
+						<br />
+						<form>
+							<textarea id="agendaText" class="textarea" placeholder="Write your detailed topic information." style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="col-sm-1 hide">
+	<div id="btnAddAgenda" class="round-button-circle" style="margin-top: -35px; margin-left:-160px;"><i class="fa fa-plus fa-2x"></i></div>
+</div>
+<div class="col-sm-1 hide">
+	<div id="btnRemoveAgenda" class="round-button-circle" style="margin-top: -35px; margin-left:-120px; background-color:red"><i class="fa fa-minus fa-2x"></i></div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="reacuranceModel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Custom Recurrence Settings</h4>
+			</div>
+			<div class="modal-body">
+				<div class="container">
+			<div class="col-md-6">
+				<form role="form">
+					<div class="form-group">
+						<div class="col-md-6">
+							<div class="row">
+								<label>Recurrence Type</label>
+								<select id="ddlReacuranceType" class="form-control">
+									<option>Daily</option>
+									<option>Weekly</option>
+									<option>Monthly</option>
+									<option class="hide">Yearly</option>
+									<option>None</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div id="divDaily">
+						<div class="col-md-12">
+							<div class="row" style="height:5px;"></div>
+							<div class="row">
+								<div class="col-md-2">
+									<div style="padding-top: 7px;">Every</div>
+								</div>
+								<div class="col-md-2">
+									<input type="text" class="form-control" id="txtEveryDayNumber" >
+								</div>
+								<div class="col-md-2">
+									<div style="padding-top: 7px;">day</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2"><div style="padding-top: 7px;">Start date</div></div>
+								<div class="col-md-4"><input type="text" class="form-control" id="txtEveryDayStartDate"></div>
+								<div class="col-md-1"></div>
+							</div>
+							<div class="row">
+								<div class="col-md-2"><div style="padding-top: 7px;">End date</div></div>
+								<div class="col-md-4"><input type="text" class="form-control" id="txtEveryDayEndDate"></div>
+								<div class="col-md-1"><div style="padding-top: 7px;">after</div></div>
+								<div class="col-md-2"><input type="text" class="form-control" id="txtEveryDayOccuranceNumber"></div>
+								<div class="col-md-2"><div style="padding-top: 7px;">occurences</div></div>
+							</div>
+						</div>
+					</div>
+					<div id="divWeekly">
+						<div class="col-md-12">
+							<div class="row" style="height:5px;"></div>
+							<div class="row">
+								<div class="col-md-2">
+									<div style="padding-top: 7px;">Every</div>
+								</div>
+								<div class="col-md-2">
+									<input type="text" class="form-control" id="txtEveryWeekNumber">
+								</div>
+								<div class="col-md-2">
+									<div style="padding-top: 7px;">day</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2"><div style="padding-top: 7px;">Start date</div></div>
+								<div class="col-md-4"><input type="text" class="form-control" id="txtEveryWeekStartDate"></div>
+								<div class="col-md-1"></div>
+							</div>
+							<div class="row">
+								<div class="col-md-2"><div style="padding-top: 7px;">End date</div></div>
+								<div class="col-md-4"><input type="text" class="form-control" id="txtEveryWeekEndDate"></div>
+								<div class="col-md-1"><div style="padding-top: 7px;">after</div></div>
+								<div class="col-md-2"><input type="text" class="form-control" id="txtEveryWeekOccuranceNumber"></div>
+								<div class="col-md-2"><div style="padding-top: 7px;">occurences</div></div>
+							</div>
+							<div class="row">
+								<div class="col-md-2">
+									<div style="padding-top: 7px;">On</div>
+								</div>
+								<div class="col-md-3">
+									<select id="ddlEveryWeekOnWeekDay" class="form-control">
+										<option>Monday</option>
+										<option>Tuesday</option>
+										<option>Wednesday</option>
+										<option>Thursday</option>
+										<option>Friday</option>
+										<option>Saturday</option>
+										<option>Sunday</option>
+									</select>
+								</div>
+								<div class="col-md-2">
+									
+								</div>
+							</div>
+						</div>
+						</div>
+					<div id="divMonthly">
+						<div class="col-md-12">
+							<div class="row" style="height:5px;"></div>
+							<div class="row">
+								<div class="col-md-2">
+									<div style="padding-top: 7px;">Every</div>
+								</div>
+								<div class="col-md-2">
+									<input type="text" class="form-control" id="txtEveryMonthNumber">
+								</div>
+								<div class="col-md-2">
+									<div style="padding-top: 7px;">day</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2"><div style="padding-top: 7px;">Start date</div></div>
+								<div class="col-md-4"><input type="text" class="form-control" id="txtEveryMonthStartDate"></div>
+								<div class="col-md-1"></div>
+							</div>
+							<div class="row">
+								<div class="col-md-2"><div style="padding-top: 7px;">End date</div></div>
+								<div class="col-md-4"><input type="text" class="form-control" id="txtEveryMonthEndDate"></div>
+								<div class="col-md-1"><div style="padding-top: 7px;">after</div></div>
+								<div class="col-md-2"><input type="text" class="form-control" id="txtEveryMonthOccuranceNumber"></div>
+								<div class="col-md-2"><div style="padding-top: 7px;">occurences</div></div>
+							</div>
+							<div class="row">
+								<div class="col-md-2">
+									<div style="padding-top: 7px;">On</div>
+								</div>
+								<div class="col-md-4">
+									<select id="ddlEveryMonthOnWeekDayNumber" class="form-control">
+										<option>Day of the Month</option>
+										<option>1</option>
+										<option>2</option>
+										<option>3</option>
+										<option>4</option>
+										<option>5</option>
+										<option>6</option>
+										<option>7</option>
+										<option>8</option>
+										<option>9</option>
+										<option>10</option>
+										<option>11</option>
+										<option>12</option>
+										<option>13</option>
+										<option>14</option>
+										<option>15</option>
+										<option>16</option>
+										<option>17</option>
+										<option>18</option>
+										<option>19</option>
+										<option>20</option>
+										<option>21</option>
+										<option>22</option>
+										<option>23</option>
+										<option>24</option>
+										<option>25</option>
+										<option>26</option>
+										<option>27</option>
+										<option>28</option>
+										<option>29</option>
+										<option>30</option>
+										<option>31</option>
+									</select>
+								</div>
+								<div class="col-md-3">
+
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2"><div style="padding-top: 7px;">Or</div></div>
+								<div class="col-md-4">
+									<select id="ddlEveryMonthOnDay" class="form-control">
+										<option>Select day</option>
+										<option>1st</option>
+										<option>2nd</option>
+										<option>3rd</option>
+										<option>4th</option>
+										<option>5th</option>
+									</select>
+								</div>
+								<div class="col-md-4">
+									<select id="ddlEveryMonthOnWeekDay" class="form-control">
+										<option>Day of the week</option>
+										<option>Monday</option>
+										<option>Tuesday</option>
+										<option>Wednesday</option>
+										<option>Thursday</option>
+										<option>Friday</option>
+										<option>Saturday</option>
+										<option>Sunday</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="divYearly" >Yearly</div>
+					<div id="divNone"></div>
+				</form>
+			</div>			
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<button id="btnSetRecurrence" type="button" class="btn btn-primary" data-dismiss="modal">Set Recurrence</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

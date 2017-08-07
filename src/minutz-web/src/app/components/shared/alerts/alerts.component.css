@@ -1,0 +1,28 @@
+@media (min-width: 768px) {
+  a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+}
+
+a {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  line-height: 20px;
+}
+
+a {
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+}
+
+a>.label {
+    position: absolute;
+    top: 9px;
+    right: 7px;
+    text-align: center;
+    font-size: 9px;
+    padding: 2px 3px;
+    line-height: .9;
+}
