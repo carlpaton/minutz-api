@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using minutz_core;
 using minutz_interface.Entities;
 using minutz_interface.Repositories;
@@ -13,6 +14,8 @@ using minutz_models.Entities;
 using minutz_models.ViewModels;
 using minutz_sapi;
 using minutz_sqlrepository;
+using System;
+using System.Text;
 
 namespace minutz_api
 {
@@ -52,10 +55,45 @@ namespace minutz_api
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+		public void Configure(IApplicationBuilder app, 
+													IHostingEnvironment env, 
+													ILoggerFactory loggerFactory, 
+													IAuth0OptionsService auth0OptionsService)
 		{
 			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
 			loggerFactory.AddDebug();
+
+			//app.UseCookieAuthentication(new CookieAuthenticationOptions
+			//{
+			//	AutomaticAuthenticate = true,
+			//	AutomaticChallenge = true,
+			//});
+			var options = new JwtBearerOptions
+			{
+				TokenValidationParameters =
+						{
+								ValidIssuer = $"https://{Environment.GetEnvironmentVariable("AUTH0DOMAIN")}/",
+								ValidAudience = Environment.GetEnvironmentVariable("AUTH0CLIENTID"),
+								IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("AUTH0CLIENTSECRET")))
+						}
+			};
+			app.UseJwtBearerAuthentication(options);
+
+			//var options = auth0OptionsService.GetOptions();
+			//options.Scope.Clear();
+			//options.Scope.Add("openid");
+			//options.Scope.Add("picture");
+			//options.Scope.Add("name");
+			//options.Scope.Add("email");
+			//options.Scope.Add("clientID");
+			//options.Scope.Add("updated_at");
+			//options.Scope.Add("created_at");
+			//options.Scope.Add("user_id");
+			//options.Scope.Add("nickname");
+			//options.Scope.Add("roles");
+			//options.Scope.Add("app_metadata");
+			//options.Scope.Add("user_metadata");
+			//app.UseOpenIdConnectAuthentication(options);
 
 			app.UseMvc();
 			app.UseSwagger();

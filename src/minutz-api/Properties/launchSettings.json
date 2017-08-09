@@ -36,7 +36,7 @@
         "AUTH0CALLBACKURL": "http://localhost:60856/signin-auth0",
         "INVITESACCOUNT": "invites@minutz.net"
       },
-      "applicationUrl": "http://localhost:53915"
+      "applicationUrl": "http://localhost:5555"
     }
   }
 }
