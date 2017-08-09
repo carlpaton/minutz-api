@@ -29,25 +29,49 @@ Even though that the project should work in Visual Studio Community, this projec
 #### IDE Considerations
 
 - Visual Studio Code
+- Visual Studio 2017
+- [sqlectron](https://sqlectron.github.io)
+- Microsoft Sql Mangement studio
 
-## Run the app
+## Docker 
 
-    docker run -d -e ASPNETCORE_ENVIRONMENT=Development -p 5000:5000 minutz:1.0
+Install docker from the docker site: [docker for mac](https://www.docker.com/docker-mac). Ensure that your client hass access to 4gig of ram and 2 cpu's.
 
-## Run the database
+## Debugging
 
-    docker run --name mintz_db -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Password1234' -v C:\Users\dockerdurban\Documents\minutz\tzatziki.database\data:/var/opt/mssql/data  -p 1433:1433 -d microsoft/mssql-server-linux
+Ensure that all containers are not running.
 
-## Build the required images
+View all stopped containers :
 
-### Build running image
+	docker ps -a
 
-    docker build -t dockerdurban/aspnetcore:nodejs-aspnet-1-1-2 -f Dockerfile .
+	
+Remove container:
 
-### Build debug image
+	docker rm {conatinerId}
+	
+Pull the right Docker images:
 
-    docker build -t dockerdurban/aspnetcore:nodejs-aspnet-1-1-2-sdk -f Dockerfile.debug .
+	docker pull microsoft/mssql-server-linux
 
-### Build the application image
+then for .net core:
 
-    docker build -t minutz:1.0 .
+	docker pull microsoft/aspnetcore:1.1
+
+
+Open visual studio 2017 and click the debug button, the app will spin up and create the database from the sql container and save the database 
+on the development machine. 
+
+Use a TSQL ide to connect to the database server 
+
+- Server Name: 127.0.0.1,1433
+- Login: sa
+- Password: Password1234
+
+Run the SETUP.sql file found in minutz-database/sql
+
+
+
+# Infrastructure
+
+	
