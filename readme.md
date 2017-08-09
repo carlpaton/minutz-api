@@ -4,6 +4,18 @@ This application was created to help people manage thier time and record actions
 
 ## Overall Structure
 
+There is a Angular 2 UI application the lives in the minutz/src/minutz-web folder, this is developed with VS Code, the API is in the 
+minutz/src/minutz-api, you will need to open the minutz.sln file with Visual Studio 2017. The SQL database lives in a Docker container and will 
+be spun up on the first run of the application.
+
+
+### Contribution
+
+We develop using trunk based development so a feature is created for the unit of work then when work is complete a pull request is created using
+the Bitbucket UI with the destination branch being master and assign to a differnet developer.
+
+Please understand GIT first before contributing: [Git 101](https://git-scm.com/book/en/v2/Getting-Started-Git-Basics)
+
 ### Project Information
 
 - Docker
@@ -11,6 +23,7 @@ This application was created to help people manage thier time and record actions
 - Angular 2
 - Auth0 - JWT
 - SQL Container
+- GIT [Bitbucket]
 
 ### Controls and Dependancies
 
