@@ -1,4 +1,4 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -19,9 +19,21 @@
     "minutz_api": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "swagger/UI",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "AUTH0CLIENTSECRET": "3_ji0JgkrygjDWRkJtYGcrv5TN9eIsoZAbKi7bmkKiUqwpo3lOryhaMvOTlZRSDZ",
+        "MAILURL": "https://api.mailgun.net/v3/minutz.net/messages",
+        "AUTH0CLIENTID": "spEQucIOEbSBvkixqRHzkKDHNYRaGy3J",
+        "Key": "Value",
+        "MAILAPIKEY": "key-61f7481d1706076f65f954ff6e261e72",
+        "MAILUSER": "api",
+        "AUTH0DOMAIN": "tzatziki-minutz.auth0.com",
+        "ACTIONSACCOUNT": "actions@minutz.net",
+        "MINUTZ_CONNECTIONSTRING": "Server=tcp:127.0.0.1,1433;User ID=sa;pwd=Password1234;database=minutz;",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "MINUTESACCOUNT": "minutes@minutz.net",
+        "AUTH0CALLBACKURL": "http://localhost:60856/signin-auth0",
+        "INVITESACCOUNT": "invites@minutz.net"
       },
       "applicationUrl": "http://localhost:53915"
     }
