@@ -16,6 +16,9 @@ the Bitbucket UI with the destination branch being master and assign to a differ
 
 Please understand GIT first before contributing: [Git 101](https://git-scm.com/book/en/v2/Getting-Started-Git-Basics)
 
+In visual studio, select options, then text editor, all languages, then select tabs and set them to 2 for both, indenting select smart.
+When writing classes please remove unnessasary using statements.
+
 ### Project Information
 
 - Docker

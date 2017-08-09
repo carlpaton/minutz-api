@@ -2,12 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
-    <RootNamespace>minutz_sqlrepository</RootNamespace>
+    <RootNamespace>minutz_models</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="dapper" Version="1.50.2" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\minutz-interface\minutz-interface.csproj" />
