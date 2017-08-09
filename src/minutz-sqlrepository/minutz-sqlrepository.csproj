@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\minutz-interface\minutz-interface.csproj" />
+    <ProjectReference Include="..\minutz-models\minutz-models.csproj" />
   </ItemGroup>
 
 </Project>
