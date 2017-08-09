@@ -1,18 +1,13 @@
 ﻿using minutz_interface.Repositories;
 using System.Collections.Generic;
 using minutz_interface.Entities;
-using System;
 using System.Data;
 using System.Data.SqlClient;
 using Dapper;
-using minutz_models;
+using minutz_models.Entities;
 
 namespace minutz_sqlrepository
 {
-
-
-
-
 	public class InstanceRepository : IInstanceRepository
 	{
 		public IEnumerable<IInstance> GetAll(string connectionString)

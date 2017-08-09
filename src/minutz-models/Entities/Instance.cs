@@ -1,6 +1,6 @@
 ﻿using minutz_interface.Entities;
 
-namespace minutz_models
+namespace minutz_models.Entities
 {
 	public class Instance : IInstance
 	{

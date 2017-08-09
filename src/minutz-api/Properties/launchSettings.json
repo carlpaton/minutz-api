@@ -27,6 +27,7 @@
         "Key": "Value",
         "MAILAPIKEY": "key-61f7481d1706076f65f954ff6e261e72",
         "MAILUSER": "api",
+        "DEFAULTPROFILEPIC": "../defaultpic.png",
         "AUTH0DOMAIN": "tzatziki-minutz.auth0.com",
         "ACTIONSACCOUNT": "actions@minutz.net",
         "MINUTZ_CONNECTIONSTRING": "Server=tcp:127.0.0.1,1433;User ID=sa;pwd=Password1234;database=minutz;",

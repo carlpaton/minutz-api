@@ -8,6 +8,8 @@ services:
         source: ${DOCKER_BUILD_SOURCE}
     environment:
       - DOTNET_USE_POLLING_FILE_WATCHER=1
+      - MINUTZ_CONNECTIONSTRING=Server=mintz-db,1433;User ID=sa;pwd=Password1234;database=minutz;
+      - ASPNETCORE_ENVIRONMENT=Development
     volumes:
       - ./minutz-api:/app
       - ~/.nuget/packages:/root/.nuget/packages:ro

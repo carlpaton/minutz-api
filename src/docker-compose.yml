@@ -3,6 +3,11 @@ version: '2'
 services:
   minutz-api:
     image: minutz-api
+    environment:
+      - AUTH0CLIENTSECRET=3_ji0JgkrygjDWRkJtYGcrv5TN9eIsoZAbKi7bmkKiUqwpo3lOryhaMvOTlZRSDZ
+      - AUTH0CLIENTID=spEQucIOEbSBvkixqRHzkKDHNYRaGy3J
+      - AUTH0DOMAIN=tzatziki-minutz.auth0.com
+      - AUTH0CALLBACKURL=http://localhost:60856/signin-auth0
     ports:
       - "5555:80"
     build:
