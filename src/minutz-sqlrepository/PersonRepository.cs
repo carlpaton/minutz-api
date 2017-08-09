@@ -30,8 +30,6 @@ namespace minutz_sqlrepository
 					EmailAddress = user.Email
 				};
 			}
-
-
 			var newUserObject = new UserProfile
 			{
 				EmailAddress = email,
@@ -57,6 +55,25 @@ namespace minutz_sqlrepository
 			return newUserObject;
 		}
 
+		public minutz_interface.RoleEnum GetRole(string identifier, string connectionString, IUserProfile profile)
+		{
+			var user = GetUser(identifier, connectionString);
+			if (user != null)
+				return (minutz_interface.RoleEnum)Enum.Parse(typeof(minutz_interface.RoleEnum), user.Role);
+
+			CreateUser(connectionString, profile);
+			return minutz_interface.RoleEnum.Attendee;
+		}
+
+		public minutz_interface.RoleEnum GetRole(string identifier, string connectionString, IUserProfile profile, string schema)
+		{
+			var user = GetUser(identifier, connectionString);
+			if (user != null)
+				return (minutz_interface.RoleEnum)Enum.Parse(typeof(minutz_interface.RoleEnum), user.Role);
+
+			CreateUser(connectionString, profile,schema);
+			return minutz_interface.RoleEnum.Attendee;
+		}
 
 		internal IPerson GetUser(string identifier, string connectionString, string schema = "app")
 		{
@@ -75,9 +92,8 @@ namespace minutz_sqlrepository
 			}
 		}
 
-		internal Person CreateUser(string connectionString, UserProfile profile, string schema = "app")
+		internal Person CreateUser(string connectionString, IUserProfile profile, string schema = "app")
 		{
-
 			using (IDbConnection dbConnection = new SqlConnection(connectionString))
 			{
 				dbConnection.Open();
@@ -89,18 +105,14 @@ namespace minutz_sqlrepository
 					Email = profile.EmailAddress,
 					ProfilePicture = profile.ProfileImage,
 					Identityid = profile.UserId,
-					Role = RoleEnum.Attendee.ToString(),
+					Role = minutz_interface.RoleEnum.Attendee.ToString(),
 					Active = true
 				};
-				//string sQuery = "INSERT INTO Products (Name, Quantity, Price)"
-				//									 + " VALUES(@Name, @Quantity, @Price)";
-				dbConnection.Open();
-			//	dbConnection.Execute(sQuery, prod);
-
-			//	context.Person.Add(userObject);
+				var insertQuery = $@"INSERT INTO [{schema}].[Person]([Identityid], [FirstName], [LastName], [FullName], [ProfilePicture], [Email], [Role], [Active], [InstanceId])
+														 VALUES(@Identityid, @FirstName, @LastName,@FullName, @ProfilePicture, @Email, @Role, @Active, @InstanceId)";
 				try
 				{
-					//context.SaveChanges();
+					dbConnection.Execute(insertQuery, userObject);
 					return userObject;
 				}
 				catch (Exception ex)

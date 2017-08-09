@@ -1,6 +1,8 @@
 ﻿using minutz_interface.Repositories;
 using minutz_interface.Services;
 using minutz_interface.ViewModels;
+using minutz_models.ViewModels;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,7 @@ using System.Security.Claims;
 
 namespace minutz_core
 {
-	public class ProfileService
+	public class ProfileService: IProfileService
 	{
 		private readonly ITokenStringService _tokenProfileService;
 		private readonly IPersonRepository _personRepository;
@@ -16,6 +18,19 @@ namespace minutz_core
 		{
 			_tokenProfileService = tokenStringService;
 			_personRepository = personRepository;
+		}
+
+		public IUserProfile GetFromClaims(IEnumerable<Claim> claims)
+		{
+			if (string.IsNullOrEmpty(claims.FirstOrDefault(c => c.Type == "user_id").Value))
+			{
+				throw new System.Exception("Claim user id is null.");
+			}
+
+			var user = Initilise(claims);
+			ApplicationMetaData(claims, user);
+			ProfilePicture(user);
+			return user;
 		}
 
 		internal IUserProfile Initilise(IEnumerable<Claim> claims)
@@ -48,5 +63,26 @@ namespace minutz_core
 			}
 			return user;
 		}
+
+		internal void ProfilePicture(IUserProfile user)
+		{
+			if (user.ProfileImage == null)
+				user.ProfileImage = Environment.GetEnvironmentVariable("DEFAULTPROFILEPIC");
+		}
+
+		internal void ApplicationMetaData(IEnumerable<Claim> claims, IUserProfile user)
+		{
+			if (claims.FirstOrDefault(c => c.Type == "app_metadata") != null)
+			{
+				var app_data = claims.FirstOrDefault(c => c.Type == "app_metadata").Value;
+				var app_metaData = JsonConvert.DeserializeObject<AppMetadata>(app_data);
+				user.App_Metadata = app_metaData;
+			}
+			else
+			{
+				user.App_Metadata = new AppMetadata {Role = minutz_interface.RoleEnum.Attendee.ToString() };
+			}
+		}
+
 	}
 }

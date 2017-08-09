@@ -41,11 +41,14 @@ namespace minutz_api
 
 			//REPOSITORIES
 			services.AddTransient<IInstanceRepository, InstanceRepository>();
+			services.AddTransient<IPersonRepository, PersonRepository>();
 
 			//SERVICES
 			services.AddTransient<ITokenStringService, TokenStringService>(); 
 			services.AddTransient<IMeetingService, MeetingService>();
 			services.AddTransient<IAuth0OptionsService, Auth0OptionsService>();
+			services.AddTransient<IProfileService, ProfileService>();
+			services.AddTransient<IAuthService, AuthService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

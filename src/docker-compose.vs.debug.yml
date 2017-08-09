@@ -10,6 +10,9 @@ services:
       - DOTNET_USE_POLLING_FILE_WATCHER=1
       - MINUTZ_CONNECTIONSTRING=Server=mintz-db,1433;User ID=sa;pwd=Password1234;database=minutz;
       - ASPNETCORE_ENVIRONMENT=Development
+      - MAILAPIKEY=key-61f7481d1706076f65f954ff6e261e72
+      - MAILUSER=api
+      - MAILURL=https://api.mailgun.net/v3/minutz.net/messages
     volumes:
       - ./minutz-api:/app
       - ~/.nuget/packages:/root/.nuget/packages:ro

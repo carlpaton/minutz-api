@@ -12,9 +12,11 @@ namespace minutz_sapi
 	public class Auth0OptionsService : IAuth0OptionsService
 	{
 		private readonly IMeetingService _meetingService;
-		public Auth0OptionsService(IMeetingService meetingService)
+		private readonly IAuthService _authService;
+		public Auth0OptionsService(IMeetingService meetingService, IAuthService authService)
 		{
 			_meetingService = meetingService;
+			_authService = authService;
 		}
 
 		public OpenIdConnectOptions GetOptions()
@@ -55,15 +57,15 @@ namespace minutz_sapi
 									identity.HasClaim(c => c.Type == "name"))
 								identity.AddClaim(new Claim(ClaimTypes.Name, identity.FindFirst("name").Value));
 
-							//if (context.ReturnUri.Contains(minutz_core.QueryString.referal.ToString()))
-							//{
-							//	var queries = _meetingService.ExtractQueries(context.ReturnUri);
-							//	auth0Repository.Getrole(identity, personRepository, appsettings, profileService, tokenStringHelper, queries.ToList());
-							//}
-							//else
-							//{
-							//	auth0Repository.Getrole(identity, personRepository, appsettings, profileService, tokenStringHelper);
-							//}
+							if (context.ReturnUri.Contains(minutz_core.QueryString.referal.ToString()))
+							{
+								var queries = _meetingService.ExtractQueries(context.ReturnUri);
+								_authService.Getrole(identity, queries.ToList());
+							}
+							else
+							{
+								_authService.Getrole(identity);
+							}
 							// Check if token names are stored in Properties
 							if (context.Properties.Items.ContainsKey(".TokenNames"))
 							{

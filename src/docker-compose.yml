@@ -8,6 +8,9 @@ services:
       - AUTH0CLIENTID=spEQucIOEbSBvkixqRHzkKDHNYRaGy3J
       - AUTH0DOMAIN=tzatziki-minutz.auth0.com
       - AUTH0CALLBACKURL=http://localhost:60856/signin-auth0
+      - DEFAULTPROFILEPIC=../defaultpic.png
+      - MINUTESACCOUNT=minutes@minutz.net
+      - INVITESACCOUNT=invites@minutz.net
     ports:
       - "5555:80"
     build:
