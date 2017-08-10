@@ -25,4 +25,4 @@ pipelines:
           # authenticate with the Docker Hub registry
           
           # push the new Docker image to the Docker registry
-          #- docker push $IMAGE_NAME
+          - docker push $IMAGE_NAME
