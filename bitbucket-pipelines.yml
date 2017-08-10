@@ -17,7 +17,7 @@ pipelines:
           - export IMAGE_NAME=tzatziki/minutz:$BITBUCKET_COMMIT
           - dotnet restore src/minutz.sln
           - dotnet build src/minutz.sln -c pipelines
-          - dotnet test src/minutz.sln
+          - dotnet test src/minutz.tests.core/minutz.tests.core.csproj
           - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
           # build the Docker image (this will use the Dockerfile in the root of the repo)
           #- docker build -t $IMAGE_NAME src/minutz-api
