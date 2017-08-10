@@ -5,6 +5,8 @@
     <RootNamespace>minutz_models</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='pipelines|AnyCPU'" />
+
   <ItemGroup>
     <ProjectReference Include="..\minutz-interface\minutz-interface.csproj" />
   </ItemGroup>

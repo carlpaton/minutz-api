@@ -1,0 +1,7 @@
+FROM microsoft/aspnetcore-build:1.0-1.1
+VOLUME - .:/src
+ARG source
+WORKDIR /src
+EXPOSE 80
+
+ENTRYPOINT ["dotnet", "minutz-api.dll"]

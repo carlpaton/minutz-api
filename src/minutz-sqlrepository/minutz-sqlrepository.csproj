@@ -5,6 +5,8 @@
     <RootNamespace>minutz_sqlrepository</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='pipelines|AnyCPU'" />
+
   <ItemGroup>
     <PackageReference Include="dapper" Version="1.50.2" />
   </ItemGroup>
