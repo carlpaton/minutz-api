@@ -3,8 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
-    <RootNamespace>minutz_sapi</RootNamespace>
+    <RootNamespace>minutz.api</RootNamespace>
     <Version>3.0.0</Version>
+    <AssemblyName>minutz.api</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='pipelines|AnyCPU'" />
@@ -27,10 +28,10 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\minutz-core\minutz-core.csproj" />
-    <ProjectReference Include="..\minutz-interface\minutz-interface.csproj" />
-    <ProjectReference Include="..\minutz-models\minutz-models.csproj" />
-    <ProjectReference Include="..\minutz-sqlrepository\minutz-sqlrepository.csproj" />
+    <ProjectReference Include="..\minutz-core\minutz.core.csproj" />
+    <ProjectReference Include="..\minutz-interface\minutz.interface.csproj" />
+    <ProjectReference Include="..\minutz-models\minutz.models.csproj" />
+    <ProjectReference Include="..\minutz-sqlrepository\minutz.sqlrepository.csproj" />
   </ItemGroup>
 
 </Project>

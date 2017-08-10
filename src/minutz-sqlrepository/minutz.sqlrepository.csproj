@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
-    <RootNamespace>minutz_sqlrepository</RootNamespace>
+    <RootNamespace>minutz.sqlrepository</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='pipelines|AnyCPU'" />
@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\minutz-interface\minutz-interface.csproj" />
-    <ProjectReference Include="..\minutz-models\minutz-models.csproj" />
+    <ProjectReference Include="..\minutz-interface\minutz.interface.csproj" />
+    <ProjectReference Include="..\minutz-models\minutz.models.csproj" />
   </ItemGroup>
 
 </Project>
