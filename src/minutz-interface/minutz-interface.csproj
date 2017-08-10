@@ -12,10 +12,4 @@
     <PackageReference Include="System.Security.Claims" Version="4.3.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="minutz-models">
-      <HintPath>..\minutz-models\bin\Debug\netcoreapp1.1\minutz-models.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>
