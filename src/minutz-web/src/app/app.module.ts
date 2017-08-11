@@ -19,6 +19,7 @@ import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
 import { ROUTES } from './app.routes';
 import { SharedModule } from './components/shared/shared.module';
+import { SharedMeetingModule } from './components/meeting/shared/shared.module';
 
 import { routing } from './app.routes';
 
@@ -43,6 +44,7 @@ import { routing } from './app.routes';
     FormsModule,
     HttpModule,
     SharedModule.forRoot(),
+    SharedMeetingModule.forRoot(),
     RouterModule.forRoot(ROUTES)
   ],
   providers: [AuthService],
