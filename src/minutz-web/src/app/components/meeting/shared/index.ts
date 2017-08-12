@@ -6,3 +6,4 @@ export * from './meetingoptions/index';
 export * from './attendees/index';
 export * from './agenda/index';
 export * from './attachments/index';
+export * from './meetingtabzone/index';

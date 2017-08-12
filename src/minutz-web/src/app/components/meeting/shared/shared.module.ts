@@ -8,7 +8,8 @@ import {
     MeetingOptionsComponent,
     AttendeesComponent,
     AgendaComponent,
-    AttachmentsComponent
+    AttachmentsComponent,
+    MeetingTabZoneComponent
 } from './index';
 
 @NgModule({
@@ -18,6 +19,7 @@ import {
         MeetingOptionsComponent,
         AttendeesComponent,
         AttachmentsComponent,
+        MeetingTabZoneComponent,
         AgendaComponent
     ],
     exports: [
@@ -26,6 +28,7 @@ import {
         AttendeesComponent,
         AgendaComponent,
         AttachmentsComponent,
+        MeetingTabZoneComponent,
         CommonModule, FormsModule, RouterModule]
 })
 export class SharedMeetingModule {

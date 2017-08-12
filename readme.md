@@ -53,7 +53,38 @@ Even though that the project should work in Visual Studio Community, this projec
 
 Install docker from the docker site: [docker for mac](https://www.docker.com/docker-mac). Ensure that your client hass access to 4gig of ram and 2 cpu's.
 
-## Debugging
+## Debugging the web
+
+Ensure that nodejs is installed on your system to allow for the npm package management system to be availble. 
+For more information you can follow the Angular quick start found here: [Angular](https://angular.io/guide/quickstart)
+
+### Recommented Extentions for Visual Studio Code
+
+- Beautify
+- c#
+- Debugger for Chrome
+- Docker
+- Intellisense for CSS class names
+- npm
+- Path Intellisense
+- Powershell
+- Project Manager
+- Python
+- vscode-icons
+- XML Tools
+
+
+Open the folder minutz-web in a text editor, Visual Studio Code is prefered.
+Open a terminal in that location and type:
+ 
+	npm install 
+
+then when all the denpendacnies are installed then run:
+
+	npm start
+
+
+## Debugging the api
 
 Ensure that all containers are not running.
 
@@ -90,4 +121,18 @@ Run the SETUP.sql file found in minutz-database/sql
 
 # Infrastructure
 
-	
+## Build 
+
+Using Bitbucket pipelines the docker image will be created for the api and the ui and pushed to the docker hub repository:
+
+- tzatziki/minutz
+- tzatziki/minutz-web
+
+The images are taged by the build system with the build number. Builds are automatic so there is no user intervention.
+
+## Deployment
+
+The docker host will be a Ubuntu server running the Docker domain
+Ubuntu Server YEO02-NIX0 : 41.185.30.164.
+
+Using Docker Cloud the deployment of the Testing version will be auto deployed.
