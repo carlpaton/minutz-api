@@ -1,5 +1,8 @@
 import { AuthService } from './../../../auth/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { MeetingComponent } from './../meeting.component';
+import { MeetingModel } from './../../../models/meetingModel';
+
 
 @Component({
   selector: 'app-create-meeting',
@@ -8,14 +11,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreateMeetingComponent implements OnInit {
   IsLoggedIn: boolean;
-  
-  constructor(public auth: AuthService) 
-  {
+  Meeting: MeetingModel;
+
+  constructor(public auth: AuthService) {
     this.IsLoggedIn = auth.isAuthenticated();
+    this.Meeting = JSON.parse(localStorage.getItem('meeting'));
   }
 
   ngOnInit() {
-    
+
   }
 
 }
