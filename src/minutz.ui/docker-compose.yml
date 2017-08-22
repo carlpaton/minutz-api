@@ -1,0 +1,14 @@
+version: '3.2'
+services:
+  serve:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 5555:5555
+      - 3001:3001
+    volumes:
+      - .:/src
+    command: npm start
+    environment: 
+      NODE_ENV: development

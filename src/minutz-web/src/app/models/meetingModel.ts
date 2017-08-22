@@ -32,5 +32,23 @@ export class MeetingModel {
     public Outcome: string;
     public Reacurance: MeetingReacurance;
     constructor() {
+        var today = new Date(new Date().getUTCDate());
+        
+        this.MeetingOwnerId = "";
+        this.Name = 'Meeting name ...';
+        this.Location = "";
+        this.Date = today;
+        this.UpdatedDate = today;
+        this.Time = "";
+        this.Duration = 0;
+        this.IsReacurance = false;
+        this.ReacuranceType = "";
+        this.IsPrivate = false;
+        this.IsFormal = true;
+        this.TimeZone = "";
+        this.TimeZoneOffSet = 0;
+        this.Tag = new Array<string>();
+        this.Purpose = "";
+        this.Outcome = "";
     }
 }

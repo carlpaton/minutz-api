@@ -1,0 +1,21 @@
+.styled-header {
+  height: 50px !important;
+}
+.skin-blue .main-header .navbar {
+    background-color: #AA8AFB !important;
+}
+
+@media(min-width: 768px) {
+  .navbar-custom-menu {
+    min-width: 300px;
+  }
+  .main-header {
+    margin-top: -70px;
+  }
+  .minutz-logo-mini{
+    height: 40px;
+  }
+  .minutz-logo {
+    height: 40px;
+  }
+}

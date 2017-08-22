@@ -1,19 +1,25 @@
+
 <div class="row row-white">
     <div class="container-fluid">
         <div class="col-md-6">
             <div class="row">
                 <div class="col-md-4 row-padding">
-                    <div class="input-group" data-toggle="tooltip" title="The location of the meeting i.e. meeting room name or address.">
+                    <div class="input-group"  >
                         <span class="input-group-addon" id="basic-addon1"><i class="fa fa-map-marker"></i></span>
-                        <input id="txtLocation" type="text" class="form-control" placeholder="Location" aria-describedby="basic-addon1">
+                        <input (keypress)="locationChange($event.target.value)"
+                               [value]="Meeting.Location" (input)="Meeting.Location=$event.target.value"  
+                               type="text" class="form-control" 
+                               placeholder="Location" 
+                               aria-describedby="basic-addon1">
+                        <input type="text" [(ngModel)]="MeetingKey" />
                     </div>
                 </div>
                 <div class="col-md-4 row-padding">
-                    <div class="input-group date" data-toggle="tooltip" title="The date of the meeting.">
+                    <div class="input-group date" >
                         <input type="text" id="txtDate" class="form-control"><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     </div>
                 </div>
-                <div class="col-md-4 row-padding" data-toggle="tooltip" title="The time the meeting is required to begin.">
+                <div class="col-md-4 row-padding"  >
                     <div class="input-group bootstrap-timepicker timepicker">
                         <input id="meetingTime" type="text" class="form-control input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                     </div>
@@ -26,10 +32,10 @@
                     <select id="ddlDuration" class="form-control js-example-data-array" ></select>
                 </div>
                 <div class="col-md-1 row-padding">
-                    <button data-toggle="modal" data-target="#reacuranceModel" class="btn btn-success"><i class="fa fa-refresh"></i></button>
+                    <button   class="btn btn-success"><i class="fa fa-refresh"></i></button>
                 </div>
                 <div class="col-md-4 row-padding">
-                    <div class="input-group" data-toggle="tooltip" title="Give your meeting tags, separated by ',' ">
+                    <div class="input-group" >
                         <span class="input-group-addon" id="basic-addon1"><i class="fa fa-tags"></i></span>
                         <input id="txtTags" type="text" class="form-control" placeholder="Add a tag" aria-describedby="basic-addon1" >
                     </div>

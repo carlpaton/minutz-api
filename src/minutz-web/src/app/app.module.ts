@@ -17,11 +17,11 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
-import { ROUTES } from './app.routes';
+import { ROUTES ,routing} from './app.routes';
 import { SharedModule } from './components/shared/shared.module';
 import { SharedMeetingModule } from './components/meeting/shared/shared.module';
+import { MyDatePickerModule } from 'mydatepicker';
 
-import { routing } from './app.routes';
 
 @NgModule({
   declarations: [
@@ -43,6 +43,7 @@ import { routing } from './app.routes';
     BrowserModule,
     FormsModule,
     HttpModule,
+    MyDatePickerModule,
     SharedModule.forRoot(),
     SharedMeetingModule.forRoot(),
     RouterModule.forRoot(ROUTES)

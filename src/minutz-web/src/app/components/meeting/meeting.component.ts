@@ -33,7 +33,6 @@ export class MeetingComponent implements OnInit {
     }
     
     this.Meeting = new MeetingModel();
-    this.Meeting.Name = '...';
     localStorage.setItem('meeting', JSON.stringify(this.Meeting));
   }
   
