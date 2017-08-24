@@ -1,8 +1,28 @@
 <div>
   Meeting Id : {{ Id }}
+  <button (click)='TestClick($event)' >Change</button>
 </div>
 <div>
-  <sd-timeline class="hide"></sd-timeline>
-  <div>
-    <sd-datepicker (SelectedDateChange)='testEvent($event)' ></sd-datepicker>
+  <sd-timeline class="hide" >
+  </sd-timeline>
+  <div class="hide">
+    <sd-datepicker
+     [Date]='TestDate'
+     (SelectedDateChange)='testEvent($event)'>
+   </sd-datepicker>
   </div>
+  <div class="container hide">
+   <sd-checkbox
+    [Checked]='Check'
+    (CheckChange)='CheckChangedEvent($event)'>
+   </sd-checkbox>
+  </div>
+  <div class="hide" >
+      <sd-calender></sd-calender>
+  </div>
+<div class="hide">
+  <sd-editor></sd-editor>
+</div>
+<div>
+  <sd-fileupload></sd-fileupload>
+</div>
