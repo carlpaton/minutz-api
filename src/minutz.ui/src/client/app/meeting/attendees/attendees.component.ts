@@ -9,22 +9,15 @@ import {
     OnChanges,
     SimpleChange
 } from '@angular/core';
-//import { FileUploader } from "ng2-file-upload";
 declare let $: any;
-const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
 @Component({
     moduleId: module.id,
-    selector: 'sd-fileupload',
-    templateUrl: 'fileupload.component.html',
-    styleUrls: ['fileupload.component.css']
+    selector: 'sd-attendees',
+    templateUrl: 'attendees.component.html',
+    styleUrls: ['attendees.component.css']
 })
-export class FileuploadComponent implements OnInit, AfterViewInit {
-    // public uploader: FileUploader = new FileUploader({ url: URL });
-    // public hasBaseDropZoneOver: boolean = false;
-    // public hasAnotherDropZoneOver: boolean = false;
+export class AttendeesComponent implements OnInit, AfterViewInit {
     @Input() Id: string;
-    @Input() UploadUrl: string;
-    @Input() Date: string;
     @Output() SelectedDateChange = new EventEmitter<string>();
     public ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
 
@@ -33,20 +26,8 @@ export class FileuploadComponent implements OnInit, AfterViewInit {
         if (!this.Id) {
             this.Id = this.createId();
         }
-        this.UploadUrl = '/foo';
-        $("#upload").dropzone({ url: "/file/post" });
     }
     public ngAfterViewInit() {
-        
-        
-        //$('.drop').dropzone({ url: "/file/post" });
-    }
-    public fileOverBase(e: any): void {
-       // this.hasBaseDropZoneOver = e;
-    }
-
-    public fileOverAnother(e: any): void {
-        //this.hasAnotherDropZoneOver = e;
     }
     private createId(): any {
         return `${this.createidsection()}-${this.createidsection()}-${this.createidsection()}-${this.createidsection()}` +

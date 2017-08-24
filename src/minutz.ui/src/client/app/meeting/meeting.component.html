@@ -1,28 +1,36 @@
-<div>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+  <li class="breadcrumb-item">Meetings</li>
+  <li class="breadcrumb-item active">Create Meeting </li>
+</ol>
+<div class="container-fluid">
+  <sd-heading></sd-heading>
+  <sd-options></sd-options>
+</div>
+
+
+
+<div class="hide">
   Meeting Id : {{ Id }}
-  <button (click)='TestClick($event)' >Change</button>
+  <button (click)='TestClick($event)'>Change</button>
 </div>
 <div>
-  <sd-timeline class="hide" >
+  <sd-timeline class="hide">
   </sd-timeline>
   <div class="hide">
-    <sd-datepicker
-     [Date]='TestDate'
-     (SelectedDateChange)='testEvent($event)'>
-   </sd-datepicker>
+    <sd-datepicker [Date]='TestDate' (SelectedDateChange)='testEvent($event)'>
+    </sd-datepicker>
   </div>
   <div class="container hide">
-   <sd-checkbox
-    [Checked]='Check'
-    (CheckChange)='CheckChangedEvent($event)'>
-   </sd-checkbox>
+    <sd-checkbox [Checked]='Check' (CheckChange)='CheckChangedEvent($event)'>
+    </sd-checkbox>
   </div>
-  <div class="hide" >
-      <sd-calender></sd-calender>
+  <div class="hide">
+    <sd-calender></sd-calender>
   </div>
-<div class="hide">
-  <sd-editor></sd-editor>
-</div>
-<div>
-  <sd-fileupload></sd-fileupload>
-</div>
+  <div class="hide">
+    <sd-editor></sd-editor>
+  </div>
+  <div class="hide">
+    <sd-fileupload></sd-fileupload>
+  </div>

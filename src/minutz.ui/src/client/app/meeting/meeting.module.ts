@@ -11,6 +11,10 @@ import { CheckboxModule } from './../shared/components/checkbox/checkbox.module'
 import { CalenderModule } from './../shared/components/calender/calender.module';
 import { EditorModule } from './../shared/components/editor/editor.module';
 import { FileuploadModule } from './../shared/components/fileupload/fileupload.module';
+
+import { OptionsModule } from './options/options.module';
+import { HeadingModule } from './heading/heading.module';
+import { AttendeesModule } from './attendees/attendees.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -22,7 +26,10 @@ import { FileuploadModule } from './../shared/components/fileupload/fileupload.m
     CheckboxModule,
     CalenderModule,
     EditorModule,
-    FileuploadModule
+    FileuploadModule,
+    OptionsModule,
+    HeadingModule,
+    AttendeesModule
   ],
   declarations: [MeetingComponent],
   exports: [MeetingComponent]
