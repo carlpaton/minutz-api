@@ -27,5 +27,5 @@ pipelines:
           
           # push the new Docker image to the Docker registry
           ##- docker push $IMAGE_NAME
-          - docker build -t $WEB_IMAGE_NAME -f ci.Docker .
+          - docker build -t $WEB_IMAGE_NAME -f ci.Dockerfile .
           ##- docker-compose -f docker-compose.production.yml build
