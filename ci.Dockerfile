@@ -1,5 +1,6 @@
 FROM node:8-alpine
-CMD docker run -it --rm -v %cd%/src/minutz.ui:/src node bash --this works
-WORKDIR /src
+VOLUME . /build
+WORKDIR /build
+#CMD docker run -it --rm -v %cd%/src/minutz.ui:/src node bash --this works
 RUN yarn install
-RUN npm run
+RUN npm run build.prod
