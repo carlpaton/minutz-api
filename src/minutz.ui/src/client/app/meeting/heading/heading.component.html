@@ -1,7 +1,7 @@
 <div class="row row-white">
   <div class="container-fluid">
     <div class="col-md-12 meetingHeading">
-      <input [value]="MeetingHeading" (input)="MeetingHeading=$event.target.value" (keypress)="textChange($event.target.value)"
+      <input class="heading-input" [value]="MeetingHeading" (input)="MeetingHeading=$event.target.value" (keypress)="textChange($event.target.value)"
         type="text" placeholder="Meeting Name" />
     </div>
   </div>

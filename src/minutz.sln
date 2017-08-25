@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "minutz.api", "minutz-api\minutz.api.csproj", "{D1137C3A-F555-4412-9FCB-8CD3969CBE57}"
 EndProject
@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "minutz.core", "minutz-core\
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{B56C06E5-B12F-4EB1-AA76-89E19DBE9C44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "minutz.tests.core", "minutz.tests.core\minutz.tests.core.csproj", "{5175318C-69AC-46BE-A6CE-681AF4B98B10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "minutz.tests.core", "minutz.tests.core\minutz.tests.core.csproj", "{5175318C-69AC-46BE-A6CE-681AF4B98B10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,32 +26,32 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D1137C3A-F555-4412-9FCB-8CD3969CBE57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D1137C3A-F555-4412-9FCB-8CD3969CBE57}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D1137C3A-F555-4412-9FCB-8CD3969CBE57}.pipelines|Any CPU.ActiveCfg = pipelines|Any CPU
-		{D1137C3A-F555-4412-9FCB-8CD3969CBE57}.pipelines|Any CPU.Build.0 = pipelines|Any CPU
+		{D1137C3A-F555-4412-9FCB-8CD3969CBE57}.pipelines|Any CPU.ActiveCfg = Release|Any CPU
+		{D1137C3A-F555-4412-9FCB-8CD3969CBE57}.pipelines|Any CPU.Build.0 = Release|Any CPU
 		{D1137C3A-F555-4412-9FCB-8CD3969CBE57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1137C3A-F555-4412-9FCB-8CD3969CBE57}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F344A8FF-845A-4726-B471-425D62997D0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F344A8FF-845A-4726-B471-425D62997D0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F344A8FF-845A-4726-B471-425D62997D0B}.pipelines|Any CPU.ActiveCfg = pipelines|Any CPU
-		{F344A8FF-845A-4726-B471-425D62997D0B}.pipelines|Any CPU.Build.0 = pipelines|Any CPU
+		{F344A8FF-845A-4726-B471-425D62997D0B}.pipelines|Any CPU.ActiveCfg = Release|Any CPU
+		{F344A8FF-845A-4726-B471-425D62997D0B}.pipelines|Any CPU.Build.0 = Release|Any CPU
 		{F344A8FF-845A-4726-B471-425D62997D0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F344A8FF-845A-4726-B471-425D62997D0B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4B1DBCB9-BD6F-4330-BDBE-BEF9B7E0F584}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4B1DBCB9-BD6F-4330-BDBE-BEF9B7E0F584}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4B1DBCB9-BD6F-4330-BDBE-BEF9B7E0F584}.pipelines|Any CPU.ActiveCfg = pipelines|Any CPU
-		{4B1DBCB9-BD6F-4330-BDBE-BEF9B7E0F584}.pipelines|Any CPU.Build.0 = pipelines|Any CPU
+		{4B1DBCB9-BD6F-4330-BDBE-BEF9B7E0F584}.pipelines|Any CPU.ActiveCfg = Release|Any CPU
+		{4B1DBCB9-BD6F-4330-BDBE-BEF9B7E0F584}.pipelines|Any CPU.Build.0 = Release|Any CPU
 		{4B1DBCB9-BD6F-4330-BDBE-BEF9B7E0F584}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B1DBCB9-BD6F-4330-BDBE-BEF9B7E0F584}.Release|Any CPU.Build.0 = Release|Any CPU
 		{74D883BB-1BC1-4737-A6E7-C4414D37BC21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{74D883BB-1BC1-4737-A6E7-C4414D37BC21}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74D883BB-1BC1-4737-A6E7-C4414D37BC21}.pipelines|Any CPU.ActiveCfg = pipelines|Any CPU
-		{74D883BB-1BC1-4737-A6E7-C4414D37BC21}.pipelines|Any CPU.Build.0 = pipelines|Any CPU
+		{74D883BB-1BC1-4737-A6E7-C4414D37BC21}.pipelines|Any CPU.ActiveCfg = Release|Any CPU
+		{74D883BB-1BC1-4737-A6E7-C4414D37BC21}.pipelines|Any CPU.Build.0 = Release|Any CPU
 		{74D883BB-1BC1-4737-A6E7-C4414D37BC21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74D883BB-1BC1-4737-A6E7-C4414D37BC21}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FB9792A7-3D5F-482B-87DA-6087C529B011}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FB9792A7-3D5F-482B-87DA-6087C529B011}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB9792A7-3D5F-482B-87DA-6087C529B011}.pipelines|Any CPU.ActiveCfg = pipelines|Any CPU
-		{FB9792A7-3D5F-482B-87DA-6087C529B011}.pipelines|Any CPU.Build.0 = pipelines|Any CPU
+		{FB9792A7-3D5F-482B-87DA-6087C529B011}.pipelines|Any CPU.ActiveCfg = Release|Any CPU
+		{FB9792A7-3D5F-482B-87DA-6087C529B011}.pipelines|Any CPU.Build.0 = Release|Any CPU
 		{FB9792A7-3D5F-482B-87DA-6087C529B011}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB9792A7-3D5F-482B-87DA-6087C529B011}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B56C06E5-B12F-4EB1-AA76-89E19DBE9C44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -68,5 +68,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C7EBF6AE-2ADD-43A6-8F11-1067809D55E7}
 	EndGlobalSection
 EndGlobal

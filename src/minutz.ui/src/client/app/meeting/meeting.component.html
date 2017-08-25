@@ -7,7 +7,117 @@
   <sd-heading></sd-heading>
   <sd-options></sd-options>
 </div>
-
+<div class="col-md-3 row-grey" style="background-color: #ecf0f5;">
+    <div class="row hide">
+      <div class="box box-widget widget-user-2" style=" background-color:#ecf0f5; ">
+        <!-- Add the bg color to the header using any of the bg-* classes -->
+        <div class="widget-user-header bg-blue">
+          <div class="widget-user-image">
+            <img class="img-circle" src="@User.ToProfile(personService).ProfileImage" alt="User Avatar">
+          </div>
+          <!-- /.widget-user-image -->
+          <h3 class="widget-user-username">@User.ToProfile(personService).Name</h3>
+          <h5 class="widget-user-desc"><b>Role :</b> Organiser</h5>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div id="attendeesControl" class="panel-group">
+      </div>
+      <div id="agendaControl" class="panel-group">
+        <div class="panel panel-default">
+          <a data-toggle="collapse" data-target=".agendaControl" style="cursor: pointer;">
+            <div class="panel-body" style="background-color: darkgrey;">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle-thin fa-stack-2x"></i>
+                <i class="fa fa-bars fa-stack-1x"></i>
+              </span>
+              <span class="attendeesLabel">Agenda Topics</span>
+              <span id="totalAgendaItemsIcon" class="label label-info"></span>
+            </div>
+          </a>
+        </div>
+        <div class="panel panel-default collapse agendaControl">
+          <div class="panel-body">
+            <div class="row hide">
+              <div class="col-md-10">
+                <div class="input-group" data-toggle="tooltip" title="Give your agenda item a title.">
+                  <span class="input-group-addon" id="basic-addon1"><i class="fa fa-pencil"></i></span>
+                  <input id="txtAgendaTitleQuick" type="text" />
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div id="btnAddAgendaItem" class="round-button-circle pull-right"><i class="fa fa-plus"></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ul id="agendaItems" class="products-list product-list-in-box collapse agendaControl"></ul>
+      </div>
+      <div id="attachmentsControl" class="panel-group">
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9 row-grey" style="background-color: #ecf0f5;">
+    <div class="row row-white left-tab top-tab">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation"><a href="#objectiveTab" aria-controls="objectiveTab" role="tab" data-toggle="tab"><i class="fa fa-globe"></i> Objective</a></li>
+          <li role="presentation"><a href="#outcomeTab" aria-controls="outcomeTab" role="tab" data-toggle="tab"><i class="fa fa-globe"></i> Outcome</a></li>
+          <li role="presentation" class="active"><a href="#agendaTab" aria-controls="agendaTab" role="tab" data-toggle="tab"><i class="fa fa-pencil"></i> Agenda</a></li>
+        </ul>
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane " id="objectiveTab">
+            <br />
+            <form>
+              <textarea id="purposeText" class="textarea" placeholder="Write the purpose for your meeting." style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+            </form>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="outcomeTab">
+            <br />
+  
+            <form>
+  
+              <textarea id="outcomeText" placeholder="Enter text ..." style="width:100%; min-height:300px;"></textarea>
+              <br><input type="reset" class="hide" value="Reset form!">
+            </form>
+          </div>
+          <div role="tabpanel" class="tab-pane active" id="agendaTab">
+            <br />
+            <div class="row left-tab">
+              <div class="col-md-2 gridHeader ">
+                <div class="input-group " >
+                  <select id="ddlItemDuration" class="form-control js-example-data-array"></select>
+                </div>
+              </div>
+              <div class="col-md-4  gridHeader">
+                <input id="txtAgendaTitle" type="text" style="font-size: 15px; font-weight: bold;" placeholder="Topic Title" data-toggle="tooltip" title="Give your agenda item a title." />
+              </div>
+              <div class="col-md-1  gridHeader">
+                <div id="btnAddAgendaItemForm" class="round-button-circle pull-right"><i class="fa fa-plus"></i></div>
+              </div>
+              <div class="col-md-3  gridHeader">
+                <select id="attendees_agendaItem" class="js-example-data-array" style="margin-top: 5px;"></select>
+              </div>
+            </div>
+            <div class="row left-tab">
+              <br />
+              <form>
+                <textarea id="agendaText" class="textarea" placeholder="Write your detailed topic information." style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-1 hide">
+    <div id="btnAddAgenda" class="round-button-circle" style="margin-top: -35px; margin-left:-160px;"><i class="fa fa-plus fa-2x"></i></div>
+  </div>
+  <div class="col-sm-1 hide">
+    <div id="btnRemoveAgenda" class="round-button-circle" style="margin-top: -35px; margin-left:-120px; background-color:red"><i class="fa fa-minus fa-2x"></i></div>
+  </div>
+  
 
 
 <div class="hide">
@@ -32,5 +142,5 @@
     <sd-editor></sd-editor>
   </div>
   <div class="hide">
-    <sd-fileupload></sd-fileupload>
+    
   </div>

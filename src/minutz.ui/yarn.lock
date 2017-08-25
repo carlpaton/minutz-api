@@ -1864,6 +1864,10 @@ dot-prop@^3.0.0:
   dependencies:
     is-obj "^1.0.0"
 
+dropzone@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-5.1.1.tgz#9f5b02fc4aa84e6466e046ba770bc82776ea49de"
+
 duplexer2@0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/duplexer2/-/duplexer2-0.0.2.tgz#c614dcf67e2fb14995a91711e5a617e8a60a31db"
@@ -4566,10 +4570,6 @@ negotiator@0.6.1:
 ng2-file-upload@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/ng2-file-upload/-/ng2-file-upload-1.2.1.tgz#5563c5dfd6f43fbfbe815c206e343464a0a6a197"
-
-ngx-uploader@^3.3.9:
-  version "3.3.9"
-  resolved "https://registry.yarnpkg.com/ngx-uploader/-/ngx-uploader-3.3.9.tgz#897184dcf127744553434538abbaa2427e0194ea"
 
 node-gyp@^3.3.1:
   version "3.6.2"

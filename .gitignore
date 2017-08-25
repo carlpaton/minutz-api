@@ -43,6 +43,8 @@ dlldata.c
 
 .idea
 node_modules
+node_modules-angular2
+node_modules-bash
 jspm_packages
 npm-debug.log
 debug.log

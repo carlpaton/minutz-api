@@ -6,7 +6,7 @@ declare let auth0: any;
 
 @Injectable()
 export class AuthService {
-
+  constructor(public router: Router) {}
   auth0 = new auth0.WebAuth({
     clientID: AUTH_CONFIG.clientID,
     domain: AUTH_CONFIG.domain,
@@ -15,13 +15,9 @@ export class AuthService {
     redirectUri: `${AUTH_CONFIG.callbackURL}`,
     scope: 'openid profile'
   });
-
-  constructor(public router: Router) {}
-
   public login(): void {
     this.auth0.authorize();
   }
-
   public handleAuthentication(): void {
     this.auth0.parseHash((err:any, authResult: any) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
@@ -38,7 +34,6 @@ export class AuthService {
       }
     });
   }
-
   private setSession(authResult: any): void {
     // Set the time that the access token will expire at
     const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
@@ -48,7 +43,6 @@ export class AuthService {
     localStorage.setItem('picture', authResult.idTokenPayload.picture);
     localStorage.setItem('expires_at', expiresAt);
   }
-
   public logout(): void {
     // Remove tokens and expiry time from localStorage
     localStorage.removeItem('access_token');
@@ -57,7 +51,6 @@ export class AuthService {
     // Go back to the home route
     this.router.navigate(['/']);
   }
-
   public isAuthenticated(): boolean {
     // Check whether the current time is past the
     // access token's expiry time

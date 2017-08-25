@@ -1,0 +1,16 @@
+.heading-input {
+    background-color: transparent;
+    border: none;
+    height: 20px;
+    width: 160px;
+    color: #000;
+    min-height: 30px;
+    width: 100%;
+    font-size: 20px;
+    padding-bottom: 8px;
+}
+input:focus{
+    outline: none !important;
+    border:none;
+    box-shadow: 0 0 0 0;
+}
