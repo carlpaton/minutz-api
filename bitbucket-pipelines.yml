@@ -22,7 +22,7 @@ pipelines:
           - dotnet publish src/minutz.sln -c pipelines -o ../../dist
           - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
           # build the Docker image (this will use the Dockerfile in the root of the repo)
-          - docker build -t $IMAGE_NAME -f \.docker\apibuild\Dockerfile .
+          - docker build -t $IMAGE_NAME -f .docker\apibuild\Dockerfile .
           # authenticate with the Docker Hub registry
           
           # push the new Docker image to the Docker registry
