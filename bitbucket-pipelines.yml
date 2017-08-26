@@ -12,6 +12,8 @@ options:
 pipelines:
   default:
     - step:
+        caches:
+          - dotnetcore
         script: # Modify the commands below to build your repository.
           # Set $DOCKER_HUB_USERNAME and $DOCKER_HUB_PASSWORD as environment variables in repository settings
           - export IMAGE_NAME=tzatziki/minutz:$BITBUCKET_BUILD_NUMBER
