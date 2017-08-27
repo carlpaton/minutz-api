@@ -32,7 +32,7 @@ pipelines:
           ##- docker build -f ci.Dockerfile .
           ##- docker push $WEB_IMAGE_NAME
           ##- docker-compose -f docker-compose.production.yml build
-          - docker run -it -v $PWD/src/minutz.ui:/app -w /app --rm tzatziki/angular:1.1 bash -c "npm install"
-          - docker run -it -v $PWD/src/minutz.ui:/app -w /app --rm tzatziki/angular:1.1 bash -c "npm run build.prod"
+          - docker run -v ${PWD}/src/minutz.ui:/app -w /app --rm tzatziki/angular:1.1 bash -c "npm install"
+          - docker run -v ${PWD}/src/minutz.ui:/app -w /app --rm tzatziki/angular:1.1 bash -c "npm run build.prod"
           - docker build -t WEB_IMAGE_NAME -f minutz.ui.Dockerfile .
           - docker push $WEB_IMAGE_NAME
