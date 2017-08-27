@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, ViewEncapsulation  } from '@angular/core';
 import { Config } from './shared/index';
-import { AuthService } from './../auth/auth.service';
+import { AuthService } from './auth/auth.service';
 
 /**
  * This class represents the main application component. Within the @Routes annotation is the configuration of the

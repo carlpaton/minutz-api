@@ -1,11 +1,6 @@
-FROM node
-RUN mkdir /src
-WORKDIR /src
-COPY ./src/minutz.ui/ /src
-EXPOSE 5555
-RUN npm install gulp
-RUN npm install nodemon
-#CMD docker run -it --rm -v %cd%/src/minutz.ui:/src node bash --this works
+FROM tzatziki/angular:1.1
+RUN mkdir /app
+VOLUME . /app
+WORKDIR /app/src/minutz.ui
 RUN npm install
-#RUN npm run build.prod
-CMD ["npm", "start"]
+RUN npm run build.prod

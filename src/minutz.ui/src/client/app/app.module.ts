@@ -5,8 +5,8 @@ import { XHRBackend, RequestOptions, Http, HttpModule } from '@angular/http';
 import { Router } from '@angular/router';
 import { AppComponent } from './app.component';
 import { AppRoutingModule} from './app-routing.module';
-import { AuthService } from './../auth/auth.service';
-import { CallbackModule } from './../callback/callback.module';
+import { AuthService } from './auth/auth.service';
+import { CallbackModule } from './callback/callback.module';
 import { Select2Module } from './shared/components/select2/select2.module';
 import { EnvironmentModule} from './environment/environment.module';
 import {
