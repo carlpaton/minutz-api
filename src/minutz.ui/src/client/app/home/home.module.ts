@@ -6,10 +6,20 @@ import { SharedModule } from '../shared/shared.module';
 import { AppProvider } from '../shared/index';
 
 @NgModule({
-  imports: [CommonModule, HomeRoutingModule, SharedModule],
-  declarations: [HomeComponent],
-  exports: [HomeComponent],
-  providers: [AppProvider]
+  imports: [
+    CommonModule,
+    HomeRoutingModule,
+  //  SharedModule
+  ],
+  declarations: [
+    HomeComponent
+  ],
+  exports: [
+    HomeComponent
+  ],
+  providers: [
+    AppProvider
+  ]
 })
 export class HomeModule {
   Hello: string;
