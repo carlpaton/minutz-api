@@ -22,7 +22,7 @@ export class OptionsComponent implements OnInit, AfterViewInit {
     IsLoggedIn: boolean;
     Meeting: MeetingModel;
     @Input() Id: string;
-    @Output() SelectedDateChange = new EventEmitter<string>();
+    @Output() Change = new EventEmitter<MeetingModel>();
     public ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
 
     }
@@ -35,11 +35,17 @@ export class OptionsComponent implements OnInit, AfterViewInit {
     public ngAfterViewInit() {
     }
     public locationChange($event: any) {
-        var session = JSON.parse(localStorage.getItem(this.MeetingKey));
-        session.Location = $event;
-        localStorage.setItem(this.MeetingKey, JSON.stringify(session));
-      }
-    
+        //var session = JSON.parse(localStorage.getItem(this.MeetingKey));
+        //session.Location = $event;
+        //localStorage.setItem(this.MeetingKey, JSON.stringify(session));
+        this.Meeting.Location = $event;
+        this.Change.emit(this.Meeting);
+    }
+    public timeChange($event:any) {
+        this.Meeting.Time = $event;
+        this.Change.emit(this.Meeting);
+        console.log($event);
+    }
     public save() {
         console.log(JSON.parse(localStorage.getItem(this.MeetingKey)));
       }
