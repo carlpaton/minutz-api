@@ -6,6 +6,7 @@ import { HomeComponent } from './home.component';
   imports: [
     RouterModule.forChild([
       { path: 'home', component: HomeComponent }
+      //,{ path: '', component: HomeComponent }
     ])
   ],
   exports: [RouterModule]
