@@ -21,7 +21,11 @@
                 </div>
                 <div class="col-md-4 row-padding"  >
                     <div class="input-group bootstrap-timepicker timepicker">
-                        <input id="meetingTime" type="text" class="form-control input-small"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                        <sd-timepicker
+                            (Change)='timeChange($event)'
+                        ></sd-timepicker>
+                        <input id="meetingTime" type="text" class="form-control input-small hide">
+                        <span class="input-group-addon hide"><i class="glyphicon glyphicon-time"></i></span>
                     </div>
                 </div>
             </div>
