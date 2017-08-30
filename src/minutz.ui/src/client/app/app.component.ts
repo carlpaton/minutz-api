@@ -33,8 +33,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     AdminLTE.init();
   }
   public ngAfterViewInit() { }
-  private authenticated: boolean;
-  private constructor(public auth: AuthService) {
+  public authenticated: boolean;
+  constructor(public auth: AuthService) {
     if (!localStorage.getItem('access_token')) {
       auth.login();
     }
