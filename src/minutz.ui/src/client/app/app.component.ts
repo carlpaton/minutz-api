@@ -1,11 +1,11 @@
-import { Component, OnInit, AfterViewInit, ViewEncapsulation  } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  ViewEncapsulation
+} from '@angular/core';
 import { Config } from './shared/index';
 import { AuthService } from './auth/auth.service';
-
-/**
- * This class represents the main application component. Within the @Routes annotation is the configuration of the
- * applications routes, configuring the paths for the lazy loaded components (HomeComponent, CreateComponent).
- */
 //declare let $: any;
 declare let AdminLTE: any;
 @Component({
@@ -14,15 +14,7 @@ declare let AdminLTE: any;
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.css']
 })
-
 export class AppComponent implements OnInit, AfterViewInit {
-  bodyClasses = 'skin-blue sidebar-mini';
-  body: HTMLBodyElement = document.getElementsByTagName('body')[0];
-  private authenticated: boolean;
-  title = 'Minutz';
-  IsLoggedIn: boolean;
-  Username: string = '';
-  UserProfilePicture: string = '';
   constructor(public auth: AuthService) {
     if (!localStorage.getItem('access_token')) {
       auth.login();
@@ -32,7 +24,13 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.Username = localStorage.getItem('name');
     this.UserProfilePicture =  localStorage.getItem('picture');
   }
-
+  bodyClasses = 'skin-blue sidebar-mini';
+  body: HTMLBodyElement = document.getElementsByTagName('body')[0];
+  private authenticated: boolean;
+  title = 'Minutz';
+  IsLoggedIn: boolean;
+  Username: string = '';
+  UserProfilePicture: string = '';
   public toggleMenu($event: any): void {
     if(this.body.classList.contains('sidebar-collapse')){
       this.body.classList.remove('sidebar-collapse')
