@@ -30,6 +30,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   public IsLoggedIn: boolean;
   public Username: string = '';
   public UserProfilePicture: string = '';
+  public authenticated: boolean;
   public toggleMenu($event: any): void {
     if (this.body.classList.contains('sidebar-collapse')) {
       this.body.classList.remove('sidebar-collapse')
@@ -42,5 +43,4 @@ export class AppComponent implements OnInit, AfterViewInit {
     AdminLTE.init();
   }
   public ngAfterViewInit() { }
-  public authenticated: boolean;
 }
