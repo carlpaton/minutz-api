@@ -9,8 +9,10 @@ import {
     styleUrls: ['timeline.component.css']
   })
   export class TimelineComponent implements OnInit {
-    ngOnInit(){}
+    ngOnInit() {
+      console.log('timeline init');
+    }
     constructor(){
-
+      console.log('timeline construct');
     }
   }

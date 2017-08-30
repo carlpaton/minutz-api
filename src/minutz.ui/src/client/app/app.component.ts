@@ -33,7 +33,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
   public toggleMenu($event: any): void {
     if (this.body.classList.contains('sidebar-collapse')) {
-      this.body.classList.remove('sidebar-collapse')
+      this.body.classList.remove('sidebar-collapse');
     } else {
       this.body.classList.add('sidebar-collapse');
     }
