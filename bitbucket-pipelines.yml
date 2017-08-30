@@ -31,8 +31,8 @@ pipelines:
           - npm run build.prod
           # push the new Docker image to the Docker registry
           ##- docker push $IMAGE_NAME
-          ##- docker build -f ci.Dockerfile .
-          ##- docker push $WEB_IMAGE_NAME
+          - docker build -t $WEB_IMAGE_NAME -f Dockerfile .
+          - docker push $WEB_IMAGE_NAME
           ##- docker-compose -f docker-compose.production.yml build
           ###- docker run -v ${PWD}/src/minutz.ui:/app -w /app --rm tzatziki/angular:1.1 bash -c "npm install"
           ###- docker run -v ${PWD}/src/minutz.ui:/app -w /app --rm tzatziki/angular:1.1 bash -c "npm run build.prod"
