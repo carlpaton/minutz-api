@@ -1,6 +1,6 @@
 ## Ignore Derivco Config Generated folders
 
-tools/
+#tools/
 dist/
 logs/
 
