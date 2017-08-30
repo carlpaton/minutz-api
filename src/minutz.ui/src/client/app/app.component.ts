@@ -17,7 +17,6 @@ declare let AdminLTE: any;
 export class AppComponent implements OnInit, AfterViewInit {
   public bodyClasses: string = 'skin-blue sidebar-mini';
   public body: HTMLBodyElement = document.getElementsByTagName('body')[0];
-  private authenticated: boolean;
   public title: string = 'Minutz';
   public IsLoggedIn: boolean;
   public Username: string = '';
@@ -34,6 +33,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     AdminLTE.init();
   }
   public ngAfterViewInit() { }
+  private authenticated: boolean;
   private constructor(public auth: AuthService) {
     if (!localStorage.getItem('access_token')) {
       auth.login();
