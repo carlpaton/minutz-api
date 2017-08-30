@@ -15,15 +15,6 @@ declare let AdminLTE: any;
   styleUrls: ['app.component.css']
 })
 export class AppComponent implements OnInit, AfterViewInit {
-  private constructor(public auth: AuthService) {
-    if (!localStorage.getItem('access_token')) {
-      auth.login();
-    }
-    auth.handleAuthentication();
-    this.IsLoggedIn = auth.isAuthenticated();
-    this.Username = localStorage.getItem('name');
-    this.UserProfilePicture =  localStorage.getItem('picture');
-  }
   public bodyClasses: string = 'skin-blue sidebar-mini';
   public body: HTMLBodyElement = document.getElementsByTagName('body')[0];
   private authenticated: boolean;
@@ -32,9 +23,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   public Username: string = '';
   public UserProfilePicture: string = '';
   public toggleMenu($event: any): void {
-    if(this.body.classList.contains('sidebar-collapse')){
+    if (this.body.classList.contains('sidebar-collapse')) {
       this.body.classList.remove('sidebar-collapse')
-    }else{
+    } else {
       this.body.classList.add('sidebar-collapse');
     }
     console.log(this.body);
@@ -42,5 +33,14 @@ export class AppComponent implements OnInit, AfterViewInit {
   public ngOnInit() {
     AdminLTE.init();
   }
-  public ngAfterViewInit() {}
+  public ngAfterViewInit() { }
+  private constructor(public auth: AuthService) {
+    if (!localStorage.getItem('access_token')) {
+      auth.login();
+    }
+    auth.handleAuthentication();
+    this.IsLoggedIn = auth.isAuthenticated();
+    this.Username = localStorage.getItem('name');
+    this.UserProfilePicture = localStorage.getItem('picture');
+  }
 }
