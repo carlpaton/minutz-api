@@ -15,6 +15,15 @@ declare let AdminLTE: any;
   styleUrls: ['app.component.css']
 })
 export class AppComponent implements OnInit, AfterViewInit {
+  constructor(public auth: AuthService) {
+    if (!localStorage.getItem('access_token')) {
+      auth.login();
+    }
+    auth.handleAuthentication();
+    this.IsLoggedIn = auth.isAuthenticated();
+    this.Username = localStorage.getItem('name');
+    this.UserProfilePicture = localStorage.getItem('picture');
+  }
   public bodyClasses: string = 'skin-blue sidebar-mini';
   public body: HTMLBodyElement = document.getElementsByTagName('body')[0];
   public title: string = 'Minutz';
@@ -34,13 +43,4 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
   public ngAfterViewInit() { }
   public authenticated: boolean;
-  constructor(public auth: AuthService) {
-    if (!localStorage.getItem('access_token')) {
-      auth.login();
-    }
-    auth.handleAuthentication();
-    this.IsLoggedIn = auth.isAuthenticated();
-    this.Username = localStorage.getItem('name');
-    this.UserProfilePicture = localStorage.getItem('picture');
-  }
 }
