@@ -15,7 +15,7 @@ declare let AdminLTE: any;
   styleUrls: ['app.component.css']
 })
 export class AppComponent implements OnInit, AfterViewInit {
-  constructor(public auth: AuthService) {
+  private constructor(public auth: AuthService) {
     if (!localStorage.getItem('access_token')) {
       auth.login();
     }
@@ -24,13 +24,13 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.Username = localStorage.getItem('name');
     this.UserProfilePicture =  localStorage.getItem('picture');
   }
-  bodyClasses = 'skin-blue sidebar-mini';
-  body: HTMLBodyElement = document.getElementsByTagName('body')[0];
+  public bodyClasses: string = 'skin-blue sidebar-mini';
+  public body: HTMLBodyElement = document.getElementsByTagName('body')[0];
   private authenticated: boolean;
-  title = 'Minutz';
-  IsLoggedIn: boolean;
-  Username: string = '';
-  UserProfilePicture: string = '';
+  public title: string = 'Minutz';
+  public IsLoggedIn: boolean;
+  public Username: string = '';
+  public UserProfilePicture: string = '';
   public toggleMenu($event: any): void {
     if(this.body.classList.contains('sidebar-collapse')){
       this.body.classList.remove('sidebar-collapse')
@@ -39,7 +39,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
     console.log(this.body);
   }
-  ngOnInit() {
+  public ngOnInit() {
     AdminLTE.init();
   }
   public ngAfterViewInit() {}
