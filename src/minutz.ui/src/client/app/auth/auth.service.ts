@@ -1,13 +1,16 @@
-import { AUTH_CONFIG } from './auth0-variables';
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import {
+  AUTH_CONFIG
+} from './auth0-variables';
+import {
+  Injectable
+} from '@angular/core';
+import {
+  Router
+} from '@angular/router';
 declare let auth0: any;
-
-
 @Injectable()
 export class AuthService {
-  constructor(public router: Router) {}
-  auth0 = new auth0.WebAuth({
+  public auth0 = new auth0.WebAuth({
     clientID: AUTH_CONFIG.clientID,
     domain: AUTH_CONFIG.domain,
     responseType: 'token id_token',
@@ -15,6 +18,9 @@ export class AuthService {
     redirectUri: `${AUTH_CONFIG.callbackURL}`,
     scope: 'openid profile'
   });
+  public constructor(public router: Router) {
+    console.log('init auth');
+  }
   public login(): void {
     this.auth0.authorize();
   }
@@ -34,7 +40,7 @@ export class AuthService {
       }
     });
   }
-  private setSession(authResult: any): void {
+  public setSession(authResult: any): void {
     // Set the time that the access token will expire at
     const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
     localStorage.setItem('access_token', authResult.accessToken);
@@ -57,5 +63,4 @@ export class AuthService {
     const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
     return new Date().getTime() < expiresAt;
   }
-
 }

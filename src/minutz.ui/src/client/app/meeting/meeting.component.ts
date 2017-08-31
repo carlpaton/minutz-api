@@ -15,20 +15,20 @@ export class MeetingComponent implements OnInit {
   Id: string = '';
   Check: boolean;
   TestDate: string;
-  ngOnInit() {
+  public ngOnInit() {
     this.route.params.subscribe(params => {
       this.Id = params["id"];
     });
   
   }
-  constructor(
+  public constructor(
     private route: ActivatedRoute
   ) {
     this.Check = true;
     this.TestDate = '08/02/2016';
    }
 
-  saveModel(): void {
+  public saveModel(): void {
     console.log('save');
   }
   public TestClick($evnet: any){
@@ -41,25 +41,21 @@ export class MeetingComponent implements OnInit {
   public SerachByOptionChange($event: any): void {
     console.log($event);
   };
-  testEvent($event: any): void {
+  public testEvent($event: any): void {
 
     console.log($event);
   }
-
-  save(): void {
-
+  public save(): void {
+    console.log('save');
   }
-
-  create() {
-
+  public create() {
+    console.log('create');
   }
-
-  discover() {
+  public discover() {
     console.log('discovery');
   }
-
-  enableSearch() {
-
+  public enableSearch() {
+    
   }
 
   search(): void {

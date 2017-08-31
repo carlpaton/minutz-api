@@ -42,5 +42,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   public ngOnInit() {
     AdminLTE.init();
   }
-  public ngAfterViewInit() { }
+  public ngAfterViewInit() {
+    console.log('app.compoent.ts after view init');
+  }
 }
