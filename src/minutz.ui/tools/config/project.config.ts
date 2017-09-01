@@ -165,6 +165,7 @@ export class ProjectConfig extends SeedConfig {
       //  {src: `${this.APP_SRC}/client/js/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js`, inject: 'libs'},
       //  {src: `${this.APP_SRC}/client/js/daterangepicker/daterangepicker.js`, inject: 'libs'}
        {src: `${this.APP_SRC}/js/bootstrap-toggle.js`, inject: true, vendor: false},
+       {src: `${this.APP_SRC}/js/jquery-time-duration-picker.min.js`, inject: true, vendor: false},
        {src: `${this.APP_SRC}/css/bootstrap-toggle.css`, inject: true, vendor: false}
     ];
 

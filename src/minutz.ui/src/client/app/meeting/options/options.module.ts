@@ -6,12 +6,13 @@ import { DatePickerModule } from './../../shared/components/datepicker/datepicke
 import { TimePickerModule } from './../../shared/components/timepicker/timepicker.module';
 //import { FileSelectDirective, FileDropDirective, FileUploader} from 'ng2-file-upload';
 import { ToggleModule } from './../../shared/components/toggle/toggle.module';
+import { DurationPickerModule } from './../../shared/components/durationPicker/durationPicker.module';
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         TimePickerModule,
-        DatePickerModule, ToggleModule //FileUploader, FileDropDirective, FileSelectDirective
+        DatePickerModule, ToggleModule, DurationPickerModule //FileUploader, FileDropDirective, FileSelectDirective
     ],
     declarations: [
         OptionsComponent

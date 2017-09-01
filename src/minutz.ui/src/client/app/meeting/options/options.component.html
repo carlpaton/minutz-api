@@ -25,7 +25,6 @@
                             (Change)='timeChange($event)'
                         ></sd-timepicker>
                         <input id="meetingTime" type="text" class="form-control input-small hide">
-                        <span class="input-group-addon hide"><i class="glyphicon glyphicon-time"></i></span>
                     </div>
                 </div>
             </div>
@@ -33,7 +32,7 @@
         <div class="col-md-6">
             <div class="row">
                 <div class="col-md-2 row-padding">
-                    <select id="ddlDuration" class="form-control js-example-data-array" ></select>
+                    <sd-duration></sd-duration>
                 </div>
                 <div class="col-md-1 row-padding">
                     <button   class="btn btn-success"><i class="fa fa-refresh"></i></button>
