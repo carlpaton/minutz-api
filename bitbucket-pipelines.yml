@@ -38,3 +38,4 @@ pipelines:
           ###- docker run -v ${PWD}/src/minutz.ui:/app -w /app --rm tzatziki/angular:1.1 bash -c "npm run build.prod"
           ###- docker build -t WEB_IMAGE_NAME -f minutz.ui.Dockerfile .
           ##- docker push $WEB_IMAGE_NAME
+          - curl -X POST "https://cloud.docker.com/api/app/v1/service/9a433dfc-ddf0-411f-ab9a-b5153adb8090/trigger/ef0330e4-45d2-4154-a366-78e007ac1fbc/call/"
