@@ -45,10 +45,10 @@
                     </div>
                 </div>
                 <div class="col-md-2 row-padding">
-                   <input type="checkbox" id="toggle-formal">
+                   <sd-toggle [On]="'Formal'" [Off]="'Informal'" ></sd-toggle>
                 </div>
                 <div class="col-md-2 row-padding">
-                    <input type="checkbox" id="toggle-private">
+                    <sd-toggle [On]="'Private'" [Off]="'Public'"></sd-toggle>
                 </div>
                 <div class="col-md-1 row-padding">
                     <div (click)="save()" class="btn btn-success"><span id="txtSave">Save</span></div>

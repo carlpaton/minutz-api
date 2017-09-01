@@ -14,26 +14,21 @@ import {
     templateUrl: 'toggle.component.html',
     styleUrls: ['toggle.component.css']
   })
-  export class ToggleComponent implements AfterViewInit {
-    Name: string = '';
-    @Input() On: string;
+  export class ToggleComponent implements AfterViewInit, OnInit {
+    Name: string;
+    @Input() On:string;
     @Input() Off: string;
-    @Input() Id: string;
     @Output() Change = new EventEmitter<any>();
     public ngAfterViewInit() {
-        if(!this.On){
-            this.On = 'On';
-        }
-        if(!this.Off){
-            this.Off = 'Off';
-        }
         $('#' + this.Name).bootstrapToggle({ on: this.On, off: this.Off });
+    }
+    public ngOnInit(){
+        this.Name = 'toggle-' + this.createId();
+        if(this.On){this.On = this.On;}else{this.On = 'On';}
+        if(this.Off){this.Off = this.Off;}else{this.Off = 'Off';}
     }
     public SelectedDate(time:any) {
       this.Change.emit(time);
-    }
-    constructor() {
-      this.Name = 'toggle-' + this.createId();
     }
     private createId(): any {
       return `${this.createidsection()}-${this.createidsection()}-${this.createidsection()}-${this.createidsection()}` +

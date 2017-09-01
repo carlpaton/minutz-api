@@ -16,6 +16,7 @@ import { AddButtonModule } from './../shared/components/addButton/addButton.modu
 import { OptionsModule } from './options/options.module';
 import { HeadingModule } from './heading/heading.module';
 import { AttendeesModule } from './attendees/attendees.module';
+
 @NgModule({
   imports: [
     CommonModule,

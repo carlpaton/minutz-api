@@ -156,15 +156,16 @@ export class ProjectConfig extends SeedConfig {
       //  {src: `${this.APP_SRC}/client/js/datepicker/datepicker3.css`, inject: true, vendor: false},//datepicker3
       //  {src: `${this.APP_SRC}/client/js/daterangepicker/daterangepicker.css`, inject: true, vendor: false},//daterangepicker
       //  {src: `${this.APP_SRC}/client/js/bootstrap-wysihtml5/bootstrap3-wysihtml5.css`, inject: true, vendor: false},
-       {src: `${this.APP_SRC}/client/css/site.css`, inject: true, vendor: false},
-       {src: `${this.APP_SRC}/client/js/scripts.js`,inject: true, vendor: false}
+       {src: `${this.APP_SRC}/css/site.css`, inject: true, vendor: false},
+       {src: `${this.APP_SRC}/js/scripts.js`,inject: true, vendor: false},
       //  {src: `${this.APP_SRC}/client/js/adminlte/adminlte.js`, inject: 'libs'},
       //  {src: `${this.APP_SRC}/client/js/datepicker/bootstrap-datepicker.js`, inject: 'libs'},
       //  {src: `${this.APP_SRC}/client/js/momentjs/moment.min.js`, inject: 'libs'},
       //  {src: `${this.APP_SRC}/client/js/momentjs/moment-timezone-with-data-2012-2022.min.js`, inject: 'libs'},
       //  {src: `${this.APP_SRC}/client/js/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js`, inject: 'libs'},
       //  {src: `${this.APP_SRC}/client/js/daterangepicker/daterangepicker.js`, inject: 'libs'}
-      // {src: `${this.CSS_SRC}/path-to-lib/test-lib.css`, inject: true, vendor: false},
+       {src: `${this.APP_SRC}/js/bootstrap-toggle.js`, inject: true, vendor: false},
+       {src: `${this.APP_SRC}/css/bootstrap-toggle.css`, inject: true, vendor: false}
     ];
 
     /* Add to or override NPM module configurations: */
