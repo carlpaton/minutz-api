@@ -16,6 +16,7 @@ declare let $: any;
     styleUrls: ['editor.component.css']
 })
 export class EditorComponent implements OnInit, AfterViewInit {
+    Name:string;
     @Input() Id: string;
     @Input() Date: string;
     @Output() SelectedDateChange = new EventEmitter<string>();
@@ -24,11 +25,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
     }
     public ngOnInit() {
         if (!this.Id) {
-            this.Id = this.createId();
+            this.Name = this.createId();
+        }else {
+            this.Name = this.Id;
         }
     }
     public ngAfterViewInit() {
-        $('#' + this.Id).wysihtml5();
+        $('#' + this.Name).wysihtml5();
     }
     private createId(): any {
         return `${this.createidsection()}-${this.createidsection()}-${this.createidsection()}-${this.createidsection()}` +

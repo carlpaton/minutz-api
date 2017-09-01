@@ -4,6 +4,9 @@
 .skin-blue .main-header .navbar {
     background-color: #AA8AFB !important;
 }
+.content-wrapper{
+  background-color: #fff;
+}
 
 @media(min-width: 768px) {
   .navbar-custom-menu {

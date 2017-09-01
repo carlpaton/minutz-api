@@ -20,13 +20,16 @@ export class TimePickerComponent implements AfterViewInit {
   @Output() Change = new EventEmitter<any>();
   public ngAfterViewInit() {
     $('#' + this.Id).timepicker();
-    $('#' + this.Id).timepicker().on('changeTime.timepicker', function (e: any) {
+    $('#' + this.Id).timepicker().on('changeTime.timepicker',  (e:any)=> {
       //console.log('The time is ' + e.time.value);
       //console.log('The hour is ' + e.time.hours);
       //console.log('The minute is ' + e.time.minutes);
       //console.log('The meridian is ' + e.time.meridian);
-      this.Change.emit(e.time);
+      this.SelectedDate(e.time);
     });
+  }
+  public SelectedDate(time:any) {
+    this.Change.emit(time);
   }
   constructor() {
     this.Id = 'time-picker-' + this.createId();
