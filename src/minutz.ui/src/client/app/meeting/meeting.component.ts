@@ -29,11 +29,11 @@ export class MeetingComponent implements OnInit {
   public saveModel(): void {
     console.log('save');
   }
-  public TestClick($evnet: any){
+  public TestClick($evnet: any) {
     this.TestDate = '08/02/2015';
    //if(this.Check){ this.Check = false;}else{this.Check = true;} 
   }
-  public CheckChangedEvent($event: any){
+  public CheckChangedEvent($event: any) {
     console.log($event);
   }
   public SerachByOptionChange($event: any): void {
