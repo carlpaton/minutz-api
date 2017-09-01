@@ -6,7 +6,6 @@ import {
     EventEmitter,
     Output,
     AfterViewInit,
-    OnChanges,
     SimpleChange
 } from '@angular/core';
 declare let $: any;
@@ -19,15 +18,13 @@ declare let $: any;
 export class AttendeesComponent implements OnInit, AfterViewInit {
     @Input() Id: string;
     @Output() SelectedDateChange = new EventEmitter<string>();
-    public ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
-
-    }
     public ngOnInit() {
         if (!this.Id) {
             this.Id = this.createId();
         }
     }
     public ngAfterViewInit() {
+        console.log('discovery');
     }
     private createId(): any {
         return `${this.createidsection()}-${this.createidsection()}-${this.createidsection()}-${this.createidsection()}` +
