@@ -2,7 +2,7 @@ import {
   Component,
   OnInit
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute } from '@angular/router';
 declare let $: any;
 @Component({
   moduleId: module.id,
@@ -17,9 +17,8 @@ export class MeetingComponent implements OnInit {
   TestDate: string;
   public ngOnInit() {
     this.route.params.subscribe(params => {
-      this.Id = params["id"];
+      this.Id = params['id'];
     });
-  
   }
   public constructor(
     private route: ActivatedRoute
@@ -27,7 +26,6 @@ export class MeetingComponent implements OnInit {
     this.Check = true;
     this.TestDate = '08/02/2016';
    }
-
   public saveModel(): void {
     console.log('save');
   }
@@ -42,7 +40,6 @@ export class MeetingComponent implements OnInit {
     console.log($event);
   };
   public testEvent($event: any): void {
-
     console.log($event);
   }
   public save(): void {
@@ -55,10 +52,9 @@ export class MeetingComponent implements OnInit {
     console.log('discovery');
   }
   public enableSearch() {
-    
+    console.log('discovery');
   }
-
   search(): void {
-
+    console.log('discovery');
   }
 }
