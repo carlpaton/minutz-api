@@ -20,6 +20,8 @@ import { AttendeesModule
 } from './attendees/attendees.module';
 import {AttendeeSelectModule
 } from './../shared/components/attendeeSelect/attendeeSelect.module';
+import { DurationPickerModule
+} from './../shared/components/durationPicker/durationPicker.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -37,7 +39,8 @@ import {AttendeeSelectModule
     AttendeesModule,
     AddButtonModule,
     TimePickerModule,
-    AttendeeSelectModule
+    AttendeeSelectModule,
+    DurationPickerModule
   ],
   declarations: [MeetingComponent],
   exports: [MeetingComponent]
