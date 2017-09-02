@@ -11,11 +11,11 @@ import {
 declare let $: any;
 @Component({
     moduleId: module.id,
-    selector: 'sd-attendees',
-    templateUrl: 'attendees.component.html',
-    styleUrls: ['attendees.component.css']
+    selector: 'sd-attendees-panel',
+    templateUrl: 'attendees-panel.component.html',
+    styleUrls: ['attendees-panel.component.css']
 })
-export class AttendeesComponent implements OnInit, AfterViewInit {
+export class AttendeesPanelComponent implements OnInit, AfterViewInit {
     @Input() Id: string;
     @Output() SelectedDateChange = new EventEmitter<string>();
     public ngOnInit() {

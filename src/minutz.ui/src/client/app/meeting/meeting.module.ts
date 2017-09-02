@@ -16,12 +16,16 @@ import { AddButtonModule } from './../shared/components/addButton/addButton.modu
 import { OptionsModule } from './options/options.module';
 import { HeadingModule
 } from './heading/heading.module';
-import { AttendeesModule
-} from './attendees/attendees.module';
+import { AttendeesPanelModule
+} from './attendeesPanel/attendees-panel.module';
 import {AttendeeSelectModule
 } from './../shared/components/attendeeSelect/attendeeSelect.module';
 import { DurationPickerModule
 } from './../shared/components/durationPicker/durationPicker.module';
+import { AgendaPanelModule
+} from './agendaPanel/agenda-panel.module';
+import { AttachmentPanelModule
+} from './attachmentPanel/attachment-panel.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -36,11 +40,13 @@ import { DurationPickerModule
     FileuploadModule,
     OptionsModule,
     HeadingModule,
-    AttendeesModule,
+    AttendeesPanelModule,
     AddButtonModule,
     TimePickerModule,
     AttendeeSelectModule,
-    DurationPickerModule
+    DurationPickerModule,
+    AgendaPanelModule,
+    AttachmentPanelModule
   ],
   declarations: [MeetingComponent],
   exports: [MeetingComponent]
