@@ -58,7 +58,7 @@ export class ProjectConfig extends SeedConfig {
       // {src: 'ionicons/css/ionicons.css', inject: true},
       // {src: 'icheck/skins/flat/blue.css', inject: true},
       {src: 'morris.js/morris.css', inject: true},
-      {src: 'better-timezone/dist/better-timezone', inject: 'libs'},
+      {src: 'better-timezone/dist/better-timezone.js', inject: 'libs'},
       {src: 'bootstrap-datepicker/dist/css/bootstrap-datepicker3.css', inject: true},
       {src: 'admin-lte/plugins/daterangepicker/daterangepicker.css', inject: true},
       {src: 'bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.css', inject: true},
