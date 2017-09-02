@@ -14,9 +14,12 @@ import { EditorModule } from './../shared/components/editor/editor.module';
 import { FileuploadModule } from './../shared/components/fileupload/fileupload.module';
 import { AddButtonModule } from './../shared/components/addButton/addButton.module'; 
 import { OptionsModule } from './options/options.module';
-import { HeadingModule } from './heading/heading.module';
-import { AttendeesModule } from './attendees/attendees.module';
-
+import { HeadingModule
+} from './heading/heading.module';
+import { AttendeesModule
+} from './attendees/attendees.module';
+import {AttendeeSelectModule
+} from './../shared/components/attendeeSelect/attendeeSelect.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -33,7 +36,8 @@ import { AttendeesModule } from './attendees/attendees.module';
     HeadingModule,
     AttendeesModule,
     AddButtonModule,
-    TimePickerModule
+    TimePickerModule,
+    AttendeeSelectModule
   ],
   declarations: [MeetingComponent],
   exports: [MeetingComponent]
