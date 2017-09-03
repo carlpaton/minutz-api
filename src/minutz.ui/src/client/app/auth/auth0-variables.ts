@@ -6,5 +6,5 @@ interface AuthConfig {
 export const AUTH_CONFIG: AuthConfig = {
   clientID: 'spEQucIOEbSBvkixqRHzkKDHNYRaGy3J',
   domain: 'tzatziki-minutz.auth0.com',
-  callbackURL: 'http://localhost:4200/'
+  callbackURL: `${window.location}`
 };

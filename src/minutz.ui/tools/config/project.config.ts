@@ -58,7 +58,7 @@ export class ProjectConfig extends SeedConfig {
       // {src: 'ionicons/css/ionicons.css', inject: true},
       // {src: 'icheck/skins/flat/blue.css', inject: true},
       {src: 'morris.js/morris.css', inject: true},
-      {src: 'better-timezone/dist/better-timezone.js', inject: 'libs'},
+      
       {src: 'bootstrap-datepicker/dist/css/bootstrap-datepicker3.css', inject: true},
       {src: 'admin-lte/plugins/daterangepicker/daterangepicker.css', inject: true},
       {src: 'bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.css', inject: true},
@@ -159,6 +159,7 @@ export class ProjectConfig extends SeedConfig {
       //  {src: `${this.APP_SRC}/client/js/bootstrap-wysihtml5/bootstrap3-wysihtml5.css`, inject: true, vendor: false},
        {src: `${this.APP_SRC}/css/site.css`, inject: true, vendor: false},
        {src: `${this.APP_SRC}/js/scripts.js`,inject: true, vendor: false},
+       {src: `${this.APP_SRC}/js/better-timezone.js`, inject: true, vendor: false},
       //  {src: `${this.APP_SRC}/client/js/adminlte/adminlte.js`, inject: 'libs'},
       //  {src: `${this.APP_SRC}/client/js/datepicker/bootstrap-datepicker.js`, inject: 'libs'},
       //  {src: `${this.APP_SRC}/client/js/momentjs/moment.min.js`, inject: 'libs'},

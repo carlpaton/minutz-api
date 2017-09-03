@@ -6,6 +6,7 @@ export interface EnvConfig {
   externalLoginPageUrl: string;
   tokenApiEndpointUrl: string;
   tokenApiRedirectUrl: string;
+  callbackUrl:string;
   client_id: string;
   client_secret: string;
 }

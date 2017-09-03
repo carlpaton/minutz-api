@@ -7,6 +7,7 @@ const ProdConfig: EnvConfig = {
   'redirect_uri=http%3A%2F%2Flocalhost%3A5555%2F%23%2Ftoken&state=45s9KYgjfj8gD0A2YvfNLw&response_type=code',
   tokenApiEndpointUrl: 'https://opsoauth.mgsops.net:10250/OAuth/Token',
   tokenApiRedirectUrl: 'http://minutz-ui-48a627c6-1.3496b7f3.cont.dockerapp.io/#/token',
+  callbackUrl: 'http://localhost:4200/',
   client_id: 'internal-dev',
   client_secret: 'apipassword123'
 };
