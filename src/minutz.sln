@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.8
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "minutz.api", "minutz-api\minutz.api.csproj", "{D1137C3A-F555-4412-9FCB-8CD3969CBE57}"
 EndProject
@@ -16,6 +16,27 @@ EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{B56C06E5-B12F-4EB1-AA76-89E19DBE9C44}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "minutz.tests.core", "minutz.tests.core\minutz.tests.core.csproj", "{5175318C-69AC-46BE-A6CE-681AF4B98B10}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "minutz.ui", "minutz.ui\", "{8A870494-3BF9-449F-BBB8-4C949754F006}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_51630"
+		Debug.AspNetCompiler.PhysicalPath = "minutz.ui\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_51630\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_51630"
+		Release.AspNetCompiler.PhysicalPath = "minutz.ui\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_51630\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "51630"
+		SlnRelativePath = "minutz.ui\"
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +86,12 @@ Global
 		{5175318C-69AC-46BE-A6CE-681AF4B98B10}.pipelines|Any CPU.Build.0 = Debug|Any CPU
 		{5175318C-69AC-46BE-A6CE-681AF4B98B10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5175318C-69AC-46BE-A6CE-681AF4B98B10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A870494-3BF9-449F-BBB8-4C949754F006}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A870494-3BF9-449F-BBB8-4C949754F006}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A870494-3BF9-449F-BBB8-4C949754F006}.pipelines|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A870494-3BF9-449F-BBB8-4C949754F006}.pipelines|Any CPU.Build.0 = Debug|Any CPU
+		{8A870494-3BF9-449F-BBB8-4C949754F006}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A870494-3BF9-449F-BBB8-4C949754F006}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

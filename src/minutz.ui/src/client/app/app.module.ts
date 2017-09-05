@@ -24,12 +24,10 @@ import {
   Role } from './shared/models/index';
 import {
   LocalStorageService,
-  AuthenticationService,
-  AuthenticationTokenService,
+
   AuthHttpRequestService,
   BaseHttpComponent,
   HttpInterceptor,
-  RoleService,
   UrlService } from './shared/services/index';
 import { AboutModule } from './about/about.module';
 import { PatternLibraryModule } from './pattern-library/pattern-library.module';
@@ -63,10 +61,7 @@ import { SharedModule } from './shared/shared.module';
     MachinePolicyRepository,
     MachineRepository,
     RoleRepository,
-    //AuthenticationService,
     LocalStorageService,
-    //AuthenticationTokenService,
-    RoleService,
     UrlService,
     AuthService,
     AuthHttpRequestService,

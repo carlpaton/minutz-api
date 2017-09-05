@@ -11,8 +11,6 @@ services:
       - DEFAULTPROFILEPIC=../defaultpic.png
       - MINUTESACCOUNT=minutes@minutz.net
       - INVITESACCOUNT=invites@minutz.net
-    ports:
-      - "5555:80"
     build:
       context: ./minutz-api
       dockerfile: Dockerfile
