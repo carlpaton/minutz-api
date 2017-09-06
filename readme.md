@@ -101,6 +101,22 @@ Pull the right Docker images:
 
 	docker pull microsoft/mssql-server-linux
 
+Running sql locally on any platform:
+
+	docker run --name mssql -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=password1234$" --cap-add SYS_PTRACE -p 1401:1433 -d microsoft/mssql-server-linux
+
+Now you can use your sql editor and connect using tcp:127.0.0.1,1433 with the username: sa and password: password1234$
+
+Run the SETUP.SQL found in the database folder in the repo, then run this command in powershell:
+
+	docker ps
+
+Will list the running containers, take the container number from the mssql running container, then commit the changes by running:
+
+	docker commit <containernumber> tzatziki/database:1.0
+
+this will create a image with the sql changes in place.
+
 then for .net core:
 
 	docker pull microsoft/aspnetcore:1.1

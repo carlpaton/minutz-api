@@ -38,6 +38,11 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "minutz.ui", "minutz.ui\", "
 		SlnRelativePath = "minutz.ui\"
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{2D076928-7547-4398-857B-0E723CD4C952}"
+	ProjectSection(SolutionItems) = preProject
+		..\readme.md = ..\readme.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -89,7 +94,6 @@ Global
 		{8A870494-3BF9-449F-BBB8-4C949754F006}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8A870494-3BF9-449F-BBB8-4C949754F006}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A870494-3BF9-449F-BBB8-4C949754F006}.pipelines|Any CPU.ActiveCfg = Debug|Any CPU
-		{8A870494-3BF9-449F-BBB8-4C949754F006}.pipelines|Any CPU.Build.0 = Debug|Any CPU
 		{8A870494-3BF9-449F-BBB8-4C949754F006}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{8A870494-3BF9-449F-BBB8-4C949754F006}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
