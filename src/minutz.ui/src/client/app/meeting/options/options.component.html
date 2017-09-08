@@ -5,7 +5,7 @@
         <div class="input-group">
           <span class="input-group-addon" id="basic-addon1"><i class="fa fa-map-marker"></i></span>
           <input (keypress)="locationChange($event.target.value)" [value]="Meeting.Location" (input)="Meeting.Location=$event.target.value"
-            type="text" class="form-control" placeholder="Location" aria-describedby="basic-addon1">
+                 type="text" class="form-control" placeholder="Location" aria-describedby="basic-addon1">
 
         </div>
       </div>
@@ -53,9 +53,9 @@
       </div>
       <div class="col-md-3">
         <a class="btn " style="background-color:white; color:black;">
-					<i class="fa fa-print"></i>
-					<span>Print</span>
-				</a>
+          <i class="fa fa-print"></i>
+          <span>Print</span>
+        </a>
       </div>
       <div class="col-md-3">
         <div style="padding-top:6px; text-align:left;">
@@ -70,7 +70,9 @@
     </div>
     <div class="col-md-6">
       <div class="col-md-2">
-        <sd-timezone></sd-timezone>
+        <sd-timezone
+         (Change)="timeChange($event)" >
+        </sd-timezone>
       </div>
     </div>
 

@@ -30,7 +30,7 @@
         "DEFAULTPROFILEPIC": "../defaultpic.png",
         "AUTH0DOMAIN": "tzatziki-minutz.auth0.com",
         "ACTIONSACCOUNT": "actions@minutz.net",
-        "MINUTZ_CONNECTIONSTRING": "Server=tcp:127.0.0.1,1433;User ID=sa;pwd=Password1234;database=minutz;",
+        "MINUTZ_CONNECTIONSTRING": "Server=tcp:127.0.0.1,1433;User ID=sa;pwd=password1234$;database=minutz;",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "MINUTESACCOUNT": "minutes@minutz.net",
         "AUTH0CALLBACKURL": "http://localhost:60856/signin-auth0",

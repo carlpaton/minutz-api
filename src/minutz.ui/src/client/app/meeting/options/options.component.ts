@@ -42,7 +42,7 @@ export class OptionsComponent implements OnInit, AfterViewInit {
         this.Change.emit(this.Meeting);
     }
     public timeChange($event:any) {
-        this.Meeting.Time = $event;
+        this.Meeting.TimeZone = $event;
         this.Change.emit(this.Meeting);
         console.log($event);
     }
