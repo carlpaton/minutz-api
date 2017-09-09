@@ -13,8 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\minutz-interface\Interface.csproj" />
-    <ProjectReference Include="..\minutz-models\Models.csproj" />
+    <ProjectReference Include="..\Interface\Interface.csproj" />
+    <ProjectReference Include="..\Models\Models.csproj" />
+    <ProjectReference Include="..\SqlRepository\SqlRepository.csproj" />
   </ItemGroup>
 
 </Project>

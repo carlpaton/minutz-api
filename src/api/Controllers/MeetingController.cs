@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace api.Controllers
+namespace Api.Controllers
 {
     [Route("api/[controller]")]
     public class MeetingController : Controller
     {
         [HttpGet]
-        public minutz.models.ViewModels.Meeting Get()
+        public Models.ViewModels.Meeting Get()
         {
-            return new minutz.models.ViewModels.Meeting();
+            return new Models.ViewModels.Meeting();
         }
     }
 }

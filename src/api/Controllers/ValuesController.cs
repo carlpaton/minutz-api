@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 
-namespace api.Controllers
+namespace Api.Controllers
 {
     [Route("api/[controller]")]
     public class ValuesController : Controller

@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>Api</AssemblyName>
+    <RootNamespace>Api</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,10 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\minutz-core\Core.csproj" />
-    <ProjectReference Include="..\minutz-interface\Interface.csproj" />
-    <ProjectReference Include="..\minutz-models\Models.csproj" />
-    <ProjectReference Include="..\minutz-sqlrepository\SqlRepository.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Interface\Interface.csproj" />
+    <ProjectReference Include="..\Models\Models.csproj" />
+    <ProjectReference Include="..\SqlRepository\SqlRepository.csproj" />
   </ItemGroup>
 
 </Project>

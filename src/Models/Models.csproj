@@ -8,8 +8,4 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='pipelines|AnyCPU'" />
 
-  <ItemGroup>
-    <ProjectReference Include="..\minutz-interface\Interface.csproj" />
-  </ItemGroup>
-
 </Project>

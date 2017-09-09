@@ -1,8 +1,6 @@
-﻿using Interface.Entities;
-
-namespace Models.Entities
+﻿namespace Models.Entities
 {
-	public class Person : IPerson
+	public class Person 
 	{
 		public int Id { get; set; }
 		public string Identityid { get; set; }
