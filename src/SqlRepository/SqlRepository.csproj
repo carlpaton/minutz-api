@@ -9,6 +9,16 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='pipelines|AnyCPU'" />
 
   <ItemGroup>
+    <None Remove="Scripts\createapplicationCatalogue.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Scripts\createapplicationCatalogue.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="dapper" Version="1.50.2" />
   </ItemGroup>
 

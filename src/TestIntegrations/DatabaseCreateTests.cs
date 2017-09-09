@@ -30,16 +30,29 @@ namespace TestIntegrations
     }
 
     [Fact]
-    public void InstallDatabase_CheckConnectivity_GivenConnectionStringWithFalseDetails_ShouldThrowException()
+    public void InstallDatabase_CheckConnectivity_GivenConnectionStringWithFalseDetails_ShouldReturnFalse()
     {
       var result = _applicationSetupRepository.Exists(_falseConnectionString);
       Assert.False(result);
     }
 
     [Fact]
-    public void InstallDatabase_CheckConnectivity_GivenConnectionStringWithValidDetails_ShouldThrowException()
+    public void InstallDatabase_CheckConnectivity_GivenConnectionStringWithValidDetails_ShouldReturnTrue()
     {
       var result = _applicationSetupRepository.Exists(_connectionString);
+      Assert.True(result);
+    }
+
+    [Fact]
+    public void InstallDatabase_CreateApplicationCatalogue_GivenEmptyConnectionStringAndEmptyCaltalogueName_ShouldThrowException()
+    {
+      Exception ex = Assert.Throws<ArgumentNullException>(() => _applicationSetupRepository.CreateApplicationCatalogue(string.Empty, string.Empty));
+    }
+
+    [Fact]
+    public void InstallDatabase_CreateApplicationCatalogue_GivenConnectionStringAndCaltalogueName_ShouldThrowException()
+    {
+      var result = _applicationSetupRepository.CreateApplicationCatalogue(_connectionString,"minutztest");
       Assert.True(result);
     }
   }

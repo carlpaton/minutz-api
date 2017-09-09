@@ -152,3 +152,4 @@ The docker host will be a Ubuntu server running the Docker domain
 Ubuntu Server YEO02-NIX0 : 41.185.30.164.
 
 Using Docker Cloud the deployment of the Testing version will be auto deployed.
+
