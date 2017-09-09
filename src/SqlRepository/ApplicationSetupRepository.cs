@@ -1,6 +1,5 @@
 ﻿using Interface.Repositories;
 using System.Data.SqlClient;
-using Interface.Services;
 using System.Data;
 using System.IO;
 using Dapper;
@@ -15,6 +14,7 @@ namespace SqlRepository
     private const string CreateApplicationSchemaSql = "createapplicationSchema.sql";
     private const string CreateApplicationInstanceSql = "createapplicationInstanceTable.sql";
     private const string CreateApplicationPersonSql = "createapplicationPersonTable.sql";
+    private const string CreateApplication_spCreateInstanceUserSql = "createapplication_spCreateInstanceUser.sql";
 
     private string CurrentLocation = System.AppDomain.CurrentDomain.BaseDirectory;
 
@@ -92,6 +92,36 @@ namespace SqlRepository
       }
     }
 
+    public bool CreateApplicationPerson(string connectionString, string catalogueName, string schema)
+    {
+      if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(catalogueName) || string.IsNullOrEmpty(schema))
+        throw new System.ArgumentNullException("please provide a valid connectionstring, catalogue and schema");
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        var sql = GetCreatePersonScriptSqlFromFile(catalogueName, schema);
+        dbConnection.Open();
+        int result = dbConnection.Execute(sql);
+        if (result == -1)
+          return true;
+        return false;
+      }
+    }
+
+    public bool CreateApplicationStoredProcedureInstanceUser(string connectionString, string catalogueName, string schema)
+    {
+      if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(catalogueName) || string.IsNullOrEmpty(schema))
+        throw new System.ArgumentNullException("please provide a valid connectionstring, catalogue and schema");
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        var sql = GetCreateStoredProcedureInstanceUserScriptSqlFromFile(catalogueName, schema);
+        dbConnection.Open();
+        int result = dbConnection.Execute(sql);
+        if (result == -1)
+          return true;
+        return false;
+      }
+    }
+
     internal string GetCreateCatalogueScriptSqlFromFile(string catalogue)
     {
       var contents = File.ReadAllText($"{CurrentLocation}Scripts\\{CreateApplicationCatalogueSql}");
@@ -105,6 +135,16 @@ namespace SqlRepository
     internal string GetCreateInstanceScriptSqlFromFile(string catalogue, string schema)
     {
       var contents = File.ReadAllText($"{CurrentLocation}Scripts\\{CreateApplicationInstanceSql}").Replace(SqlCatalogueKey, catalogue);
+      return contents.Replace(SqlSchemaKey, schema);
+    }
+    internal string GetCreatePersonScriptSqlFromFile(string catalogue, string schema)
+    {
+      var contents = File.ReadAllText($"{CurrentLocation}Scripts\\{CreateApplicationPersonSql}").Replace(SqlCatalogueKey, catalogue);
+      return contents.Replace(SqlSchemaKey, schema);
+    }
+    internal string GetCreateStoredProcedureInstanceUserScriptSqlFromFile(string catalogue, string schema)
+    {
+      var contents = File.ReadAllText($"{CurrentLocation}Scripts\\{CreateApplication_spCreateInstanceUserSql}").Replace(SqlCatalogueKey, catalogue);
       return contents.Replace(SqlSchemaKey, schema);
     }
   }

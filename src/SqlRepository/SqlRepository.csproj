@@ -11,6 +11,7 @@
   <ItemGroup>
     <None Remove="Scripts\createapplicationCatalogue.sql" />
     <None Remove="Scripts\createapplicationInstanceTable.sql" />
+    <None Remove="Scripts\createapplicationPersonTable.sql" />
     <None Remove="Scripts\createapplicationSchema.sql" />
   </ItemGroup>
 
@@ -21,7 +22,13 @@
     <Content Include="Scripts\createapplicationInstanceTable.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\createapplicationPersonTable.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\createapplicationSchema.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\createapplication_spCreateInstanceUser.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

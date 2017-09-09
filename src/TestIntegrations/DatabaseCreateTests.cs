@@ -82,5 +82,18 @@ namespace TestIntegrations
       var result = _applicationSetupRepository.CreateApplicationInstance(_connectionString, "minutztest", "app");
       Assert.True(result);
     }
+
+    [Fact]
+    public void InstallDatabase_CreateApplicationPerson_GivenEmptyConnectionStringAndEmptyCaltalogueNameAndSchema_ShouldThrowException()
+    {
+      Exception ex = Assert.Throws<ArgumentNullException>(() => _applicationSetupRepository.CreateApplicationPerson(string.Empty, string.Empty, string.Empty));
+    }
+
+    [Fact]
+    public void InstallDatabase_CreateApplicationPerson_GivenConnectionStringAndCaltalogueNameAndSchema_ShouldThrowException()
+    {
+      var result = _applicationSetupRepository.CreateApplicationPerson(_connectionString, "minutztest", "app");
+      Assert.True(result);
+    }
   }
 }

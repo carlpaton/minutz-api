@@ -9,5 +9,7 @@
     bool CreateApplicationSchema(string connectionString, string catalogueName, string schema);
 
     bool CreateApplicationInstance(string connectionString, string catalogueName, string schema);
+
+    bool CreateApplicationPerson(string connectionString, string catalogueName, string schema);
   }
 }

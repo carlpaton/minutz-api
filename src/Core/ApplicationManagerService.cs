@@ -23,6 +23,8 @@ namespace Core
 
 //create instance table
 //create person table
-//
+// sp for instanceuser
+
+
 //create meeting table
 //create 

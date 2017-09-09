@@ -24,6 +24,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestIntegrations", "TestIntegrations\TestIntegrations.csproj", "{2C9FBA64-F3DC-417A-A1D2-1F95048940A3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{48E551FF-BB15-457A-8BB2-C0D6EB2DB908}"
+	ProjectSection(SolutionItems) = preProject
+		..\api.Dockerfile = ..\api.Dockerfile
+		..\bitbucket-pipelines.yml = ..\bitbucket-pipelines.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

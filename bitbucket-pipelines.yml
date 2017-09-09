@@ -3,7 +3,7 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
-image: tzatziki/buildimage:1.0
+image: tzatziki/buildimage:2.0
 
 # enable Docker for your repository
 options:
@@ -20,13 +20,13 @@ pipelines:
           - export WEB_IMAGE_NAME=tzatziki/minutz-ui:3.0.0.$BITBUCKET_BUILD_NUMBER
           - dotnet restore src/minutz.sln
           - dotnet build src/minutz.sln -c pipelines
-          - dotnet test src/minutz.tests.core/minutz.tests.core.csproj
+          #- dotnet test src/minutz.tests.core/minutz.tests.core.csproj
           - dotnet publish src/minutz.sln -c pipelines -o ../../dist
           - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
           - docker build -t $IMAGE_NAME -f api.Dockerfile .
           - docker push $IMAGE_NAME
           
-          - cd ./src/minutz.ui
+          - cd ./src/Web
           - npm install
           - npm run build.prod
           # push the new Docker image to the Docker registry
@@ -38,4 +38,4 @@ pipelines:
           ###- docker run -v ${PWD}/src/minutz.ui:/app -w /app --rm tzatziki/angular:1.1 bash -c "npm run build.prod"
           ###- docker build -t WEB_IMAGE_NAME -f minutz.ui.Dockerfile .
           ##- docker push $WEB_IMAGE_NAME
-          - curl -X POST "https://cloud.docker.com/api/app/v1/service/9a433dfc-ddf0-411f-ab9a-b5153adb8090/trigger/ef0330e4-45d2-4154-a366-78e007ac1fbc/call/"
+          ##- curl -X POST "https://cloud.docker.com/api/app/v1/service/9a433dfc-ddf0-411f-ab9a-b5153adb8090/trigger/ef0330e4-45d2-4154-a366-78e007ac1fbc/call/"
