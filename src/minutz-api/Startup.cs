@@ -14,7 +14,7 @@ using minutz_models;
 using minutz_models.Entities;
 using minutz_models.ViewModels;
 using minutz_sapi;
-using minutz_sqlrepository;
+using SqlRepository;
 using System;
 using System.Text;
 

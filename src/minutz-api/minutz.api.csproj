@@ -40,7 +40,7 @@
     <ProjectReference Include="..\minutz-core\minutz.core.csproj" />
     <ProjectReference Include="..\minutz-interface\minutz.interface.csproj" />
     <ProjectReference Include="..\minutz-models\minutz.models.csproj" />
-    <ProjectReference Include="..\minutz-sqlrepository\minutz.sqlrepository.csproj" />
+    <ProjectReference Include="..\minutz-sqlrepository\SqlRepository.csproj" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES5</TypeScriptTarget>

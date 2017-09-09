@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "minutz.api", "minutz-api\minutz.api.csproj", "{D1137C3A-F555-4412-9FCB-8CD3969CBE57}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "minutz.sqlrepository", "minutz-sqlrepository\minutz.sqlrepository.csproj", "{F344A8FF-845A-4726-B471-425D62997D0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepository", "minutz-sqlrepository\SqlRepository.csproj", "{F344A8FF-845A-4726-B471-425D62997D0B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "minutz.interface", "minutz-interface\minutz.interface.csproj", "{4B1DBCB9-BD6F-4330-BDBE-BEF9B7E0F584}"
 EndProject

@@ -10,7 +10,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 
-namespace minutz_sqlrepository
+namespace SqlRepository
 {
 	public class PersonRepository : IPersonRepository
 	{

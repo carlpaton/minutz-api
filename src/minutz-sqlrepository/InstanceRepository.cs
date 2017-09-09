@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 using Dapper;
 using minutz_models.Entities;
 
-namespace minutz_sqlrepository
+namespace SqlRepository
 {
 	public class InstanceRepository : IInstanceRepository
 	{
