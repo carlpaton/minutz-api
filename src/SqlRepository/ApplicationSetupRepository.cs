@@ -10,8 +10,19 @@ namespace SqlRepository
   public class ApplicationSetupRepository : IApplicationSetupRepository
   {
     private const string SqlCatalogueKey = "#catalogue#";
+    private const string SqlSchemaKey = "#schema#";
     private const string CreateApplicationCatalogueSql = "createapplicationCatalogue.sql";
+    private const string CreateApplicationSchemaSql = "createapplicationSchema.sql";
+    private const string CreateApplicationInstanceSql = "createapplicationInstanceTable.sql";
+    private const string CreateApplicationPersonSql = "createapplicationPersonTable.sql";
 
+    private string CurrentLocation = System.AppDomain.CurrentDomain.BaseDirectory;
+
+    /// <summary>
+    /// Validate that the server that is being used exists
+    /// </summary>
+    /// <param name="connectionString" typeof="string">The full connectionsting of the sql database</param>
+    /// <returns typeof="boolean">If connection was successfull</returns>
     public bool Exists(string connectionString)
     {
       if (string.IsNullOrEmpty(connectionString))
@@ -42,7 +53,7 @@ namespace SqlRepository
         throw new System.ArgumentNullException("conneciton string or catalogue needs to be provided.");
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
-        var sql = GetScriptSqlFromFile(CreateApplicationCatalogueSql, SqlCatalogueKey, catalogueName);
+        var sql = GetCreateCatalogueScriptSqlFromFile(catalogueName);
         dbConnection.Open();
         int result = dbConnection.Execute(sql);
         if (result == -1)
@@ -51,18 +62,50 @@ namespace SqlRepository
       }
     }
 
-    /// <summary>
-    /// This method manages the call to the file system and replaces the SQL special characters with the value passed.
-    /// </summary>
-    /// <param name="scriptName" typeof="string">Sql file name with file extension</param>
-    /// <param name="token" typeof="string">The special character value.</param>
-    /// <param name="value" typeof="string">The value to replace with.</param>
-    /// <returns typeof="string">The Sql with replaced values</returns>
-    internal string GetScriptSqlFromFile(string scriptName, string token, string value)
+    public bool CreateApplicationSchema(string connectionString, string catalogueName, string schema)
     {
-      string Location = System.AppDomain.CurrentDomain.BaseDirectory;
-      var contents = File.ReadAllText($"{Location}Scripts\\{scriptName}");
-      return contents.Replace(token, value);
+      if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(catalogueName) || string.IsNullOrEmpty(schema))
+        throw new System.ArgumentNullException("please provide a valid connectionstring, catalogue and schema");
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        var sql = GetCreateSchemaScriptSqlFromFile(catalogueName, schema);
+        dbConnection.Open();
+        int result = dbConnection.Execute(sql);
+        if (result == -1)
+          return true;
+        return false;
+      }
+    }
+
+    public bool CreateApplicationInstance(string connectionString, string catalogueName, string schema)
+    {
+      if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(catalogueName) || string.IsNullOrEmpty(schema))
+        throw new System.ArgumentNullException("please provide a valid connectionstring, catalogue and schema");
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        var sql = GetCreateInstanceScriptSqlFromFile(catalogueName, schema);
+        dbConnection.Open();
+        int result = dbConnection.Execute(sql);
+        if (result == -1)
+          return true;
+        return false;
+      }
+    }
+
+    internal string GetCreateCatalogueScriptSqlFromFile(string catalogue)
+    {
+      var contents = File.ReadAllText($"{CurrentLocation}Scripts\\{CreateApplicationCatalogueSql}");
+      return contents.Replace(SqlCatalogueKey, catalogue);
+    }
+    internal string GetCreateSchemaScriptSqlFromFile(string catalogue, string schema)
+    {
+      var contents = File.ReadAllText($"{CurrentLocation}Scripts\\{CreateApplicationSchemaSql}").Replace(SqlCatalogueKey,catalogue);
+      return contents.Replace(SqlSchemaKey, schema);
+    }
+    internal string GetCreateInstanceScriptSqlFromFile(string catalogue, string schema)
+    {
+      var contents = File.ReadAllText($"{CurrentLocation}Scripts\\{CreateApplicationInstanceSql}").Replace(SqlCatalogueKey, catalogue);
+      return contents.Replace(SqlSchemaKey, schema);
     }
   }
 }

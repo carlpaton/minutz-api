@@ -53,7 +53,33 @@ namespace TestIntegrations
     [Fact]
     public void InstallDatabase_CreateApplicationCatalogue_GivenConnectionStringAndCaltalogueName_ShouldThrowException()
     {
-      var result = _applicationSetupRepository.CreateApplicationCatalogue(_connectionString,"minutztest");
+      var result = _applicationSetupRepository.CreateApplicationCatalogue(_connectionString, "minutztest");
+      Assert.True(result);
+    }
+
+    [Fact]
+    public void InstallDatabase_CreateApplicationSchema_GivenEmptyConnectionStringAndEmptyCaltalogueNameAndSchema_ShouldThrowException()
+    {
+      Exception ex = Assert.Throws<ArgumentNullException>(() => _applicationSetupRepository.CreateApplicationSchema(string.Empty, string.Empty, string.Empty));
+    }
+
+    [Fact]
+    public void InstallDatabase_CreateApplicationSchema_GivenConnectionStringAndCaltalogueNameAndSchema_ShouldThrowException()
+    {
+      var result = _applicationSetupRepository.CreateApplicationSchema(_connectionString, "minutztest", "app");
+      Assert.True(result);
+    }
+
+    [Fact]
+    public void InstallDatabase_CreateApplicationInstance_GivenEmptyConnectionStringAndEmptyCaltalogueNameAndSchema_ShouldThrowException()
+    {
+      Exception ex = Assert.Throws<ArgumentNullException>(() => _applicationSetupRepository.CreateApplicationInstance(string.Empty, string.Empty, string.Empty));
+    }
+
+    [Fact]
+    public void InstallDatabase_CreateApplicationInstance_GivenConnectionStringAndCaltalogueNameAndSchema_ShouldThrowException()
+    {
+      var result = _applicationSetupRepository.CreateApplicationInstance(_connectionString, "minutztest", "app");
       Assert.True(result);
     }
   }

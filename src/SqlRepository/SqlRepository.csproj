@@ -10,10 +10,18 @@
 
   <ItemGroup>
     <None Remove="Scripts\createapplicationCatalogue.sql" />
+    <None Remove="Scripts\createapplicationInstanceTable.sql" />
+    <None Remove="Scripts\createapplicationSchema.sql" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Scripts\createapplicationCatalogue.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\createapplicationInstanceTable.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\createapplicationSchema.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -15,3 +15,14 @@ namespace Core
     }
   }
 }
+
+
+//check exists
+//create db
+//create schema
+
+//create instance table
+//create person table
+//
+//create meeting table
+//create 
