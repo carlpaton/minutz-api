@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace api
 {
@@ -25,7 +26,6 @@ namespace api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            // 1. Add Authentication Services
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -35,6 +35,11 @@ namespace api
             {
                 options.Authority = "https://dockerdurban.auth0.com/";
                 options.Audience = "https://minutz.net";
+            });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             });
         }
 
@@ -47,6 +52,11 @@ namespace api
             }
             app.UseAuthentication();
             app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
         }
     }
 }
