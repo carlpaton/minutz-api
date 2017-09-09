@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>Api</AssemblyName>
     <RootNamespace>Api</RootNamespace>
+    <ApplicationInsightsResourceId>/subscriptions/5bc1e5d6-9199-42f4-819b-00cc3f3b5f9e/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/Api</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/5bc1e5d6-9199-42f4-819b-00cc3f3b5f9e/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/Api</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />
   </ItemGroup>
@@ -24,6 +27,10 @@
     <ProjectReference Include="..\Interface\Interface.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
     <ProjectReference Include="..\SqlRepository\SqlRepository.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>
