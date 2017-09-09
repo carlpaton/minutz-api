@@ -1,10 +1,10 @@
-﻿using minutz_interface.Repositories;
+﻿using Interface.Repositories;
 using System.Collections.Generic;
-using minutz_interface.Entities;
+using Interface.Entities;
 using System.Data;
 using System.Data.SqlClient;
 using Dapper;
-using minutz_models.Entities;
+using Models.Entities;
 
 namespace SqlRepository
 {

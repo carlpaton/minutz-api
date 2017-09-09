@@ -1,8 +1,8 @@
-﻿using minutz_interface.ViewModels;
+﻿using Interface.ViewModels;
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace minutz_interface.Services
+namespace Interface.Services
 {
 	public interface IProfileService
 	{

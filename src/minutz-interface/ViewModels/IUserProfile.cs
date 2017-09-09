@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace minutz_interface.ViewModels
+namespace Interface.ViewModels
 {
 	public interface IUserProfile
 	{

@@ -1,4 +1,4 @@
-﻿namespace minutz_core
+﻿namespace Core
 {
 	public enum QueryString
 	{

@@ -1,7 +1,7 @@
-﻿using minutz_interface.Services;
+﻿using Interface.Services;
 using System;
 
-namespace minutz_core
+namespace Core
 {
 	public class TokenStringService : ITokenStringService
 	{

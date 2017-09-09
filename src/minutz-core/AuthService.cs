@@ -1,10 +1,10 @@
-﻿using minutz_interface.Repositories;
+﻿using Interface.Repositories;
 using System.Collections.Generic;
-using minutz_interface.Services;
+using Interface.Services;
 using System.Security.Claims;
 using System;
 
-namespace minutz_core
+namespace Core
 {
 	public class AuthService: IAuthService
 	{

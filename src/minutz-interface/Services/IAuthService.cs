@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace minutz_interface.Services
+namespace Interface.Services
 {
 	public interface IAuthService
 	{

@@ -1,4 +1,4 @@
-﻿namespace minutz_interface.ViewModels
+﻿namespace Interface.ViewModels
 {
 	public interface IAppMetadata
 	{

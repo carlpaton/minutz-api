@@ -1,7 +1,7 @@
-﻿using minutz_interface.ViewModels;
+﻿using Interface.ViewModels;
 
 
-namespace minutz_interface.Repositories
+namespace Interface.Repositories
 {
 	public interface IPersonRepository
 	{

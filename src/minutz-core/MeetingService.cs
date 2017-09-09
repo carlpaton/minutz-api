@@ -1,7 +1,7 @@
-﻿using minutz_interface.Services;
+﻿using Interface.Services;
 using System.Collections.Generic;
 
-namespace minutz_core
+namespace Core
 {
 	public class MeetingService : IMeetingService
 	{

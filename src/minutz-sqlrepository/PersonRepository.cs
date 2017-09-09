@@ -1,10 +1,10 @@
 ﻿using Dapper;
-using minutz_interface.Entities;
-using minutz_interface.Repositories;
-using minutz_interface.ViewModels;
-using minutz_models;
-using minutz_models.Entities;
-using minutz_models.ViewModels;
+using Interface.Entities;
+using Interface.Repositories;
+using Interface.ViewModels;
+using Models;
+using Models.Entities;
+using Models.ViewModels;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -55,24 +55,24 @@ namespace SqlRepository
 			return newUserObject;
 		}
 
-		public minutz_interface.RoleEnum GetRole(string identifier, string connectionString, IUserProfile profile)
+		public Interface.RoleEnum GetRole(string identifier, string connectionString, IUserProfile profile)
 		{
 			var user = GetUser(identifier, connectionString);
 			if (user != null)
-				return (minutz_interface.RoleEnum)Enum.Parse(typeof(minutz_interface.RoleEnum), user.Role);
+				return (Interface.RoleEnum)Enum.Parse(typeof(Interface.RoleEnum), user.Role);
 
 			CreateUser(connectionString, profile);
-			return minutz_interface.RoleEnum.Attendee;
+			return Interface.RoleEnum.Attendee;
 		}
 
-		public minutz_interface.RoleEnum GetRole(string identifier, string connectionString, IUserProfile profile, string schema)
+		public Interface.RoleEnum GetRole(string identifier, string connectionString, IUserProfile profile, string schema)
 		{
 			var user = GetUser(identifier, connectionString);
 			if (user != null)
-				return (minutz_interface.RoleEnum)Enum.Parse(typeof(minutz_interface.RoleEnum), user.Role);
+				return (Interface.RoleEnum)Enum.Parse(typeof(Interface.RoleEnum), user.Role);
 
 			CreateUser(connectionString, profile,schema);
-			return minutz_interface.RoleEnum.Attendee;
+			return Interface.RoleEnum.Attendee;
 		}
 
 		internal IPerson GetUser(string identifier, string connectionString, string schema = "app")
@@ -105,7 +105,7 @@ namespace SqlRepository
 					Email = profile.EmailAddress,
 					ProfilePicture = profile.ProfileImage,
 					Identityid = profile.UserId,
-					Role = minutz_interface.RoleEnum.Attendee.ToString(),
+					Role = Interface.RoleEnum.Attendee.ToString(),
 					Active = true
 				};
 				var insertQuery = $@"INSERT INTO [{schema}].[Person]([Identityid], [FirstName], [LastName], [FullName], [ProfilePicture], [Email], [Role], [Active], [InstanceId])

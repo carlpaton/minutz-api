@@ -2,19 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <RootNamespace>SqlRepository</RootNamespace>
-    <AssemblyName>SqlRepository</AssemblyName>
+    <RootNamespace>Models</RootNamespace>
+    <AssemblyName>Models</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='pipelines|AnyCPU'" />
 
   <ItemGroup>
-    <PackageReference Include="dapper" Version="1.50.2" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\minutz-interface\Interface.csproj" />
-    <ProjectReference Include="..\minutz-models\Models.csproj" />
   </ItemGroup>
 
 </Project>

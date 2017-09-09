@@ -1,6 +1,6 @@
-﻿using minutz_interface.ViewModels;
+﻿using Interface.ViewModels;
 
-namespace minutz_models.ViewModels
+namespace Models.ViewModels
 {
 	public class AppMetadata : IAppMetadata
 	{

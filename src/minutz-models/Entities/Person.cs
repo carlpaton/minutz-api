@@ -1,6 +1,6 @@
-﻿using minutz_interface.Entities;
+﻿using Interface.Entities;
 
-namespace minutz_models.Entities
+namespace Models.Entities
 {
 	public class Person : IPerson
 	{

@@ -1,7 +1,7 @@
-﻿using minutz_interface.ViewModels;
+﻿using Interface.ViewModels;
 using System;
 
-namespace minutz_models.ViewModels
+namespace Models.ViewModels
 {
 	public class UserProfile : IUserProfile
 	{

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 
-namespace minutz_interface.Services
+namespace Interface.Services
 {
 	public interface IMeetingService
 	{

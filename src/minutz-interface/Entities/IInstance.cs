@@ -1,4 +1,4 @@
-﻿namespace minutz_interface.Entities
+﻿namespace Interface.Entities
 {
     public interface IInstance
     {

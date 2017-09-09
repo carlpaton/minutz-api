@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace minutz_interface.Services
+namespace Interface.Services
 {
 	public interface ITokenStringService
 	{

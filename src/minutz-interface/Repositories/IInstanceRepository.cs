@@ -1,7 +1,7 @@
-﻿using minutz_interface.Entities;
+﻿using Interface.Entities;
 using System.Collections.Generic;
 
-namespace minutz_interface.Repositories
+namespace Interface.Repositories
 {
 	public interface IInstanceRepository
 	{

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 
-namespace minutz_interface.Services
+namespace Interface.Services
 {
 	public interface IAuth0OptionsService
 	{

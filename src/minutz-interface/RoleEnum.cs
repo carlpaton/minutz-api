@@ -1,4 +1,4 @@
-﻿namespace minutz_interface
+﻿namespace Interface
 {
 	public enum RoleEnum
 	{
