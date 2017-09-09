@@ -20,6 +20,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{67CA3E6C-1759-46F3-9312-BC67A5C9B677}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{9D3CF96A-2902-49C4-8760-8A9F3BC3303C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestIntegrations", "TestIntegrations\TestIntegrations.csproj", "{2C9FBA64-F3DC-417A-A1D2-1F95048940A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +66,18 @@ Global
 		{67CA3E6C-1759-46F3-9312-BC67A5C9B677}.pipelines|Any CPU.Build.0 = Debug|Any CPU
 		{67CA3E6C-1759-46F3-9312-BC67A5C9B677}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67CA3E6C-1759-46F3-9312-BC67A5C9B677}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D3CF96A-2902-49C4-8760-8A9F3BC3303C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D3CF96A-2902-49C4-8760-8A9F3BC3303C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D3CF96A-2902-49C4-8760-8A9F3BC3303C}.pipelines|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D3CF96A-2902-49C4-8760-8A9F3BC3303C}.pipelines|Any CPU.Build.0 = Debug|Any CPU
+		{9D3CF96A-2902-49C4-8760-8A9F3BC3303C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D3CF96A-2902-49C4-8760-8A9F3BC3303C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C9FBA64-F3DC-417A-A1D2-1F95048940A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C9FBA64-F3DC-417A-A1D2-1F95048940A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C9FBA64-F3DC-417A-A1D2-1F95048940A3}.pipelines|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C9FBA64-F3DC-417A-A1D2-1F95048940A3}.pipelines|Any CPU.Build.0 = Debug|Any CPU
+		{2C9FBA64-F3DC-417A-A1D2-1F95048940A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C9FBA64-F3DC-417A-A1D2-1F95048940A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

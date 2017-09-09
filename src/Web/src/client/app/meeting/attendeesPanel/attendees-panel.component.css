@@ -1,0 +1,7 @@
+.my-panel{
+    background-color: #E8E8E8;
+}
+a:hover, a:focus {
+    color: #00a1ff;
+    text-decoration: none;
+}

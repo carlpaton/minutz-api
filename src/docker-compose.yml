@@ -2,7 +2,7 @@ version: '3'
 
 services:
   minutz-api:
-    image: minutz-api
+    image: tzatziki/minutz
     environment:
       - AUTH0CLIENTSECRET=3_ji0JgkrygjDWRkJtYGcrv5TN9eIsoZAbKi7bmkKiUqwpo3lOryhaMvOTlZRSDZ
       - AUTH0CLIENTID=spEQucIOEbSBvkixqRHzkKDHNYRaGy3J
@@ -12,14 +12,18 @@ services:
       - MINUTESACCOUNT=minutes@minutz.net
       - INVITESACCOUNT=invites@minutz.net
     build:
-      context: ./minutz-api
+      context: ./Api
       dockerfile: Dockerfile
   mintz-db:
     image: "microsoft/mssql-server-linux"
     ports:
       - "1433:1433"
     volumes:
-      - "./minutz-database/data:/var/opt/mssql/data"
+      - "./Data:/var/opt/mssql/data"
     environment:
-      SA_PASSWORD: "Password1234"
       ACCEPT_EULA: "Y"
+  api:
+    image: api
+    build:
+      context: ./Api
+      dockerfile: Dockerfile

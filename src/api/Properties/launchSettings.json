@@ -15,7 +15,8 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "AUTHORITY": "https://dockerdurban.auth0.com/",
-        "AUDIENCE": "https://minutz.net"
+        "AUDIENCE": "https://minutz.net",
+        "CONNECTIONSTRING": "Server=tcp:127.0.0.1,1433;User ID=sa;pwd=password1234$;database=minutz;"
       }
     },
     "api": {
@@ -25,7 +26,8 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "AUTHORITY": "https://dockerdurban.auth0.com/",
-        "AUDIENCE": "https://minutz.net"
+        "AUDIENCE": "https://minutz.net",
+        "CONNECTIONSTRING": "Server=tcp:127.0.0.1,1433;User ID=sa;pwd=password1234$;database=minutz;"
       },
       "applicationUrl": "http://localhost:63255/"
     }

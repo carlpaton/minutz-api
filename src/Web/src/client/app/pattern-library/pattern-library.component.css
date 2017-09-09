@@ -1,0 +1,12 @@
+.bs-component {
+  position: relative;
+}
+
+.js-source-button {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 100;
+    font-weight: 700;
+}   
