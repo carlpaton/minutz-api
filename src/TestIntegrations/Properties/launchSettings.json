@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "TestIntegrations": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "CONNECTIONSTRING": "Server=tcp:127.0.0.1,1433;User ID=sa;pwd=password1234$;database=minutz;",
+        "FALSECONNECTIONSTRING": "Server=tcp:127.0.0.1,1433;User ID=sa;pwd=password234$;database=minutz;"
+      }
+    }
+  }
+}
