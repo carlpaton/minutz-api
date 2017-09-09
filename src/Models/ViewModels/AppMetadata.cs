@@ -1,8 +1,6 @@
-﻿using Interface.ViewModels;
-
-namespace Models.ViewModels
+﻿namespace Models.ViewModels
 {
-	public class AppMetadata : IAppMetadata
+	public class AppMetadata 
 	{
 		public string Role { get; set; }
 	}

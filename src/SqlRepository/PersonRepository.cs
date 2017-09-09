@@ -1,8 +1,5 @@
 ﻿using Dapper;
-using Interface.Entities;
 using Interface.Repositories;
-using Interface.ViewModels;
-using Models;
 using Models.Entities;
 using Models.ViewModels;
 using System;
@@ -12,9 +9,9 @@ using System.Linq;
 
 namespace SqlRepository
 {
-	public class PersonRepository : IPersonRepository
+    public class PersonRepository : IPersonRepository
 	{
-		public IUserProfile Get(string identifier, string email, string name, string picture, string connectionString)
+		public UserProfile Get(string identifier, string email, string name, string picture, string connectionString)
 		{
 			var user = GetUser(identifier, connectionString);
 			if (user != null)
@@ -55,7 +52,7 @@ namespace SqlRepository
 			return newUserObject;
 		}
 
-		public Interface.RoleEnum GetRole(string identifier, string connectionString, IUserProfile profile)
+		public Interface.RoleEnum GetRole(string identifier, string connectionString, UserProfile profile)
 		{
 			var user = GetUser(identifier, connectionString);
 			if (user != null)
@@ -65,7 +62,7 @@ namespace SqlRepository
 			return Interface.RoleEnum.Attendee;
 		}
 
-		public Interface.RoleEnum GetRole(string identifier, string connectionString, IUserProfile profile, string schema)
+		public Interface.RoleEnum GetRole(string identifier, string connectionString, UserProfile profile, string schema)
 		{
 			var user = GetUser(identifier, connectionString);
 			if (user != null)
@@ -75,7 +72,7 @@ namespace SqlRepository
 			return Interface.RoleEnum.Attendee;
 		}
 
-		internal IPerson GetUser(string identifier, string connectionString, string schema = "app")
+		internal Person GetUser(string identifier, string connectionString, string schema = "app")
 		{
 			using (IDbConnection dbConnection = new SqlConnection(connectionString))
 			{
@@ -92,7 +89,7 @@ namespace SqlRepository
 			}
 		}
 
-		internal Person CreateUser(string connectionString, IUserProfile profile, string schema = "app")
+		internal Person CreateUser(string connectionString, UserProfile profile, string schema = "app")
 		{
 			using (IDbConnection dbConnection = new SqlConnection(connectionString))
 			{

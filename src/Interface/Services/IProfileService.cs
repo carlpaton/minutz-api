@@ -1,11 +1,11 @@
-﻿using Interface.ViewModels;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Security.Claims;
+using Models.ViewModels;
 
 namespace Interface.Services
 {
 	public interface IProfileService
 	{
-		IUserProfile GetFromClaims(IEnumerable<Claim> claims);
+		UserProfile GetFromClaims(IEnumerable<Claim> claims);
 	}
 }

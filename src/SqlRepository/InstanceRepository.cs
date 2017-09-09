@@ -10,7 +10,7 @@ namespace SqlRepository
 {
 	public class InstanceRepository : IInstanceRepository
 	{
-		public IEnumerable<IInstance> GetAll(string connectionString)
+		public IEnumerable<Instance> GetAll(string connectionString)
 		{
 			using (IDbConnection dbConnection = new SqlConnection(connectionString))
 			{

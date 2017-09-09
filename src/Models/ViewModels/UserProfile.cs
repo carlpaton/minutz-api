@@ -1,9 +1,8 @@
-﻿using Interface.ViewModels;
-using System;
+﻿using System;
 
 namespace Models.ViewModels
 {
-	public class UserProfile : IUserProfile
+    public class UserProfile 
 	{
 		public string UserId { get; set; }
 
@@ -27,7 +26,7 @@ namespace Models.ViewModels
 
 		public string ProfileImage { get; set; }
 
-		public IAppMetadata App_Metadata { get; set; }
+		public AppMetadata App_Metadata { get; set; }
 
 		public string Role { get; set; }
 	}

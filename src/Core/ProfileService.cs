@@ -20,7 +20,7 @@ namespace Core
 			_personRepository = personRepository;
 		}
 
-		public IUserProfile GetFromClaims(IEnumerable<Claim> claims)
+		public UserProfile GetFromClaims(IEnumerable<Claim> claims)
 		{
 			if (string.IsNullOrEmpty(claims.FirstOrDefault(c => c.Type == "user_id").Value))
 			{
@@ -33,7 +33,7 @@ namespace Core
 			return user;
 		}
 
-		internal IUserProfile Initilise(IEnumerable<Claim> claims)
+		internal UserProfile Initilise(IEnumerable<Claim> claims)
 		{
 			if (claims.FirstOrDefault(c => c.Type == "picture") == null)
 			{
@@ -64,13 +64,13 @@ namespace Core
 			return user;
 		}
 
-		internal void ProfilePicture(IUserProfile user)
+		internal void ProfilePicture(UserProfile user)
 		{
 			if (user.ProfileImage == null)
 				user.ProfileImage = Environment.GetEnvironmentVariable("DEFAULTPROFILEPIC");
 		}
 
-		internal void ApplicationMetaData(IEnumerable<Claim> claims, IUserProfile user)
+		internal void ApplicationMetaData(IEnumerable<Claim> claims, UserProfile user)
 		{
 			if (claims.FirstOrDefault(c => c.Type == "app_metadata") != null)
 			{

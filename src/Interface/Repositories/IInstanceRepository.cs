@@ -1,10 +1,10 @@
-﻿using Interface.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Models.Entities;
 
 namespace Interface.Repositories
 {
 	public interface IInstanceRepository
 	{
-		IEnumerable<IInstance> GetAll(string connectionString);
+		IEnumerable<Instance> GetAll(string connectionString);
 	}
 }

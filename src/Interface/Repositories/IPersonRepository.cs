@@ -1,14 +1,14 @@
 ﻿using Interface.ViewModels;
-
+using Models.ViewModels;
 
 namespace Interface.Repositories
 {
 	public interface IPersonRepository
 	{
-		IUserProfile Get(string identifier, string email, string name, string picture, string connectionString);
+		UserProfile Get(string identifier, string email, string name, string picture, string connectionString);
 
-		RoleEnum GetRole(string identifier, string connectionString, IUserProfile profile);
+		RoleEnum GetRole(string identifier, string connectionString, UserProfile profile);
 
-		RoleEnum GetRole(string identifier, string connectionString, IUserProfile profile, string schema);
+		RoleEnum GetRole(string identifier, string connectionString, UserProfile profile, string schema);
 	}
 }
