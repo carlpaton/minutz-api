@@ -29,8 +29,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{48E551FF
 		..\.docker\buildagent\Dockerfile = ..\.docker\buildagent\Dockerfile
 	EndProjectSection
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{33BF33A1-44C1-49AE-9775-89872E840324}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,11 +77,6 @@ Global
 		{2C9FBA64-F3DC-417A-A1D2-1F95048940A3}.pipelines|Any CPU.ActiveCfg = Debug|Any CPU
 		{2C9FBA64-F3DC-417A-A1D2-1F95048940A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C9FBA64-F3DC-417A-A1D2-1F95048940A3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{33BF33A1-44C1-49AE-9775-89872E840324}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{33BF33A1-44C1-49AE-9775-89872E840324}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{33BF33A1-44C1-49AE-9775-89872E840324}.pipelines|Any CPU.ActiveCfg = Debug|Any CPU
-		{33BF33A1-44C1-49AE-9775-89872E840324}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{33BF33A1-44C1-49AE-9775-89872E840324}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

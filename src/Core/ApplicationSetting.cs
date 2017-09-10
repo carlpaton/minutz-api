@@ -5,12 +5,22 @@ namespace Core
 {
   public class ApplicationSetting: IApplicationSetting
   {
-    public string Catalogue { get { return Environment.GetEnvironmentVariable("APPLICATION_CATALOGUE"); } }
+    public string Server { get { return Environment.GetEnvironmentVariable("SERVER_ADDRESS"); } }
 
-    public string Schema { get { return Environment.GetEnvironmentVariable("APPLICATION_SCHEMA"); } }
+    public string Catalogue { get { return Environment.GetEnvironmentVariable("DEFAULT_CATALOGUE"); } }
 
-    public string Username { get { return Environment.GetEnvironmentVariable("ÄPPLICATION_USERNAME"); } }
+    public string Schema { get { return Environment.GetEnvironmentVariable("DEFAULT_SCHEMA"); } }
 
-    public string Password { get { return Environment.GetEnvironmentVariable("APPLICATION_PASSWORD"); } }
+    public string Username { get { return Environment.GetEnvironmentVariable("DEFAULT_USER"); } }
+
+    public string Password { get { return Environment.GetEnvironmentVariable("DEFAULT_PASSWORD"); } }
+
+    public string CreateConnectionString(string server, 
+                                         string catalogue, 
+                                         string username, 
+                                         string password)
+    {
+      return $"Server={server};User ID={username};pwd={password};database={catalogue};";
+    }
   }
 }

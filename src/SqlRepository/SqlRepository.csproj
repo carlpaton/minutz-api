@@ -13,24 +13,31 @@
     <None Remove="Scripts\createapplicationInstanceTable.sql" />
     <None Remove="Scripts\createapplicationPersonTable.sql" />
     <None Remove="Scripts\createapplicationSchema.sql" />
+    <None Remove="Scripts\createdatabase.sql" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Scripts\createapplicationCatalogue.sql">
+    <EmbeddedResource Include="Scripts\createapplicationCatalogue.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\createapplicationInstanceTable.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Scripts\createapplicationInstanceTable.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\createapplicationPersonTable.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Scripts\createapplicationPersonTable.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
     <Content Include="Scripts\createapplicationSchema.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\createapplication_spCreateInstanceUser.sql">
+    <EmbeddedResource Include="Scripts\createapplication_spCreateInstanceUser.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\createdatabase.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

@@ -1,11 +1,19 @@
 ﻿
+using Api.Auth0;
+using Core;
+using Interface.Repositories;
+using Interface.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using SqlRepository;
 using Swashbuckle.AspNetCore.Swagger;
-
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Api
 {
@@ -23,17 +31,30 @@ namespace Api
 
     public IConfigurationRoot Configuration { get; }
 
-    // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      //Repositories
+      services.AddTransient<IUserRepository, UserRepository>();
+
+      //Services
+      services.AddTransient<IApplicationSetting, ApplicationSetting>();
+      services.AddTransient<IUserValidationService, UserValidationService>();
+
       services.AddMvc();
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
       });
+      string domain = "https://dockerdurban.auth0.com/";
+      services.AddAuthorization(options =>
+      {
+        options.AddPolicy("user:user",
+            policy => policy.Requirements.Add(new HasScopeRequirement("user:user", domain)));
+        options.AddPolicy("user:attendee",
+            policy => policy.Requirements.Add(new HasScopeRequirement("user:attendee", domain)));
+      });
     }
 
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
     {
       loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -41,7 +62,21 @@ namespace Api
       var options = new JwtBearerOptions
       {
         Audience = "https://minutz.net",
-        Authority = "https://dockerdurban.auth0.com/"
+        Authority = "https://dockerdurban.auth0.com/",
+        Events = new JwtBearerEvents
+        {
+          
+          OnTokenValidated = context =>
+         {
+          
+           var claimsIdentity = context.Ticket.Principal.Identity as ClaimsIdentity;
+           if (claimsIdentity != null)
+           {
+             string userId = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+           }
+           return Task.FromResult(0);
+         }
+        }
       };
       app.UseJwtBearerAuthentication(options);
       // Enable middleware to serve generated Swagger as a JSON endpoint.

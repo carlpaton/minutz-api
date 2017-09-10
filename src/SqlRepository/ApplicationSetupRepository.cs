@@ -3,6 +3,8 @@ using System.Data.SqlClient;
 using System.Data;
 using System.IO;
 using Dapper;
+using System.Reflection;
+using System.Text;
 
 namespace SqlRepository
 {
@@ -16,7 +18,7 @@ namespace SqlRepository
     private const string CreateApplicationPersonSql = "createapplicationPersonTable.sql";
     private const string CreateApplication_spCreateInstanceUserSql = "createapplication_spCreateInstanceUser.sql";
 
-    private string CurrentLocation = "c:\foo"; //System.AppDomain.CurrentDomain.BaseDirectory;
+    private string CurrentLocation = ""; //todo:fix this later -  System.AppDomain.CurrentDomain.BaseDirectory;
 
     /// <summary>
     /// Validate that the server that is being used exists
@@ -94,6 +96,7 @@ namespace SqlRepository
 
     public bool CreateApplicationPerson(string connectionString, string catalogueName, string schema)
     {
+     
       if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(catalogueName) || string.IsNullOrEmpty(schema))
         throw new System.ArgumentNullException("please provide a valid connectionstring, catalogue and schema");
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
@@ -129,7 +132,7 @@ namespace SqlRepository
     }
     internal string GetCreateSchemaScriptSqlFromFile(string catalogue, string schema)
     {
-      var contents = File.ReadAllText($"{CurrentLocation}Scripts\\{CreateApplicationSchemaSql}").Replace(SqlCatalogueKey,catalogue);
+      var contents = File.ReadAllText($"{CurrentLocation}Scripts\\{CreateApplicationSchemaSql}").Replace(SqlCatalogueKey, catalogue);
       return contents.Replace(SqlSchemaKey, schema);
     }
     internal string GetCreateInstanceScriptSqlFromFile(string catalogue, string schema)

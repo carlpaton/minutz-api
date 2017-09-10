@@ -16,7 +16,7 @@ export class AuthService {
     responseType: 'token id_token',
     audience: AUTH_CONFIG.audience,
     redirectUri: `${AUTH_CONFIG.callbackURL}`,
-    scope: 'openid profile'
+    scope: 'openid profile email'
   });
   public constructor(public router: Router) {
     console.log('init auth');
