@@ -7,7 +7,7 @@ import {
     OnChanges,
     AfterViewInit
 } from '@angular/core';
-import * as moment from 'moment';
+//import * as moment from 'moment';
 declare let $: any;
 
 @Component({
@@ -21,9 +21,9 @@ export class TimeZoneComponent implements AfterViewInit {
     @Input() Date: string;
     @Output() Change = new EventEmitter<any>();
     public ngAfterViewInit() {
-        let current = moment.parseZone(new Date().getDate()).zone();
+        //let current = moment.parseZone(new Date().getDate()).zone();
         console.log('-----');
-        console.log(current);
+        //console.log(current);
         $('#' + this.Id).betterTimezone({
             showIANA: false,
             showOptgroups: false // cannot be true when showIANA is false 
