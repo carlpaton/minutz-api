@@ -16,7 +16,7 @@ namespace SqlRepository
     private const string CreateApplicationPersonSql = "createapplicationPersonTable.sql";
     private const string CreateApplication_spCreateInstanceUserSql = "createapplication_spCreateInstanceUser.sql";
 
-    private string CurrentLocation = System.AppDomain.CurrentDomain.BaseDirectory;
+    private string CurrentLocation = "c:\foo"; //System.AppDomain.CurrentDomain.BaseDirectory;
 
     /// <summary>
     /// Validate that the server that is being used exists

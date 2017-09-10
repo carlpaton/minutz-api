@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:63254/",
+      "applicationUrl": "http://localhost:65509/",
       "sslPort": 0
     }
   },
@@ -11,33 +11,19 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "swagger",
+      "launchUrl": "api/values",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "AUTHORITY": "https://dockerdurban.auth0.com/",
-        "AUDIENCE": "https://minutz.net",
-        "APPLICATION_CATALOGUE": "minutz",
-        "APPLICATION_SCHEMA": "app",
-        "ÄPPLICATION_USERNAME": "sa",
-        "APPLICATION_PASSWORD": "password1234$",
-        "CONNECTIONSTRING": "Server=tcp:127.0.0.1,1433;User ID=sa;pwd=password1234$;database=minutz;"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "api": {
+    "Api": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "swagger",
+      "launchUrl": "api/values",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "AUTHORITY": "https://dockerdurban.auth0.com/",
-        "AUDIENCE": "https://minutz.net",
-        "APPLICATION_CATALOGUE": "minutz",
-        "APPLICATION_SCHEMA": "app",
-        "ÄPPLICATION_USERNAME": "sa",
-        "APPLICATION_PASSWORD": "password1234$",
-        "CONNECTIONSTRING": "Server=tcp:127.0.0.1,1433;User ID=sa;pwd=password1234$;database=minutz;"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:63255/"
+      "applicationUrl": "http://localhost:65510/"
     }
   }
 }
