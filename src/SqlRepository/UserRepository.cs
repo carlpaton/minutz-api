@@ -9,7 +9,7 @@ namespace SqlRepository
 {
   public class UserRepository : IUserRepository
   {
-    public bool CheckIfNewUser(string authUserId,string schema ,string connectionString)
+    public bool CheckIfNewUser(string authUserId, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
@@ -24,8 +24,41 @@ namespace SqlRepository
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
+        var sql = $@"insert into [{schema}].[Person](
+                                                    [Identityid]
+                                                    ,[FirstName]
+                                                    ,[LastName]
+                                                    ,[FullName]
+                                                    ,[ProfilePicture]
+                                                    ,[Email]
+                                                    ,[Role]
+                                                    ,[Active]
+                                                    ,[InstanceId]) 
+                                            values(
+                                                    @Identityid
+                                                    ,@FirstName
+                                                    ,@LastName
+                                                    ,@FullName
+                                                    ,@ProfilePicture
+                                                    ,@Email
+                                                    ,@Role
+                                                    ,@Active,
+                                                    @InstanceId)";
         dbConnection.Open();
-        return "";
+        var user = dbConnection.Execute(sql, new {
+          Identityid = authUserId,
+          FirstName = string.Empty,
+          LastName = string.Empty,
+          FullName = string.Empty,
+          ProfilePicture = string.Empty,
+          Email = string.Empty,
+          Role = "Attendee",
+          Active = true,
+          InstanceId = string.Empty
+        });
+        if(user == 1)
+          return "Attendee";
+        return "error";
       }
     }
   }

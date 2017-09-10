@@ -27,9 +27,13 @@ namespace Api.Controllers
       if (claims.Any())
       {
         string userId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-        var checkUser = _userValidationService.IsNewUser(userId);
-        result.Add(checkUser.ToString());
-        
+        result.Add(userId);
+        if (!_userValidationService.IsNewUser(userId))
+        {
+          var role = _userValidationService.CreateAttendee(userId);
+          result.Add("create");
+          result.Add(role);
+        }
       }
       return result;
     }
