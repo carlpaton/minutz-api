@@ -1,0 +1,30 @@
+<div id="agendaControl" class="panel-group">
+  <div class="panel panel-default">
+    <a data-toggle="collapse" data-target=".agendaControl" style="cursor: pointer;">
+      <div class="panel-body my-panel">
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle-thin fa-stack-2x"></i>
+          <i class="fa fa-paperclip fa-stack-1x"></i>
+        </span>
+        <span class="attendeesLabel">Attachments</span>
+        <span id="totalAgendaItemsIcon" class="label label-info"></span>
+      </div>
+    </a>
+  </div>
+  <div class="panel panel-default collapse agendaControl">
+    <div class="panel-body">
+      <div class="row hide">
+        <div class="col-md-10">
+          <div class="input-group" data-toggle="tooltip" title="Give your agenda item a title.">
+            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-pencil"></i></span>
+            <input id="txtAgendaTitleQuick" type="text" />
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div id="btnAddAgendaItem" class="round-button-circle pull-right"><i class="fa fa-plus"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ul id="agendaItems" class="products-list product-list-in-box collapse agendaControl"></ul>
+</div>

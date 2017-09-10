@@ -1,0 +1,43 @@
+<div class="container">
+  <h1>Current features</h1>
+  <ul>
+    <li>Loading indicator.</li>
+    <li>Unauthorized page (401).</li>
+    <li>Not found page (404).</li>
+  </ul>
+
+  <hr>
+
+  <section>
+    <h2>Loading indicator</h2>
+    <p>This is a simple loading indicator. Allow that is needed to make this work is:</p>
+    <ul>
+      <li>Create a variable inside your *.component.ts called <code>loading</code> of type <code>boolean</code> like so <code>public loading:boolean = false;</code></li>
+      <li>Inside your *.component.html add <code>*ngIf="!loading"</code> for content that will display <b>BEFORE</b> loading needs to happen and then <code>*ngIf="loading"</code> for the loading section with needs the html tag <code>sd-loading</code></li>
+      <li>Switch the loading icon to <code>true</code> when the loading icon must be displayed and <code>false</code> to hide it and show the page content</li>
+    </ul>
+    <div style="margin-top: 50px; height: 50px;">
+      <sd-loading></sd-loading>
+    </div>
+  </section>
+
+  <hr>
+
+  <section>
+    <h2>Unauthorized Page (401)</h2>
+    <p>This is a simple unauthorized page that you application can redirect users to if they try perform an unauthorized action.</p>
+    <div class="text-center">
+      <button class="btn btn-primary" [routerLink]="['/unauthorized']">Redirect to Unauthorized page</button>
+    </div>
+  </section>
+
+  <hr>
+
+  <section>
+    <h2>Not Found Page (404)</h2>
+    <p>This is a simple not found page that your application can redirect any request to, or redirects any request to that does not have a route within the application. This is achieved by adding a second route to the routing module called <code>path: '**'</code></p>
+    <div class="text-center">
+      <button class="btn btn-primary" [routerLink]="['/notfound']">Redirect to Not Found page</button>
+    </div>
+  </section>
+</div>
