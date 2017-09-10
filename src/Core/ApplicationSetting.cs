@@ -15,6 +15,8 @@ namespace Core
 
     public string Password { get { return Environment.GetEnvironmentVariable("DEFAULT_PASSWORD"); } }
 
+    public string Authority { get { return Environment.GetEnvironmentVariable("AUTHORITY"); } }
+
     public string CreateConnectionString(string server, 
                                          string catalogue, 
                                          string username, 

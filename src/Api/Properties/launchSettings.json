@@ -21,6 +21,7 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
+        "AUTHORITY": "https://dockerdurban.auth0.com/",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "SERVER_ADDRESS": "tcp:127.0.0.1,1433",
         "DEFAULT_CATALOGUE": "minutz",

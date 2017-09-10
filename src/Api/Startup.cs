@@ -1,6 +1,7 @@
 ﻿
 using Api.Auth0;
 using Core;
+using Core.ExternalServices;
 using Interface.Repositories;
 using Interface.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -39,6 +40,7 @@ namespace Api
       //Services
       services.AddTransient<IApplicationSetting, ApplicationSetting>();
       services.AddTransient<IUserValidationService, UserValidationService>();
+      services.AddTransient<IAuthenticationService, AuthenticationService>();
 
       services.AddMvc();
       services.AddSwaggerGen(c =>

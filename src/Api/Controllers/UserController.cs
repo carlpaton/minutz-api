@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Interface.Services;
 using System.Security.Claims;
 using System.Linq;
+using Models.Entities;
 
 namespace Api.Controllers
 {
@@ -11,34 +12,24 @@ namespace Api.Controllers
   public class UserController : Controller
   {
     private readonly IUserValidationService _userValidationService;
-    public UserController(IUserValidationService userValidationService)
+    private readonly IAuthenticationService _authenticationService;
+    public UserController(IUserValidationService userValidationService, 
+                          IAuthenticationService authenticationService)
     {
       _userValidationService = userValidationService;
+      _authenticationService = authenticationService;
     }
-    // GET api/values
     [Authorize]
     [HttpGet]
-    public IEnumerable<string> Get()
+    public AuthRestModel Get()
     {
-      var result = new List<string>();
-      result.Add("Loaded");
-      var user = User;
-      var claims = User.Claims.ToList();
-      if (claims.Any())
-      {
-        string userId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-        result.Add(userId);
-        if (!_userValidationService.IsNewUser(userId))
-        {
-          var role = _userValidationService.CreateAttendee(userId);
-          result.Add("create");
-          result.Add(role);
-        }
-      }
-      return result;
+      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+      var userInfo = _authenticationService.GetUserInfo(token);
+      if (!_userValidationService.IsNewUser(userInfo.sub))
+        _userValidationService.CreateAttendee(userInfo);
+      return _userValidationService.GetUser(userInfo.sub);
     }
 
-    //[SwaggerRequestExample(typeof(string), typeof(ValuesController))]
     // GET api/values/5
     [HttpGet("{id}")]
     public string Get(int id)
@@ -46,7 +37,7 @@ namespace Api.Controllers
       return "value";
     }
 
-    // POST api/values
+    //Create User
     [HttpPost]
     public void Post([FromBody]string value)
     {
