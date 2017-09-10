@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{B56C06E5-B12F-4EB1-AA76-89E19DBE9C44}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{2D076928-7547-4398-857B-0E723CD4C952}"
 	ProjectSection(SolutionItems) = preProject
 		..\readme.md = ..\readme.md
@@ -28,7 +26,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{48E551FF
 	ProjectSection(SolutionItems) = preProject
 		..\api.Dockerfile = ..\api.Dockerfile
 		..\bitbucket-pipelines.yml = ..\bitbucket-pipelines.yml
+		..\.docker\buildagent\Dockerfile = ..\.docker\buildagent\Dockerfile
 	EndProjectSection
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{33BF33A1-44C1-49AE-9775-89872E840324}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,11 +38,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B56C06E5-B12F-4EB1-AA76-89E19DBE9C44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B56C06E5-B12F-4EB1-AA76-89E19DBE9C44}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B56C06E5-B12F-4EB1-AA76-89E19DBE9C44}.pipelines|Any CPU.ActiveCfg = pipelines|Any CPU
-		{B56C06E5-B12F-4EB1-AA76-89E19DBE9C44}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B56C06E5-B12F-4EB1-AA76-89E19DBE9C44}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D67455E8-3A1D-4A1D-A961-665DAB8173DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D67455E8-3A1D-4A1D-A961-665DAB8173DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D67455E8-3A1D-4A1D-A961-665DAB8173DE}.pipelines|Any CPU.ActiveCfg = Debug|Any CPU
@@ -83,6 +79,12 @@ Global
 		{2C9FBA64-F3DC-417A-A1D2-1F95048940A3}.pipelines|Any CPU.ActiveCfg = Debug|Any CPU
 		{2C9FBA64-F3DC-417A-A1D2-1F95048940A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C9FBA64-F3DC-417A-A1D2-1F95048940A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33BF33A1-44C1-49AE-9775-89872E840324}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33BF33A1-44C1-49AE-9775-89872E840324}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33BF33A1-44C1-49AE-9775-89872E840324}.pipelines|Any CPU.ActiveCfg = Debug|Any CPU
+		{33BF33A1-44C1-49AE-9775-89872E840324}.pipelines|Any CPU.Build.0 = Debug|Any CPU
+		{33BF33A1-44C1-49AE-9775-89872E840324}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33BF33A1-44C1-49AE-9775-89872E840324}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

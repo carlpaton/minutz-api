@@ -1,27 +1,6 @@
 version: '3'
 
 services:
-  minutz-api:
-    image: tzatziki/minutz
-    environment:
-      - AUTH0CLIENTSECRET=3_ji0JgkrygjDWRkJtYGcrv5TN9eIsoZAbKi7bmkKiUqwpo3lOryhaMvOTlZRSDZ
-      - AUTH0CLIENTID=spEQucIOEbSBvkixqRHzkKDHNYRaGy3J
-      - AUTH0DOMAIN=tzatziki-minutz.auth0.com
-      - AUTH0CALLBACKURL=http://localhost:60856/signin-auth0
-      - DEFAULTPROFILEPIC=../defaultpic.png
-      - MINUTESACCOUNT=minutes@minutz.net
-      - INVITESACCOUNT=invites@minutz.net
-    build:
-      context: ./Api
-      dockerfile: Dockerfile
-  mintz-db:
-    image: "microsoft/mssql-server-linux"
-    ports:
-      - "1433:1433"
-    volumes:
-      - "./Data:/var/opt/mssql/data"
-    environment:
-      ACCEPT_EULA: "Y"
   api:
     image: api
     build:
