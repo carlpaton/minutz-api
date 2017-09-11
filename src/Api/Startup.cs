@@ -36,11 +36,14 @@ namespace Api
     {
       //Repositories
       services.AddTransient<IUserRepository, UserRepository>();
+      services.AddTransient<IApplicationSetupRepository, ApplicationSetupRepository>();
+
 
       //Services
       services.AddTransient<IApplicationSetting, ApplicationSetting>();
       services.AddTransient<IUserValidationService, UserValidationService>();
       services.AddTransient<IAuthenticationService, AuthenticationService>();
+      services.AddTransient<IApplicationManagerService, ApplicationManagerService>();
 
       services.AddMvc();
       services.AddSwaggerGen(c =>

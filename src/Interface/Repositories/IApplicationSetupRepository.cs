@@ -11,5 +11,7 @@
     bool CreateApplicationInstance(string connectionString, string catalogueName, string schema);
 
     bool CreateApplicationPerson(string connectionString, string catalogueName, string schema);
+
+    bool CreateSchemaTables(string systemSchema, string schema, string connectionString);
   }
 }

@@ -7,5 +7,6 @@ namespace Interface.Repositories
     bool CheckIfNewUser(string authUserId, string schema, string connectionString);
     string CreateNewUser(AuthRestModel authUser, string schema, string connectionString);
     AuthRestModel GetUser(string authUserId, string schema, string connectionString);
+    string CreateNewSchema(AuthRestModel authUser, string schema, string connectionString);
   }
 }

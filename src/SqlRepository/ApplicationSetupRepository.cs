@@ -96,7 +96,7 @@ namespace SqlRepository
 
     public bool CreateApplicationPerson(string connectionString, string catalogueName, string schema)
     {
-     
+
       if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(catalogueName) || string.IsNullOrEmpty(schema))
         throw new System.ArgumentNullException("please provide a valid connectionstring, catalogue and schema");
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
@@ -120,6 +120,27 @@ namespace SqlRepository
         dbConnection.Open();
         int result = dbConnection.Execute(sql);
         if (result == -1)
+          return true;
+        return false;
+      }
+    }
+
+    /// <summary>
+    /// Create the schema scoped tables
+    /// </summary>
+    /// <param name="systemSchema">Default schema for the system</param>
+    /// <param name="schema">User scoped Schema</param>
+    /// <param name="connectionString">Default schema connection string </param>
+    /// <returns>created the tables for the new schema</returns>
+    public bool CreateSchemaTables(string systemSchema,string schema, string connectionString)
+    {
+      if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(schema))
+        throw new System.ArgumentNullException("please provide a valid connectionstring or schema");
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        var sql = $"[{systemSchema}].[createMeetingSchema]@tenant='{schema}'";
+        var result = dbConnection.Execute(sql);
+        if (result == 1)
           return true;
         return false;
       }

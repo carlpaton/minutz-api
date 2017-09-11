@@ -10,11 +10,14 @@ namespace Api.Controllers
   {
     private readonly IUserValidationService _userValidationService;
     private readonly IAuthenticationService _authenticationService;
+    private readonly IApplicationManagerService _applicationManagerService;
     public SignUpController(IUserValidationService userValidationService,
-                          IAuthenticationService authenticationService)
+                          IAuthenticationService authenticationService, 
+                          IApplicationManagerService applicationManagerService)
     {
       _userValidationService = userValidationService;
       _authenticationService = authenticationService;
+      _applicationManagerService = applicationManagerService;
     }
     /// <summary>
     /// Use this to start the full version.
@@ -27,7 +30,7 @@ namespace Api.Controllers
       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
       var userInfo = _authenticationService.GetUserInfo(token);
       var person = _userValidationService.GetUser(userInfo.sub);
-      return false;
+      return _applicationManagerService.StartFullVersion(person);
     }
   }
 }

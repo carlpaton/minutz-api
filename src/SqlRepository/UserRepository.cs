@@ -4,6 +4,8 @@ using System.Data;
 using Dapper;
 using Models.Entities;
 using System.Linq;
+using System.Text;
+using System;
 
 namespace SqlRepository
 {
@@ -100,21 +102,24 @@ namespace SqlRepository
       {
         dbConnection.Open();
         var id = authUser.sub.Split('|')[1];
-        var password = "password12345$";
-        var username = $"A_{id}";
-        var loginSql = "CREATE LOGIN A_{id} WITH PASSWORD = @Password";
-        var loginresult = dbConnection.Execute(loginSql, new { Password = (string)password});
-        if (loginresult == 1)
+        var Password = CreatePassword(10);
+        var Username = $"A_{id}";
+        var Name = authUser.name;
+        var Active = true;
+        var Type = 1;
+        var loginSql = $"CREATE LOGIN A_{id} WITH PASSWORD = '{Password}'";
+        var loginresult = dbConnection.Execute(loginSql);
+        if (loginresult == -1)
         {
           var createUserSql = $"CREATE USER A_{id} FOR LOGIN A_{id} WITH DEFAULT_SCHEMA = A_{id};";
           var createUserResult = dbConnection.Execute(createUserSql);
-          if (createUserResult == 1)
+          if (createUserResult == -1)
           {
             var createSchema = $"CREATE schema A_{id} authorization A_{id};";
             var createSchemaResult = dbConnection.Execute(createSchema);
-            if (createSchemaResult == 1)
+            if (createSchemaResult == -1)
             {
-              var insertSql = $@"insert into [{schema}].[Person](
+              var insertSql = $@"insert into [{schema}].[Instance](
                                                                  [Name]
                                                                 ,[Username]
                                                                 ,[Password]
@@ -128,24 +133,36 @@ namespace SqlRepository
                                                                 ,@Type)";
               var instance = dbConnection.Execute(insertSql, new
               {
-                Name = authUser.name,
-                Username = username,
-                Password = password,
-                Active = true,
-                Type = 1
+                Name,
+                Username,
+                Password,
+                Active,
+                Type
               });
               if (instance == 1)
               {
-                var updateUserSql = $"UPDATE [{schema}].[Instance] SET InstanceId = '{username}' WHERE Identityid = '{authUser.sub}' ";
+                var updateUserSql = $"UPDATE [{schema}].[Person] SET InstanceId = '{Username}' WHERE Identityid = '{authUser.sub}' ";
                 var updateUserResult = dbConnection.Execute(updateUserSql);
                 if (updateUserResult == 1)
-                  return username;
+                  return Username;
               }
             }
           }
         }
         throw new System.Exception("Error creating schema and user with authorization.");
       }
+    }
+
+    public string CreatePassword(int length)
+    {
+      const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890123456789@#";
+      StringBuilder res = new StringBuilder();
+      Random rnd = new Random();
+      while (0 < length--)
+      {
+        res.Append(valid[rnd.Next(valid.Length)]);
+      }
+      return res.ToString();
     }
   }
 }
