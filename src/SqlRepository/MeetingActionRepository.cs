@@ -40,7 +40,7 @@ namespace SqlRepository
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
-        var insertSql = $@"insert into [{schema}].[MeetingAction](
+        var insertSql = @"insert into [{schema}].[MeetingAction](
                                                                  [Id]
                                                                 ,[ReferanceId]
                                                                 ,[ActionText]
@@ -67,7 +67,27 @@ namespace SqlRepository
         return instance == 1;
       }
     }
-
-      
+    public bool Update(MeetingAction action, string schema, string connectionString)
+    {
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        dbConnection.Open();
+ 
+        string updateQuery = @"UPDATE [dbo].[Customer] 
+                             SET ActionText = @ActionText, 
+                                 PersonId = @PersonId, 
+                                 DueDate = @DueDate, 
+                                 IsComplete = @IsComplete
+                             WHERE Id = @Id";
+        var instance = dbConnection.Execute(updateQuery, new
+        {
+          Action = action.ActionText,
+          PersonId = action.PersonId.ToString(),
+          action.DueDate,
+          action.IsComplete
+        });
+        return instance == 1;
+      }
+    }
   }
 }
