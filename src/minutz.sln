@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{48E551FF
 		..\.docker\buildagent\Dockerfile = ..\.docker\buildagent\Dockerfile
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notifications", "Notifications\Notifications.csproj", "{10DCF7F9-BAAD-4232-82EE-E1DAEC6D8FE9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,12 @@ Global
 		{2C9FBA64-F3DC-417A-A1D2-1F95048940A3}.pipelines|Any CPU.ActiveCfg = Debug|Any CPU
 		{2C9FBA64-F3DC-417A-A1D2-1F95048940A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C9FBA64-F3DC-417A-A1D2-1F95048940A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10DCF7F9-BAAD-4232-82EE-E1DAEC6D8FE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10DCF7F9-BAAD-4232-82EE-E1DAEC6D8FE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10DCF7F9-BAAD-4232-82EE-E1DAEC6D8FE9}.pipelines|Any CPU.ActiveCfg = Debug|Any CPU
+		{10DCF7F9-BAAD-4232-82EE-E1DAEC6D8FE9}.pipelines|Any CPU.Build.0 = Debug|Any CPU
+		{10DCF7F9-BAAD-4232-82EE-E1DAEC6D8FE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10DCF7F9-BAAD-4232-82EE-E1DAEC6D8FE9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

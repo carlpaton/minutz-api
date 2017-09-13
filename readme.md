@@ -153,3 +153,6 @@ Ubuntu Server YEO02-NIX0 : 41.185.30.164.
 
 Using Docker Cloud the deployment of the Testing version will be auto deployed.
 
+## Mails
+
+- https://github.com/mailjet/mailjet-apiv3-dotnet
