@@ -1,20 +1,19 @@
-﻿
-using Api.Auth0;
-using Core;
-using Core.ExternalServices;
-using Interface.Repositories;
-using Interface.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using SqlRepository;
-using Swashbuckle.AspNetCore.Swagger;
-using System.Linq;
+using Interface.Repositories;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Core.ExternalServices;
+using Interface.Services;
+using SqlRepository;
+using System.Linq;
+using Api.Auth0;
+using Core;
 
 namespace Api
 {
@@ -37,8 +36,12 @@ namespace Api
       //Repositories
       services.AddTransient<IUserRepository, UserRepository>();
       services.AddTransient<IApplicationSetupRepository, ApplicationSetupRepository>();
-
-
+      services.AddTransient<IMeetingRespository, MeetingRespository>();
+      services.AddTransient<IMeetingAgendaRepository, MeetingAgendaRepository>();
+      services.AddTransient<IMeetingAttendeeRepository, MeetingAttendeeRepository>();
+      services.AddTransient<IMeetingActionRepository, MeetingActionRepository>();
+      services.AddTransient<IInstanceRepository, InstanceRepository>();
+      
       //Services
       services.AddTransient<IApplicationSetting, ApplicationSetting>();
       services.AddTransient<IUserValidationService, UserValidationService>();
@@ -48,7 +51,7 @@ namespace Api
       services.AddMvc();
       services.AddSwaggerGen(c =>
       {
-        c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+        c.SwaggerDoc("v1", new Info { Title = "Minutz Api", Version = "v1" });
       });
       string domain = "https://dockerdurban.auth0.com/";
       services.AddAuthorization(options =>
@@ -70,10 +73,8 @@ namespace Api
         Authority = "https://dockerdurban.auth0.com/",
         Events = new JwtBearerEvents
         {
-          
           OnTokenValidated = context =>
          {
-          
            var claimsIdentity = context.Ticket.Principal.Identity as ClaimsIdentity;
            if (claimsIdentity != null)
            {
@@ -84,13 +85,10 @@ namespace Api
         }
       };
       app.UseJwtBearerAuthentication(options);
-      // Enable middleware to serve generated Swagger as a JSON endpoint.
       app.UseSwagger();
-
-      // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
       app.UseSwaggerUI(c =>
       {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Minutz Api V1");
       });
       app.UseMvc();
     }
