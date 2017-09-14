@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Interface.Services;
 using Models.Entities;
