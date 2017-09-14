@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Interface.Repositories;
 using System.Data.SqlClient;
 using Models.Entities;
 using System.Data;
@@ -8,7 +9,7 @@ using Dapper;
 
 namespace SqlRepository
 {
-  public class MeetingRespository
+  public class MeetingRespository : IMeetingRespository
   {
     public Meeting Get(Guid id, string schema, string connectionString)
     {
@@ -32,6 +33,110 @@ namespace SqlRepository
         var sql = $"select * from [{schema}].[Meeting]";
         var data = dbConnection.Query<Meeting>(sql).ToList();
         return data;
+      }
+    }
+    public bool Add(Meeting action, string schema, string connectionString)
+    {
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        dbConnection.Open();
+        string insertSql = $@"insert into [{schema}].[Meeting](
+                                                                 [Id]
+                                                                ,[Name]
+                                                                ,[Date]
+                                                                ,[UpdatedDate]
+                                                                ,[Time]
+                                                                ,[Duration]
+                                                                ,[IsReacurance]
+                                                                ,[IsPrivate]
+                                                                ,[ReacuranceType]
+                                                                ,[IsLocked]
+                                                                ,[IsFormal]
+                                                                ,[TimeZone]
+                                                                ,[Tag]
+                                                                ,[Purpose]
+                                                                ,[MeetingOwnerId]
+                                                                ,[Outcome]
+                                                                ) 
+                                                         values(
+                                                                 @Id
+                                                                ,@Name
+                                                                ,@Date
+                                                                ,@UpdatedDate
+                                                                ,@Time
+                                                                ,@Duration
+                                                                 @IsReacurance
+                                                                ,@IsPrivate
+                                                                ,@ReacuranceType
+                                                                ,@IsLocked
+                                                                ,@IsFormal
+                                                                ,@TimeZone
+                                                                 @Tag
+                                                                ,@Purpose
+                                                                ,@MeetingOwnerId
+                                                                ,@Outcome
+                                                                )";
+        var instance = dbConnection.Execute(insertSql, new
+        {
+          action.Id,
+          action.Name,
+          action.Date,
+          action.UpdatedDate,
+          action.Time,
+          action.Duration,
+          action.IsReacurance,
+          action.IsPrivate,
+          action.ReacuranceType,
+          action.IsLocked,
+          action.IsFormal,
+          action.TimeZone,
+          action.Tag,
+          action.Purpose,
+          action.MeetingOwnerId,
+          action.Outcome
+        });
+        return instance == 1;
+      }
+    }
+    public bool Update(Meeting action, string schema, string connectionString)
+    {
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        dbConnection.Open();
+        string updateQuery = $@"UPDATE [{schema}].[Meeting] 
+                             SET Name = @Name, 
+                                 Date = @Date, 
+                                 UpdatedDate = @UpdatedDate, 
+                                 Time = @Time,
+                                 Duration = @Duration, 
+                                 IsReacurance = @IsReacurance, 
+                                 IsPrivate = @IsPrivate,
+                                 ReacuranceType = @ReacuranceType, 
+                                 IsLocked = @IsLocked, 
+                                 IsFormal = @IsFormal,
+                                 PersonId = @PersonId, 
+                                 DueDate = @DueDate, 
+                                 IsComplete = @IsComplete
+                             WHERE Id = @Id";
+        var instance = dbConnection.Execute(updateQuery, new
+        {
+          action.Name,
+          action.Date,
+          action.UpdatedDate,
+          action.Time,
+          action.Duration,
+          action.IsReacurance,
+          action.IsPrivate,
+          action.ReacuranceType,
+          action.IsLocked,
+          action.IsFormal,
+          action.TimeZone,
+          action.Tag,
+          action.Purpose,
+          action.MeetingOwnerId,
+          action.Outcome
+        });
+        return instance == 1;
       }
     }
   }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Interface.Repositories;
 using System.Data.SqlClient;
 using Models.Entities;
 using System.Data;
@@ -8,7 +9,7 @@ using Dapper;
 
 namespace SqlRepository
 {
-  public class MeetingActionRepository
+  public class MeetingActionRepository : IMeetingActionRepository
   {
     public MeetingAction Get(Guid id, string schema, string connectionString)
     {
@@ -34,13 +35,12 @@ namespace SqlRepository
         return data;
       }
     }
-
     public bool Add(MeetingAction action,string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
-        var insertSql = @"insert into [{schema}].[MeetingAction](
+        string insertSql = $@"insert into [{schema}].[MeetingAction](
                                                                  [Id]
                                                                 ,[ReferanceId]
                                                                 ,[ActionText]
@@ -72,8 +72,7 @@ namespace SqlRepository
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
- 
-        string updateQuery = @"UPDATE [dbo].[Customer] 
+        string updateQuery = $@"UPDATE [{schema}].[MeetingAction]
                              SET ActionText = @ActionText, 
                                  PersonId = @PersonId, 
                                  DueDate = @DueDate, 
