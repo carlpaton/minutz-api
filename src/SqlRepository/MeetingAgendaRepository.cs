@@ -14,7 +14,7 @@ namespace SqlRepository
     public MeetingAgenda Get(Guid id, string schema, string connectionString)
     {
       if (id == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
-        throw new ArgumentException("Please provide a valid meeting identifier, schema or connectionstring.");
+        throw new ArgumentException("Please provide a valid meeting agenda identifier, schema or connectionstring.");
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
@@ -79,7 +79,7 @@ namespace SqlRepository
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
-        string updateQuery = $@"UPDATE [{schema}].[Meeting] 
+        string updateQuery = $@"UPDATE [{schema}].[MeetingAgenda] 
                              SET ReferanceId = @ReferanceId, 
                                  AgendaHeading = @AgendaHeading, 
                                  AgendaText = @AgendaText, 
@@ -101,6 +101,5 @@ namespace SqlRepository
         return instance == 1;
       }
     }
-
   }
 }
