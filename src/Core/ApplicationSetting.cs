@@ -5,17 +5,17 @@ namespace Core
 {
   public class ApplicationSetting: IApplicationSetting
   {
-    public string Server { get { return Environment.GetEnvironmentVariable("SERVER_ADDRESS"); } }
+    public string Server => Environment.GetEnvironmentVariable("SERVER_ADDRESS");
 
-    public string Catalogue { get { return Environment.GetEnvironmentVariable("DEFAULT_CATALOGUE"); } }
+    public string Catalogue => Environment.GetEnvironmentVariable("DEFAULT_CATALOGUE");
 
-    public string Schema { get { return Environment.GetEnvironmentVariable("DEFAULT_SCHEMA"); } }
+    public string Schema => Environment.GetEnvironmentVariable("DEFAULT_SCHEMA");
 
-    public string Username { get { return Environment.GetEnvironmentVariable("DEFAULT_USER"); } }
+    public string Username => Environment.GetEnvironmentVariable("DEFAULT_USER");
 
-    public string Password { get { return Environment.GetEnvironmentVariable("DEFAULT_PASSWORD"); } }
+    public string Password => Environment.GetEnvironmentVariable("DEFAULT_PASSWORD");
 
-    public string Authority { get { return Environment.GetEnvironmentVariable("AUTHORITY"); } }
+    public string Authority => Environment.GetEnvironmentVariable("AUTHORITY");
 
     public string CreateConnectionString(string server, 
                                          string catalogue, 

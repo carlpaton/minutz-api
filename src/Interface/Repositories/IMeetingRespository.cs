@@ -8,7 +8,7 @@ namespace Interface.Repositories
   {
     Meeting Get(Guid id, string schema, string connectionString);
     IEnumerable<Meeting> List(string schema, string connectionString);
-    bool Add(Meeting action, string schema, string connectionString);
-    bool Update(Meeting action, string schema, string connectionString);
+    bool Add(Meeting meeting, string schema, string connectionString);
+    bool Update(Meeting meeting, string schema, string connectionString);
   }
 }

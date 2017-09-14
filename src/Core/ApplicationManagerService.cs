@@ -35,16 +35,3 @@ namespace Core
     }
   }
 }
-
-
-//check exists
-//create db
-//create schema
-
-//create instance table
-//create person table
-// sp for instanceuser
-
-
-//create meeting table
-//create 

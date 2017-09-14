@@ -1,10 +1,10 @@
 ﻿using Interface.Repositories;
 using System.Data.SqlClient;
-using System.Data;
-using Dapper;
 using Models.Entities;
+using System.Data;
 using System.Linq;
 using System.Text;
+using Dapper;
 using System;
 
 namespace SqlRepository
@@ -69,21 +69,23 @@ namespace SqlRepository
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
-        var sql = $"select * FROM [{schema}].[Person]  WHERE Identityid = @Identityid";
+        var sql = $"select * FROM [{schema}].[Person] WHERE Identityid = @Identityid";
         dbConnection.Open();
         var query = dbConnection.Query<Person>(sql, new { Identityid = (string)authUserId });
         if (query.Any())
         {
           var user = query.FirstOrDefault();
-          return new AuthRestModel
-          {
-            email = user.Email,
-            name = user.FullName,
-            nickname = user.FirstName,
-            picture = user.ProfilePicture,
-            role = user.Role,
-            sub = user.Identityid
-          };
+          if (user != null)
+            return new AuthRestModel
+            {
+              email = user.Email,
+              name = user.FullName,
+              nickname = user.FirstName,
+              picture = user.ProfilePicture,
+              role = user.Role,
+              sub = user.Identityid,
+              InstanceId = user.InstanceId
+            };
         }
         throw new System.Exception("User does not exist in the datastore.");
       }
