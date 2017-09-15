@@ -16,20 +16,35 @@
       <div class="row">
         <div class="col-md-10">
           <div class="input-group">
-            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-user-circle" aria-hidden="true"></i></span>
-            <input id="txtAgendaTitleQuick" type="text" style="width: 100%;" />
+            <span class="input-group-addon"><i class="fa fa-user-circle" aria-hidden="true"></i></span>
+            <sd-attendee-select></sd-attendee-select>
           </div>
         </div>
         <div class="col-md-2">
-         <sd-addButton></sd-addButton>
+          <sd-addButton></sd-addButton>
         </div>
       </div>
-      <div class="row">
-          <div class="col-md-12">
-              <div *ngFor="let att of Meeting.MeetingAttendeeCollection" >
-                  <span>{{att.Name}}</span>
-              </div>
+      <div class="row" *ngFor="let att of Meeting.MeetingAttendeeCollection">
+        <div class="col-md-10 pull-left">
+          <div class="col-md-2" style="margin-left: -15px;">
+            <div class="input-group">
+              <span class="input-group-addon ">
+                      <i class="fa fa-user-circle" aria-hidden="true"></i>
+                   </span>
             </div>
+          </div>
+          <div class="col-md-10">
+            <div class="col-md-10">{{ att.Name }}</div>
+            <div class="col-md-10" style="font-size: 10px; font-weight: bold;">{{ att.Role }}</div>
+          </div>
+        </div>
+        <div class="col-md-2 pull-right">
+          <select id="attSelect" style="margin-left: -50px; margin-top: 4px;">
+                <option>Accepted</option>
+                <option>Declined</option>
+                <option>Pending</option>
+          </select>
+        </div>
       </div>
     </div>
   </div>

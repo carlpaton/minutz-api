@@ -5,13 +5,17 @@ import {
     AttendeesPanelComponent
 } from './attendees-panel.component';
 import {
+    AttendeeSelectModule
+} from '../../shared/components/attendeeSelect/attendeeSelect.module';
+import {
     AddButtonModule
 } from '../../shared/components/addButton/addButton.module';
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        AddButtonModule
+        AddButtonModule,
+        AttendeeSelectModule
         //FileUploader, FileDropDirective, FileSelectDirective
     ],
     declarations: [

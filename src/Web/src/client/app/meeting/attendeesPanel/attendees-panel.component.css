@@ -5,3 +5,8 @@ a:hover, a:focus {
     color: #00a1ff;
     text-decoration: none;
 }
+
+select#attSelect {
+    border:0px;
+    outline:0px;
+ }

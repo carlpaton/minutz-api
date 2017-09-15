@@ -32,6 +32,9 @@ export class AttendeesPanelComponent implements OnInit, AfterViewInit {
     public ngAfterViewInit() {
        
     }
+    public SelectedUser($event: any) {
+        //selected user
+    }
     private createId(): any {
         return `${this.createidsection()}-${this.createidsection()}-${this.createidsection()}-${this.createidsection()}` +
             `${this.createidsection()}-${this.createidsection()}-${this.createidsection()}-${this.createidsection()}`;
