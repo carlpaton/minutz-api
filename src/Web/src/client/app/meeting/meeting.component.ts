@@ -8,6 +8,9 @@ import {
 import {
     MeetingModel
 } from "../shared/models/meetingModel";
+import {
+    MeetingAttendee
+} from '../shared/models/meetingAttendee';
 declare let $: any;
 @Component({
     moduleId: module.id,
@@ -29,6 +32,15 @@ export class MeetingComponent implements OnInit {
         this.MeetingObject = new MeetingModel();
         this.MeetingObject.Date = new Date();
         this.MeetingObject.Name = 'Give your meeting a name';
+        let att = new MeetingAttendee();
+        att.Id = 'id';
+        att.PersonIdentity = 'identity';
+        att.ReferanceId = 'refid';
+        att.Role = 'Attendee';
+        att.Name = 'Mauro';
+        att.Email = 'lee@leeroya.com';
+        this.MeetingObject.MeetingAttendeeCollection = [];
+        this.MeetingObject.MeetingAttendeeCollection.push(att);
 
         let tz = new Date().getTimezoneOffset();
         console.log(tz);

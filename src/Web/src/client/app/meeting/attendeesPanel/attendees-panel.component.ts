@@ -1,4 +1,6 @@
-import { FormsModule } from '@angular/forms';
+import {
+    FormsModule
+} from '@angular/forms';
 import {
     Component,
     OnInit,
@@ -8,6 +10,9 @@ import {
     AfterViewInit,
     SimpleChange
 } from '@angular/core';
+import {
+    MeetingModel
+} from "../../shared/models/meetingModel";
 declare let $: any;
 @Component({
     moduleId: module.id,
@@ -17,6 +22,7 @@ declare let $: any;
 })
 export class AttendeesPanelComponent implements OnInit, AfterViewInit {
     @Input() Id: string;
+    @Input() Meeting: MeetingModel;
     @Output() SelectedDateChange = new EventEmitter<string>();
     public ngOnInit() {
         if (!this.Id) {
@@ -24,7 +30,7 @@ export class AttendeesPanelComponent implements OnInit, AfterViewInit {
         }
     }
     public ngAfterViewInit() {
-        console.log('discovery');
+       
     }
     private createId(): any {
         return `${this.createidsection()}-${this.createidsection()}-${this.createidsection()}-${this.createidsection()}` +
