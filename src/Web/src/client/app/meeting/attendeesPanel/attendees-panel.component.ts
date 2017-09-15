@@ -13,6 +13,7 @@ import {
 import {
     MeetingModel
 } from "../../shared/models/meetingModel";
+import {MeetingRepository} from '../../shared/repositories/meeting.repository';
 declare let $: any;
 @Component({
     moduleId: module.id,
@@ -24,13 +25,20 @@ export class AttendeesPanelComponent implements OnInit, AfterViewInit {
     @Input() Id: string;
     @Input() Meeting: MeetingModel;
     @Output() SelectedDateChange = new EventEmitter<string>();
+    constructor(private meetingRepo: MeetingRepository) {
+
+    }
     public ngOnInit() {
         if (!this.Id) {
             this.Id = this.createId();
         }
     }
     public ngAfterViewInit() {
-       
+       this.meetingRepo.getAllMeetings().subscribe(data=> {
+           console.log(data);
+       },err=> {
+           console.log(err);
+       });
     }
     public SelectedUser($event: any) {
         //selected user

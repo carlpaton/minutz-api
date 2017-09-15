@@ -56,12 +56,12 @@ export class HttpInterceptor extends Http {
         options.headers = new Headers();
 
         let headers = new Headers();
-        let key = 'auth.jwt.token';
-        let item = this.localStorageService.get(key) ? this.localStorageService.get(key) : null;
-        let parsedToken = JSON.parse(item);
+        let key = 'access_token';
+        let item = localStorage.getItem(key);// this.localStorageService.get(key) ? this.localStorageService.get(key) : null;
+        //let parsedToken = JSON.parse(item);
 
-        if (parsedToken && parsedToken.token) {
-          headers.append('Authorization', 'Bearer ' + parsedToken.token);
+        if (item) {
+          headers.append('Authorization', 'Bearer ' + item);
         }
         headers.append('Content-Type', 'application/json');
         options.headers = headers;

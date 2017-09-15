@@ -47,13 +47,21 @@ namespace Api
       services.AddTransient<IUserValidationService, UserValidationService>();
       services.AddTransient<IAuthenticationService, AuthenticationService>();
       services.AddTransient<IApplicationManagerService, ApplicationManagerService>();
-
+      services.AddTransient<IMeetingService, MeetingService>();
       services.AddMvc();
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new Info { Title = "Minutz Api", Version = "v1" });
       });
       string domain = "https://dockerdurban.auth0.com/";
+      services.AddCors(options =>
+      {
+        options.AddPolicy("AllowAllOrigins",
+          builder =>
+          {
+            builder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
+          });
+      });
       services.AddAuthorization(options =>
       {
         options.AddPolicy("user:user",
@@ -90,6 +98,8 @@ namespace Api
       {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Minutz Api V1");
       });
+
+      app.UseCors("AllowAllOrigins");
       app.UseMvc();
     }
   }

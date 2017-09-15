@@ -10,6 +10,7 @@ import {
 import {
     AddButtonModule
 } from '../../shared/components/addButton/addButton.module';
+import {MeetingRepository} from '../../shared/repositories/meeting.repository';
 @NgModule({
     imports: [
         CommonModule,
@@ -17,6 +18,9 @@ import {
         AddButtonModule,
         AttendeeSelectModule
         //FileUploader, FileDropDirective, FileSelectDirective
+    ],
+    providers: [
+        MeetingRepository
     ],
     declarations: [
         AttendeesPanelComponent

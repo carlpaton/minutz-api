@@ -8,9 +8,9 @@ export class AuthHttpRequestService {
 
     public processRequest(url: string, method: RequestMethod, searchParams: URLSearchParams, body: any) {
         let headers = new Headers();
-        let key = 'auth.jwt.token';
+        let key = 'access_token';
         let item = localStorage.getItem(key) ? localStorage.getItem(key) : null;
-        let userToken = JSON.parse(item);
+        //let userToken = JSON.parse(item);
 
         if (body !== null) {
             if (body.model && body.files) {
@@ -20,12 +20,12 @@ export class AuthHttpRequestService {
             }
         }
 
-        if (userToken && userToken.token) {
-            headers.append('Authorization', 'Bearer ' + userToken.token);
+        if (item) {
+            headers.append('Authorization', 'Bearer ' + item);
         }
 
         return this.http.request(new Request({
-            method: method,
+            method: 'GET',
             headers: headers,
             body: this.transformRequest(body, method),
             url: Config.API + url,

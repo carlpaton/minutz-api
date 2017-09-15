@@ -22,7 +22,7 @@ namespace Api.Controllers
       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
       return null;
     }
-    [HttpGet]
+    [HttpGet("{id}")]
     [Authorize]
     public IEnumerable<MeetingAgenda> Get(string id)
     {
