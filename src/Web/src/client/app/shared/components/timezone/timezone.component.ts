@@ -30,6 +30,8 @@ export class TimeZoneComponent implements AfterViewInit {
         }).on('change', (e: any) => {
             this.Change.emit($(e.target).val());
         });
+        $('#' + this.Id).val('Africa/Blantyre').trigger('change');
+        //Africa/Blantyre
     }
     public SelectedDate(time: any) {
         this.Change.emit(time);

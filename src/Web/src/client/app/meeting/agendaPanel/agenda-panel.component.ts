@@ -5,6 +5,9 @@ import {
     EventEmitter,
     Output
 } from '@angular/core';
+import {
+    MeetingModel
+} from "../../shared/models/meetingModel";
 declare let $: any;
 @Component({
     moduleId: module.id,
@@ -15,6 +18,7 @@ declare let $: any;
 export class AgendaPanelComponent implements OnInit {
     Name:string;
     @Input() Id: string;
+    @Input() Meeting : MeetingModel;
     @Output() Click = new EventEmitter();
     private createId(): any {
         return `${this.createidsection()}-${this.createidsection()}-${this.createidsection()}-${this.createidsection()}` +
