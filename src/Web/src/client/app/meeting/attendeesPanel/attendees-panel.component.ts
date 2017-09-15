@@ -35,6 +35,9 @@ export class AttendeesPanelComponent implements OnInit, AfterViewInit {
     public SelectedUser($event: any) {
         //selected user
     }
+    public ShowInviteUser($event: any) {
+        $('#inviteUser').modal('show');
+    }
     private createId(): any {
         return `${this.createidsection()}-${this.createidsection()}-${this.createidsection()}-${this.createidsection()}` +
             `${this.createidsection()}-${this.createidsection()}-${this.createidsection()}-${this.createidsection()}`;
