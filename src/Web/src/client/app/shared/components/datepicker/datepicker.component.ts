@@ -34,6 +34,7 @@ export class DatePickerComponent implements OnInit, AfterViewInit {
         $('#' + this.Id).datepicker().on('change', (e:any) => {
             this.SelectedDateChange.emit($(e.target).val());
         });
+        $('#' + this.Id).datepicker('update',this.Date);
     }
     private createId(): any {
         return `${this.createidsection()}-${this.createidsection()}-${this.createidsection()}-${this.createidsection()}` +

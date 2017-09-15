@@ -1,4 +1,6 @@
-import { FormsModule } from '@angular/forms';
+import {
+    FormsModule
+} from '@angular/forms';
 import {
     Component,
     OnInit,
@@ -9,6 +11,9 @@ import {
     OnChanges,
     SimpleChange
 } from '@angular/core';
+import {
+    MeetingModel
+} from "../../shared/models/meetingModel";
 declare let $: any;
 @Component({
     moduleId: module.id,
@@ -18,7 +23,8 @@ declare let $: any;
 })
 export class HeadingComponent implements OnInit, AfterViewInit {
     @Input() Id: string;
-    @Output() SelectedDateChange = new EventEmitter<string>();
+    @Output() Change = new EventEmitter<string>();
+    @Input() Meeting : MeetingModel;
     MeetingHeading: string;
     public ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
 
@@ -29,9 +35,11 @@ export class HeadingComponent implements OnInit, AfterViewInit {
         }
     }
     public ngAfterViewInit() {
+        this.MeetingHeading = this.Meeting.Name;
     }
-    public textChange($event: any):void{
-        
+    public textChange($event: any):void {
+        this.Meeting.Name = $event;
+        this.Change.emit($event);
     }
     private createId(): any {
         return `${this.createidsection()}-${this.createidsection()}-${this.createidsection()}-${this.createidsection()}` +

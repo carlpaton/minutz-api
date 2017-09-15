@@ -2,7 +2,12 @@ import {
     Component,
     OnInit
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {
+    ActivatedRoute
+} from '@angular/router';
+import {
+    MeetingModel
+} from "../shared/models/meetingModel";
 declare let $: any;
 @Component({
     moduleId: module.id,
@@ -15,10 +20,16 @@ export class MeetingComponent implements OnInit {
     Id: string = '';
     Check: boolean;
     TestDate: string;
+    MeetingObject: MeetingModel;
     public ngOnInit() {
         this.route.params.subscribe(params => {
             this.Id = params['id'];
         });
+        //todo: check if id then get meeting else create new one
+        this.MeetingObject = new MeetingModel();
+        this.MeetingObject.Date = new Date();
+        this.MeetingObject.Name = 'Give your meeting a name';
+
         let tz = new Date().getTimezoneOffset();
         console.log(tz);
     }
@@ -55,6 +66,9 @@ export class MeetingComponent implements OnInit {
     }
     public enableSearch() {
         console.log('discovery');
+    }
+    public HeadingChange($event: any) {
+        this.MeetingObject.Name = $event;
     }
     search(): void {
         console.log('discovery');

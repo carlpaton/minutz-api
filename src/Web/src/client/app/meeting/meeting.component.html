@@ -4,8 +4,8 @@
   <li class="breadcrumb-item active">Create Meeting </li>
 </ol>
 <div class="container-fluid">
-  <sd-heading></sd-heading>
-  <sd-options></sd-options>
+  <sd-heading [Meeting]="MeetingObject" (Change)="HeadingChange($event)" ></sd-heading>
+  <sd-options [Meeting]="MeetingObject" ></sd-options>
 </div>
 <div class="col-md-3 row-grey" style="background-color: #ecf0f5;">
     <div class="row hide">
