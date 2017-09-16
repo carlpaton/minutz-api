@@ -10,9 +10,6 @@ import {
 import {
     MeetingAgenda
 } from "../../shared/models/meetingAgenda";
-import {
-    MeetingAgenda
-} from '../../shared/models/meetingAgenda';
 declare let $: any;
 @Component({
     moduleId: module.id,
