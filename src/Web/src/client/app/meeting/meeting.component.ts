@@ -56,6 +56,9 @@ export class MeetingComponent implements OnInit {
         this.Topic = new MeetingAgenda();
         this.Topic.AgendaHeading = '';
         this.TestDate = '08/02/2016';
+        this.MeetingObject = new MeetingModel();
+        this.MeetingObject.Outcome = '';
+        this.MeetingObject.Purpose = '';
     }
     public saveModel(): void {
         console.log('save');

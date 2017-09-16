@@ -38,11 +38,11 @@
         <div class="tab-content">
           <div role="tabpanel" class="tab-pane " id="objectiveTab">
             <br />
-            <sd-editor></sd-editor>
+            <sd-editor [Text]="Topic.Purpose" ></sd-editor>
           </div>
           <div role="tabpanel" class="tab-pane" id="outcomeTab">
             <br />
-            <sd-editor></sd-editor>
+            <sd-editor [Text]="Topic.Outcome" ></sd-editor>
           </div>
           <div role="tabpanel" class="tab-pane active" id="agendaTab">
             <br />
@@ -68,7 +68,7 @@
             </div>
             <div class="row left-tab">
               <br />
-              <sd-editor></sd-editor>
+              <sd-editor [Text]="Topic.AgendaText" ></sd-editor>
             </div>
           </div>
         </div>

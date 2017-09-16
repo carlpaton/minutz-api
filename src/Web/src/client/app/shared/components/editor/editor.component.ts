@@ -18,7 +18,7 @@ declare let $: any;
 export class EditorComponent implements OnInit, AfterViewInit {
     Name:string;
     @Input() Id: string;
-    @Input() Date: string;
+    @Input() Text: string;
     @Output() SelectedDateChange = new EventEmitter<string>();
     public ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
 
@@ -32,6 +32,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
     }
     public ngAfterViewInit() {
         $('#' + this.Name).wysihtml5();
+        if(this.Text) {
+            $('#' + this.Name).val(this.Text);
+        }
     }
     private createId(): any {
         return `${this.createidsection()}-${this.createidsection()}-${this.createidsection()}-${this.createidsection()}` +
