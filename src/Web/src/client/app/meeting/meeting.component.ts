@@ -82,8 +82,12 @@ export class MeetingComponent implements OnInit {
     public create() {
         console.log('create');
     }
-    public discover() {
-        console.log('discovery');
+    public addTopic() {
+        console.log('add topic');
+        if(!this.MeetingObject.MeetingAgendaCollection) {
+            this.MeetingObject.MeetingAgendaCollection = [];
+        }
+        this.MeetingObject.MeetingAgendaCollection.push(this.Topic);
     }
     public enableSearch() {
         console.log('discovery');

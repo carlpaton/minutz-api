@@ -3,7 +3,9 @@ import {
     OnInit,
     Input,
     EventEmitter,
-    Output
+    Output,
+    OnChanges,
+    SimpleChanges
 } from '@angular/core';
 import {
     MeetingModel
@@ -18,7 +20,7 @@ declare let $: any;
     templateUrl: 'agenda-panel.component.html',
     styleUrls: ['agenda-panel.component.css']
 })
-export class AgendaPanelComponent implements OnInit {
+export class AgendaPanelComponent implements OnInit, OnChanges {
     Name:string;
     QuickTopic: string;
     @Input() Id: string;
@@ -31,6 +33,9 @@ export class AgendaPanelComponent implements OnInit {
     }
     private createidsection() {
         return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+    }
+    public ngOnChanges(changes : SimpleChanges) {
+        console.log(changes);
     }
     public ngOnInit() {
         if (!this.Id) {
