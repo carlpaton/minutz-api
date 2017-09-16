@@ -11,6 +11,9 @@ import {
 import {
     MeetingAttendee
 } from '../shared/models/meetingAttendee';
+import {
+    MeetingAgenda
+} from '../shared/models/meetingAgenda';
 declare let $: any;
 @Component({
     moduleId: module.id,
@@ -24,6 +27,7 @@ export class MeetingComponent implements OnInit {
     Check: boolean;
     TestDate: string;
     MeetingObject: MeetingModel;
+    Topic: MeetingAgenda ;
     public ngOnInit() {
         this.route.params.subscribe(params => {
             this.Id = params['id'];
@@ -49,6 +53,8 @@ export class MeetingComponent implements OnInit {
         private route: ActivatedRoute
     ) {
         this.Check = true;
+        this.Topic = new MeetingAgenda();
+        this.Topic.AgendaHeading = '';
         this.TestDate = '08/02/2016';
     }
     public saveModel(): void {
@@ -81,6 +87,9 @@ export class MeetingComponent implements OnInit {
     }
     public HeadingChange($event: any) {
         this.MeetingObject.Name = $event;
+    }
+    public SelectedTopic($event : MeetingAgenda) {
+        this.Topic = $event;
     }
     search(): void {
         console.log('discovery');

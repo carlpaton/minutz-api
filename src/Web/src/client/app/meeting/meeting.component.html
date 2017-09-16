@@ -23,7 +23,7 @@
     </div>
     <div class="row">
       <sd-attendees-panel [Meeting]="MeetingObject" ></sd-attendees-panel>
-      <sd-agenda-panel [Meeting]="MeetingObject" ></sd-agenda-panel>
+      <sd-agenda-panel [Meeting]="MeetingObject" (Topic)="SelectedTopic($event)" ></sd-agenda-panel>
       <sd-attachment-panel></sd-attachment-panel>
     </div>
   </div>
@@ -53,7 +53,10 @@
                 </div>
               </div>
               <div class="col-md-4  gridHeader">
-                <input id="txtAgendaTitle" type="text" class="agenda-input" placeholder="Topic Title"
+                <input 
+                [value]="Topic.AgendaHeading" 
+                (input)="Topic.AgendaHeading=$event.target.value" type="text" 
+                class="agenda-input" placeholder="Topic Title"
                  data-toggle="tooltip" title="Give your agenda item a title." />
               </div>
               <div class="col-md-3  gridHeader">

@@ -15,24 +15,28 @@
     <div class="panel-body">
       <div class="row ">
         <div class="col-md-12">
-          <div class="input-group" data-toggle="tooltip" title="Give your agenda item a title.">
-            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-pencil"></i></span>
-            <input [value]="QuickTopic" 
-            (input)="QuickTopic=$event.target.value"  type="text" />
+          <div class="col-md-10">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1"><i class="fa fa-map-marker"></i></span>
+              <input [value]="QuickTopic" (input)="QuickTopic=$event.target.value" type="text" class="form-control" placeholder="Agenda title"
+                aria-describedby="basic-addon1">
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <sd-addButton (Click)="AddTopic($event)"></sd-addButton>
           </div>
         </div>
-        <div class="col-md-2">
-            <sd-addButton (Click)="AddTopic($event)"></sd-addButton>
+      </div>
+      <div class="row" *ngFor="let agenda of Meeting.MeetingAgendaCollection" style="padding: 10px;" draggable="true" (click)="SelectTopic(agenda)"
+        style="cursor: pointer;">
+        <div class="col-md-9" style="margin-left: 20px;">
+          {{ agenda.AgendaHeading }}
+        </div>
+        <div class="col-md-2" style="background-color: #D8D8D8;">
+          {{ agenda.Duration }}
         </div>
       </div>
-    </div>
-  </div>
-  <div class="row" *ngFor="let agenda of Meeting.MeetingAgendaCollection">
-    <div class="col-md-9">
-      {{ agenda.AgendaHeading }}
-    </div>
-    <div class="col-md-3">
-      {{ Duration }}
     </div>
   </div>
 </div>
