@@ -18,13 +18,16 @@ export class DurationPickerComponent implements AfterViewInit, OnInit {
     Name: string;
     SecondsName: string;
     @Input() On: string;
-    @Input() Off: string;
+    @Input() Duration: number;
     @Output() Seconds = new EventEmitter<any>();
-    @Output() Duration = new EventEmitter<any>();
+    @Output() DurationEvent = new EventEmitter<any>();
     public ngAfterViewInit() {
+        if(!this.Duration) {
+            this.Duration = 100;
+        }        
         $('#' + this.Name).timeDurationPicker({
             defaultValue: () => {
-                $('#' + this.SecondsName).val();
+                return this.Duration;
             },
             years: false,
             months: false,
@@ -34,7 +37,8 @@ export class DurationPickerComponent implements AfterViewInit, OnInit {
                 $('#' + this.SecondsName).val(seconds);
                 $('#' + this.Name).val(duration);
                 this.Seconds.emit(seconds);
-                this.Duration.emit(duration);
+                let result = { Duration : seconds, Label : duration };
+                this.DurationEvent.emit(result);
             }
         });
     }

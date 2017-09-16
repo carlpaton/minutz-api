@@ -22,7 +22,9 @@
     </div>
     <div class="col-md-6">
       <div class="col-md-3 row-padding">
-        <sd-duration></sd-duration>
+        <sd-duration [Duration]="Meeting.Duration"
+        (DurationEvent)="meetingDurationChange($event)"
+        ></sd-duration>
       </div>
       <div class="col-md-1 row-padding">
         <button class="btn btn-success"><i class="fa fa-refresh"></i></button>

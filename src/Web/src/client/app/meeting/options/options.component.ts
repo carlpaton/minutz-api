@@ -35,9 +35,6 @@ export class OptionsComponent implements OnInit, AfterViewInit {
         console.log(this.Meeting);
     }
     public locationChange($event: any) {
-        //var session = JSON.parse(localStorage.getItem(this.MeetingKey));
-        //session.Location = $event;
-        //localStorage.setItem(this.MeetingKey, JSON.stringify(session));
         this.Meeting.Location = $event;
         this.Change.emit(this.Meeting);
     }
@@ -51,9 +48,9 @@ export class OptionsComponent implements OnInit, AfterViewInit {
         this.Change.emit(this.Meeting);
         console.log($event);
     }
-    public save() {
-        console.log(JSON.parse(localStorage.getItem(this.MeetingKey)));
-      }
+    public meetingDurationChange($event:any) {
+        this.Meeting.Duration = $event.Duration;
+    }
     private createId(): any {
         return `${this.createidsection()}-${this.createidsection()}-${this.createidsection()}-${this.createidsection()}` +
             `${this.createidsection()}-${this.createidsection()}-${this.createidsection()}-${this.createidsection()}`;
