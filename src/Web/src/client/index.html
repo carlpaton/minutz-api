@@ -9,7 +9,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- inject:css -->
   <!-- endinject -->
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
   <script src="https://cdn.auth0.com/js/auth0/8.8/auth0.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://adminlte.io/themes/AdminLTE/dist/js/adminlte.min.js"></script>
+  
+<script >
+    var AdminLTE = (function() {
+      return {
+        init: function() {
+          $(function(){
+            $.AdminLTE.layout.activate();
+            $.AdminLTE.layout.fix();
+            $.AdminLTE.layout.fixSidebar();
+          });
+        }
+      }
+    })(AdminLTE||{});
+  </script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
 
@@ -43,18 +60,5 @@
 </script>
 <% } %>
 
-<script >
-  var AdminLTE = (function() {
-    return {
-      init: function() {
-        $(function(){
-          $.AdminLTE.layout.activate();
-          $.AdminLTE.layout.fix();
-          $.AdminLTE.layout.fixSidebar();
-        });
-      }
-    }
-  })(AdminLTE||{});
-</script>
 </body>
 </html>
