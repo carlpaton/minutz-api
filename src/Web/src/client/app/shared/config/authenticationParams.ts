@@ -5,6 +5,6 @@ export let AuthenticationParams = {
   externalLoginPage: Config.externalLoginPageUrl,
   tokenApiEndpoint: Config.tokenApiEndpointUrl,
   tokenApiRedirectUrl: Config.tokenApiRedirectUrl,
-  client_id: Config.client_id,
+  client_id: Config.clientID,
   client_secret: Config.client_secret
 };

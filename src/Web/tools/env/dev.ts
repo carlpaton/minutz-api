@@ -8,9 +8,16 @@ const DevConfig: EnvConfig = {
   tokenApiEndpointUrl: 'https://opsoauth.mgsops.net:10250/OAuth/Token',
   tokenApiRedirectUrl: 'http://localhost:5555/#/token',
   callbackUrl: 'http://localhost:4200/',
-  client_id: 'internal-dev',
+  domain: 'dockerdurban.auth0.com',
+  audience: 'https://minutz.net',
+  clientID: 'jqdE5upkdDHejU2wJpzHRXYBEwFtsH3N',
   client_secret: 'apipassword123'
 };
 
 export = DevConfig;
 
+// clientID: 'jqdE5upkdDHejU2wJpzHRXYBEwFtsH3N',
+// domain: 'dockerdurban.auth0.com',
+// audience: 'https://minutz.net',
+// callbackURL: 'http://localhost:4200/',
+// //callbackURL: 'http://test.minutz.net'

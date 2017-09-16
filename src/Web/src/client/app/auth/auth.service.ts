@@ -1,6 +1,6 @@
 import {
-  AUTH_CONFIG
-} from './auth0-variables';
+  Config
+} from '../shared/config/env.config';
 import {
   Injectable
 } from '@angular/core';
@@ -10,15 +10,15 @@ import {
 declare let auth0: any;
 @Injectable()
 export class AuthService {
-  public auth0 = new auth0.WebAuth({
-    clientID: AUTH_CONFIG.clientID,
-    domain: AUTH_CONFIG.domain,
-    responseType: 'token id_token',
-    audience: AUTH_CONFIG.audience,
-    redirectUri: `${AUTH_CONFIG.callbackURL}`,
-    scope: 'openid profile email'
-  });
+   auth0 : any;  
   public constructor(public router: Router) {
+    this.auth0 = new auth0.WebAuth({
+      clientID: Config.clientID,
+      domain: Config.domain,
+      responseType: 'token id_token',
+      audience: Config.audience,
+      redirectUri: `${Config.callbackUrl}`,
+      scope: 'openid profile email' });
     console.log('init auth');
   }
   public login(): void {
