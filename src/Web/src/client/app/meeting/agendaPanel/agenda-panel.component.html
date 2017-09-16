@@ -28,13 +28,13 @@
           </div>
         </div>
       </div>
-      <div class="row" *ngFor="let agenda of Meeting.MeetingAgendaCollection" style="padding: 10px;" draggable="true" (click)="SelectTopic(agenda)"
+      <div class="row" *ngFor="let agenda of AgendaCollection" style="padding: 10px;" draggable="true" (click)="SelectTopic(agenda)"
         style="cursor: pointer;">
         <div class="col-md-9" style="margin-left: 20px;">
           {{ agenda.AgendaHeading }}
         </div>
         <div class="col-md-2" style="background-color: #D8D8D8;">
-          {{ agenda.Duration }}
+          {{ agenda.DurationLabel }}
         </div>
       </div>
     </div>

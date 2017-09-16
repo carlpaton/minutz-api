@@ -8,8 +8,8 @@ import {
     SimpleChanges
 } from '@angular/core';
 import {
-    MeetingModel
-} from "../../shared/models/meetingModel";
+    MeetingAgenda
+} from "../../shared/models/meetingAgenda";
 import {
     MeetingAgenda
 } from '../../shared/models/meetingAgenda';
@@ -24,7 +24,7 @@ export class AgendaPanelComponent implements OnInit, OnChanges {
     Name:string;
     QuickTopic: string;
     @Input() Id: string;
-    @Input() Meeting : MeetingModel;
+    @Input() AgendaCollection : Array<MeetingAgenda>;
     @Output() Click = new EventEmitter();
     @Output() Topic = new EventEmitter<MeetingAgenda>();
     private createId(): any {
@@ -43,18 +43,18 @@ export class AgendaPanelComponent implements OnInit, OnChanges {
         }else {
             this.Name = this.Id;
         }
-        if(!this.Meeting.MeetingAgendaCollection) {
-            this.Meeting.MeetingAgendaCollection = [];
+        if(!this.AgendaCollection) {
+            this.AgendaCollection = [];
         }
     }
     public AddTopic($event : any) {
-        if(!this.Meeting.MeetingAgendaCollection) {
-            this.Meeting.MeetingAgendaCollection = [];
+        if(!this.AgendaCollection) {
+            this.AgendaCollection = [];
         }
         let quickTopic = new MeetingAgenda();
         quickTopic.AgendaHeading = this.QuickTopic;
-        quickTopic.Duration = '00:00';
-        this.Meeting.MeetingAgendaCollection.push(quickTopic);
+        quickTopic.DurationLabel = '00:00';
+        this.AgendaCollection.push(quickTopic);
     }
     public click():void {
         this.Click.emit();

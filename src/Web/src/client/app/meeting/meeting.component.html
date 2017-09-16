@@ -23,7 +23,7 @@
     </div>
     <div class="row">
       <sd-attendees-panel [Meeting]="MeetingObject" ></sd-attendees-panel>
-      <sd-agenda-panel [Meeting]="MeetingObject" (Topic)="SelectedTopic($event)" ></sd-agenda-panel>
+      <sd-agenda-panel [AgendaCollection]="MeetingObject.MeetingAgendaCollection" (Topic)="SelectedTopic($event)" ></sd-agenda-panel>
       <sd-attachment-panel></sd-attachment-panel>
     </div>
   </div>
@@ -49,18 +49,23 @@
             <div class="row left-tab">
               <div class="col-md-2 gridHeader ">
                 <div class="input-group " >
-                  <sd-duration></sd-duration>
+                  <sd-duration
+                  [Duration]="Topic.Duration"
+                  (DurationEvent)="topicDurationChange($event)"
+                  ></sd-duration>
                 </div>
               </div>
               <div class="col-md-4  gridHeader">
                 <input 
                 [value]="Topic.AgendaHeading" 
-                (input)="Topic.AgendaHeading=$event.target.value" type="text" 
+                (input)="Topic.AgendaHeading=$event.target.value"
+                type="text" 
                 class="agenda-input" placeholder="Topic Title"
-                 data-toggle="tooltip" title="Give your agenda item a title." />
+                data-toggle="tooltip"
+                title="Give your agenda item a title." />
               </div>
               <div class="col-md-3  gridHeader">
-                  <sd-attendee-select></sd-attendee-select>
+                <sd-attendee-select></sd-attendee-select>
               </div>
               <div class="col-md-1  gridHeader">
                <sd-addButton (click)="addTopic()" ></sd-addButton>

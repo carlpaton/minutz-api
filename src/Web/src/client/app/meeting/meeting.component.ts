@@ -55,8 +55,10 @@ export class MeetingComponent implements OnInit {
         this.Check = true;
         this.Topic = new MeetingAgenda();
         this.Topic.AgendaHeading = '';
+        this.Topic.Duration = 100;
         this.TestDate = '08/02/2016';
         this.MeetingObject = new MeetingModel();
+        this.MeetingObject.Duration = 600;
         this.MeetingObject.Outcome = '';
         this.MeetingObject.Purpose = '';
     }
@@ -97,6 +99,11 @@ export class MeetingComponent implements OnInit {
     }
     public SelectedTopic($event : MeetingAgenda) {
         this.Topic = $event;
+    }
+    public topicDurationChange($event: any) {
+        this.Topic.Duration = $event.Duration;
+        this.Topic.DurationLabel = $event.Label;
+        console.log($event);
     }
     search(): void {
         console.log('discovery');

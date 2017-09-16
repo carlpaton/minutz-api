@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DurationPickerComponent } from './durationPicker.component';
+
 @NgModule({
   imports: [
     CommonModule],
