@@ -91,7 +91,7 @@ export class MeetingComponent implements OnInit {
             this.MeetingObject.MeetingAgendaCollection = [];
         }
         let topic = this.Topic;
-        this.Topic = new MeetingAgenda();
+        this.Topic = this.createNewTopicObject();
         this.MeetingObject.MeetingAgendaCollection.push(topic);
     }
     public enableSearch() {
@@ -113,5 +113,12 @@ export class MeetingComponent implements OnInit {
     }
     search(): void {
         console.log('discovery');
+    }
+    private createNewTopicObject():MeetingAgenda {
+        let topic = new MeetingAgenda();
+        topic.AgendaHeading = ''
+        topic.Duration = 100;
+        topic.DurationLabel = '1 minute';
+        return topic;
     }
 }
