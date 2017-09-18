@@ -1,5 +1,7 @@
 <div>
-    <select2  [Data]='Attendees' (SelectedItemsChange)="SelectedAttendee()" >
-
+    <select2  
+        [Data]='Attendees'
+        (SelectedItemsChange)="SelectedAttendee()"
+        (SelectOption)="'Select attendee'" >
     </select2>
 </div>

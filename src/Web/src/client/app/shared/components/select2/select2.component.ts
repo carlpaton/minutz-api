@@ -19,6 +19,7 @@ declare let $: any;
     templateUrl: `select2.component.html`,
 })
 export class Select2Component implements AfterViewInit {
+    @Input() SelectOption : string;
     @Input() Name: string = '';
     @Input() SelectedItems: Array<string> = [];
     @Input() Data: Array<string> = [];
@@ -29,7 +30,13 @@ export class Select2Component implements AfterViewInit {
         console.log('select2 construct');
     }
     public ngAfterViewInit() {
-        $('#' + this.Name).select2();
+        if(!this.SelectOption) {
+            this.SelectOption = "Select one";
+        }
+        $('#' + this.Name).select2({
+            multiple: this.IsMultiple,
+            placeholder: this.SelectOption
+        });
         $('#' + this.Name).on(
             'change', (e:any) => {
                 this.SelectedItems = $(e.target).val();
