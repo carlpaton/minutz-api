@@ -22,9 +22,16 @@
       </div>
     </div>
     <div class="row">
-      <sd-attendees-panel [Meeting]="MeetingObject" ></sd-attendees-panel>
-      <sd-agenda-panel [AgendaCollection]="MeetingObject.MeetingAgendaCollection" (Topic)="SelectedTopic($event)" ></sd-agenda-panel>
-      <sd-attachment-panel></sd-attachment-panel>
+      <sd-attendees-panel
+        [Meeting]="MeetingObject">
+      </sd-attendees-panel>
+      <sd-agenda-panel
+        [AgendaCollection]="MeetingObject.MeetingAgendaCollection"
+        (Topic)="SelectedTopic($event)" (CollectionNotification)="UpdatedAgendaItems($event)" >
+      </sd-agenda-panel>
+      <sd-attachment-panel>
+
+      </sd-attachment-panel>
     </div>
   </div>
   <div class="col-md-9 row-grey" style="background-color: #ecf0f5;">

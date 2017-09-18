@@ -56,6 +56,7 @@ export class MeetingComponent implements OnInit {
         this.Topic = new MeetingAgenda();
         this.Topic.AgendaHeading = '';
         this.Topic.Duration = 100;
+        this.Topic.DurationLabel = '1 minute';
         this.TestDate = '08/02/2016';
         this.MeetingObject = new MeetingModel();
         this.MeetingObject.Duration = 600;
@@ -89,13 +90,18 @@ export class MeetingComponent implements OnInit {
         if(!this.MeetingObject.MeetingAgendaCollection) {
             this.MeetingObject.MeetingAgendaCollection = [];
         }
-        this.MeetingObject.MeetingAgendaCollection.push(this.Topic);
+        let topic = this.Topic;
+        this.Topic = new MeetingAgenda();
+        this.MeetingObject.MeetingAgendaCollection.push(topic);
     }
     public enableSearch() {
         console.log('discovery');
     }
     public HeadingChange($event: any) {
         this.MeetingObject.Name = $event;
+    }
+    public UpdatedAgendaItems($event: any) {
+        this.MeetingObject.MeetingAgendaCollection = $event;
     }
     public SelectedTopic($event : MeetingAgenda) {
         this.Topic = $event;
