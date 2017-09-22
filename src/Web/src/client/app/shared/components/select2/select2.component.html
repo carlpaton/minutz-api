@@ -1,6 +1,0 @@
-<select id="{{Name}}" class="form-control fields-select" 
-       [attr.multiple]="IsMultiple ? true: null"   
-        style="width: 100%;" >
-    <option>{{ SelectOption }}</option>
-    <option *ngFor="let item of Data" [value]="item">{{item}}</option>
-  </select>
