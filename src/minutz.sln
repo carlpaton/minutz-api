@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{2D076928-7547-4398-857B-0E723CD4C952}"
 	ProjectSection(SolutionItems) = preProject
@@ -18,18 +18,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{67CA3E6C-1759-46F3-9312-BC67A5C9B677}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{9D3CF96A-2902-49C4-8760-8A9F3BC3303C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{9D3CF96A-2902-49C4-8760-8A9F3BC3303C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestIntegrations", "TestIntegrations\TestIntegrations.csproj", "{2C9FBA64-F3DC-417A-A1D2-1F95048940A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestIntegrations", "TestIntegrations\TestIntegrations.csproj", "{2C9FBA64-F3DC-417A-A1D2-1F95048940A3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{48E551FF-BB15-457A-8BB2-C0D6EB2DB908}"
 	ProjectSection(SolutionItems) = preProject
 		..\api.Dockerfile = ..\api.Dockerfile
 		..\bitbucket-pipelines.yml = ..\bitbucket-pipelines.yml
+		docker-compose.yml = docker-compose.yml
 		..\.docker\buildagent\Dockerfile = ..\.docker\buildagent\Dockerfile
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notifications", "Notifications\Notifications.csproj", "{10DCF7F9-BAAD-4232-82EE-E1DAEC6D8FE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notifications", "Notifications\Notifications.csproj", "{10DCF7F9-BAAD-4232-82EE-E1DAEC6D8FE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
