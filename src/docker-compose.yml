@@ -1,14 +1,8 @@
-version: "3"
+version: '3'
 
 services:
-  mssql:
-      image: 'microsoft/mssql-server-linux'
-      ports:
-          - '1433:1433'
-      environment:
-          - ACCEPT_EULA=Y
-          - SA_PASSWORD=SqlServer1234!
-      volumes:
-          - app_docker_db:/var/lib/mssql/data
-volumes:
-  app_docker_db:
+  api:
+    image: api
+    build:
+      context: ./Api
+      dockerfile: Dockerfile

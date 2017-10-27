@@ -62,37 +62,49 @@ namespace Api
             builder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
           });
       });
-      services.AddAuthorization(options =>
+      services.AddAuthentication(options =>
       {
-        options.AddPolicy("user:user",
-            policy => policy.Requirements.Add(new HasScopeRequirement("user:user", domain)));
-        options.AddPolicy("user:attendee",
-            policy => policy.Requirements.Add(new HasScopeRequirement("user:attendee", domain)));
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+      }).AddJwtBearer(options =>
+      {
+        options.Authority = domain;
+        options.Audience = "https://dockerdurban.auth0.com/api/v2/";
       });
+
+      //services.AddAuthorization(options =>
+      //{
+      //  options.AddPolicy("user:user",
+      //      policy => policy.Requirements.Add(new HasScopeRequirement("user:user", domain)));
+      //  options.AddPolicy("user:attendee",
+      //      policy => policy.Requirements.Add(new HasScopeRequirement("user:attendee", domain)));
+      //});
     }
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
     {
       loggerFactory.AddConsole(Configuration.GetSection("Logging"));
       loggerFactory.AddDebug();
-      var options = new JwtBearerOptions
-      {
-        Audience = "https://minutz.net",
-        Authority = "https://dockerdurban.auth0.com/",
-        Events = new JwtBearerEvents
-        {
-          OnTokenValidated = context =>
-         {
-           var claimsIdentity = context.Ticket.Principal.Identity as ClaimsIdentity;
-           if (claimsIdentity != null)
-           {
-             string userId = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-           }
-           return Task.FromResult(0);
-         }
-        }
-      };
-      app.UseJwtBearerAuthentication(options);
+      //var options = new JwtBearerOptions
+      //{
+      //  Audience = "https://minutz.net",
+      //  Authority = "https://dockerdurban.auth0.com/",
+      //  Events = new JwtBearerEvents
+      //  {
+      //    OnTokenValidated = context =>
+      //   {
+      //     var claimsIdentity = context.Ticket.Principal.Identity as ClaimsIdentity;
+      //     if (claimsIdentity != null)
+      //     {
+      //       string userId = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+      //     }
+      //     return Task.FromResult(0);
+      //   }
+      //  }
+      //};
+      //app.UseJwtBearerAuthentication(options);
+      app.UseAuthentication();
       app.UseSwagger();
       app.UseSwaggerUI(c =>
       {

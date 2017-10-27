@@ -32,6 +32,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{48E551FF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notifications", "Notifications\Notifications.csproj", "{10DCF7F9-BAAD-4232-82EE-E1DAEC6D8FE9}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{50956871-20AC-4C11-B10F-5984AB726248}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,6 +88,12 @@ Global
 		{10DCF7F9-BAAD-4232-82EE-E1DAEC6D8FE9}.pipelines|Any CPU.Build.0 = Debug|Any CPU
 		{10DCF7F9-BAAD-4232-82EE-E1DAEC6D8FE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10DCF7F9-BAAD-4232-82EE-E1DAEC6D8FE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50956871-20AC-4C11-B10F-5984AB726248}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50956871-20AC-4C11-B10F-5984AB726248}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50956871-20AC-4C11-B10F-5984AB726248}.pipelines|Any CPU.ActiveCfg = Debug|Any CPU
+		{50956871-20AC-4C11-B10F-5984AB726248}.pipelines|Any CPU.Build.0 = Debug|Any CPU
+		{50956871-20AC-4C11-B10F-5984AB726248}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50956871-20AC-4C11-B10F-5984AB726248}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
