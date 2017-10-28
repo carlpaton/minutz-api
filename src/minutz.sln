@@ -91,7 +91,6 @@ Global
 		{50956871-20AC-4C11-B10F-5984AB726248}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{50956871-20AC-4C11-B10F-5984AB726248}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50956871-20AC-4C11-B10F-5984AB726248}.pipelines|Any CPU.ActiveCfg = Debug|Any CPU
-		{50956871-20AC-4C11-B10F-5984AB726248}.pipelines|Any CPU.Build.0 = Debug|Any CPU
 		{50956871-20AC-4C11-B10F-5984AB726248}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50956871-20AC-4C11-B10F-5984AB726248}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

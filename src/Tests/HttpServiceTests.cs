@@ -5,10 +5,10 @@ using NUnit.Framework;
 namespace Tests
 {
   [TestFixture]
-    public class UnitTest1
-    {
+    public class HttpServiceTests
+  {
         [Test]
-        public void Test1()
+        public void Get_Given_Should()
         {
 
         }

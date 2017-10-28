@@ -1,6 +1,14 @@
-FROM microsoft/aspnetcore:1.1
+FROM microsoft/aspnetcore-build:2.0 AS build-env
+WORKDIR /app
+COPY src/minutz.sln ./
+RUN dotnet restore
+
+COPY . ./
+RUN dotnet publish src/minutz.sln -c pipelines -o out
+
+FROM microsoft/aspnetcore:2.0
 ARG source
 WORKDIR /app
 EXPOSE 80
-COPY ${source:-dist} .
+COPY --from=build-env /app/src/Api/out/ .
 ENTRYPOINT ["dotnet", "Api.dll"]
