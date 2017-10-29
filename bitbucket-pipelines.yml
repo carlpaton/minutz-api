@@ -16,12 +16,12 @@ pipelines:
           - dotnetcore
         script: # Modify the commands below to build your repository.
           # Set $DOCKER_HUB_USERNAME and $DOCKER_HUB_PASSWORD as environment variables in repository settings
-          - export IMAGE_NAME=tzatziki/minutz-api:3.0.0.$BITBUCKET_BUILD_NUMBER
+          - export IMAGE_COMPLETE_NAME=$IMAGE_NAME:1.0.0.$BITBUCKET_BUILD_NUMBER
           - dotnet restore src/minutz.sln
           - dotnet build src/minutz.sln -c pipelines
           - dotnet test src/Tests/Tests.csproj
           #- dotnet test src/TestIntegrations/TestIntegrations.csproj
           - dotnet publish src/minutz.sln -c pipelines -o ../../dist
           - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
-          - docker build -t $IMAGE_NAME -f api.Dockerfile .
-          - docker push $IMAGE_NAME
+          - docker build -t $IMAGE_COMPLETE_NAME -f api.Dockerfile .
+          - docker push $IMAGE_COMPLETE_NAME
