@@ -5,7 +5,7 @@
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>50956871-20ac-4c11-b10f-5984ab726248</ProjectGuid>
     <DockerLaunchBrowser>True</DockerLaunchBrowser>
-    <DockerServiceUrl>http://localhost:{ServicePort}/api/values</DockerServiceUrl>
+    <DockerServiceUrl>http://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>api</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
