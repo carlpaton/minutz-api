@@ -29,5 +29,12 @@ namespace Api.Controllers
       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
       return null;
     }
+
+    [HttpPost("invite/{id}")]
+    //[Authorize]
+    public MeetingAttendee InviteAttendee(MeetingAttendee attendee){
+      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+      return attendee;
+    }
   }
 }
