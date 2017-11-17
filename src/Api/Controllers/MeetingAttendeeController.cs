@@ -31,8 +31,8 @@ namespace Api.Controllers
     }
 
     [HttpPost("invite/{id}")]
-    //[Authorize]
-    public MeetingAttendee InviteAttendee(MeetingAttendee attendee){
+    [Authorize]
+    public MeetingAttendee InviteAttendee([FromBody] MeetingAttendee attendee){
       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
       return attendee;
     }
