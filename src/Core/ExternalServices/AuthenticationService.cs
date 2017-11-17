@@ -13,8 +13,8 @@ namespace Core.ExternalServices
 
     public AuthRestModel GetUserInfo(string token)
     {
-      var result = Newtonsoft.Json.JsonConvert.DeserializeObject<AuthRestModel>(
-        Helper.HttpService.Get($"{_applicationSetting.Authority}userinfo", token));
+      var httpResult = Helper.HttpService.Get($"{_applicationSetting.Authority}userinfo", token);
+      var result = Newtonsoft.Json.JsonConvert.DeserializeObject<AuthRestModel>(httpResult);
       return result;
     }
   }
