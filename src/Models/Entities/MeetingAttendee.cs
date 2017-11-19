@@ -6,7 +6,7 @@ namespace Models.Entities
   {
     public Guid Id { get; set; }
     public string Name { get; set; }
-    public Guid ReferanceId { get; set; }
+    public Guid ReferenceId { get; set; }
     public string Email {get;set;}
     public  string PersonIdentity { get; set; }
     public  string Role { get; set; }

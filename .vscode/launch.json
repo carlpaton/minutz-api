@@ -14,7 +14,16 @@
             "cwd": "${workspaceFolder}/src/Api",
             "console": "internalConsole",
             "stopAtEntry": false,
-            "internalConsoleOptions": "openOnSessionStart"
+            "internalConsoleOptions": "openOnSessionStart",
+            "env": {
+                "AUTHORITY": "https://dockerdurban.auth0.com/",
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "SERVER_ADDRESS": "tcp:127.0.0.1,1433",
+                "DEFAULT_CATALOGUE": "minutz",
+                "DEFAULT_SCHEMA": "app",
+                "DEFAULT_USER": "sa",
+                "DEFAULT_PASSWORD": "SqlServer1234!"
+            }
         },
         {
             "name": ".NET Core Launch (web)",
