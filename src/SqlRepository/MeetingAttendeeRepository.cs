@@ -55,7 +55,7 @@ namespace SqlRepository
         var instance = dbConnection.Execute(insertSql, new
         {
           action.Id,
-          action.ReferanceId,
+          action.ReferenceId,
           action.PersonIdentity,
           action.Role
         });
@@ -74,7 +74,7 @@ namespace SqlRepository
                              WHERE Id = @Id";
         var instance = dbConnection.Execute(updateQuery, new
         {
-          action.ReferanceId,
+          action.ReferenceId,
           action.PersonIdentity,
           action.Role
         });
