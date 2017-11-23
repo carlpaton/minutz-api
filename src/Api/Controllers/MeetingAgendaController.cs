@@ -19,9 +19,9 @@ namespace Api.Controllers
     /// Get all agenda items for a meeting
     /// </summary>
     /// <returns>Collection of MeetingAgenda objects</returns>
-    [HttpGet ("api/meeting/{meetingId}/agenda")]
+    [HttpGet ("api/meeting/{ReferenceId}/agendas")]
     [Authorize]
-    public List<MeetingAgenda> Get ([FromRoute] string meetingId)
+    public List<MeetingAgenda> Get (string ReferenceId)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return new List<MeetingAgenda> ();
@@ -31,9 +31,9 @@ namespace Api.Controllers
     ///  Returns one instance of a meeting agenda
     /// </summary>
     /// <returns>MeetingAgenda object</returns>
-    [HttpGet ("api/meeting/{meetingId}/agenda/{id}")]
+    [HttpGet ("api/meeting/{ReferenceId}/agenda/{id}")]
     [Authorize]
-    public List<MeetingAgenda> Get ([FromRoute] string meetingId, string id)
+    public List<MeetingAgenda> Get (string ReferenceId, string id)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return null;
@@ -67,9 +67,9 @@ namespace Api.Controllers
     /// Delete the single instance of the agenda item.
     /// </summary>
     /// <returns>true if successful and false if failure.</returns>
-    [HttpDelete ("api/meeting/{meetingId}/agenda/{id}")]
+    [HttpDelete ("api/meeting/{ReferenceId}/agenda/{id}")]
     [Authorize]
-    public bool Delete ([FromRoute] string meetingId, string id)
+    public bool Delete ([FromRoute] string ReferenceId, string id)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return true;
