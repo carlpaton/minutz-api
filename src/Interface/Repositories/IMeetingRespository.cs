@@ -4,7 +4,7 @@ using System;
 
 namespace Interface.Repositories
 {
-  public interface IMeetingRespository
+  public interface IMeetingRepository
   {
     Meeting Get(Guid id, string schema, string connectionString);
     IEnumerable<Meeting> List(string schema, string connectionString);

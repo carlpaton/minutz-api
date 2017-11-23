@@ -8,7 +8,7 @@ namespace Core
 {
   public class MeetingService : IMeetingService
   {
-    private readonly IMeetingRespository _meetingRespository;
+    private readonly IMeetingRepository _meetingRepository;
     private readonly IMeetingAgendaRepository _meetingAgendaRepository;
     private readonly IMeetingAttendeeRepository _meetingAttendeeRepository;
     private readonly IMeetingActionRepository _meetingActionRepository;
@@ -19,7 +19,7 @@ namespace Core
     private readonly IApplicationSetting _applicationSetting;
     private readonly IInstanceRepository _instanceRepository;
 
-    public MeetingService(IMeetingRespository meetingRespository,
+    public MeetingService(IMeetingRepository meetingRepository,
                           IMeetingAgendaRepository meetingAgendaRepository,
                           IMeetingAttendeeRepository meetingAttendeeRepository,
                           IMeetingActionRepository meetingActionRepository,
@@ -30,7 +30,7 @@ namespace Core
                           IApplicationSetting applicationSetting,
                           IInstanceRepository instanceRepository)
     {
-      _meetingRespository = meetingRespository;
+      _meetingRepository = meetingRepository;
       _meetingAgendaRepository = meetingAgendaRepository;
       _meetingAttendeeRepository = meetingAttendeeRepository;
       _meetingActionRepository = meetingActionRepository;
@@ -54,7 +54,7 @@ namespace Core
                                                           _applicationSetting.Username,
                                                           _applicationSetting.Password));
       var userConnectionString = GetConnectionString(instance.Password, instance.Username);
-      return _meetingRespository.Get(Guid.Parse(id), instance.Username, userConnectionString);
+      return _meetingRepository.Get(Guid.Parse(id), instance.Username, userConnectionString);
     }
     public IEnumerable<Meeting> GetMeetings(string token)
     {
@@ -68,7 +68,7 @@ namespace Core
           _applicationSetting.Username,
           _applicationSetting.Password));
       var userConnectionString = GetConnectionString(instance.Password, instance.Username);
-      return _meetingRespository.List(instance.Username, userConnectionString);
+      return _meetingRepository.List(instance.Username, userConnectionString);
     }
     public bool CreateMeeting(string token, Meeting meeting)
     {
@@ -82,7 +82,7 @@ namespace Core
           _applicationSetting.Username,
           _applicationSetting.Password));
       var userConnectionString = GetConnectionString(instance.Password, instance.Username);
-      return _meetingRespository.Add(meeting,instance.Username, userConnectionString);
+      return _meetingRepository.Add(meeting,instance.Username, userConnectionString);
     }
     public bool UpdateMeeting(string token, Meeting meeting)
     {
@@ -96,7 +96,7 @@ namespace Core
           _applicationSetting.Username,
           _applicationSetting.Password));
       var userConnectionString = GetConnectionString(instance.Password, instance.Username);
-      return _meetingRespository.Update(meeting, instance.Username, userConnectionString);
+      return _meetingRepository.Update(meeting, instance.Username, userConnectionString);
     }
     internal string GetConnectionString(string password, string username)
     {
