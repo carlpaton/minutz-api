@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -7,69 +7,68 @@ using Models.Entities;
 
 namespace Api.Controllers
 {
-  public class MeetingAgendaController : Controller
+  public class MeetingAttachmentsController : Controller
   {
-    private readonly IMeetingService _meetingService;
-    public MeetingAgendaController (IMeetingService meetingService)
+    public MeetingAttachmentsController ()
     {
-      _meetingService = meetingService;
+
     }
 
     /// <summary>
     /// Get all agenda items for a meeting
     /// </summary>
     /// <returns>Collection of MeetingAgenda objects</returns>
-    [HttpGet ("api/meeting/{ReferenceId}/agendas")]
+    [HttpGet ("api/meeting/{referenceId}/attachments")]
     [Authorize]
-    public List<MeetingAgenda> Get (string ReferenceId)
+    public List<MeetingAttachment> Get (string referenceId)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      return new List<MeetingAgenda> ();
+      return new List<MeetingAttachment> ();
     }
 
     /// <summary>
     ///  Returns one instance of a meeting agenda
     /// </summary>
     /// <returns>MeetingAgenda object</returns>
-    [HttpGet ("api/meeting/{ReferenceId}/agenda/{id}")]
+    [HttpGet ("api/meeting/{referenceId}/attachment/{id}")]
     [Authorize]
-    public List<MeetingAgenda> Get (string ReferenceId, string id)
+    public MeetingAttachment Get (string referenceId, string id)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      return null;
+      return new MeetingAttachment ();
     }
 
     /// <summary>
     /// Create a meeting Agenda
     /// </summary>
     /// <returns></returns>
-    [HttpPut ("api/meeting/{ReferenceId}/agenda")]
+    [HttpPut ("api/meeting/{referenceId}/attachment")]
     [Authorize]
-    public MeetingAgenda Put (MeetingAgenda agenda)
+    public MeetingAttachment Put (MeetingAttachment attachment)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      return new MeetingAgenda ();
+      return new MeetingAttachment ();
     }
 
     /// <summary>
     /// Update the Meeting Agenda
     /// </summary>
     /// <returns></returns>
-    [HttpPost ("api/meeting/{ReferenceId}/agenda/{id}")]
+    [HttpPost ("api/meeting/{referenceId}/attachment/{id}")]
     [Authorize]
-    public MeetingAgenda Post (MeetingAgenda agenda)
+    public MeetingAttachment Post (MeetingAttachment attachment)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      return new MeetingAgenda ();
+      return new MeetingAttachment ();
     }
 
     /// <summary>
     /// Delete the single instance of the agenda item.
     /// </summary>
     /// <returns>true if successful and false if failure.</returns>
-    [HttpDelete ("api/meeting/{ReferenceId}/agenda/{id}")]
+    [HttpDelete ("api/meeting/{referenceId}/attachment/{id}")]
     [Authorize]
-    public bool Delete ([FromRoute] string ReferenceId, string id)
+    public bool Delete (string referenceId, string id)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return true;

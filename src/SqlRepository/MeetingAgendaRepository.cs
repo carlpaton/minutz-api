@@ -42,7 +42,7 @@ namespace SqlRepository
         dbConnection.Open();
         string insertSql = $@"insert into [{schema}].[MeetingAgenda](
                                                                  [Id]
-                                                                ,[ReferanceId]
+                                                                ,[ReferenceId]
                                                                 ,[AgendaHeading]
                                                                 ,[AgendaText]
                                                                 ,[MeetingAttendeeId]
@@ -52,7 +52,7 @@ namespace SqlRepository
                                                                 ) 
                                                          values(
                                                                  @Id
-                                                                ,@ReferanceId
+                                                                ,@ReferenceId
                                                                 ,@AgendaHeading
                                                                 ,@AgendaText
                                                                 ,@MeetingAttendeeId
@@ -63,7 +63,7 @@ namespace SqlRepository
         var instance = dbConnection.Execute(insertSql, new
         {
           action.Id,
-          action.ReferanceId,
+          action.ReferenceId,
           action.AgendaHeading,
           action.AgendaText,
           action.MeetingAttendeeId,
@@ -80,7 +80,7 @@ namespace SqlRepository
       {
         dbConnection.Open();
         string updateQuery = $@"UPDATE [{schema}].[MeetingAgenda] 
-                             SET ReferanceId = @ReferanceId, 
+                             SET ReferenceId = @ReferenceId, 
                                  AgendaHeading = @AgendaHeading, 
                                  AgendaText = @AgendaText, 
                                  MeetingAttendeeId = @MeetingAttendeeId,
@@ -90,7 +90,7 @@ namespace SqlRepository
                              WHERE Id = @Id";
         var instance = dbConnection.Execute(updateQuery, new
         {
-          action.ReferanceId,
+          action.ReferenceId,
           action.AgendaHeading,
           action.AgendaText,
           action.MeetingAttendeeId,

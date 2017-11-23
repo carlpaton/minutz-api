@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -7,69 +7,68 @@ using Models.Entities;
 
 namespace Api.Controllers
 {
-  public class MeetingAgendaController : Controller
+  public class MeetingNoteController : Controller
   {
-    private readonly IMeetingService _meetingService;
-    public MeetingAgendaController (IMeetingService meetingService)
+    public MeetingNoteController ()
     {
-      _meetingService = meetingService;
+
     }
 
     /// <summary>
     /// Get all agenda items for a meeting
     /// </summary>
-    /// <returns>Collection of MeetingAgenda objects</returns>
-    [HttpGet ("api/meeting/{ReferenceId}/agendas")]
+    /// <returns>Collection of MeetingNote objects</returns>
+    [HttpGet ("api/meeting/{referenceId}/note")]
     [Authorize]
-    public List<MeetingAgenda> Get (string ReferenceId)
+    public List<MeetingNote> Get (string referenceId)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      return new List<MeetingAgenda> ();
+      return new List<MeetingNote> ();
     }
 
     /// <summary>
     ///  Returns one instance of a meeting agenda
     /// </summary>
     /// <returns>MeetingAgenda object</returns>
-    [HttpGet ("api/meeting/{ReferenceId}/agenda/{id}")]
+    [HttpGet ("api/meeting/{referenceId}/note/{id}")]
     [Authorize]
-    public List<MeetingAgenda> Get (string ReferenceId, string id)
+    public MeetingNote Get (string referenceId, string id)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      return null;
+      return new MeetingNote ();
     }
 
     /// <summary>
-    /// Create a meeting Agenda
+    /// Create a meeting note
     /// </summary>
     /// <returns></returns>
-    [HttpPut ("api/meeting/{ReferenceId}/agenda")]
+    [HttpPut ("api/meeting/{referenceId}/note")]
     [Authorize]
-    public MeetingAgenda Put (MeetingAgenda agenda)
+    public MeetingNote Put (MeetingNote note)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      return new MeetingAgenda ();
+      return new MeetingNote ();
     }
 
     /// <summary>
-    /// Update the Meeting Agenda
+    /// Update the Meeting note
     /// </summary>
     /// <returns></returns>
-    [HttpPost ("api/meeting/{ReferenceId}/agenda/{id}")]
+    [HttpPost ("api/meeting/{referenceId}/note/{id}")]
     [Authorize]
-    public MeetingAgenda Post (MeetingAgenda agenda)
+    public MeetingNote Post (MeetingNote note)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      return new MeetingAgenda ();
+      return new MeetingNote ();
     }
 
     /// <summary>
-    /// Delete the single instance of the agenda item.
+    /// Delete the single instance of the action item.
     /// </summary>
     /// <returns>true if successful and false if failure.</returns>
-    [HttpDelete ("api/meeting/{ReferenceId}/agenda/{id}")]
+    [HttpDelete ("api/meeting/{referenceId}/note/{id}")]
     [Authorize]
-    public bool Delete ([FromRoute] string ReferenceId, string id)
+    public bool Delete (string referenceId, string id)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return true;

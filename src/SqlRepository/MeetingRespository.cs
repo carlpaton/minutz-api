@@ -9,7 +9,7 @@ using Dapper;
 
 namespace SqlRepository
 {
-  public class MeetingRespository : IMeetingRespository
+  public class MeetingRepository : IMeetingRepository
   {
     public Meeting Get(Guid id, string schema, string connectionString)
     {
