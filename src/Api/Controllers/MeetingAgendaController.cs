@@ -7,7 +7,7 @@ using Models.Entities;
 
 namespace Api.Controllers
 {
-  [Route ("api/[controller]")]
+  //[Route ("api/[controller]")]
   public class MeetingAgendaController : Controller
   {
     private readonly IMeetingService _meetingService;
@@ -17,34 +17,34 @@ namespace Api.Controllers
     }
 
     /// <summary>
-    /// 
+    /// Get all agenda items for a meeting
     /// </summary>
-    /// <returns></returns>
-    [HttpGet]
+    /// <returns>Collection of MeetingAgenda objects</returns>
+    [HttpGet("api/meeting/{meetingId}/agenda")]
     [Authorize]
-    public List<MeetingAgenda> Get ()
+    public List<MeetingAgenda> Get ([FromRoute] string meetingId)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return new List<MeetingAgenda>();
     }
 
     /// <summary>
-    /// 
+    ///  Returns one instance of a meeting agenda
     /// </summary>
-    /// <returns></returns>
-    [HttpGet ("{id}")]
+    /// <returns>MeetingAgenda object</returns>
+    [HttpGet ("api/meeting/{meetingId}/agenda/{id}")]
     [Authorize]
-    public IEnumerable<MeetingAgenda> Get (string id)
+    public List<MeetingAgenda> Get ([FromRoute] string meetingId, string id)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return null;
     }
 
     /// <summary>
-    /// 
+    /// Create a meeting Agenda
     /// </summary>
     /// <returns></returns>
-    [HttpPut]
+    [HttpPut("api/meeting/{ReferenceId}/agenda")]
     [Authorize]
     public MeetingAgenda Put (MeetingAgenda agenda)
     {
@@ -53,24 +53,24 @@ namespace Api.Controllers
     }
 
     /// <summary>
-    /// 
+    /// Update the Meeting Agenda
     /// </summary>
     /// <returns></returns>
-    [HttpPost]
+    [HttpPost("api/meeting/{ReferenceId}/agenda/{id}")]
     [Authorize]
     public MeetingAgenda Post (MeetingAgenda agenda)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      return null;
+      return new MeetingAgenda();
     }
 
     /// <summary>
     /// Delete the single instance of the agenda item.
     /// </summary>
     /// <returns>true if successful and false if failure.</returns>
-    [HttpDelete("{id}")]
+    [HttpDelete("api/meeting/{meetingId}/agenda/{id}")]
     [Authorize]
-    public bool Delete (string id)
+    public bool Delete ([FromRoute] string meetingId, string id)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return true;
