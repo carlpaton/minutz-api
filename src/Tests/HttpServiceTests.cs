@@ -7,7 +7,8 @@ namespace Tests {
     [Test]
     public void Get_Given_Should () 
     {
-
+      var q = true;
+      Assert.IsTrue(q);
     }
   }
 }
