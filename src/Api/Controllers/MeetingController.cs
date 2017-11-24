@@ -45,7 +45,7 @@ namespace Api.Controllers
     /// </summary>
     /// <param name="id"></param>
     /// <returns>The created meeting object.</returns>
-    [HttpPut ("api/meeting/{id}")]
+    [HttpPut ("api/meeting")]
     [Authorize]
     public Meeting Put (Meeting meeting)
     {
