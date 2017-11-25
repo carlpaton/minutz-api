@@ -1,11 +1,13 @@
-﻿using Notifications;
-using Xunit;
+﻿using System;
+using Notifications;
+using NUnit.Framework;
 
 namespace TestIntegrations
 {
+  [TestFixture]
   public class NotificationTests
   {
-    [Fact]
+    [Test]
     public void TestSendNotification()
     {
       var not = new StartupService();

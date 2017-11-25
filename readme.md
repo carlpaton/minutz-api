@@ -48,14 +48,20 @@ Even though that the project should work in Visual Studio Community, this projec
 - Visual Studio 2017
 - [sqlectron](https://sqlectron.github.io)
 - Microsoft Sql Mangement studio
+- [Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/)
 
 ## Docker 
 
 Install docker from the docker site: [docker for mac](https://www.docker.com/docker-mac). Ensure that your client hass access to 4gig of ram and 2 cpu's.
 
+## Azure Storage Management
+
+Increase productivity when managing Storage
+Easily manage the contents of your storage account with Azure Storage Explorer. Upload, download, and manage blobs, files, queues, tables, and Azure Cosmos DB entities. Gain easy access to manage your virtual machine disks. Work with either Azure Resource Manager or classic storage accounts, plus manage and configure cross-origin resource sharing (CORS) rules.
+
 ## Debugging the web
 
-Ensure that nodejs is installed on your system to allow for the npm package management system to be availble. 
+Ensure that nodejs is installed on your system to allow for the npm package management system to be available. 
 For more information you can follow the Angular quick start found here: [Angular](https://angular.io/guide/quickstart)
 
 ### Recommented Extentions for Visual Studio Code

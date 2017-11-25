@@ -3,5 +3,10 @@
   "dotnet-test-explorer.useTreeView": true,
   "dotnet-test-explorer.build": true,
   "dotnet-test-explorer.restore": true,
-  "dotnet-test-explorer.enableTelemetry": true
+  "dotnet-test-explorer.enableTelemetry": true,
+  "cSpell.words": [
+    "bitbucket",
+    "buildagent",
+    "dcproj"
+  ]
 }
