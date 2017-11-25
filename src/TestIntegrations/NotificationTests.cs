@@ -9,7 +9,7 @@ namespace TestIntegrations
     public void TestSendNotification()
     {
       var not = new StartupService();
-      var q = not.SendAsync().Result;
+      var q = not.SendSimpleMessage().IsSuccessStatusCode;
       Assert.True(true);
     }
   }

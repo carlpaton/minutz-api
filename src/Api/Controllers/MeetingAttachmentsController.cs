@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace Api.Controllers
 {
@@ -56,7 +56,7 @@ namespace Api.Controllers
     /// <returns></returns>
     [HttpPost ("api/meeting/{referenceId}/attachment/{id}")]
     [Authorize]
-    public MeetingAttachment Post (MeetingAttachment attachment)
+    public MeetingAttachment Post (List<IFormFile> files, string referenceId, string id)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return new MeetingAttachment ();
