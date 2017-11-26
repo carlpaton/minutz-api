@@ -23,7 +23,13 @@
                 "DEFAULT_CATALOGUE": "minutz",
                 "DEFAULT_SCHEMA": "app",
                 "DEFAULT_USER": "sa",
-                "DEFAULT_PASSWORD": "SqlServer1234!"
+                "DEFAULT_PASSWORD": "SqlServer1234!",
+                "NOTIFY-DEFAULT-TEMPLATE-KEY": "716b366a-5d7f-4e19-a07c-bb32762903e5",
+                "NOTIFY-KEY": "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",
+                "NOTIFY-USER": "Minutz",
+                "NOTIFY-INVITATION-ADDRESS": "invitation@minutz.net",
+                "UI-BASE-URL": "http://test.minutz.net"
+                
             }
         },
         {
