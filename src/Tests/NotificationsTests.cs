@@ -41,7 +41,7 @@ namespace Tests
             //Assert
         }
 
-        [Test]
+        //[Test]
         public void TestSendNotification ()
         {
             var meeting = new Meeting();
