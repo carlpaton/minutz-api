@@ -150,6 +150,8 @@ Using Bitbucket pipelines the docker image will be created for the api and the u
 - tzatziki/minutz
 - tzatziki/minutz-web
 
+The build has been moved to VSTS for Automatic deployment using Azure
+
 The images are taged by the build system with the build number. Builds are automatic so there is no user intervention.
 
 ## Deployment
