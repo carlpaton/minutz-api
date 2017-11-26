@@ -19,36 +19,56 @@ namespace Notifications
     public class StartupService : IStartupService
     {
         private readonly INotify _notify;
-        private readonly string _fromAddress = "invitation@minutz.net";
         private readonly string _invitationSubject = "You are invited to a Minutz Meeting.";
         public StartupService (INotify notify) 
         {
             this._notify = notify;    
         }
 
-        public bool SendInvitationMessage (MeetingAttendee attendee)
+        public bool SendInvitationMessage (MeetingAttendee attendee, Meeting meeting)
         {
             var to = new EmailAddress (attendee.Email, attendee.Name);
-            var result = new SendGridClient (_notify.NotifyKey).SendEmailAsync (CreateInvitationMessage(to, _invitationSubject)).Result;
+            var result = new SendGridClient (_notify.NotifyKey)
+                                            .SendEmailAsync (CreateInvitationMessage(to,
+                                                                                     _invitationSubject,
+                                                                                     meeting.Id.ToString(),
+                                                                                     meeting.Name))
+                                            .Result;
             var resultBody = result.Body.ReadAsStringAsync ().Result;
             return true;
         }
 
-        internal SendGridMessage CreateInvitationMessage(EmailAddress to, string subject)
+        internal SendGridMessage CreateInvitationMessage(EmailAddress to,
+                                                         string subject,
+                                                         string meetingId,
+                                                         string meetingName)
         {
-            var message = MailHelper.CreateSingleEmail (CreateFromUser(), to, subject, createInvitationTextMessage(), createInvitationHtmlMessage());
+            var message = MailHelper.CreateSingleEmail (CreateFromUser(),
+                                                        to,
+                                                        subject,
+                                                        createInvitationTextMessage(),
+                                                        createInvitationHtmlMessage(to.Name,meetingId, meetingName));
             message.SetTemplateId(_notify.NotifyDefaultTemplateKey);
             return message;
         }
 
         internal EmailAddress CreateFromUser()
         {
-            return new EmailAddress (this._fromAddress, _notify.NotifyUser);
+            return new EmailAddress (_notify.NotifyInvitationAddress,
+                                     _notify.NotifyUser);
         }
 
-        internal string createInvitationHtmlMessage()
+        internal string createInvitationHtmlMessage(string attendeeName,
+                                                    string meetingId,
+                                                    string meetingName)
         {
-            return "<strong>and easy to do anywhere, even with C#</strong>";
+            var message = new StringBuilder();
+            message.AppendLine($"<div><h2>Welcome {attendeeName},</h2></div>");
+            message.AppendLine($"<div><p>You are invited to: {meetingName} .</p></div>");
+            message.AppendLine($"<div><p></p></div>");
+            message.AppendLine($"<div><p>Click <a href='{_notify.DestinationBaseAddress}?meetingId={meetingId}'>Join</a> to accept the meeting request, and start collaborating. </p></div>");
+            message.AppendLine($"<div></div>");
+            return message.ToString();
         }
         internal string createInvitationTextMessage()
         {
