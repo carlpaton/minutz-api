@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Mailjet.Api" Version="1.0.1" />
+    <PackageReference Include="SendGrid" Version="9.9.0" />
   </ItemGroup>
 
 </Project>
