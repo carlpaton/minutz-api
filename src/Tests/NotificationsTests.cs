@@ -54,7 +54,7 @@ namespace Tests
             Environment.SetEnvironmentVariable("NOTIFY-USER", "Minutz");
             var notify = new Notify();
             var not = new StartupService (notify);
-            var q = not.SendSimpleMessage (attendee);
+            var q = not.SendInvitationMessage (attendee);
             Assert.True (true);
         }
     }

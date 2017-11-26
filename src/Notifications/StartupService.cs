@@ -26,23 +26,24 @@ namespace Notifications
             this._notify = notify;    
         }
 
-        public bool SendSimpleMessage (MeetingAttendee attendee)
+        public bool SendInvitationMessage (MeetingAttendee attendee)
         {
-            var client = new SendGridClient (_notify.NotifyKey);
-            
-            var from = new EmailAddress (this._fromAddress, _notify.NotifyUser);
             var to = new EmailAddress (attendee.Email, attendee.Name);
-            
-            var result = client.SendEmailAsync (CreateInvitationMessage(from, to, _invitationSubject)).Result;
+            var result = new SendGridClient (_notify.NotifyKey).SendEmailAsync (CreateInvitationMessage(to, _invitationSubject)).Result;
             var resultBody = result.Body.ReadAsStringAsync ().Result;
             return true;
         }
 
-        internal SendGridMessage CreateInvitationMessage(EmailAddress from, EmailAddress to, string subject)
+        internal SendGridMessage CreateInvitationMessage(EmailAddress to, string subject)
         {
-            var message = MailHelper.CreateSingleEmail (from, to, subject, createInvitationTextMessage(), createInvitationHtmlMessage());
+            var message = MailHelper.CreateSingleEmail (CreateFromUser(), to, subject, createInvitationTextMessage(), createInvitationHtmlMessage());
             message.SetTemplateId(_notify.NotifyDefaultTemplateKey);
             return message;
+        }
+
+        internal EmailAddress CreateFromUser()
+        {
+            return new EmailAddress (this._fromAddress, _notify.NotifyUser);
         }
 
         internal string createInvitationHtmlMessage()

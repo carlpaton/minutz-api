@@ -4,6 +4,6 @@ namespace Interface.Services
 {
     public interface IStartupService
     {
-          bool SendSimpleMessage (MeetingAttendee attendee);
+          bool SendInvitationMessage (MeetingAttendee attendee);
     }
 }
