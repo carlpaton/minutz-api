@@ -11,36 +11,36 @@ namespace SqlRepository
 {
   public class MeetingActionRepository : IMeetingActionRepository
   {
-    public MeetingAction Get(Guid id, string schema, string connectionString)
+    public MinutzAction Get(Guid id, string schema, string connectionString)
     {
       if (id == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
         throw new ArgumentException("Please provide a valid meeting identifier, schema or connectionstring.");
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
-        var sql = $"select * from [{schema}].[MeetingAction] WHERE Id = '{id.ToString()}'";
-        var data = dbConnection.Query<MeetingAction>(sql).FirstOrDefault();
+        var sql = $"select * from [{schema}].[MinutzAction] WHERE Id = '{id.ToString()}'";
+        var data = dbConnection.Query<MinutzAction>(sql).FirstOrDefault();
         return data;
       }
     }
-    public IEnumerable<MeetingAction> List(string schema, string connectionString)
+    public IEnumerable<MinutzAction> List(string schema, string connectionString)
     {
       if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(schema))
         throw new ArgumentException("Please provide a valid schema or connectionstring.");
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
-        var sql = $"select * from [{schema}].[MeetingAction]";
-        var data = dbConnection.Query<MeetingAction>(sql).ToList();
+        var sql = $"select * from [{schema}].[MinutzAction]";
+        var data = dbConnection.Query<MinutzAction>(sql).ToList();
         return data;
       }
     }
-    public bool Add(MeetingAction action,string schema, string connectionString)
+    public bool Add(MinutzAction action,string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
-        string insertSql = $@"insert into [{schema}].[MeetingAction](
+        string insertSql = $@"insert into [{schema}].[MinutzAction](
                                                                  [Id]
                                                                 ,[ReferanceId]
                                                                 ,[ActionText]
@@ -67,12 +67,12 @@ namespace SqlRepository
         return instance == 1;
       }
     }
-    public bool Update(MeetingAction action, string schema, string connectionString)
+    public bool Update(MinutzAction action, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
-        string updateQuery = $@"UPDATE [{schema}].[MeetingAction]
+        string updateQuery = $@"UPDATE [{schema}].[MinutzAction]
                              SET ActionText = @ActionText, 
                                  PersonId = @PersonId, 
                                  DueDate = @DueDate, 

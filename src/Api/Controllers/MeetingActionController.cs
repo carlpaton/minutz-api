@@ -10,9 +10,10 @@ namespace Api.Controllers
 {
   public class MeetingActionController : Controller
   {
-    public MeetingActionController ()
+    private readonly IMeetingService _meetingService;
+    public MeetingActionController (IMeetingService meetingService)
     {
-
+      _meetingService = meetingService;
     }
 
     /// <summary>
@@ -21,8 +22,8 @@ namespace Api.Controllers
     /// <returns>Collection of MeetingAgenda objects</returns>
     [Authorize]
     [ProducesResponseType(typeof(string), 400)]
-    [ProducesResponseType(typeof(List<MeetingAction>), 200)]
-    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(List<MeetingAction>))]
+    [ProducesResponseType(typeof(List<MinutzAction>), 200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(List<MinutzAction>))]
     [HttpGet("api/meeting/{referenceId}/actions", Name = "Get Machine by Id")]
     public IActionResult Get (string referenceId)
     {
@@ -31,7 +32,7 @@ namespace Api.Controllers
         return BadRequest("Please provide a valid referenceId [meeting id]");
       }
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      return Ok(new List<MeetingAction> ());
+      return Ok(new List<MinutzAction> ());
     }
 
     /// <summary>
@@ -40,10 +41,10 @@ namespace Api.Controllers
     /// <returns>MeetingAgenda object</returns>
     [HttpGet ("api/meeting/{referenceId}/action/{id}")]
     [Authorize]
-    public MeetingAction Get (string referenceId, string id)
+    public MinutzAction Get (string referenceId, string id)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      return new MeetingAction ();
+      return new MinutzAction ();
     }
 
     /// <summary>
@@ -52,10 +53,10 @@ namespace Api.Controllers
     /// <returns></returns>
     [HttpPut ("api/meeting/{referenceId}/action")]
     [Authorize]
-    public MeetingAction Put (MeetingAction action)
+    public MinutzAction Put (MinutzAction action)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      return new MeetingAction ();
+      return new MinutzAction ();
     }
 
     /// <summary>
@@ -64,10 +65,10 @@ namespace Api.Controllers
     /// <returns></returns>
     [HttpPost ("api/meeting/{referenceId}/action/{id}")]
     [Authorize]
-    public MeetingAction Post (MeetingAction action)
+    public MinutzAction Post (MinutzAction action)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      return new MeetingAction ();
+      return new MinutzAction ();
     }
 
     /// <summary>

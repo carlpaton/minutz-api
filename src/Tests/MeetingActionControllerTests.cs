@@ -1,24 +1,21 @@
-﻿using System;
-using Api.Controllers;
+﻿using Api.Controllers;
+using Interface.Services;
 using Microsoft.AspNetCore.Mvc;
-using Notifications;
 using NUnit.Framework;
-using Models.Entities;
+using NSubstitute;
 
 namespace Tests
 {
   [TestFixture]
   public class MeetingActionControllerTests
   {
-    public MeetingActionControllerTests()
-    {
-    }
 
     [Test]
     public void Get_GivenEmptyreferenceId_ShouldReturnBadRequest()
     {
       //Arrange
-      var controller = new MeetingActionController();
+      var meetingService = Substitute.For<IMeetingService>();
+      var controller = new MeetingActionController(meetingService);
 
       //Act
       var result = controller.Get(string.Empty);
@@ -27,14 +24,14 @@ namespace Tests
       Assert.IsInstanceOf(typeof(BadRequestObjectResult),result);
     }
 
-    [Test]
-    public void Get_Given_Should()
-    {
-      //Arrange
+    //[Test]
+    //public void Get_Given_Should()
+    //{
+    //  //Arrange
 
-      //Act
+    //  //Act
 
-      //Assert
-    }
+    //  //Assert
+    //}
   }
 }

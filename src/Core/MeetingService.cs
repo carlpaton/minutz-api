@@ -56,6 +56,7 @@ namespace Core
       var userConnectionString = GetConnectionString(instance.Password, instance.Username);
       return _meetingRepository.Get(Guid.Parse(id), instance.Username, userConnectionString);
     }
+
     public IEnumerable<Meeting> GetMeetings(string token)
     {
       var userInfo = _authenticationService.GetUserInfo(token);
@@ -70,6 +71,7 @@ namespace Core
       var userConnectionString = GetConnectionString(instance.Password, instance.Username);
       return _meetingRepository.List(instance.Username, userConnectionString);
     }
+
     public bool CreateMeeting(string token, Meeting meeting)
     {
       var userInfo = _authenticationService.GetUserInfo(token);
@@ -82,8 +84,9 @@ namespace Core
           _applicationSetting.Username,
           _applicationSetting.Password));
       var userConnectionString = GetConnectionString(instance.Password, instance.Username);
-      return _meetingRepository.Add(meeting,instance.Username, userConnectionString);
+      return _meetingRepository.Add(meeting, instance.Username, userConnectionString);
     }
+
     public bool UpdateMeeting(string token, Meeting meeting)
     {
       var userInfo = _authenticationService.GetUserInfo(token);
@@ -98,14 +101,16 @@ namespace Core
       var userConnectionString = GetConnectionString(instance.Password, instance.Username);
       return _meetingRepository.Update(meeting, instance.Username, userConnectionString);
     }
-    internal string GetConnectionString(string password, string username)
+
+    public IEnumerable<MinutzAction> GetMeetingActions(string referenceId)
     {
-      return _applicationSetting.CreateConnectionString(
-        _applicationSetting.Server,
-        _applicationSetting.Catalogue,
-        username,
-        password);
+      // check if referenceId is a meeting id
+      // if id is a meeting id then check if meeting has actions for user
+
+      // if meeting is not a meeting id [referenceId] then use it as the user Id and check for actions - these become tasks
+      return new List<MinutzAction>();
     }
+
     public IEnumerable<KeyValuePair<string, string>> ExtractQueries(string returnUri)
     {
       var queries = new List<KeyValuePair<string, string>>();
@@ -120,5 +125,15 @@ namespace Core
       }
       return queries;
     }
+
+    internal string GetConnectionString(string password, string username)
+    {
+      return _applicationSetting.CreateConnectionString(
+        _applicationSetting.Server,
+        _applicationSetting.Catalogue,
+        username,
+        password);
+    }
+
   }
 }

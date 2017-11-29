@@ -2,7 +2,7 @@
 
 namespace Models.Entities
 {
-  public class MeetingAction
+  public class MinutzAction
   {
     public Guid Id { get; set; }
     public Guid ReferanceId { get; set; }
@@ -10,5 +10,6 @@ namespace Models.Entities
     public Guid PersonId { get; set; }
     public DateTime DueDate { get; set; }
     public bool IsComplete { get; set; }
+    public string Type { get; set; }
   }
 }

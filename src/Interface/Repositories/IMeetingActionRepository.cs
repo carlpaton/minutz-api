@@ -6,9 +6,9 @@ namespace Interface.Repositories
 {
     public interface IMeetingActionRepository
     {
-      MeetingAction Get(Guid id, string schema, string connectionString);
-      IEnumerable<MeetingAction> List(string schema, string connectionString);
-      bool Add(MeetingAction action, string schema, string connectionString);
-      bool Update(MeetingAction action, string schema, string connectionString);
+      MinutzAction Get(Guid id, string schema, string connectionString);
+      IEnumerable<MinutzAction> List(string schema, string connectionString);
+      bool Add(MinutzAction action, string schema, string connectionString);
+      bool Update(MinutzAction action, string schema, string connectionString);
     }
 }
