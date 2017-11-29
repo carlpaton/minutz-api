@@ -4,6 +4,7 @@ using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Entities;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Api.Controllers
 {
@@ -18,12 +19,19 @@ namespace Api.Controllers
     /// Get all agenda items for a meeting
     /// </summary>
     /// <returns>Collection of MeetingAgenda objects</returns>
-    [HttpGet ("api/meeting/{referenceId}/action")]
     [Authorize]
-    public List<MeetingAction> Get (string referenceId)
+    [ProducesResponseType(typeof(string), 400)]
+    [ProducesResponseType(typeof(List<MeetingAction>), 200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(List<MeetingAction>))]
+    [HttpGet("api/meeting/{referenceId}/actions", Name = "Get Machine by Id")]
+    public IActionResult Get (string referenceId)
     {
+      if (string.IsNullOrEmpty(referenceId))
+      {
+        return BadRequest("Please provide a valid referenceId [meeting id]");
+      }
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      return new List<MeetingAction> ();
+      return Ok(new List<MeetingAction> ());
     }
 
     /// <summary>

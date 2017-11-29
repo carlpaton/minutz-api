@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Entities;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Api.Controllers
 {
@@ -41,16 +43,44 @@ namespace Api.Controllers
     }
 
     /// <summary>
-    /// Get a meeting attendee for a meeting.
+    /// Invite Attendee.
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    [HttpPut ("api/meeting/{referenceId}/invite")]
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     PUT /Invite
+    ///     {
+    ///        "id": 1,
+    ///        "name": "Item1",
+    ///        "isComplete": true
+    ///     }
+    ///
+    /// </remarks>
+    /// <param name="item"></param>
+    /// <returns>A newly-created TodoItem</returns>
+    /// <response code="201">Returns the newly-created item</response>
+    /// <response code="400">If the item is null</response>
+    [HttpPut ("api/meeting/{referenceId}/invite", Name ="Invite")]
+    [ProducesResponseType(typeof(MeetingAttendee),200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingAttendee))]
     [Authorize]
-    public MeetingAttendee Invite (MeetingAttendee invitee)
+    public IActionResult Invite (MeetingAttendee invitee)
     {
+      if(string.IsNullOrEmpty(invitee.Email))
+      {
+        return BadRequest("Please provide a valid email address");
+      }
+      if(string.IsNullOrEmpty(invitee.Name))
+      {
+        return BadRequest("Please provide a valid name.");
+      }
+      System.Guid meetingId;
+      if(invitee.ReferenceId == null || System.Guid.TryParse(invitee.ReferenceId.ToString(), out meetingId))
+      {
+         return BadRequest("Please provide a valid meetingId");
+      }
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      return new MeetingAttendee();
+      return new ObjectResult(new MeetingAttendee());
     }
 
     /// <summary>
