@@ -102,8 +102,12 @@ namespace Core
       return _meetingRepository.Update(meeting, instance.Username, userConnectionString);
     }
 
-    public IEnumerable<MinutzAction> GetMeetingActions(string referenceId)
+    public IEnumerable<MinutzAction> GetMinutzActions(string referenceId)
     {
+      if (string.IsNullOrEmpty(referenceId))
+      {
+        throw new ArgumentNullException(nameof(referenceId), "Please provide a valid reference id.");
+      }
       // check if referenceId is a meeting id
       // if id is a meeting id then check if meeting has actions for user
 
