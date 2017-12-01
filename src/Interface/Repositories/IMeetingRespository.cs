@@ -7,7 +7,7 @@ namespace Interface.Repositories
   public interface IMeetingRepository
   {
     Meeting Get(Guid id, string schema, string connectionString);
-    IEnumerable<Meeting> List(string schema, string connectionString);
+    List<Meeting> List(string schema, string connectionString);
     bool Add(Meeting meeting, string schema, string connectionString);
     bool Update(Meeting meeting, string schema, string connectionString);
   }

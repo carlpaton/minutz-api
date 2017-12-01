@@ -63,7 +63,7 @@ namespace Core
       var userConnectionString = GetConnectionString(instance.Password, instance.Username);
       var result = new Models.ViewModels.Meeting
       {
-        
+
       };
       return result; //_meetingRepository.Get(Guid.Parse(id), instance.Username, userConnectionString);
     }
@@ -73,12 +73,12 @@ namespace Core
       var userInfo = _authenticationService.GetUserInfo(token);
       var applicationUserProfile = _userValidationService.GetUser(userInfo.sub);
       var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
-        _applicationSetting.Schema,
-        _applicationSetting.CreateConnectionString(
-          _applicationSetting.Server,
-          _applicationSetting.Catalogue,
-          _applicationSetting.Username,
-          _applicationSetting.Password));
+                                                        _applicationSetting.Schema,
+                                                        _applicationSetting.CreateConnectionString(
+                                                                                                    _applicationSetting.Server,
+                                                                                                    _applicationSetting.Catalogue,
+                                                                                                    _applicationSetting.Username,
+                                                                                                    _applicationSetting.Password));
       var userConnectionString = GetConnectionString(instance.Password, instance.Username);
 
       var result = new List<Models.ViewModels.Meeting>();
@@ -103,10 +103,10 @@ namespace Core
           Time = meeting.Time,
           TimeZone = meeting.TimeZone,
           UpdatedDate = DateTime.UtcNow,
-          AvailibleAttendees = _meetingAttendeeRepository.GetAvalibleAttendees(meeting.Id, instance.Username, userConnectionString),
+          AvailibleAttendees = _meetingAttendeeRepository.GetAvalibleAttendees(instance.Username, userConnectionString),
           Agenda = _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, instance.Username, userConnectionString),
           Attachments = _meetingAttachmentRepository.GetMeetingAttachments(meeting.Id, instance.Username, userConnectionString),
-          Attendees = _meetingAttendeeRepository.GetMeetingAttendees(meeting.Id,instance.Username,userConnectionString),
+          Attendees = _meetingAttendeeRepository.GetMeetingAttendees(meeting.Id, instance.Username, userConnectionString),
           Notes = _meetingNoteRepository.GetMeetingNotes(meeting.Id, instance.Username, userConnectionString)
         };
 
@@ -224,10 +224,7 @@ namespace Core
         };
         return new KeyValuePair<bool, Models.ViewModels.Meeting>(true, result);
       }
-      else
-      {
-        return new KeyValuePair<bool, Models.ViewModels.Meeting>(false, new Models.ViewModels.Meeting { ResultMessage = "There was a issue creating the meeting." });
-      }
+      return new KeyValuePair<bool, Models.ViewModels.Meeting>(false, new Models.ViewModels.Meeting { ResultMessage = "There was a issue creating the meeting." });
     }
 
     public Models.ViewModels.Meeting UpdateMeeting(string token, Models.ViewModels.Meeting meeting)

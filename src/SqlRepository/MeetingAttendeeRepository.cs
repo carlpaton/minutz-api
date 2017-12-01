@@ -35,14 +35,12 @@ namespace SqlRepository
         return data.ToList();
       }
     }
-    public List<MeetingAttendee> GetAvalibleAttendees(Guid id, string schema, string connectionString)
+    public List<MeetingAttendee> GetAvalibleAttendees(string schema, string connectionString)
     {
-      if (id == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
-        throw new ArgumentException("Please provide a valid meeting attendee identifier, schema or connection string.");
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
-        var sql = $"select * from [{schema}].[MeetingAttendee] WHERE Id = '{id.ToString()}'";
+        var sql = $"select * from [{schema}].[AvailibleAttendee]";
         var data = dbConnection.Query<MeetingAttendee>(sql);
         return data.ToList();
       }

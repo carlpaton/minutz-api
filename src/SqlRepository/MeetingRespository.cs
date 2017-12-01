@@ -23,7 +23,7 @@ namespace SqlRepository
         return data;
       }
     }
-    public IEnumerable<Meeting> List(string schema, string connectionString)
+    public List<Meeting> List(string schema, string connectionString)
     {
       if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(schema))
         throw new ArgumentException("Please provide a valid schema or connection string.");

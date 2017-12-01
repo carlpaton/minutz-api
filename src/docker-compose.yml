@@ -9,7 +9,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=development
       - DEFAULT_CATALOGUE=minutz
-      - SERVER_ADDRESS=tcp:127.0.0.1,1433,
+      - SERVER_ADDRESS=tcp:127.0.0.1,1433
       - DEFAULT_SCHEMA=app
       - DEFAULT_USER=sa
       - DEFAULT_PASSWORD=SqlServer1234!
