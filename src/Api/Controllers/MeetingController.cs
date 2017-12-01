@@ -21,8 +21,11 @@ namespace Api.Controllers
     /// Get all the meetings for a user
     /// </summary>
     /// <returns>Collection of Meeting objects</returns>
-    [HttpGet ("api/meeting")]
     [Authorize]
+    [HttpGet ("api/meeting", Name = "Get all meetings for a user")]
+    [ProducesResponseType(typeof(string), 400)]
+    [ProducesResponseType(typeof(List<Models.ViewModels.Meeting>), 200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(List<Models.ViewModels.Meeting>))]
     public IActionResult Get ()
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
@@ -36,10 +39,13 @@ namespace Api.Controllers
     /// <returns>The meeting object.</returns>
     [HttpGet ("api/meeting/{id}")]
     [Authorize]
+    [HttpGet("api/meeting", Name = "Get 1 meeting for a user by id")]
+    [ProducesResponseType(typeof(string), 400)]
+    [ProducesResponseType(typeof(Models.ViewModels.Meeting), 200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Models.ViewModels.Meeting))]
     public IActionResult Get (string id)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      //Models.ViewModels.Meeting
       return Ok(_meetingService.GetMeeting (token, id));
     }
 

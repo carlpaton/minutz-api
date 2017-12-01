@@ -61,11 +61,32 @@ namespace Core
                                                           _applicationSetting.Username,
                                                           _applicationSetting.Password));
       var userConnectionString = GetConnectionString(instance.Password, instance.Username);
-      var result = new Models.ViewModels.Meeting
+      var meeting = _meetingRepository.Get(Guid.Parse(id), instance.Username, userConnectionString);
+      var meetingViewModel = new Models.ViewModels.Meeting
       {
-
+        Id = meeting.Id,
+        Name = meeting.Name,
+        Date = meeting.Date,
+        Duration = meeting.Duration,
+        IsFormal = meeting.IsFormal,
+        IsLocked = meeting.IsLocked,
+        IsPrivate = meeting.IsPrivate,
+        IsReacurance = meeting.IsReacurance,
+        MeetingOwnerId = meeting.MeetingOwnerId,
+        Outcome = meeting.Outcome,
+        Purpose = meeting.Purpose,
+        ReacuranceType = meeting.ReacuranceType,
+        Tag = meeting.Tag,
+        Time = meeting.Time,
+        TimeZone = meeting.TimeZone,
+        UpdatedDate = DateTime.UtcNow,
+        AvailibleAttendees = _meetingAttendeeRepository.GetAvalibleAttendees(instance.Username, userConnectionString),
+        Agenda = _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, instance.Username, userConnectionString),
+        Attachments = _meetingAttachmentRepository.GetMeetingAttachments(meeting.Id, instance.Username, userConnectionString),
+        Attendees = _meetingAttendeeRepository.GetMeetingAttendees(meeting.Id, instance.Username, userConnectionString),
+        Notes = _meetingNoteRepository.GetMeetingNotes(meeting.Id, instance.Username, userConnectionString)
       };
-      return result; //_meetingRepository.Get(Guid.Parse(id), instance.Username, userConnectionString);
+      return meetingViewModel;
     }
 
     public IEnumerable<Models.ViewModels.Meeting> GetMeetings(string token)
