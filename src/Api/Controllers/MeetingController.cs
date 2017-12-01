@@ -23,10 +23,10 @@ namespace Api.Controllers
     /// <returns>Collection of Meeting objects</returns>
     [HttpGet ("api/meeting")]
     [Authorize]
-    public IEnumerable<Meeting> Get ()
+    public IActionResult Get ()
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      return _meetingService.GetMeetings (token);
+      return Ok( _meetingService.GetMeetings (token));
     }
 
     /// <summary>
@@ -116,10 +116,10 @@ namespace Api.Controllers
     /// <returns>The saved meeting object.</returns>
     [HttpPost ("api/meeting/{id}")]
     [Authorize]
-    public Meeting Post (Meeting meeting)
+    public IActionResult Post (Meeting meeting)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      return _meetingService.GetMeeting (token, meeting.Id.ToString());
+      return Ok( _meetingService.GetMeeting (token, meeting.Id.ToString()));
     }
 
     /// <summary>

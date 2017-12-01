@@ -14,7 +14,7 @@ namespace SqlRepository
     public MeetingAttendee Get(Guid id, string schema, string connectionString)
     {
       if (id == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
-        throw new ArgumentException("Please provide a valid meeting attendee identifier, schema or connectionstring.");
+        throw new ArgumentException("Please provide a valid meeting attendee identifier, schema or connection string.");
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
@@ -23,10 +23,34 @@ namespace SqlRepository
         return data;
       }
     }
+    public List<MeetingAttendee> GetMeetingAttendees(Guid referenceId, string schema, string connectionString)
+    {
+      if (referenceId == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
+        throw new ArgumentException("Please provide a valid meeting attendee identifier, schema or connection string.");
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        dbConnection.Open();
+        var sql = $"select * from [{schema}].[MeetingAttendee] WHERE ReferenceId = '{referenceId.ToString()}'";
+        var data = dbConnection.Query<MeetingAttendee>(sql);
+        return data.ToList();
+      }
+    }
+    public List<MeetingAttendee> GetAvalibleAttendees(Guid id, string schema, string connectionString)
+    {
+      if (id == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
+        throw new ArgumentException("Please provide a valid meeting attendee identifier, schema or connection string.");
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        dbConnection.Open();
+        var sql = $"select * from [{schema}].[MeetingAttendee] WHERE Id = '{id.ToString()}'";
+        var data = dbConnection.Query<MeetingAttendee>(sql);
+        return data.ToList();
+      }
+    }
     public IEnumerable<MeetingAttendee> List(string schema, string connectionString)
     {
       if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(schema))
-        throw new ArgumentException("Please provide a valid schema or connectionstring.");
+        throw new ArgumentException("Please provide a valid schema or connection string.");
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();

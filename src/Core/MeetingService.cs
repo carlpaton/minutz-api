@@ -3,6 +3,7 @@ using Interface.Repositories;
 using Interface.Services;
 using Models.Entities;
 using System;
+using Models.ViewModels;
 
 namespace Core
 {
@@ -48,7 +49,7 @@ namespace Core
       _instanceRepository = instanceRepository;
     }
 
-    public Meeting GetMeeting(string token, string id)
+    public Models.ViewModels.Meeting GetMeeting(string token, string id)
     {
       var userInfo = _authenticationService.GetUserInfo(token);
       var applicationUserProfile = _userValidationService.GetUser(userInfo.sub);
@@ -60,10 +61,14 @@ namespace Core
                                                           _applicationSetting.Username,
                                                           _applicationSetting.Password));
       var userConnectionString = GetConnectionString(instance.Password, instance.Username);
-      return _meetingRepository.Get(Guid.Parse(id), instance.Username, userConnectionString);
+      var result = new Models.ViewModels.Meeting
+      {
+        
+      };
+      return result; //_meetingRepository.Get(Guid.Parse(id), instance.Username, userConnectionString);
     }
 
-    public IEnumerable<Meeting> GetMeetings(string token)
+    public IEnumerable<Models.ViewModels.Meeting> GetMeetings(string token)
     {
       var userInfo = _authenticationService.GetUserInfo(token);
       var applicationUserProfile = _userValidationService.GetUser(userInfo.sub);
@@ -75,15 +80,48 @@ namespace Core
           _applicationSetting.Username,
           _applicationSetting.Password));
       var userConnectionString = GetConnectionString(instance.Password, instance.Username);
-      return _meetingRepository.List(instance.Username, userConnectionString);
+
+      var result = new List<Models.ViewModels.Meeting>();
+      var meetings = _meetingRepository.List(instance.Username, userConnectionString);
+      foreach (var meeting in meetings)
+      {
+        var meetingViewModel = new Models.ViewModels.Meeting
+        {
+          Id = meeting.Id,
+          Name = meeting.Name,
+          Date = meeting.Date,
+          Duration = meeting.Duration,
+          IsFormal = meeting.IsFormal,
+          IsLocked = meeting.IsLocked,
+          IsPrivate = meeting.IsPrivate,
+          IsReacurance = meeting.IsReacurance,
+          MeetingOwnerId = meeting.MeetingOwnerId,
+          Outcome = meeting.Outcome,
+          Purpose = meeting.Purpose,
+          ReacuranceType = meeting.ReacuranceType,
+          Tag = meeting.Tag,
+          Time = meeting.Time,
+          TimeZone = meeting.TimeZone,
+          UpdatedDate = DateTime.UtcNow,
+          AvailibleAttendees = _meetingAttendeeRepository.GetAvalibleAttendees(meeting.Id, instance.Username, userConnectionString),
+          Agenda = _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, instance.Username, userConnectionString),
+          Attachments = _meetingAttachmentRepository.GetMeetingAttachments(meeting.Id, instance.Username, userConnectionString),
+          Attendees = _meetingAttendeeRepository.GetMeetingAttendees(meeting.Id,instance.Username,userConnectionString),
+          Notes = _meetingNoteRepository.GetMeetingNotes(meeting.Id, instance.Username, userConnectionString)
+        };
+
+        result.Add(meetingViewModel);
+      }
+      return result;
     }
 
     public KeyValuePair<bool, Models.ViewModels.Meeting> CreateMeeting(string token,
-                                                                      Meeting meeting,
+                                                                      Models.Entities.Meeting meeting,
                                                                       List<MeetingAttendee> attendees,
                                                                       List<MeetingAgenda> agenda,
                                                                       List<MeetingNote> notes,
-                                                                      List<MeetingAttachment> attachements)
+                                                                      List<MeetingAttachment> attachements,
+                                                                      List<MinutzAction> actions)
     {
       var userInfo = _authenticationService.GetUserInfo(token);
       var applicationUserProfile = _userValidationService.GetUser(userInfo.sub);
@@ -91,10 +129,10 @@ namespace Core
       var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
                                                       _applicationSetting.Schema,
                                                       _applicationSetting.CreateConnectionString(
-                                                      _applicationSetting.Server,
-                                                      _applicationSetting.Catalogue,
-                                                      _applicationSetting.Username,
-                                                      _applicationSetting.Password));
+                                                                                                  _applicationSetting.Server,
+                                                                                                  _applicationSetting.Catalogue,
+                                                                                                  _applicationSetting.Username,
+                                                                                                  _applicationSetting.Password));
 
       var userConnectionString = GetConnectionString(instance.Password, instance.Username);
 
@@ -103,6 +141,7 @@ namespace Core
       {
         foreach (var agendaItem in agenda)
         {
+          agendaItem.Id = Guid.NewGuid();
           agendaItem.ReferenceId = meeting.Id;
           var saveAgenda = _meetingAgendaRepository.Add(agendaItem, instance.Username, userConnectionString);
           if (!saveAgenda)
@@ -114,37 +153,76 @@ namespace Core
               });
           }
         }
+
         foreach (var attendee in attendees)
         {
+          attendee.Id = Guid.NewGuid();
           attendee.ReferenceId = meeting.Id;
           var savedAttendee = _meetingAttendeeRepository.Add(attendee, instance.Username, userConnectionString);
           if (!savedAttendee)
           {
-            return new KeyValuePair<bool, Models.ViewModels.Meeting>(false, new Models.ViewModels.Meeting { ResultMessage = "There was a issue creating the meeting." });
+            return new KeyValuePair<bool, Models.ViewModels.Meeting>(false, new Models.ViewModels.Meeting { ResultMessage = $"There was a issue creating the meeting attendee for meeting {meeting.Name}" });
           }
         }
 
         foreach (var attachment in attachements)
         {
+          attachment.Id = Guid.NewGuid();
           attachment.ReferanceId = meeting.Id;
           var savedAttachment = _meetingAttachmentRepository.Add(attachment, instance.Username, userConnectionString);
           if (!savedAttachment)
           {
-            return new KeyValuePair<bool, Models.ViewModels.Meeting>(false, new Models.ViewModels.Meeting { ResultMessage = "There was a issue creating the meeting." });
+            return new KeyValuePair<bool, Models.ViewModels.Meeting>(false, new Models.ViewModels.Meeting { ResultMessage = "There was a issue creating the meeting attachment for meeting {meeting.Name}" });
           }
         }
 
         foreach (var note in notes)
         {
+          note.Id = Guid.NewGuid();
           note.ReferanceId = meeting.Id;
           var noteSaved = _meetingNoteRepository.Add(note, instance.Username, userConnectionString);
           if (!noteSaved)
           {
-            return new KeyValuePair<bool, Models.ViewModels.Meeting>(false, new Models.ViewModels.Meeting { ResultMessage = "There was a issue creating the meeting." });
+            return new KeyValuePair<bool, Models.ViewModels.Meeting>(false, new Models.ViewModels.Meeting { ResultMessage = "There was a issue creating the meeting note for meeting {meeting.Name}" });
           }
         }
 
-        return new KeyValuePair<bool, Models.ViewModels.Meeting>(false, new Models.ViewModels.Meeting { ResultMessage = "There was a issue creating the meeting." });
+        foreach (var action in actions)
+        {
+          action.Id = Guid.NewGuid();
+          action.ReferanceId = meeting.Id;
+          var actionSaved = _meetingActionRepository.Add(action, instance.Username, userConnectionString);
+          if (!actionSaved)
+          {
+            return new KeyValuePair<bool, Models.ViewModels.Meeting>(false, new Models.ViewModels.Meeting { ResultMessage = "There was a issue creating the meeting action for meeting {meeting.Name}" });
+          }
+        }
+
+        var result = new Models.ViewModels.Meeting
+        {
+          Id = meeting.Id,
+          Agenda = agenda,
+          Name = meeting.Name,
+          Attendees = attendees,
+          Date = meeting.Date,
+          Attachments = attachements,
+          Duration = meeting.Duration,
+          IsFormal = meeting.IsFormal,
+          IsLocked = meeting.IsLocked,
+          IsPrivate = meeting.IsPrivate,
+          IsReacurance = meeting.IsReacurance,
+          Notes = notes,
+          MeetingOwnerId = meeting.MeetingOwnerId,
+          Outcome = meeting.Outcome,
+          Purpose = meeting.Purpose,
+          ReacuranceType = meeting.ReacuranceType,
+          ResultMessage = "Successfully Created",
+          Tag = meeting.Tag,
+          Time = meeting.Time,
+          TimeZone = meeting.TimeZone,
+          UpdatedDate = DateTime.UtcNow
+        };
+        return new KeyValuePair<bool, Models.ViewModels.Meeting>(true, result);
       }
       else
       {
@@ -152,19 +230,41 @@ namespace Core
       }
     }
 
-    public bool UpdateMeeting(string token, Meeting meeting)
+    public Models.ViewModels.Meeting UpdateMeeting(string token, Models.ViewModels.Meeting meeting)
     {
       var userInfo = _authenticationService.GetUserInfo(token);
       var applicationUserProfile = _userValidationService.GetUser(userInfo.sub);
       var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
-        _applicationSetting.Schema,
-        _applicationSetting.CreateConnectionString(
-          _applicationSetting.Server,
-          _applicationSetting.Catalogue,
-          _applicationSetting.Username,
-          _applicationSetting.Password));
+                                                        _applicationSetting.Schema,
+                                                        _applicationSetting.CreateConnectionString(
+                                                                                                    _applicationSetting.Server,
+                                                                                                    _applicationSetting.Catalogue,
+                                                                                                    _applicationSetting.Username,
+                                                                                                    _applicationSetting.Password));
       var userConnectionString = GetConnectionString(instance.Password, instance.Username);
-      return _meetingRepository.Update(meeting, instance.Username, userConnectionString);
+      var meetingEntity = new Models.Entities.Meeting
+      {
+        Id = meeting.Id,
+        Name = meeting.Name,
+        Date = meeting.Date,
+        Duration = meeting.Duration,
+        IsFormal = meeting.IsFormal,
+        IsLocked = meeting.IsLocked,
+        IsPrivate = meeting.IsPrivate,
+        IsReacurance = meeting.IsReacurance,
+        MeetingOwnerId = meeting.MeetingOwnerId,
+        Outcome = meeting.Outcome,
+        Purpose = meeting.Purpose,
+        ReacuranceType = meeting.ReacuranceType,
+        Tag = meeting.Tag,
+        Time = meeting.Time,
+        TimeZone = meeting.TimeZone,
+        UpdatedDate = DateTime.UtcNow
+      };
+
+      var result = _meetingRepository.Update(meetingEntity, instance.Username, userConnectionString);
+
+      return meeting;
     }
 
     public IEnumerable<MinutzAction> GetMinutzActions(string referenceId,
@@ -209,6 +309,5 @@ namespace Core
         username,
         password);
     }
-
   }
 }

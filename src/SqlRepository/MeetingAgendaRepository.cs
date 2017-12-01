@@ -23,6 +23,18 @@ namespace SqlRepository
         return data;
       }
     }
+    public List<MeetingAgenda> GetMeetingAgenda(Guid referenceId, string schema, string connectionString)
+    {
+      if (referenceId == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
+        throw new ArgumentException("Please provide a valid meeting agenda identifier, schema or connection string.");
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        dbConnection.Open();
+        var sql = $"select * from [{schema}].[MeetingAgenda] WHERE ReferenceId = '{referenceId.ToString()}'";
+        var data = dbConnection.Query<MeetingAgenda>(sql);
+        return data.ToList();
+      }
+    }
     public IEnumerable<MeetingAgenda> List(string schema, string connectionString)
     {
       if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(schema))

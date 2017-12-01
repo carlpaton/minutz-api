@@ -10,5 +10,6 @@ namespace Interface.Repositories
     bool Add(MeetingAgenda action, string schema, string connectionString);
     IEnumerable<MeetingAgenda> List(string schema, string connectionString);
     MeetingAgenda Get(Guid id, string schema, string connectionString);
+    List<MeetingAgenda> GetMeetingAgenda(Guid referenceId, string schema, string connectionString);
   }
 }

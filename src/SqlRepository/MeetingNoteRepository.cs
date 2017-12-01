@@ -11,7 +11,10 @@ namespace SqlRepository
     {
       throw new NotImplementedException();
     }
-
+    public List<MeetingNote> GetMeetingNotes(Guid referenceId, string schema, string connectionString)
+    {
+      throw new NotImplementedException();
+    }
     public IEnumerable<MeetingNote> List(string schema, string connectionString)
     {
       throw new NotImplementedException();
