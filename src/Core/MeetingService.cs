@@ -13,6 +13,7 @@ namespace Core
     private readonly IMeetingAttendeeRepository _meetingAttendeeRepository;
     private readonly IMeetingActionRepository _meetingActionRepository;
     private readonly IMeetingAttachmentRepository _meetingAttachmentRepository;
+    private readonly IMeetingNoteRepository _meetingNoteRepository;
     private readonly IUserValidationService _userValidationService;
     private readonly IAuthenticationService _authenticationService;
     private readonly IApplicationSetupRepository _applicationSetupRepository;
@@ -30,13 +31,15 @@ namespace Core
                           IUserRepository userRepository,
                           IApplicationSetting applicationSetting,
                           IInstanceRepository instanceRepository,
-                          IMeetingAttachmentRepository meetingAttachmentRepository)
+                          IMeetingAttachmentRepository meetingAttachmentRepository,
+                          IMeetingNoteRepository meetingNoteRepository)
     {
       _meetingRepository = meetingRepository;
       _meetingAgendaRepository = meetingAgendaRepository;
       _meetingAttendeeRepository = meetingAttendeeRepository;
       _meetingActionRepository = meetingActionRepository;
       _meetingAttachmentRepository = meetingAttachmentRepository;
+      _meetingNoteRepository = meetingNoteRepository;
       _userValidationService = userValidationService;
       _authenticationService = authenticationService;
       _applicationSetupRepository = applicationSetupRepository;
@@ -124,7 +127,21 @@ namespace Core
         foreach (var attachment in attachements)
         {
           attachment.ReferanceId = meeting.Id;
-          //var savedAttachment = 
+          var savedAttachment = _meetingAttachmentRepository.Add(attachment, instance.Username, userConnectionString);
+          if (!savedAttachment)
+          {
+            return new KeyValuePair<bool, Models.ViewModels.Meeting>(false, new Models.ViewModels.Meeting { ResultMessage = "There was a issue creating the meeting." });
+          }
+        }
+
+        foreach (var note in notes)
+        {
+          note.ReferanceId = meeting.Id;
+          var noteSaved = _meetingNoteRepository.Add(note, instance.Username, userConnectionString);
+          if (!noteSaved)
+          {
+            return new KeyValuePair<bool, Models.ViewModels.Meeting>(false, new Models.ViewModels.Meeting { ResultMessage = "There was a issue creating the meeting." });
+          }
         }
 
         return new KeyValuePair<bool, Models.ViewModels.Meeting>(false, new Models.ViewModels.Meeting { ResultMessage = "There was a issue creating the meeting." });

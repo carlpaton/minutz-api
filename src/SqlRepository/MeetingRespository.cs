@@ -14,7 +14,7 @@ namespace SqlRepository
     public Meeting Get(Guid id, string schema, string connectionString)
     {
       if (id == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
-        throw new ArgumentException("Please provide a valid meeting identifier, schema or connectionstring.");
+        throw new ArgumentException("Please provide a valid meeting identifier, schema or connection string.");
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
@@ -26,7 +26,7 @@ namespace SqlRepository
     public IEnumerable<Meeting> List(string schema, string connectionString)
     {
       if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(schema))
-        throw new ArgumentException("Please provide a valid schema or connectionstring.");
+        throw new ArgumentException("Please provide a valid schema or connection string.");
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();

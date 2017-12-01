@@ -37,6 +37,7 @@ namespace Api
       services.AddTransient<IMeetingAttendeeRepository, MeetingAttendeeRepository>();
       services.AddTransient<IMeetingActionRepository, MeetingActionRepository>();
       services.AddTransient<IMeetingAttachmentRepository, MeetingAttachmentRepository>();
+      services.AddTransient<IMeetingNoteRepository, MeetingNoteRepository>();
       services.AddTransient<IInstanceRepository, InstanceRepository>();
 
       //Services

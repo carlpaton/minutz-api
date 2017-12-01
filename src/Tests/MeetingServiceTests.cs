@@ -30,6 +30,7 @@ namespace Tests
       var applicationSetting = Substitute.For<IApplicationSetting>();
       var instanceRepository = Substitute.For<IInstanceRepository>();
       var meetingAttachmentRepository = Substitute.For<IMeetingAttachmentRepository>();
+      var meetingNoteRepository = Substitute.For<IMeetingNoteRepository>();
       var meetingService =
         new MeetingService(
         meetingRepository,
@@ -42,7 +43,8 @@ namespace Tests
         userRepository,
         applicationSetting,
         instanceRepository,
-        meetingAttachmentRepository);
+        meetingAttachmentRepository,
+        meetingNoteRepository);
       //Act
 
       //Assert
@@ -64,6 +66,7 @@ namespace Tests
       var applicationSetting = Substitute.For<IApplicationSetting>();
       var instanceRepository = Substitute.For<IInstanceRepository>();
       var meetingattachmentRepository = Substitute.For<IMeetingAttachmentRepository>();
+      var meetingNoteRepository = Substitute.For<IMeetingNoteRepository>();
       var meetingService =
         new MeetingService(
           meetingRepository,
@@ -76,7 +79,8 @@ namespace Tests
           userRepository,
           applicationSetting,
           instanceRepository,
-          meetingattachmentRepository);
+          meetingattachmentRepository,
+          meetingNoteRepository);
       //Act
 
       //Assert
