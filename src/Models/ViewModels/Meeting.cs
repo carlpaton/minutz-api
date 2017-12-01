@@ -28,6 +28,7 @@ namespace Models.ViewModels
     public List<MeetingAttendee> Attendees { get; set; }
     public List<MeetingAttendee> AvailibleAttendees { get; set; }
     public List<MeetingNote> Notes { get; set; }
+    public List<MinutzAction> Actions { get; set; }
 
     public string ResultMessage { get; set; }
   }

@@ -3,7 +3,6 @@ using Interface.Repositories;
 using Interface.Services;
 using Models.Entities;
 using System;
-using Models.ViewModels;
 
 namespace Core
 {
@@ -281,9 +280,84 @@ namespace Core
       };
 
       var result = _meetingRepository.Update(meetingEntity, instance.Username, userConnectionString);
+      foreach (var agendaItem in meeting.Agenda)
+      {
+        var update = _meetingAgendaRepository.Get(agendaItem.Id, instance.Username, userConnectionString);
+        if (update == null || update.Id == Guid.Empty)
+        {
+          agendaItem.Id = Guid.NewGuid();
+          agendaItem.ReferenceId = meeting.Id;
+          var saveAgenda = _meetingAgendaRepository.Add(agendaItem, instance.Username, userConnectionString);
+        }
+        else
+        {
+          var updateAgenda = _meetingAgendaRepository.Update(agendaItem, instance.Username, userConnectionString);
+        }
+      }
 
+      foreach (var attendee in meeting.Attendees)
+      {
+        var attendeeResult = _meetingAttendeeRepository.Get(attendee.Id, instance.Username, userConnectionString);
+        if (attendeeResult == null || attendeeResult.Id == Guid.Empty)
+        {
+          attendee.Id = Guid.NewGuid();
+          attendee.ReferenceId = meeting.Id;
+          var savedAttendee = _meetingAttendeeRepository.Add(attendee, instance.Username, userConnectionString);
+        }
+        else
+        {
+          var savedAttendee = _meetingAttendeeRepository.Update(attendee, instance.Username, userConnectionString);
+        }
+      }
+
+      foreach (var attachment in meeting.Attachments)
+      {
+        var attachmentResult = _meetingAttachmentRepository.Get(attachment.Id, instance.Username, userConnectionString);
+        if (attachmentResult == null || attachmentResult.Id == Guid.Empty)
+        {
+          attachment.Id = Guid.NewGuid();
+          attachment.ReferanceId = meeting.Id;
+          var savedAttachment = _meetingAttachmentRepository.Add(attachment, instance.Username, userConnectionString);
+        }
+        else
+        {
+          var updateAttachment = _meetingAttachmentRepository.Update(attachment, instance.Username, userConnectionString);
+        }
+      }
+
+      foreach (var note in meeting.Notes)
+      {
+        var savedNote = _meetingAttachmentRepository.Get(note.Id, instance.Username, userConnectionString);
+        if (savedNote == null || savedNote.Id == Guid.Empty)
+        {
+          note.Id = Guid.NewGuid();
+          note.ReferanceId = meeting.Id;
+          var noteSaved = _meetingNoteRepository.Add(note, instance.Username, userConnectionString);
+        }
+        else
+        {
+          var noteUpdate = _meetingNoteRepository.Update(note, instance.Username, userConnectionString);
+        }
+      }
+
+      foreach (var action in meeting.Actions)
+      {
+        var actionAction = _meetingActionRepository.Get(action.Id, instance.Username, userConnectionString);
+        if (actionAction == null || actionAction.Id == Guid.Empty)
+        {
+          action.Id = Guid.NewGuid();
+          action.ReferanceId = meeting.Id;
+          var actionSaved = _meetingActionRepository.Add(action, instance.Username, userConnectionString);
+        }
+        else
+        {
+          var actionUpdate = _meetingActionRepository.Update(action, instance.Username, userConnectionString));
+        }
+      }
       return meeting;
     }
+
+
 
     public IEnumerable<MinutzAction> GetMinutzActions(string referenceId,
                                                       string userTokenUid)
