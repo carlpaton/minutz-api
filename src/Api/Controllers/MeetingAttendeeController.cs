@@ -4,6 +4,7 @@ using System.Net.Http;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using Models.Entities;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -64,7 +65,7 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(MeetingAttendee),200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingAttendee))]
     [Authorize]
-    public IActionResult Invite (MeetingAttendee invitee)
+    public IActionResult Invite ([FromBody] MeetingAttendee invitee)
     {
       if(string.IsNullOrEmpty(invitee.Email))
       {
@@ -90,7 +91,7 @@ namespace Api.Controllers
     /// <returns></returns>
     [HttpPost ("api/meeting/{ReferenceId}/attendee/{id}")]
     [Authorize]
-    public MeetingAttendee Post (MeetingAttendee attendee)
+    public MeetingAttendee Post ([FromBody] MeetingAttendee attendee)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return attendee;
@@ -98,15 +99,15 @@ namespace Api.Controllers
 
     [HttpPut ("api/meeting/{ReferenceId}/attendee")]
     [Authorize]
-    public MeetingAttendee Put (MeetingAttendee attendee)
+    public MeetingAttendee Put ([FromBody] MeetingAttendee attendee)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return attendee;
     }
 
-    [HttpDelete ("api/meeting/{ReferenceId}/attendee/{id}")]
+    [HttpDelete ("api/meeting/{referenceId}/attendee/{id}")]
     [Authorize]
-    public bool Delete (MeetingAttendee attendee)
+    public bool Delete (string referenceId, string id)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return true;

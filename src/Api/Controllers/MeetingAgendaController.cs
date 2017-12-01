@@ -45,7 +45,7 @@ namespace Api.Controllers
     /// <returns></returns>
     [HttpPut ("api/meeting/{ReferenceId}/agenda")]
     [Authorize]
-    public MeetingAgenda Put (MeetingAgenda agenda)
+    public MeetingAgenda Put ([FromBody] MeetingAgenda agenda)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return new MeetingAgenda ();
@@ -57,7 +57,7 @@ namespace Api.Controllers
     /// <returns></returns>
     [HttpPost ("api/meeting/{ReferenceId}/agenda/{id}")]
     [Authorize]
-    public MeetingAgenda Post (MeetingAgenda agenda)
+    public MeetingAgenda Post ([FromBody] MeetingAgenda agenda)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return new MeetingAgenda ();

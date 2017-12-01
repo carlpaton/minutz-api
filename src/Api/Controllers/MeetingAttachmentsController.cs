@@ -44,7 +44,7 @@ namespace Api.Controllers
     /// <returns></returns>
     [HttpPut ("api/meeting/{referenceId}/attachment")]
     [Authorize]
-    public MeetingAttachment Put (MeetingAttachment attachment)
+    public MeetingAttachment Put ([FromBody] MeetingAttachment attachment)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return new MeetingAttachment ();
@@ -56,7 +56,7 @@ namespace Api.Controllers
     /// <returns></returns>
     [HttpPost ("api/meeting/{referenceId}/attachment/{id}")]
     [Authorize]
-    public MeetingAttachment Post (List<IFormFile> files, string referenceId, string id)
+    public MeetingAttachment Post ([FromBody] List<IFormFile> files, string referenceId, string id)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return new MeetingAttachment ();

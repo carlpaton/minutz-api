@@ -53,7 +53,7 @@ namespace Api.Controllers
     /// <returns></returns>
     [HttpPut ("api/meeting/{referenceId}/action")]
     [Authorize]
-    public MinutzAction Put (MinutzAction action)
+    public MinutzAction Put ([FromBody] MinutzAction action)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return new MinutzAction ();
@@ -65,7 +65,7 @@ namespace Api.Controllers
     /// <returns></returns>
     [HttpPost ("api/meeting/{referenceId}/action/{id}")]
     [Authorize]
-    public MinutzAction Post (MinutzAction action)
+    public MinutzAction Post ([FromBody] MinutzAction action)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return new MinutzAction ();

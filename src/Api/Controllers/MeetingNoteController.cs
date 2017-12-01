@@ -44,7 +44,7 @@ namespace Api.Controllers
     /// <returns></returns>
     [HttpPut ("api/meeting/{referenceId}/note")]
     [Authorize]
-    public MeetingNote Put (MeetingNote note)
+    public MeetingNote Put ([FromBody] MeetingNote note)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return new MeetingNote ();
@@ -56,7 +56,7 @@ namespace Api.Controllers
     /// <returns></returns>
     [HttpPost ("api/meeting/{referenceId}/note/{id}")]
     [Authorize]
-    public MeetingNote Post (MeetingNote note)
+    public MeetingNote Post ([FromBody] MeetingNote note)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return new MeetingNote ();

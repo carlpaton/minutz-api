@@ -53,7 +53,7 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(Models.ViewModels.Meeting), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Models.ViewModels.Meeting))]
     [HttpPut("api/meeting")]
-    public IActionResult  Put (Models.ViewModels.Meeting meeting)
+    public IActionResult  Put ([FromBody] Models.ViewModels.Meeting meeting)
     {
       if (string.IsNullOrEmpty(meeting.Name))
       {
@@ -116,7 +116,7 @@ namespace Api.Controllers
     /// <returns>The saved meeting object.</returns>
     [HttpPost ("api/meeting/{id}")]
     [Authorize]
-    public IActionResult Post (Meeting meeting)
+    public IActionResult Post ([FromBody] Meeting meeting)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return Ok( _meetingService.GetMeeting (token, meeting.Id.ToString()));
