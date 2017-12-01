@@ -12,6 +12,7 @@ namespace Core
     private readonly IMeetingAgendaRepository _meetingAgendaRepository;
     private readonly IMeetingAttendeeRepository _meetingAttendeeRepository;
     private readonly IMeetingActionRepository _meetingActionRepository;
+    private readonly IMeetingAttachmentRepository _meetingAttachmentRepository;
     private readonly IUserValidationService _userValidationService;
     private readonly IAuthenticationService _authenticationService;
     private readonly IApplicationSetupRepository _applicationSetupRepository;
@@ -28,12 +29,14 @@ namespace Core
                           IApplicationSetupRepository applicationSetupRepository,
                           IUserRepository userRepository,
                           IApplicationSetting applicationSetting,
-                          IInstanceRepository instanceRepository)
+                          IInstanceRepository instanceRepository,
+                          IMeetingAttachmentRepository meetingAttachmentRepository)
     {
       _meetingRepository = meetingRepository;
       _meetingAgendaRepository = meetingAgendaRepository;
       _meetingAttendeeRepository = meetingAttendeeRepository;
       _meetingActionRepository = meetingActionRepository;
+      _meetingAttachmentRepository = meetingAttachmentRepository;
       _userValidationService = userValidationService;
       _authenticationService = authenticationService;
       _applicationSetupRepository = applicationSetupRepository;
@@ -72,19 +75,64 @@ namespace Core
       return _meetingRepository.List(instance.Username, userConnectionString);
     }
 
-    public bool CreateMeeting(string token, Meeting meeting)
+    public KeyValuePair<bool, Models.ViewModels.Meeting> CreateMeeting(string token,
+                                                                      Meeting meeting,
+                                                                      List<MeetingAttendee> attendees,
+                                                                      List<MeetingAgenda> agenda,
+                                                                      List<MeetingNote> notes,
+                                                                      List<MeetingAttachment> attachements)
     {
       var userInfo = _authenticationService.GetUserInfo(token);
       var applicationUserProfile = _userValidationService.GetUser(userInfo.sub);
+
       var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
-        _applicationSetting.Schema,
-        _applicationSetting.CreateConnectionString(
-          _applicationSetting.Server,
-          _applicationSetting.Catalogue,
-          _applicationSetting.Username,
-          _applicationSetting.Password));
+                                                      _applicationSetting.Schema,
+                                                      _applicationSetting.CreateConnectionString(
+                                                      _applicationSetting.Server,
+                                                      _applicationSetting.Catalogue,
+                                                      _applicationSetting.Username,
+                                                      _applicationSetting.Password));
+
       var userConnectionString = GetConnectionString(instance.Password, instance.Username);
-      return _meetingRepository.Add(meeting, instance.Username, userConnectionString);
+
+      var saveMeeting = _meetingRepository.Add(meeting, instance.Username, userConnectionString);
+      if (saveMeeting)
+      {
+        foreach (var agendaItem in agenda)
+        {
+          agendaItem.ReferenceId = meeting.Id;
+          var saveAgenda = _meetingAgendaRepository.Add(agendaItem, instance.Username, userConnectionString);
+          if (!saveAgenda)
+          {
+            return new KeyValuePair<bool, Models.ViewModels.Meeting>(false,
+              new Models.ViewModels.Meeting
+              {
+                ResultMessage = $"There was a issue creating the meeting agenda item for meeting {meeting.Name}."
+              });
+          }
+        }
+        foreach (var attendee in attendees)
+        {
+          attendee.ReferenceId = meeting.Id;
+          var savedAttendee = _meetingAttendeeRepository.Add(attendee, instance.Username, userConnectionString);
+          if (!savedAttendee)
+          {
+            return new KeyValuePair<bool, Models.ViewModels.Meeting>(false, new Models.ViewModels.Meeting { ResultMessage = "There was a issue creating the meeting." });
+          }
+        }
+
+        foreach (var attachment in attachements)
+        {
+          attachment.ReferanceId = meeting.Id;
+          //var savedAttachment = 
+        }
+
+        return new KeyValuePair<bool, Models.ViewModels.Meeting>(false, new Models.ViewModels.Meeting { ResultMessage = "There was a issue creating the meeting." });
+      }
+      else
+      {
+        return new KeyValuePair<bool, Models.ViewModels.Meeting>(false, new Models.ViewModels.Meeting { ResultMessage = "There was a issue creating the meeting." });
+      }
     }
 
     public bool UpdateMeeting(string token, Meeting meeting)

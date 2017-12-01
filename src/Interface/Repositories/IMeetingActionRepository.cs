@@ -4,11 +4,12 @@ using System;
 
 namespace Interface.Repositories
 {
-    public interface IMeetingActionRepository
-    {
-      MinutzAction Get(Guid id, string schema, string connectionString);
-      IEnumerable<MinutzAction> List(string schema, string connectionString);
-      bool Add(MinutzAction action, string schema, string connectionString);
-      bool Update(MinutzAction action, string schema, string connectionString);
-    }
+  public interface IMeetingActionRepository
+  {
+    MinutzAction Get(Guid id, string schema, string connectionString);
+    IEnumerable<MinutzAction> List(string schema, string connectionString);
+    bool Add(MinutzAction action, string schema, string connectionString);
+    bool Update(MinutzAction action, string schema, string connectionString);
+    bool Delete(MinutzAction action, string schema, string connectionString);
+  }
 }

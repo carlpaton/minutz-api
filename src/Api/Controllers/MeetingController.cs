@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Entities;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Api.Controllers
 {
@@ -34,23 +36,77 @@ namespace Api.Controllers
     /// <returns>The meeting object.</returns>
     [HttpGet ("api/meeting/{id}")]
     [Authorize]
-    public Meeting Get (string id)
+    public IActionResult Get (string id)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      return _meetingService.GetMeeting (token, id);
+      //Models.ViewModels.Meeting
+      return Ok(_meetingService.GetMeeting (token, id));
     }
 
     /// <summary>
     /// Create a meeting
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="meeting"></param>
     /// <returns>The created meeting object.</returns>
-    [HttpPut ("api/meeting")]
     [Authorize]
-    public Meeting Put (Meeting meeting)
+    [ProducesResponseType(typeof(string), 400)]
+    [ProducesResponseType(typeof(Models.ViewModels.Meeting), 200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Models.ViewModels.Meeting))]
+    [HttpPut("api/meeting")]
+    public IActionResult  Put (Models.ViewModels.Meeting meeting)
     {
+      if (string.IsNullOrEmpty(meeting.Name))
+      {
+        return BadRequest("Please provide a meeting name.");
+      }
+      _defaultValues(meeting);
+
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      return _meetingService.GetMeeting (token, meeting.Id.ToString());
+      var meetingEntitie = new Models.Entities.Meeting
+      {
+        Id = meeting.Id,
+        Name = meeting.Name,
+        Date = meeting.Date,
+        Duration = meeting.Duration,
+        IsFormal = meeting.IsFormal,
+        IsLocked = meeting.IsLocked,
+        IsPrivate = meeting.IsPrivate,
+        IsReacurance = meeting.IsReacurance,
+        MeetingOwnerId = meeting.MeetingOwnerId,
+        Outcome = meeting.Outcome,
+        Purpose = meeting.Purpose,
+        ReacuranceType = meeting.ReacuranceType,
+        Tag = meeting.Tag,
+        Time = meeting.Time,
+        TimeZone = meeting.TimeZone,
+        UpdatedDate = DateTime.UtcNow
+      };
+
+
+      return Ok(_meetingService.GetMeeting(token, meeting.Id.ToString()));
+      
+    }
+
+    internal static void _defaultValues(Models.ViewModels.Meeting meeting)
+    {
+      if (meeting.Id == Guid.Empty)
+      {
+        meeting.Id = Guid.NewGuid();
+      }
+      if (meeting.Agenda == null)
+        meeting.Agenda = new List<MeetingAgenda>();
+
+      if (meeting.Attendees == null)
+        meeting.Attendees = new List<MeetingAttendee>();
+
+      if (meeting.AvailibleAttendees == null)
+        meeting.AvailibleAttendees = new List<MeetingAttendee>();
+
+      if (meeting.Notes == null)
+        meeting.Notes = new List<MeetingNote>();
+
+      if (meeting.Attachments == null)
+        meeting.Attachments = new List<MeetingAttachment>();
     }
 
     /// <summary>

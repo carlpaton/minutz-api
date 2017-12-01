@@ -6,13 +6,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using Interface.Repositories;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using Core.ExternalServices;
 using Interface.Services;
 using SqlRepository;
-using System.Linq;
-using Api.Auth0;
 using Core;
 
 namespace Api
@@ -40,8 +36,9 @@ namespace Api
       services.AddTransient<IMeetingAgendaRepository, MeetingAgendaRepository>();
       services.AddTransient<IMeetingAttendeeRepository, MeetingAttendeeRepository>();
       services.AddTransient<IMeetingActionRepository, MeetingActionRepository>();
+      services.AddTransient<IMeetingAttachmentRepository, MeetingAttachmentRepository>();
       services.AddTransient<IInstanceRepository, InstanceRepository>();
-      
+
       //Services
       services.AddTransient<IApplicationSetting, ApplicationSetting>();
       services.AddTransient<IUserValidationService, UserValidationService>();
@@ -84,7 +81,7 @@ namespace Api
       {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Minutz Api V1");
 
-        c.ConfigureOAuth2("BYX4QbM30OOpDSEaLFvBKddyJ5zBOQYa",null,null, null," ",new {  audience = "https://dockerdurban.auth0.com/api/v2/" });
+        c.ConfigureOAuth2("BYX4QbM30OOpDSEaLFvBKddyJ5zBOQYa", null, null, null, " ", new { audience = "https://dockerdurban.auth0.com/api/v2/" });
       });
 
       app.UseCors("AllowAllOrigins");
