@@ -2,12 +2,13 @@
 {
   public class AuthRestModel
   {
-    public string sub { get; set; }
-    public string name { get; set; }
-    public string nickname { get; set; }
-    public string picture { get; set; }
-    public string email { get; set; }
-    public string role { get; set; }
+    public string Sub { get; set; }
+    public string Name { get; set; }
+    public string Nickname { get; set; }
+    public string Picture { get; set; }
+    public string Email { get; set; }
+    public string Role { get; set; }
+    public string Company { get; set; }
     public string InstanceId { get; set; }
   }
 }

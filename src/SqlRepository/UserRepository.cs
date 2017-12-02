@@ -49,12 +49,12 @@ namespace SqlRepository
         dbConnection.Open();
         var user = dbConnection.Execute(sql, new
         {
-          Identityid = authUser.sub,
+          Identityid = authUser.Sub,
           FirstName = string.Empty,
           LastName = string.Empty,
-          FullName = authUser.name,
-          ProfilePicture = authUser.picture,
-          Email = authUser.email,
+          FullName = authUser.Name,
+          ProfilePicture = authUser.Picture,
+          Email = authUser.Email,
           Role = "Attendee",
           Active = true,
           InstanceId = string.Empty
@@ -78,12 +78,12 @@ namespace SqlRepository
           if (user != null)
             return new AuthRestModel
             {
-              email = user.Email,
-              name = user.FullName,
-              nickname = user.FirstName,
-              picture = user.ProfilePicture,
-              role = user.Role,
-              sub = user.Identityid,
+              Email = user.Email,
+              Name = user.FullName,
+              Nickname = user.FirstName,
+              Picture = user.ProfilePicture,
+              Role = user.Role,
+              Sub = user.Identityid,
               InstanceId = user.InstanceId
             };
         }
@@ -103,10 +103,10 @@ namespace SqlRepository
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
-        var id = authUser.sub.Split('|')[1];
+        var id = authUser.Sub.Split('|')[1];
         var Password = CreatePassword(10);
         var Username = $"A_{id}";
-        var Name = authUser.name;
+        var Name = authUser.Name;
         var Active = true;
         var Type = 1;
         var loginSql = $"CREATE LOGIN A_{id} WITH PASSWORD = '{Password}'";
@@ -143,7 +143,7 @@ namespace SqlRepository
               });
               if (instance == 1)
               {
-                var updateUserSql = $"UPDATE [{schema}].[Person] SET InstanceId = '{Username}' WHERE Identityid = '{authUser.sub}' ";
+                var updateUserSql = $"UPDATE [{schema}].[Person] SET InstanceId = '{Username}' WHERE Identityid = '{authUser.Sub}' ";
                 var updateUserResult = dbConnection.Execute(updateUserSql);
                 if (updateUserResult == 1)
                   return Username;

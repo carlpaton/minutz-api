@@ -29,7 +29,7 @@ namespace Api.Controllers
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       var userInfo = _authenticationService.GetUserInfo (token);
-      var person = _userValidationService.GetUser (userInfo.sub);
+      var person = _userValidationService.GetUser (userInfo.Sub);
       return _applicationManagerService.StartFullVersion (person);
     }
   }

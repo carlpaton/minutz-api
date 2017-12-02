@@ -3,10 +3,10 @@ using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Entities;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Api.Controllers
 {
-  [Route ("api/[controller]")]
   public class UserController : Controller
   {
     private readonly IUserValidationService _userValidationService;
@@ -20,14 +20,18 @@ namespace Api.Controllers
     }
 
     [Authorize]
-    [HttpGet]
-    public AuthRestModel Get ()
+    [HttpGet("api/user", Name = "Get the user profile")]
+    [ProducesResponseType(typeof(string), 400)]
+    [ProducesResponseType(typeof(AuthRestModel), 200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(AuthRestModel))]
+    public IActionResult Get ()
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       var userInfo = _authenticationService.GetUserInfo (token);
-      if (!_userValidationService.IsNewUser (userInfo.sub))
+      if (!_userValidationService.IsNewUser (userInfo.Sub))
         _userValidationService.CreateAttendee (userInfo);
-      return _userValidationService.GetUser (userInfo.sub);
+      var result = _userValidationService.GetUser(userInfo.Sub);
+      return Ok(result);
     }
   }
 }

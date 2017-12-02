@@ -155,5 +155,22 @@ namespace Api.Controllers
         return Ok(result.Value);
       return BadRequest(result.Value);
     }
+
+    [HttpPost("api/meeting/{id}/minutes")]
+    [Authorize]
+    [ProducesResponseType(typeof(string), 400)]
+    [ProducesResponseType(typeof(string), 200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(string))]
+    public IActionResult SendMinutes(string id)
+    {
+      if (string.IsNullOrEmpty(id))
+        return BadRequest("Please provide a valid id");
+      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+      var result = _meetingService.SendMinutes(token, Guid.Parse(id));
+      if (result.Key)
+        return Ok(result.Value);
+      return BadRequest(result.Value);
+    }
+
   }
 }

@@ -22,6 +22,8 @@ namespace Interface.Services
 	  IEnumerable<MinutzAction> GetMinutzActions(string referenceId,
 	    string userTokenUid);
 
+	  KeyValuePair<bool,string> SendMinutes(string token, Guid meetingId);
+
     IEnumerable<KeyValuePair<string, string>> ExtractQueries(string returnUri);
 	}
 }

@@ -51,7 +51,7 @@ namespace Core
     public Models.ViewModels.Meeting GetMeeting(string token, string id)
     {
       var userInfo = _authenticationService.GetUserInfo(token);
-      var applicationUserProfile = _userValidationService.GetUser(userInfo.sub);
+      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
       var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
                                                        _applicationSetting.Schema,
                                                        _applicationSetting.CreateConnectionString(
@@ -91,7 +91,7 @@ namespace Core
     public IEnumerable<Models.ViewModels.Meeting> GetMeetings(string token)
     {
       var userInfo = _authenticationService.GetUserInfo(token);
-      var applicationUserProfile = _userValidationService.GetUser(userInfo.sub);
+      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
       var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
                                                         _applicationSetting.Schema,
                                                         _applicationSetting.CreateConnectionString(
@@ -144,7 +144,7 @@ namespace Core
                                                                       List<MinutzAction> actions)
     {
       var userInfo = _authenticationService.GetUserInfo(token);
-      var applicationUserProfile = _userValidationService.GetUser(userInfo.sub);
+      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
 
       var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
                                                       _applicationSetting.Schema,
@@ -250,7 +250,7 @@ namespace Core
     public Models.ViewModels.Meeting UpdateMeeting(string token, Models.ViewModels.Meeting meeting)
     {
       var userInfo = _authenticationService.GetUserInfo(token);
-      var applicationUserProfile = _userValidationService.GetUser(userInfo.sub);
+      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
       var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
                                                         _applicationSetting.Schema,
                                                         _applicationSetting.CreateConnectionString(
@@ -360,7 +360,7 @@ namespace Core
     public KeyValuePair<bool, string> DeleteMeeting(string token, Guid meetingId)
     {
       var userInfo = _authenticationService.GetUserInfo(token);
-      var applicationUserProfile = _userValidationService.GetUser(userInfo.sub);
+      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
       var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
                                                         _applicationSetting.Schema,
                                                         _applicationSetting.CreateConnectionString(
@@ -412,7 +412,7 @@ namespace Core
       }
 
       var userInfo = _authenticationService.GetUserInfo(token);
-      var applicationUserProfile = _userValidationService.GetUser(userInfo.sub);
+      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
       var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
         _applicationSetting.Schema,
         _applicationSetting.CreateConnectionString(
@@ -434,6 +434,15 @@ namespace Core
 
       // if meeting is not a meeting id [referenceId] then use it as the user Id and check for actions - these become tasks
       return new List<MinutzAction>();
+    }
+
+    public KeyValuePair<bool, string> SendMinutes(string token, Guid meetingId)
+    {
+      var meeting = this.GetMeeting(token, meetingId.ToString());
+      foreach (var attendee in meeting.Attendees)  {
+        
+      }
+      return new KeyValuePair<bool, string>(true, "");
     }
 
     public IEnumerable<KeyValuePair<string, string>> ExtractQueries(string returnUri)
