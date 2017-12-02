@@ -20,50 +20,50 @@ namespace Api.Controllers
     /// <summary>
     /// Get all the meetings for a user
     /// </summary>
-    /// <returns>Collection of Meeting objects</returns>
+    /// <returns>Collection of MeetingViewModel objects</returns>
     [Authorize]
-    [HttpGet ("api/meeting", Name = "Get all meetings for a user")]
+    [Produces("application/json")]
+    [HttpGet ("api/meetings", Name = "Get all meetings for a user")]
     [ProducesResponseType(typeof(string), 400)]
-    [ProducesResponseType(typeof(List<Models.ViewModels.Meeting>), 200)]
-    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(List<Models.ViewModels.Meeting>))]
-    public IActionResult Get ()
+    [ProducesResponseType(typeof(List<Models.ViewModels.MeetingViewModel>), 200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(List<Models.ViewModels.MeetingViewModel>))]
+    public IActionResult GetMeetings ()
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return Ok( _meetingService.GetMeetings (token));
     }
 
     /// <summary>
-    /// Get the meeting object based on identifier.
+    /// Get the meetingViewModel object based on identifier.
     /// </summary>
-    /// <param name="id">Meeting identifier [Guid]</param>
-    /// <returns>The meeting object.</returns>
-    [HttpGet ("api/meeting/{id}")]
+    /// <param name="id">MeetingViewModel identifier [Guid]</param>
+    /// <returns>The meetingViewModel object.</returns>
+    [HttpGet ("api/meeting/{id}", Name = "Get 1 meetingViewModel for a user by id")]
     [Authorize]
-    [HttpGet("api/meeting", Name = "Get 1 meeting for a user by id")]
     [ProducesResponseType(typeof(string), 400)]
-    [ProducesResponseType(typeof(Models.ViewModels.Meeting), 200)]
-    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Models.ViewModels.Meeting))]
-    public IActionResult Get (string id)
+    [ProducesResponseType(typeof(Models.ViewModels.MeetingViewModel), 200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Models.ViewModels.MeetingViewModel))]
+    public IActionResult GetMeeting (string id)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       return Ok(_meetingService.GetMeeting (token, id));
     }
 
     /// <summary>
-    /// Create a meeting
+    /// Create a meetingViewModel
     /// </summary>
     /// <param name="meeting"></param>
-    /// <returns>The created meeting object.</returns>
+    /// <returns>The created meetingViewModel object.</returns>
     [Authorize]
     [ProducesResponseType(typeof(string), 400)]
-    [ProducesResponseType(typeof(Models.ViewModels.Meeting), 200)]
-    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Models.ViewModels.Meeting))]
+    [ProducesResponseType(typeof(Models.ViewModels.MeetingViewModel), 200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Models.ViewModels.MeetingViewModel))]
     [HttpPut("api/meeting")]
-    public IActionResult  Put ([FromBody] Models.ViewModels.Meeting meeting)
+    public IActionResult  CreateMeeting ([FromBody] Models.ViewModels.MeetingViewModel meeting)
     {
       if (string.IsNullOrEmpty(meeting.Name))
       {
-        return BadRequest("Please provide a meeting name.");
+        return BadRequest("Please provide a meetingViewModel name.");
       }
       _defaultValues(meeting);
 
@@ -95,57 +95,57 @@ namespace Api.Controllers
       return BadRequest(result.Value.ResultMessage);
     }
 
-    internal static void _defaultValues(Models.ViewModels.Meeting meeting)
+    internal static void _defaultValues(Models.ViewModels.MeetingViewModel meetingViewModel)
     {
-      if (meeting.Id == Guid.Empty)
+      if (meetingViewModel.Id == Guid.Empty)
       {
-        meeting.Id = Guid.NewGuid();
+        meetingViewModel.Id = Guid.NewGuid();
       }
-      if (meeting.Agenda == null)
-        meeting.Agenda = new List<MeetingAgenda>();
+      if (meetingViewModel.Agenda == null)
+        meetingViewModel.Agenda = new List<MeetingAgenda>();
 
-      if (meeting.Attendees == null)
-        meeting.Attendees = new List<MeetingAttendee>();
+      if (meetingViewModel.Attendees == null)
+        meetingViewModel.Attendees = new List<MeetingAttendee>();
 
-      if (meeting.AvailibleAttendees == null)
-        meeting.AvailibleAttendees = new List<MeetingAttendee>();
+      if (meetingViewModel.AvailibleAttendees == null)
+        meetingViewModel.AvailibleAttendees = new List<MeetingAttendee>();
 
-      if (meeting.Notes == null)
-        meeting.Notes = new List<MeetingNote>();
+      if (meetingViewModel.Notes == null)
+        meetingViewModel.Notes = new List<MeetingNote>();
 
-      if (meeting.Attachments == null)
-        meeting.Attachments = new List<MeetingAttachment>();
+      if (meetingViewModel.Attachments == null)
+        meetingViewModel.Attachments = new List<MeetingAttachment>();
     }
 
     /// <summary>
-    /// update a meeting
+    /// update a meetingViewModel
     /// </summary>
     /// <param name="id">meeting identifier.</param>
     /// <param name="meeting"></param>
     /// <returns>The saved meeting object.</returns>
-    [HttpPost ("api/meeting/{id}", Name = "Update Meeting")]
+    [HttpPost("api/meeting/{id}", Name = "Update Meeting")]
     [Authorize]
     [ProducesResponseType(typeof(string), 400)]
-    [ProducesResponseType(typeof(Models.ViewModels.Meeting), 200)]
-    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Models.ViewModels.Meeting))]
-    public IActionResult Post ([FromBody] Models.ViewModels.Meeting meeting)
+    [ProducesResponseType(typeof(Models.ViewModels.MeetingViewModel), 200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Models.ViewModels.MeetingViewModel))]
+    public IActionResult UpdateMeeting([FromBody] Models.ViewModels.MeetingViewModel meeting)
     {
-      var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
+      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
       var result = _meetingService.UpdateMeeting(token, meeting);
-      return Ok( result);
+      return Ok(result);
     }
 
     /// <summary>
-    /// Delete a meeting
+    /// Delete a meetingViewModel
     /// </summary>
-    /// <param name="id">meeting identifier.</param>
+    /// <param name="id">meetingViewModel identifier.</param>
     /// <returns>True if Successful or False if unsuccessful.</returns>
     [HttpDelete ("api/meeting/{id}")]
     [Authorize]
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(string), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(string))]
-    public IActionResult Delete (string id)
+    public IActionResult DeleteMeeting (string id)
     {
       if (string.IsNullOrEmpty(id))
         return BadRequest("Please provide a valid id");
@@ -156,21 +156,7 @@ namespace Api.Controllers
       return BadRequest(result.Value);
     }
 
-    [HttpPost("api/meeting/{id}/minutes")]
-    [Authorize]
-    [ProducesResponseType(typeof(string), 400)]
-    [ProducesResponseType(typeof(string), 200)]
-    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(string))]
-    public IActionResult SendMinutes(string id)
-    {
-      if (string.IsNullOrEmpty(id))
-        return BadRequest("Please provide a valid id");
-      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      var result = _meetingService.SendMinutes(token, Guid.Parse(id));
-      if (result.Key)
-        return Ok(result.Value);
-      return BadRequest(result.Value);
-    }
+   
 
   }
 }

@@ -19,7 +19,7 @@ namespace Notifications
     public class StartupService : IStartupService
     {
         private readonly INotify _notify;
-        private readonly string _invitationSubject = "You are invited to a Minutz Meeting.";
+        private readonly string _invitationSubject = "You are invited to a Minutz MeetingViewModel.";
         public StartupService (INotify notify) 
         {
             this._notify = notify;    

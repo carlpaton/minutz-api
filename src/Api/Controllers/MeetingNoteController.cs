@@ -51,7 +51,7 @@ namespace Api.Controllers
     }
 
     /// <summary>
-    /// Update the Meeting note
+    /// Update the MeetingViewModel note
     /// </summary>
     /// <returns></returns>
     [HttpPost ("api/meeting/{referenceId}/note/{id}")]

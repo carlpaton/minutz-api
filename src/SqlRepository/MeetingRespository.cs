@@ -18,7 +18,7 @@ namespace SqlRepository
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
-        var sql = $"select * from [{schema}].[Meeting] WHERE Id = '{id.ToString()}'";
+        var sql = $"select * from [{schema}].[MeetingViewModel] WHERE Id = '{id.ToString()}'";
         var data = dbConnection.Query<Meeting>(sql).FirstOrDefault();
         return data;
       }
@@ -30,7 +30,7 @@ namespace SqlRepository
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
-        var sql = $"select * from [{schema}].[Meeting]";
+        var sql = $"select * from [{schema}].[MeetingViewModel]";
         var data = dbConnection.Query<Meeting>(sql).ToList();
         return data;
       }
@@ -40,7 +40,7 @@ namespace SqlRepository
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
-        string insertSql = $@"insert into [{schema}].[Meeting](
+        string insertSql = $@"insert into [{schema}].[MeetingViewModel](
                                                                  [Id]
                                                                 ,[Name]
                                                                 ,[Date]
@@ -103,7 +103,7 @@ namespace SqlRepository
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
-        string updateQuery = $@"UPDATE [{schema}].[Meeting] 
+        string updateQuery = $@"UPDATE [{schema}].[MeetingViewModel] 
                              SET Name = @Name, 
                                  Date = @Date, 
                                  UpdatedDate = @UpdatedDate, 
@@ -146,7 +146,7 @@ namespace SqlRepository
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
-        var sql = $"delete from [{schema}].[Meeting] WHERE Id = '{id.ToString()}'";
+        var sql = $"delete from [{schema}].[MeetingViewModel] WHERE Id = '{id.ToString()}'";
         var instance = dbConnection.Execute(sql);
         return instance == 1;
       }

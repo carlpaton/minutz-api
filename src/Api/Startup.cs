@@ -82,7 +82,7 @@ namespace Api
       {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Minutz Api V1");
 
-        c.ConfigureOAuth2("BYX4QbM30OOpDSEaLFvBKddyJ5zBOQYa", null, null, null, " ", new { audience = "https://dockerdurban.auth0.com/api/v2/" });
+        //c.ConfigureOAuth2("BYX4QbM30OOpDSEaLFvBKddyJ5zBOQYa", null, null, null, " ", new { audience = "https://dockerdurban.auth0.com/api/v2/" });
       });
 
       app.UseCors("AllowAllOrigins");

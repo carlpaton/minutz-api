@@ -48,7 +48,7 @@ namespace Core
       _instanceRepository = instanceRepository;
     }
 
-    public Models.ViewModels.Meeting GetMeeting(string token, string id)
+    public Models.ViewModels.MeetingViewModel GetMeeting(string token, string id)
     {
       var userInfo = _authenticationService.GetUserInfo(token);
       var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
@@ -61,7 +61,7 @@ namespace Core
                                                           _applicationSetting.Password));
       var userConnectionString = GetConnectionString(instance.Password, instance.Username);
       var meeting = _meetingRepository.Get(Guid.Parse(id), instance.Username, userConnectionString);
-      var meetingViewModel = new Models.ViewModels.Meeting
+      var meetingViewModel = new Models.ViewModels.MeetingViewModel
       {
         Id = meeting.Id,
         Name = meeting.Name,
@@ -88,7 +88,7 @@ namespace Core
       return meetingViewModel;
     }
 
-    public IEnumerable<Models.ViewModels.Meeting> GetMeetings(string token)
+    public IEnumerable<Models.ViewModels.MeetingViewModel> GetMeetings(string token)
     {
       var userInfo = _authenticationService.GetUserInfo(token);
       var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
@@ -101,11 +101,11 @@ namespace Core
                                                                                                     _applicationSetting.Password));
       var userConnectionString = GetConnectionString(instance.Password, instance.Username);
 
-      var result = new List<Models.ViewModels.Meeting>();
+      var result = new List<Models.ViewModels.MeetingViewModel>();
       var meetings = _meetingRepository.List(instance.Username, userConnectionString);
       foreach (var meeting in meetings)
       {
-        var meetingViewModel = new Models.ViewModels.Meeting
+        var meetingViewModel = new Models.ViewModels.MeetingViewModel
         {
           Id = meeting.Id,
           Name = meeting.Name,
@@ -135,7 +135,7 @@ namespace Core
       return result;
     }
 
-    public KeyValuePair<bool, Models.ViewModels.Meeting> CreateMeeting(string token,
+    public KeyValuePair<bool, Models.ViewModels.MeetingViewModel> CreateMeeting(string token,
                                                                       Models.Entities.Meeting meeting,
                                                                       List<MeetingAttendee> attendees,
                                                                       List<MeetingAgenda> agenda,
@@ -166,10 +166,10 @@ namespace Core
           var saveAgenda = _meetingAgendaRepository.Add(agendaItem, instance.Username, userConnectionString);
           if (!saveAgenda)
           {
-            return new KeyValuePair<bool, Models.ViewModels.Meeting>(false,
-              new Models.ViewModels.Meeting
+            return new KeyValuePair<bool, Models.ViewModels.MeetingViewModel>(false,
+              new Models.ViewModels.MeetingViewModel
               {
-                ResultMessage = $"There was a issue creating the meeting agenda item for meeting {meeting.Name}."
+                ResultMessage = $"There was a issue creating the meetingViewModel agenda item for meetingViewModel {meeting.Name}."
               });
           }
         }
@@ -181,7 +181,7 @@ namespace Core
           var savedAttendee = _meetingAttendeeRepository.Add(attendee, instance.Username, userConnectionString);
           if (!savedAttendee)
           {
-            return new KeyValuePair<bool, Models.ViewModels.Meeting>(false, new Models.ViewModels.Meeting { ResultMessage = $"There was a issue creating the meeting attendee for meeting {meeting.Name}" });
+            return new KeyValuePair<bool, Models.ViewModels.MeetingViewModel>(false, new Models.ViewModels.MeetingViewModel { ResultMessage = $"There was a issue creating the meetingViewModel attendee for meetingViewModel {meeting.Name}" });
           }
         }
 
@@ -192,7 +192,7 @@ namespace Core
           var savedAttachment = _meetingAttachmentRepository.Add(attachment, instance.Username, userConnectionString);
           if (!savedAttachment)
           {
-            return new KeyValuePair<bool, Models.ViewModels.Meeting>(false, new Models.ViewModels.Meeting { ResultMessage = "There was a issue creating the meeting attachment for meeting {meeting.Name}" });
+            return new KeyValuePair<bool, Models.ViewModels.MeetingViewModel>(false, new Models.ViewModels.MeetingViewModel { ResultMessage = "There was a issue creating the meetingViewModel attachment for meetingViewModel {meetingViewModel.Name}" });
           }
         }
 
@@ -203,7 +203,7 @@ namespace Core
           var noteSaved = _meetingNoteRepository.Add(note, instance.Username, userConnectionString);
           if (!noteSaved)
           {
-            return new KeyValuePair<bool, Models.ViewModels.Meeting>(false, new Models.ViewModels.Meeting { ResultMessage = "There was a issue creating the meeting note for meeting {meeting.Name}" });
+            return new KeyValuePair<bool, Models.ViewModels.MeetingViewModel>(false, new Models.ViewModels.MeetingViewModel { ResultMessage = "There was a issue creating the meetingViewModel note for meetingViewModel {meetingViewModel.Name}" });
           }
         }
 
@@ -214,11 +214,11 @@ namespace Core
           var actionSaved = _meetingActionRepository.Add(action, instance.Username, userConnectionString);
           if (!actionSaved)
           {
-            return new KeyValuePair<bool, Models.ViewModels.Meeting>(false, new Models.ViewModels.Meeting { ResultMessage = "There was a issue creating the meeting action for meeting {meeting.Name}" });
+            return new KeyValuePair<bool, Models.ViewModels.MeetingViewModel>(false, new Models.ViewModels.MeetingViewModel { ResultMessage = "There was a issue creating the meetingViewModel action for meetingViewModel {meetingViewModel.Name}" });
           }
         }
 
-        var result = new Models.ViewModels.Meeting
+        var result = new Models.ViewModels.MeetingViewModel
         {
           Id = meeting.Id,
           Agenda = agenda,
@@ -242,12 +242,12 @@ namespace Core
           TimeZone = meeting.TimeZone,
           UpdatedDate = DateTime.UtcNow
         };
-        return new KeyValuePair<bool, Models.ViewModels.Meeting>(true, result);
+        return new KeyValuePair<bool, Models.ViewModels.MeetingViewModel>(true, result);
       }
-      return new KeyValuePair<bool, Models.ViewModels.Meeting>(false, new Models.ViewModels.Meeting { ResultMessage = "There was a issue creating the meeting." });
+      return new KeyValuePair<bool, Models.ViewModels.MeetingViewModel>(false, new Models.ViewModels.MeetingViewModel { ResultMessage = "There was a issue creating the meetingViewModel." });
     }
 
-    public Models.ViewModels.Meeting UpdateMeeting(string token, Models.ViewModels.Meeting meeting)
+    public Models.ViewModels.MeetingViewModel UpdateMeeting(string token, Models.ViewModels.MeetingViewModel meetingViewModel)
     {
       var userInfo = _authenticationService.GetUserInfo(token);
       var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
@@ -261,32 +261,32 @@ namespace Core
       var userConnectionString = GetConnectionString(instance.Password, instance.Username);
       var meetingEntity = new Models.Entities.Meeting
       {
-        Id = meeting.Id,
-        Name = meeting.Name,
-        Date = meeting.Date,
-        Duration = meeting.Duration,
-        IsFormal = meeting.IsFormal,
-        IsLocked = meeting.IsLocked,
-        IsPrivate = meeting.IsPrivate,
-        IsReacurance = meeting.IsReacurance,
-        MeetingOwnerId = meeting.MeetingOwnerId,
-        Outcome = meeting.Outcome,
-        Purpose = meeting.Purpose,
-        ReacuranceType = meeting.ReacuranceType,
-        Tag = meeting.Tag,
-        Time = meeting.Time,
-        TimeZone = meeting.TimeZone,
+        Id = meetingViewModel.Id,
+        Name = meetingViewModel.Name,
+        Date = meetingViewModel.Date,
+        Duration = meetingViewModel.Duration,
+        IsFormal = meetingViewModel.IsFormal,
+        IsLocked = meetingViewModel.IsLocked,
+        IsPrivate = meetingViewModel.IsPrivate,
+        IsReacurance = meetingViewModel.IsReacurance,
+        MeetingOwnerId = meetingViewModel.MeetingOwnerId,
+        Outcome = meetingViewModel.Outcome,
+        Purpose = meetingViewModel.Purpose,
+        ReacuranceType = meetingViewModel.ReacuranceType,
+        Tag = meetingViewModel.Tag,
+        Time = meetingViewModel.Time,
+        TimeZone = meetingViewModel.TimeZone,
         UpdatedDate = DateTime.UtcNow
       };
 
       var result = _meetingRepository.Update(meetingEntity, instance.Username, userConnectionString);
-      foreach (var agendaItem in meeting.Agenda)
+      foreach (var agendaItem in meetingViewModel.Agenda)
       {
         var update = _meetingAgendaRepository.Get(agendaItem.Id, instance.Username, userConnectionString);
         if (update == null || update.Id == Guid.Empty)
         {
           agendaItem.Id = Guid.NewGuid();
-          agendaItem.ReferenceId = meeting.Id;
+          agendaItem.ReferenceId = meetingViewModel.Id;
           var saveAgenda = _meetingAgendaRepository.Add(agendaItem, instance.Username, userConnectionString);
         }
         else
@@ -295,13 +295,13 @@ namespace Core
         }
       }
 
-      foreach (var attendee in meeting.Attendees)
+      foreach (var attendee in meetingViewModel.Attendees)
       {
         var attendeeResult = _meetingAttendeeRepository.Get(attendee.Id, instance.Username, userConnectionString);
         if (attendeeResult == null || attendeeResult.Id == Guid.Empty)
         {
           attendee.Id = Guid.NewGuid();
-          attendee.ReferenceId = meeting.Id;
+          attendee.ReferenceId = meetingViewModel.Id;
           var savedAttendee = _meetingAttendeeRepository.Add(attendee, instance.Username, userConnectionString);
         }
         else
@@ -310,13 +310,13 @@ namespace Core
         }
       }
 
-      foreach (var attachment in meeting.Attachments)
+      foreach (var attachment in meetingViewModel.Attachments)
       {
         var attachmentResult = _meetingAttachmentRepository.Get(attachment.Id, instance.Username, userConnectionString);
         if (attachmentResult == null || attachmentResult.Id == Guid.Empty)
         {
           attachment.Id = Guid.NewGuid();
-          attachment.ReferanceId = meeting.Id;
+          attachment.ReferanceId = meetingViewModel.Id;
           var savedAttachment = _meetingAttachmentRepository.Add(attachment, instance.Username, userConnectionString);
         }
         else
@@ -325,13 +325,13 @@ namespace Core
         }
       }
 
-      foreach (var note in meeting.Notes)
+      foreach (var note in meetingViewModel.Notes)
       {
         var savedNote = _meetingAttachmentRepository.Get(note.Id, instance.Username, userConnectionString);
         if (savedNote == null || savedNote.Id == Guid.Empty)
         {
           note.Id = Guid.NewGuid();
-          note.ReferanceId = meeting.Id;
+          note.ReferanceId = meetingViewModel.Id;
           var noteSaved = _meetingNoteRepository.Add(note, instance.Username, userConnectionString);
         }
         else
@@ -340,13 +340,13 @@ namespace Core
         }
       }
 
-      foreach (var action in meeting.Actions)
+      foreach (var action in meetingViewModel.Actions)
       {
         var actionAction = _meetingActionRepository.Get(action.Id, instance.Username, userConnectionString);
         if (actionAction == null || actionAction.Id == Guid.Empty)
         {
           action.Id = Guid.NewGuid();
-          action.ReferanceId = meeting.Id;
+          action.ReferanceId = meetingViewModel.Id;
           var actionSaved = _meetingActionRepository.Add(action, instance.Username, userConnectionString);
         }
         else
@@ -354,7 +354,7 @@ namespace Core
           var actionUpdate = _meetingActionRepository.Update(action, instance.Username, userConnectionString);
         }
       }
-      return meeting;
+      return meetingViewModel;
     }
 
     public KeyValuePair<bool, string> DeleteMeeting(string token, Guid meetingId)
@@ -372,29 +372,29 @@ namespace Core
 
       var meetingResult = _meetingRepository.Delete(meetingId, instance.Username, userConnectionString);
       if(!meetingResult)
-        return new KeyValuePair<bool, string>(false, "There was a issue removing the meeting.");
+        return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel.");
 
       var meetingAgenda = _meetingAgendaRepository.DeleteMeetingAgenda(meetingId, instance.Username, userConnectionString);
       if (!meetingAgenda)
-        return new KeyValuePair<bool, string>(false, "There was a issue removing the meeting agenda items.");
+        return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel agenda items.");
 
       var meetingAttendee = _meetingAttendeeRepository.DeleteMeetingAttendees(meetingId, instance.Username, userConnectionString);
       if (!meetingAttendee)
-        return new KeyValuePair<bool, string>(false, "There was a issue removing the meeting agenda attendee's.");
+        return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel agenda attendee's.");
 
       var meetingAttachments =
         _meetingAttachmentRepository.DeleteMeetingAcchments(meetingId, instance.Username, userConnectionString);
       if (!meetingAttachments)
-        return new KeyValuePair<bool, string>(false, "There was a issue removing the meeting agenda attachments.");
+        return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel agenda attachments.");
 
       var notesResult = _meetingNoteRepository.DeleteMeetingNotes(meetingId, instance.Username, userConnectionString);
       if (!notesResult)
-        return new KeyValuePair<bool, string>(false, "There was a issue removing the meeting agenda notes.");
+        return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel agenda notes.");
 
       var actionResult =
         _meetingActionRepository.DeleteMeetingActions(meetingId, instance.Username, userConnectionString);
       if (!actionResult)
-        return new KeyValuePair<bool, string>(false, "There was a issue removing the meeting agenda actions.");
+        return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel agenda actions.");
       return new KeyValuePair<bool, string>(true, "Successful.");
     }
 
@@ -429,10 +429,10 @@ namespace Core
         return actions;
       }
 
-      // check if referenceId is a meeting id
-      // if id is a meeting id then check if meeting has actions for user
+      // check if referenceId is a meetingViewModel id
+      // if id is a meetingViewModel id then check if meetingViewModel has actions for user
 
-      // if meeting is not a meeting id [referenceId] then use it as the user Id and check for actions - these become tasks
+      // if meetingViewModel is not a meetingViewModel id [referenceId] then use it as the user Id and check for actions - these become tasks
       return new List<MinutzAction>();
     }
 

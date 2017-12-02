@@ -51,7 +51,7 @@ namespace Api.Controllers
     }
 
     /// <summary>
-    /// Update the Meeting Agenda
+    /// Update the MeetingViewModel Agenda
     /// </summary>
     /// <returns></returns>
     [HttpPost ("api/meeting/{referenceId}/attachment/{id}")]

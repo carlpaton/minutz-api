@@ -8,9 +8,9 @@ services:
       dockerfile: Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=development
-      - DEFAULT_CATALOGUE=minutz
-      - SERVER_ADDRESS=tcp:127.0.0.1,1433
+      - DEFAULT_CATALOGUE=minutz-test
+      - SERVER_ADDRESS=docker-durban.database.windows.net,1433
       - DEFAULT_SCHEMA=app
-      - DEFAULT_USER=sa
-      - DEFAULT_PASSWORD=SqlServer1234!
+      - DEFAULT_USER=tzatziki
+      - DEFAULT_PASSWORD=40Tep25hUXnz
       - AUTHORITY=https://dockerdurban.auth0.com/

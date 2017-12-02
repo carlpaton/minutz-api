@@ -17,13 +17,13 @@ namespace Tests
       //Arrange
       var meetingService = Substitute.For<IMeetingService>();
       var controller = new MeetingController(meetingService);
-      var meeting = new Models.ViewModels.Meeting
+      var meeting = new Models.ViewModels.MeetingViewModel
       {
         Name = string.Empty
       };
 
       //Act
-      var result = controller.Put(meeting);
+      var result = controller.CreateMeeting(meeting);
 
       //Assert
       Assert.IsInstanceOf(typeof(BadRequestObjectResult), result);

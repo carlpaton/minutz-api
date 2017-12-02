@@ -24,7 +24,7 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(List<MinutzAction>), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(List<MinutzAction>))]
-    [HttpGet("api/meeting/{referenceId}/actions", Name = "Get meeting actions")]
+    [HttpGet("api/meetingActions/{referenceId}", Name = "Get meeting actions")]
     public IActionResult Get (string referenceId)
     {
       if (string.IsNullOrEmpty(referenceId))
@@ -37,10 +37,9 @@ namespace Api.Controllers
     }
 
     /// <summary>
-    ///  Returns one instance of a meeting agenda
+    ///  Returns one instance of a meeting action
     /// </summary>
     /// <returns>MeetingAgenda object</returns>
-    [HttpGet ("api/meeting/{referenceId}/action/{id}")]
     [Authorize]
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(MinutzAction), 200)]
@@ -57,7 +56,7 @@ namespace Api.Controllers
     /// Create a meeting Agenda
     /// </summary>
     /// <returns></returns>
-    [HttpPut ("api/meeting/{referenceId}/action")]
+    [HttpPut ("api/meetingAction/{referenceId}/action")]
     [Authorize]
     public MinutzAction Put ([FromBody] MinutzAction action)
     {
@@ -66,10 +65,10 @@ namespace Api.Controllers
     }
 
     /// <summary>
-    /// Update the Meeting Action
+    /// Update the MeetingViewModel Action
     /// </summary>
     /// <returns></returns>
-    [HttpPost ("api/meeting/{referenceId}/action/{id}")]
+    [HttpPost ("api/meetingAction/{referenceId}/action/{id}")]
     [Authorize]
     public MinutzAction Post ([FromBody] MinutzAction action)
     {
@@ -81,7 +80,7 @@ namespace Api.Controllers
     /// Delete the single instance of the action item.
     /// </summary>
     /// <returns>true if successful and false if failure.</returns>
-    [HttpDelete ("api/meeting/{referenceId}/action/{id}")]
+    [HttpDelete ("api/meetingAction/{referenceId}/action/{id}")]
     [Authorize]
     public bool Delete (string referenceId, string id)
     {

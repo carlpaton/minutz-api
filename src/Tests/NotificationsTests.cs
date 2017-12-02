@@ -45,7 +45,7 @@ namespace Tests
     {
       var meeting = new Meeting();
       meeting.Id = Guid.NewGuid();
-      meeting.Name = "Demo Meeting";
+      meeting.Name = "Demo MeetingViewModel";
       var attendee = new MeetingAttendee();
       attendee.Email = "leeroya@gmail.com";
       attendee.Name = "Lee-Roy Ashworth";

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using Models.Entities;
-using Swashbuckle.AspNetCore.SwaggerGen;
+//using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Api.Controllers
 {
@@ -62,8 +62,8 @@ namespace Api.Controllers
     /// <response code="201">Returns the newly-created item</response>
     /// <response code="400">If the item is null</response>
     [HttpPut ("api/meeting/{referenceId}/invite", Name ="Invite")]
-    [ProducesResponseType(typeof(MeetingAttendee),200)]
-    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingAttendee))]
+    //[ProducesResponseType(typeof(MeetingAttendee),200)]
+    //[SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingAttendee))]
     [Authorize]
     public IActionResult Invite ([FromBody] MeetingAttendee invitee)
     {
