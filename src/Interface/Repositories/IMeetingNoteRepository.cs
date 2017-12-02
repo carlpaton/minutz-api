@@ -11,6 +11,7 @@ namespace Interface.Repositories
     IEnumerable<MeetingNote> List(string schema, string connectionString);
     bool Add(MeetingNote action, string schema, string connectionString);
     bool Update(MeetingNote action, string schema, string connectionString);
-    bool Delete(Guid attachmentId, string schema, string connectionString);
+    bool DeleteMeetingNotes(Guid referenceId, string schema, string connectionString);
+    bool Delete(Guid id, string schema, string connectionString);
   }
 }

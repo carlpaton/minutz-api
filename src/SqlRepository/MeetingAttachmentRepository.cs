@@ -103,6 +103,16 @@ namespace SqlRepository
         return instance == 1;
       }
     }
+    public bool DeleteMeetingAcchments(Guid referenceId, string schema, string connectionString)
+    {
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        dbConnection.Open();
+        var sql = $"DELETE from [{schema}].[MeetingAttachment] WHERE ReferanceId = '{referenceId.ToString()}'";
+        var instance = dbConnection.Execute(sql);
+        return instance == 1;
+      }
+    }
     public bool Delete(Guid attachmentId, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))

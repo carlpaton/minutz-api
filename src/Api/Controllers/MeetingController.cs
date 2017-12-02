@@ -87,10 +87,12 @@ namespace Api.Controllers
         TimeZone = meeting.TimeZone,
         UpdatedDate = DateTime.UtcNow
       };
+      var result = _meetingService.CreateMeeting(token, meetingEntitie, meeting.Attendees, meeting.Agenda,
+        meeting.Notes, meeting.Attachments, meeting.Actions);
+      if (result.Key)
+        return Ok(result.Value);
 
-
-      return Ok(_meetingService.GetMeeting(token, meeting.Id.ToString()));
-      
+      return BadRequest(result.Value.ResultMessage);
     }
 
     internal static void _defaultValues(Models.ViewModels.Meeting meeting)
@@ -119,13 +121,15 @@ namespace Api.Controllers
     /// update a meeting
     /// </summary>
     /// <param name="id">meeting identifier.</param>
+    /// <param name="meeting"></param>
     /// <returns>The saved meeting object.</returns>
     [HttpPost ("api/meeting/{id}")]
     [Authorize]
-    public IActionResult Post ([FromBody] Meeting meeting)
+    public IActionResult Post ([FromBody] Models.ViewModels.Meeting meeting)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      return Ok( _meetingService.GetMeeting (token, meeting.Id.ToString()));
+      var result = _meetingService.UpdateMeeting(token, meeting);
+      return Ok( result);
     }
 
     /// <summary>
@@ -135,10 +139,18 @@ namespace Api.Controllers
     /// <returns>True if Successful or False if unsuccessful.</returns>
     [HttpDelete ("api/meeting/{id}")]
     [Authorize]
-    public bool Delete (string id)
+    [ProducesResponseType(typeof(string), 400)]
+    [ProducesResponseType(typeof(string), 200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(string))]
+    public IActionResult Delete (string id)
     {
+      if (string.IsNullOrEmpty(id))
+        return BadRequest("Please provide a valid id");
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      return true; //_meetingService.GetMeeting (token, id);
+      var result = _meetingService.DeleteMeeting(token, Guid.Parse(id));
+      if (result.Key)
+        return Ok(result.Value);
+      return BadRequest(result.Value);
     }
   }
 }

@@ -97,14 +97,26 @@ namespace SqlRepository
         return instance == 1;
       }
     }
-    public bool Delete(Guid attachmentId, string schema, string connectionString)
+    public bool DeleteMeetingNotes(Guid referenceId, string schema, string connectionString)
     {
-      if (attachmentId == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
+      if (referenceId == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
         throw new ArgumentException("Please provide a valid meeting attendee identifier, schema or connection string.");
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
-        var sql = $"delete from [{schema}].[MeetingNote] WHERE Id = '{attachmentId.ToString()}'";
+        var sql = $"delete from [{schema}].[MeetingNote] WHERE ReferanceId = '{referenceId.ToString()}'";
+        var instance = dbConnection.Execute(sql);
+        return instance == 1;
+      }
+    }
+    public bool Delete(Guid id, string schema, string connectionString)
+    {
+      if (id == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
+        throw new ArgumentException("Please provide a valid meeting attendee identifier, schema or connection string.");
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        dbConnection.Open();
+        var sql = $"delete from [{schema}].[MeetingNote] WHERE Id = '{id.ToString()}'";
         var instance = dbConnection.Execute(sql);
         return instance == 1;
       }

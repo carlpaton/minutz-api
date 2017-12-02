@@ -88,10 +88,29 @@ namespace SqlRepository
         return instance == 1;
       }
     }
-
-    public bool Delete(MinutzAction action, string schema, string connectionString)
+    public bool DeleteMeetingActions(Guid referenceId, string schema, string connectionString)
     {
-      return true;
+      if (referenceId == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
+        throw new ArgumentException("Please provide a valid meeting attendee identifier, schema or connection string.");
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        dbConnection.Open();
+        var sql = $"delete from [{schema}].[MinutzAction] WHERE ReferanceId = '{referenceId.ToString()}'";
+        var instance = dbConnection.Execute(sql);
+        return instance == 1;
+      }
+    }
+    public bool Delete(Guid id, string schema, string connectionString)
+    {
+      if (id == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
+        throw new ArgumentException("Please provide a valid meeting attendee identifier, schema or connection string.");
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        dbConnection.Open();
+        var sql = $"delete from [{schema}].[MinutzAction] WHERE Id = '{id.ToString()}'";
+        var instance = dbConnection.Execute(sql);
+        return instance == 1;
+      }
     }
   }
 }

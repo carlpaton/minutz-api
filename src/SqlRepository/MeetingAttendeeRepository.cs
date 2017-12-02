@@ -103,6 +103,18 @@ namespace SqlRepository
         return instance == 1;
       }
     }
+    public bool DeleteMeetingAttendees(Guid referanceId, string schema, string connectionString)
+    {
+      if (referanceId == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
+        throw new ArgumentException("Please provide a valid meeting attendee identifier, schema or connection string.");
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        dbConnection.Open();
+        var sql = $"delete from [{schema}].[MeetingAttendee] WHERE ReferanceId = '{referanceId.ToString()}'";
+        var instance = dbConnection.Execute(sql);
+        return instance == 1;
+      }
+    }
     public bool Delete(Guid id, string schema, string connectionString)
     {
       if (id == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))

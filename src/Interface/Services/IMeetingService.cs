@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Models.Entities;
 
 namespace Interface.Services
@@ -7,7 +8,9 @@ namespace Interface.Services
 	{
 	  Models.ViewModels.Meeting GetMeeting(string token, string id);
 	  IEnumerable<Models.ViewModels.Meeting> GetMeetings(string token);
-	  KeyValuePair<bool, Models.ViewModels.Meeting> CreateMeeting(string token,
+	  KeyValuePair<bool, string> DeleteMeeting(string token, Guid meetingId);
+
+    KeyValuePair<bool, Models.ViewModels.Meeting> CreateMeeting(string token,
 	                     Models.Entities.Meeting meeting,
 	                     List<MeetingAttendee> attendees,
 	                     List<MeetingAgenda> agenda,

@@ -11,6 +11,7 @@ namespace Interface.Repositories
     IEnumerable<MeetingAttachment> List(string schema, string connectionString);
     bool Add(MeetingAttachment action, string schema, string connectionString);
     bool Update(MeetingAttachment action, string schema, string connectionString);
+    bool DeleteMeetingAcchments(Guid referenceId, string schema, string connectionString);
     bool Delete(Guid attachmentId, string schema, string connectionString);
   }
 }

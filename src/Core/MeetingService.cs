@@ -351,13 +351,52 @@ namespace Core
         }
         else
         {
-          var actionUpdate = _meetingActionRepository.Update(action, instance.Username, userConnectionString));
+          var actionUpdate = _meetingActionRepository.Update(action, instance.Username, userConnectionString);
         }
       }
       return meeting;
     }
 
+    public KeyValuePair<bool, string> DeleteMeeting(string token, Guid meetingId)
+    {
+      var userInfo = _authenticationService.GetUserInfo(token);
+      var applicationUserProfile = _userValidationService.GetUser(userInfo.sub);
+      var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
+                                                        _applicationSetting.Schema,
+                                                        _applicationSetting.CreateConnectionString(
+                                                                                                  _applicationSetting.Server,
+                                                                                                  _applicationSetting.Catalogue,
+                                                                                                  _applicationSetting.Username,
+                                                                                                  _applicationSetting.Password));
+      var userConnectionString = GetConnectionString(instance.Password, instance.Username);
 
+      var meetingResult = _meetingRepository.Delete(meetingId, instance.Username, userConnectionString);
+      if(!meetingResult)
+        return new KeyValuePair<bool, string>(false, "There was a issue removing the meeting.");
+
+      var meetingAgenda = _meetingAgendaRepository.DeleteMeetingAgenda(meetingId, instance.Username, userConnectionString);
+      if (!meetingAgenda)
+        return new KeyValuePair<bool, string>(false, "There was a issue removing the meeting agenda items.");
+
+      var meetingAttendee = _meetingAttendeeRepository.DeleteMeetingAttendees(meetingId, instance.Username, userConnectionString);
+      if (!meetingAttendee)
+        return new KeyValuePair<bool, string>(false, "There was a issue removing the meeting agenda attendee's.");
+
+      var meetingAttachments =
+        _meetingAttachmentRepository.DeleteMeetingAcchments(meetingId, instance.Username, userConnectionString);
+      if (!meetingAttachments)
+        return new KeyValuePair<bool, string>(false, "There was a issue removing the meeting agenda attachments.");
+
+      var notesResult = _meetingNoteRepository.DeleteMeetingNotes(meetingId, instance.Username, userConnectionString);
+      if (!notesResult)
+        return new KeyValuePair<bool, string>(false, "There was a issue removing the meeting agenda notes.");
+
+      var actionResult =
+        _meetingActionRepository.DeleteMeetingActions(meetingId, instance.Username, userConnectionString);
+      if (!actionResult)
+        return new KeyValuePair<bool, string>(false, "There was a issue removing the meeting agenda actions.");
+      return new KeyValuePair<bool, string>(true, "Successful.");
+    }
 
     public IEnumerable<MinutzAction> GetMinutzActions(string referenceId,
                                                       string userTokenUid)

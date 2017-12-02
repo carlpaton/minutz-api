@@ -11,6 +11,7 @@ namespace Interface.Repositories
     IEnumerable<MeetingAgenda> List(string schema, string connectionString);
     MeetingAgenda Get(Guid id, string schema, string connectionString);
     List<MeetingAgenda> GetMeetingAgenda(Guid referenceId, string schema, string connectionString);
+    bool DeleteMeetingAgenda(Guid referenceId, string schema, string connectionString);
     bool Delete(Guid id, string schema, string connectionString);
   }
 }
