@@ -24,7 +24,7 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(List<MinutzAction>), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(List<MinutzAction>))]
-    [HttpGet("api/meeting/{referenceId}/actions", Name = "Get Machine by Id")]
+    [HttpGet("api/meeting/{referenceId}/actions", Name = "Get meeting actions")]
     public IActionResult Get (string referenceId)
     {
       if (string.IsNullOrEmpty(referenceId))
@@ -32,7 +32,8 @@ namespace Api.Controllers
         return BadRequest("Please provide a valid referenceId [meeting id]");
       }
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      return Ok(new List<MinutzAction> ());
+      var result = _meetingService.GetMinutzActions(referenceId, token);
+      return Ok(result);
     }
 
     /// <summary>

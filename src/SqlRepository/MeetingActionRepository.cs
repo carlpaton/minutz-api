@@ -11,6 +11,18 @@ namespace SqlRepository
 {
   public class MeetingActionRepository : IMeetingActionRepository
   {
+    public List<MinutzAction> GetMeetingActions(Guid referenceId, string schema, string connectionString)
+    {
+      if (referenceId == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
+        throw new ArgumentException("Please provide a valid meeting identifier, schema or connection string.");
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        dbConnection.Open();
+        var sql = $"select * from [{schema}].[MinutzAction] WHERE ReferanceId = '{referenceId.ToString()}'";
+        var data = dbConnection.Query<MinutzAction>(sql).ToList();
+        return data;
+      }
+    }
     public MinutzAction Get(Guid id, string schema, string connectionString)
     {
       if (id == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))

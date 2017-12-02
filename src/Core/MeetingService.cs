@@ -399,17 +399,36 @@ namespace Core
     }
 
     public IEnumerable<MinutzAction> GetMinutzActions(string referenceId,
-                                                      string userTokenUid)
+                                                      string token)
     {
       if (string.IsNullOrEmpty(referenceId))
       {
         throw new ArgumentNullException(nameof(referenceId), "Please provide a valid reference id.");
       }
 
-      if (string.IsNullOrEmpty(userTokenUid))
+      if (string.IsNullOrEmpty(token))
       {
-        throw new ArgumentNullException(nameof(userTokenUid), "Please provide a valid user token unique identifier.");
+        throw new ArgumentNullException(nameof(token), "Please provide a valid user token unique identifier.");
       }
+
+      var userInfo = _authenticationService.GetUserInfo(token);
+      var applicationUserProfile = _userValidationService.GetUser(userInfo.sub);
+      var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
+        _applicationSetting.Schema,
+        _applicationSetting.CreateConnectionString(
+          _applicationSetting.Server,
+          _applicationSetting.Catalogue,
+          _applicationSetting.Username,
+          _applicationSetting.Password));
+      var userConnectionString = GetConnectionString(instance.Password, instance.Username);
+
+      if (referenceId != applicationUserProfile.InstanceId)
+      {
+        var actions =
+          _meetingActionRepository.GetMeetingActions(Guid.Parse(referenceId), instance.Username, userConnectionString);
+        return actions;
+      }
+
       // check if referenceId is a meeting id
       // if id is a meeting id then check if meeting has actions for user
 

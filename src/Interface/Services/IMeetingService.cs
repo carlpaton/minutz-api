@@ -18,6 +18,10 @@ namespace Interface.Services
 	                     List<MeetingAttachment> attachements,
 	                     List<MinutzAction> actions);
 	  Models.ViewModels.Meeting UpdateMeeting(string token, Models.ViewModels.Meeting meeting);
+
+	  IEnumerable<MinutzAction> GetMinutzActions(string referenceId,
+	    string userTokenUid);
+
     IEnumerable<KeyValuePair<string, string>> ExtractQueries(string returnUri);
 	}
 }
