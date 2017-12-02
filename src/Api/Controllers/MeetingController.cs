@@ -123,8 +123,11 @@ namespace Api.Controllers
     /// <param name="id">meeting identifier.</param>
     /// <param name="meeting"></param>
     /// <returns>The saved meeting object.</returns>
-    [HttpPost ("api/meeting/{id}")]
+    [HttpPost ("api/meeting/{id}", Name = "Update Meeting")]
     [Authorize]
+    [ProducesResponseType(typeof(string), 400)]
+    [ProducesResponseType(typeof(Models.ViewModels.Meeting), 200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Models.ViewModels.Meeting))]
     public IActionResult Post ([FromBody] Models.ViewModels.Meeting meeting)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;

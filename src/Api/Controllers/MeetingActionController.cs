@@ -41,9 +41,14 @@ namespace Api.Controllers
     /// <returns>MeetingAgenda object</returns>
     [HttpGet ("api/meeting/{referenceId}/action/{id}")]
     [Authorize]
+    [ProducesResponseType(typeof(string), 400)]
+    [ProducesResponseType(typeof(MinutzAction), 200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MinutzAction))]
+    [HttpGet("api/meeting/{referenceId}/actions", Name = "Get Machine by Id")]
     public MinutzAction Get (string referenceId, string id)
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
+      //var result = _meetingService.GetMeeting(token, )
       return new MinutzAction ();
     }
 
