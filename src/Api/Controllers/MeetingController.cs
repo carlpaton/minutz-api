@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Api.Extensions;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,8 @@ namespace Api.Controllers
     }
 
     /// <summary>
-    /// Get all the meetings for a user
+    /// Get all the meetings for a user, it uses the token that is,
+    /// passed to get the instance id to call the correct schema in the database.
     /// </summary>
     /// <returns>Collection of MeetingViewModel objects</returns>
     [Authorize]
@@ -38,8 +40,9 @@ namespace Api.Controllers
     /// </summary>
     /// <param name="id">MeetingViewModel identifier [Guid]</param>
     /// <returns>The meetingViewModel object.</returns>
-    [HttpGet ("api/meeting/{id}", Name = "Get 1 meetingViewModel for a user by id")]
     [Authorize]
+    [HttpGet("api/meeting/{id}", Name = "Get a meeting for a user by id")]
+    [Produces("application/json")]
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(Models.ViewModels.MeetingViewModel), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Models.ViewModels.MeetingViewModel))]
@@ -55,10 +58,11 @@ namespace Api.Controllers
     /// <param name="meeting"></param>
     /// <returns>The created meetingViewModel object.</returns>
     [Authorize]
+    [HttpPut("api/meeting", Name="Create a meeting")]
+    [Produces("application/json")]
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(Models.ViewModels.MeetingViewModel), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Models.ViewModels.MeetingViewModel))]
-    [HttpPut("api/meeting")]
     public IActionResult  CreateMeeting ([FromBody] Models.ViewModels.MeetingViewModel meeting)
     {
       if (string.IsNullOrEmpty(meeting.Name))
@@ -68,26 +72,8 @@ namespace Api.Controllers
       _defaultValues(meeting);
 
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      var meetingEntitie = new Models.Entities.Meeting
-      {
-        Id = meeting.Id,
-        Name = meeting.Name,
-        Date = meeting.Date,
-        Duration = meeting.Duration,
-        IsFormal = meeting.IsFormal,
-        IsLocked = meeting.IsLocked,
-        IsPrivate = meeting.IsPrivate,
-        IsReacurance = meeting.IsReacurance,
-        MeetingOwnerId = meeting.MeetingOwnerId,
-        Outcome = meeting.Outcome,
-        Purpose = meeting.Purpose,
-        ReacuranceType = meeting.ReacuranceType,
-        Tag = meeting.Tag,
-        Time = meeting.Time,
-        TimeZone = meeting.TimeZone,
-        UpdatedDate = DateTime.UtcNow
-      };
-      var result = _meetingService.CreateMeeting(token, meetingEntitie, meeting.Attendees, meeting.Agenda,
+ 
+      var result = _meetingService.CreateMeeting(token, meeting.ToEntity(), meeting.Attendees, meeting.Agenda,
         meeting.Notes, meeting.Attachments, meeting.Actions);
       if (result.Key)
         return Ok(result.Value);
