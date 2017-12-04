@@ -81,6 +81,47 @@ namespace Api.Controllers
       return BadRequest(result.Value.ResultMessage);
     }
 
+    /// <summary>
+    /// update a meetingViewModel
+    /// </summary>
+    /// <param name="id">meeting identifier.</param>
+    /// <param name="meeting"></param>
+    /// <returns>The saved meeting object.</returns>
+    [Authorize]
+    [HttpPost("api/meeting/{id}", Name = "Update Meeting")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(string), 400)]
+    [ProducesResponseType(typeof(Models.ViewModels.MeetingViewModel), 200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Models.ViewModels.MeetingViewModel))]
+    public IActionResult UpdateMeeting([FromBody] Models.ViewModels.MeetingViewModel meeting)
+    {
+      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+      var result = _meetingService.UpdateMeeting(token, meeting);
+      return Ok(result);
+    }
+
+    /// <summary>
+    /// Delete a meetingViewModel
+    /// </summary>
+    /// <param name="id">meetingViewModel identifier.</param>
+    /// <returns>True if Successful or False if unsuccessful.</returns>
+    [Authorize]
+    [HttpDelete ("api/meeting/{id}")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(string), 400)]
+    [ProducesResponseType(typeof(string), 200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(string))]
+    public IActionResult DeleteMeeting (string id)
+    {
+      if (string.IsNullOrEmpty(id))
+        return BadRequest("Please provide a valid id");
+      var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
+      var result = _meetingService.DeleteMeeting(token, Guid.Parse(id));
+      if (result.Key)
+        return Ok(result.Value);
+      return BadRequest(result.Value);
+    }
+
     internal static void _defaultValues(Models.ViewModels.MeetingViewModel meetingViewModel)
     {
       if (meetingViewModel.Id == Guid.Empty)
@@ -102,47 +143,6 @@ namespace Api.Controllers
       if (meetingViewModel.Attachments == null)
         meetingViewModel.Attachments = new List<MeetingAttachment>();
     }
-
-    /// <summary>
-    /// update a meetingViewModel
-    /// </summary>
-    /// <param name="id">meeting identifier.</param>
-    /// <param name="meeting"></param>
-    /// <returns>The saved meeting object.</returns>
-    [HttpPost("api/meeting/{id}", Name = "Update Meeting")]
-    [Authorize]
-    [ProducesResponseType(typeof(string), 400)]
-    [ProducesResponseType(typeof(Models.ViewModels.MeetingViewModel), 200)]
-    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Models.ViewModels.MeetingViewModel))]
-    public IActionResult UpdateMeeting([FromBody] Models.ViewModels.MeetingViewModel meeting)
-    {
-      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      var result = _meetingService.UpdateMeeting(token, meeting);
-      return Ok(result);
-    }
-
-    /// <summary>
-    /// Delete a meetingViewModel
-    /// </summary>
-    /// <param name="id">meetingViewModel identifier.</param>
-    /// <returns>True if Successful or False if unsuccessful.</returns>
-    [HttpDelete ("api/meeting/{id}")]
-    [Authorize]
-    [ProducesResponseType(typeof(string), 400)]
-    [ProducesResponseType(typeof(string), 200)]
-    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(string))]
-    public IActionResult DeleteMeeting (string id)
-    {
-      if (string.IsNullOrEmpty(id))
-        return BadRequest("Please provide a valid id");
-      var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      var result = _meetingService.DeleteMeeting(token, Guid.Parse(id));
-      if (result.Key)
-        return Ok(result.Value);
-      return BadRequest(result.Value);
-    }
-
-   
 
   }
 }
