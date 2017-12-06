@@ -93,20 +93,20 @@ namespace Api.Extensions
       {
         meetingViewModel.Id = Guid.NewGuid();
       }
-      if (meetingViewModel.Agenda == null)
-        meetingViewModel.Agenda = new List<Models.Entities.MeetingAgenda>();
+      if (meetingViewModel.MeetingAgendaCollection == null)
+        meetingViewModel.MeetingAgendaCollection = new List<Models.Entities.MeetingAgenda>();
 
-      if (meetingViewModel.Attendees == null)
-        meetingViewModel.Attendees = new List<Models.Entities.MeetingAttendee>();
+      if (meetingViewModel.MeetingAttendeeCollection == null)
+        meetingViewModel.MeetingAttendeeCollection = new List<Models.Entities.MeetingAttendee>();
 
-      if (meetingViewModel.AvailibleAttendees == null)
-        meetingViewModel.AvailibleAttendees = new List<Models.Entities.MeetingAttendee>();
+      if (meetingViewModel.AvailableAttendeeCollection == null)
+        meetingViewModel.AvailableAttendeeCollection = new List<Models.Entities.MeetingAttendee>();
 
-      if (meetingViewModel.Notes == null)
-        meetingViewModel.Notes = new List<Models.Entities.MeetingNote>();
+      if (meetingViewModel.MeetingNoteCollection == null)
+        meetingViewModel.MeetingNoteCollection = new List<Models.Entities.MeetingNote>();
 
-      if (meetingViewModel.Attachments == null)
-        meetingViewModel.Attachments = new List<Models.Entities.MeetingAttachment>();
+      if (meetingViewModel.MeetingAttachmentCollection == null)
+        meetingViewModel.MeetingAttachmentCollection = new List<Models.Entities.MeetingAttachment>();
     }
   }
 }

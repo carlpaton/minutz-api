@@ -57,7 +57,7 @@ namespace Api.Controllers
     /// </summary>
     /// <param name="meeting"></param>
     /// <returns>The created meetingViewModel object.</returns>
-    [Authorize]
+    //[Authorize]
     [HttpPut("api/meeting", Name="Create a meeting")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(string), 400)]
@@ -73,8 +73,8 @@ namespace Api.Controllers
 
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
  
-      var result = _meetingService.CreateMeeting(token, meeting.ToEntity(), meeting.Attendees, meeting.Agenda,
-        meeting.Notes, meeting.Attachments, meeting.Actions);
+      var result = _meetingService.CreateMeeting(token, meeting.ToEntity(), meeting.MeetingAttendeeCollection, meeting.MeetingAgendaCollection,
+        meeting.MeetingNoteCollection, meeting.MeetingAttachmentCollection, meeting.MeetingActionCollection);
       if (result.Key)
         return Ok(result.Value);
 
@@ -128,20 +128,20 @@ namespace Api.Controllers
       {
         meetingViewModel.Id = Guid.NewGuid();
       }
-      if (meetingViewModel.Agenda == null)
-        meetingViewModel.Agenda = new List<MeetingAgenda>();
+      if (meetingViewModel.MeetingAgendaCollection == null)
+        meetingViewModel.MeetingAgendaCollection = new List<MeetingAgenda>();
 
-      if (meetingViewModel.Attendees == null)
-        meetingViewModel.Attendees = new List<MeetingAttendee>();
+      if (meetingViewModel.MeetingAttendeeCollection == null)
+        meetingViewModel.MeetingAttendeeCollection = new List<MeetingAttendee>();
 
-      if (meetingViewModel.AvailibleAttendees == null)
-        meetingViewModel.AvailibleAttendees = new List<MeetingAttendee>();
+      if (meetingViewModel.AvailableAttendeeCollection == null)
+        meetingViewModel.AvailableAttendeeCollection = new List<MeetingAttendee>();
 
-      if (meetingViewModel.Notes == null)
-        meetingViewModel.Notes = new List<MeetingNote>();
+      if (meetingViewModel.MeetingNoteCollection == null)
+        meetingViewModel.MeetingNoteCollection = new List<MeetingNote>();
 
-      if (meetingViewModel.Attachments == null)
-        meetingViewModel.Attachments = new List<MeetingAttachment>();
+      if (meetingViewModel.MeetingAttachmentCollection == null)
+        meetingViewModel.MeetingAttachmentCollection = new List<MeetingAttachment>();
     }
 
   }

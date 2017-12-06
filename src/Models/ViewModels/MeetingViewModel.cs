@@ -23,12 +23,12 @@ namespace Models.ViewModels
     public string MeetingOwnerId { get; set; }
     public string Outcome { get; set; }
 
-    public List<MeetingAgenda> Agenda { get; set; }
-    public List<MeetingAttachment> Attachments { get; set; }
-    public List<MeetingAttendee> Attendees { get; set; }
-    public List<MeetingAttendee> AvailibleAttendees { get; set; }
-    public List<MeetingNote> Notes { get; set; }
-    public List<MinutzAction> Actions { get; set; }
+    public List<MeetingAgenda> MeetingAgendaCollection { get; set; }
+    public List<MeetingAttachment> MeetingAttachmentCollection { get; set; }
+    public List<MeetingAttendee> MeetingAttendeeCollection { get; set; }
+    public List<MeetingAttendee> AvailableAttendeeCollection { get; set; }
+    public List<MeetingNote> MeetingNoteCollection { get; set; }
+    public List<MinutzAction> MeetingActionCollection { get; set; }
 
     public string ResultMessage { get; set; }
   }

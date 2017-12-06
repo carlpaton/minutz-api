@@ -79,11 +79,11 @@ namespace Core
         Time = meeting.Time,
         TimeZone = meeting.TimeZone,
         UpdatedDate = DateTime.UtcNow,
-        AvailibleAttendees = _meetingAttendeeRepository.GetAvalibleAttendees(instance.Username, userConnectionString),
-        Agenda = _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, instance.Username, userConnectionString),
-        Attachments = _meetingAttachmentRepository.GetMeetingAttachments(meeting.Id, instance.Username, userConnectionString),
-        Attendees = _meetingAttendeeRepository.GetMeetingAttendees(meeting.Id, instance.Username, userConnectionString),
-        Notes = _meetingNoteRepository.GetMeetingNotes(meeting.Id, instance.Username, userConnectionString)
+        AvailableAttendeeCollection = _meetingAttendeeRepository.GetAvalibleAttendees(instance.Username, userConnectionString),
+        MeetingAgendaCollection = _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, instance.Username, userConnectionString),
+        MeetingAttachmentCollection = _meetingAttachmentRepository.GetMeetingAttachments(meeting.Id, instance.Username, userConnectionString),
+        MeetingAttendeeCollection = _meetingAttendeeRepository.GetMeetingAttendees(meeting.Id, instance.Username, userConnectionString),
+        MeetingNoteCollection = _meetingNoteRepository.GetMeetingNotes(meeting.Id, instance.Username, userConnectionString)
       };
       return meetingViewModel;
     }
@@ -123,11 +123,11 @@ namespace Core
           Time = meeting.Time,
           TimeZone = meeting.TimeZone,
           UpdatedDate = DateTime.UtcNow,
-          AvailibleAttendees = _meetingAttendeeRepository.GetAvalibleAttendees(instance.Username, userConnectionString),
-          Agenda = _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, instance.Username, userConnectionString),
-          Attachments = _meetingAttachmentRepository.GetMeetingAttachments(meeting.Id, instance.Username, userConnectionString),
-          Attendees = _meetingAttendeeRepository.GetMeetingAttendees(meeting.Id, instance.Username, userConnectionString),
-          Notes = _meetingNoteRepository.GetMeetingNotes(meeting.Id, instance.Username, userConnectionString)
+          AvailableAttendeeCollection = _meetingAttendeeRepository.GetAvalibleAttendees(instance.Username, userConnectionString),
+          MeetingAgendaCollection = _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, instance.Username, userConnectionString),
+          MeetingAttachmentCollection = _meetingAttachmentRepository.GetMeetingAttachments(meeting.Id, instance.Username, userConnectionString),
+          MeetingAttendeeCollection = _meetingAttendeeRepository.GetMeetingAttendees(meeting.Id, instance.Username, userConnectionString),
+          MeetingNoteCollection = _meetingNoteRepository.GetMeetingNotes(meeting.Id, instance.Username, userConnectionString)
         };
 
         result.Add(meetingViewModel);
@@ -161,8 +161,8 @@ namespace Core
       {
         foreach (var agendaItem in agenda)
         {
-          agendaItem.Id = Guid.NewGuid();
-          agendaItem.ReferenceId = meeting.Id;
+          agendaItem.Id = Guid.NewGuid().ToString();
+          agendaItem.ReferenceId = meeting.Id.ToString();
           var saveAgenda = _meetingAgendaRepository.Add(agendaItem, instance.Username, userConnectionString);
           if (!saveAgenda)
           {
@@ -221,17 +221,17 @@ namespace Core
         var result = new Models.ViewModels.MeetingViewModel
         {
           Id = meeting.Id,
-          Agenda = agenda,
+          MeetingAgendaCollection = agenda,
           Name = meeting.Name,
-          Attendees = attendees,
+          MeetingAttendeeCollection = attendees,
           Date = meeting.Date,
-          Attachments = attachements,
+          MeetingAttachmentCollection = attachements,
           Duration = meeting.Duration,
           IsFormal = meeting.IsFormal,
           IsLocked = meeting.IsLocked,
           IsPrivate = meeting.IsPrivate,
           IsReacurance = meeting.IsReacurance,
-          Notes = notes,
+          MeetingNoteCollection = notes,
           MeetingOwnerId = meeting.MeetingOwnerId,
           Outcome = meeting.Outcome,
           Purpose = meeting.Purpose,
@@ -280,13 +280,13 @@ namespace Core
       };
 
       var result = _meetingRepository.Update(meetingEntity, instance.Username, userConnectionString);
-      foreach (var agendaItem in meetingViewModel.Agenda)
+      foreach (var agendaItem in meetingViewModel.MeetingAgendaCollection)
       {
-        var update = _meetingAgendaRepository.Get(agendaItem.Id, instance.Username, userConnectionString);
-        if (update == null || update.Id == Guid.Empty)
+        var update = _meetingAgendaRepository.Get( Guid.Parse(agendaItem.Id), instance.Username, userConnectionString);
+        if (update == null || Guid.Parse(update.Id) == Guid.Empty)
         {
-          agendaItem.Id = Guid.NewGuid();
-          agendaItem.ReferenceId = meetingViewModel.Id;
+          agendaItem.Id = Guid.NewGuid().ToString();
+          agendaItem.ReferenceId = meetingViewModel.Id.ToString();
           var saveAgenda = _meetingAgendaRepository.Add(agendaItem, instance.Username, userConnectionString);
         }
         else
@@ -295,7 +295,7 @@ namespace Core
         }
       }
 
-      foreach (var attendee in meetingViewModel.Attendees)
+      foreach (var attendee in meetingViewModel.MeetingAttendeeCollection)
       {
         var attendeeResult = _meetingAttendeeRepository.Get(attendee.Id, instance.Username, userConnectionString);
         if (attendeeResult == null || attendeeResult.Id == Guid.Empty)
@@ -310,7 +310,7 @@ namespace Core
         }
       }
 
-      foreach (var attachment in meetingViewModel.Attachments)
+      foreach (var attachment in meetingViewModel.MeetingAttachmentCollection)
       {
         var attachmentResult = _meetingAttachmentRepository.Get(attachment.Id, instance.Username, userConnectionString);
         if (attachmentResult == null || attachmentResult.Id == Guid.Empty)
@@ -325,7 +325,7 @@ namespace Core
         }
       }
 
-      foreach (var note in meetingViewModel.Notes)
+      foreach (var note in meetingViewModel.MeetingNoteCollection)
       {
         var savedNote = _meetingAttachmentRepository.Get(note.Id, instance.Username, userConnectionString);
         if (savedNote == null || savedNote.Id == Guid.Empty)
@@ -340,7 +340,7 @@ namespace Core
         }
       }
 
-      foreach (var action in meetingViewModel.Actions)
+      foreach (var action in meetingViewModel.MeetingActionCollection)
       {
         var actionAction = _meetingActionRepository.Get(action.Id, instance.Username, userConnectionString);
         if (actionAction == null || actionAction.Id == Guid.Empty)
@@ -439,7 +439,7 @@ namespace Core
     public KeyValuePair<bool, string> SendMinutes(string token, Guid meetingId)
     {
       var meeting = this.GetMeeting(token, meetingId.ToString());
-      foreach (var attendee in meeting.Attendees)  {
+      foreach (var attendee in meeting.MeetingAttendeeCollection)  {
         
       }
       return new KeyValuePair<bool, string>(true, "");
