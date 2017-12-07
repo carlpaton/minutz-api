@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <RootNamespace>Models</RootNamespace>
+    <RootNamespace>Minutz.Models</RootNamespace>
     <AssemblyName>Models</AssemblyName>
   </PropertyGroup>
 

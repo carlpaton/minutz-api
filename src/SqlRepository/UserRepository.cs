@@ -1,6 +1,6 @@
 ﻿using Interface.Repositories;
 using System.Data.SqlClient;
-using Models.Entities;
+using Minutz.Models.Entities;
 using System.Data;
 using System.Linq;
 using System.Text;

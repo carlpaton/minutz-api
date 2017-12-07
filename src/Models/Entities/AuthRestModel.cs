@@ -1,4 +1,4 @@
-﻿namespace Models.Entities
+﻿namespace Minutz.Models.Entities
 {
   public class AuthRestModel
   {

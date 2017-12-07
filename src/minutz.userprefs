@@ -1,0 +1,18 @@
+﻿<Properties StartupConfiguration="{67CA3E6C-1759-46F3-9312-BC67A5C9B677}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="src Status">
+    <Files>
+      <File FileName="Api/Controllers/MeetingController.cs" Line="146" Column="56" />
+      <File FileName="Tests/MeetingControllerTests.cs" Line="26" Column="82" />
+      <File FileName="src Status" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/Api/Controllers/MeetingController.cs" relfile="Api/Controllers/MeetingController.cs" line="68" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.Api PreferredExecutionTarget="MonoDevelop.Default" />
+</Properties>

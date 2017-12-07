@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Models.ViewModels
+namespace Minutz.Models.ViewModels
 {
   public class UserProfile
   {

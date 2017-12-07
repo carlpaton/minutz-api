@@ -1,5 +1,5 @@
 ﻿using Interface.Services;
-using Models.Entities;
+using Minutz.Models.Entities;
 
 namespace Core.ExternalServices
 {

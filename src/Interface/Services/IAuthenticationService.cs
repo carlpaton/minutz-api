@@ -1,5 +1,5 @@
 ﻿
-using Models.Entities;
+using Minutz.Models.Entities;
 
 namespace Interface.Services
 {

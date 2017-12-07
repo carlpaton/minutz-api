@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
-using Models.Entities;
+using Minutz.Models.Entities;
 using System.Linq;
 using System.Data;
 using Dapper;

@@ -1,29 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using Models.Entities;
+using Minutz.Models.Entities;
 
 namespace Interface.Services
 {
-	public interface IMeetingService
-	{
-	  Models.ViewModels.MeetingViewModel GetMeeting(string token, string id);
-	  IEnumerable<Models.ViewModels.MeetingViewModel> GetMeetings(string token);
-	  KeyValuePair<bool, string> DeleteMeeting(string token, Guid meetingId);
+  public interface IMeetingService
+  {
+    Minutz.Models.ViewModels.MeetingViewModel GetMeeting(string token, string id);
+    IEnumerable<Minutz.Models.ViewModels.MeetingViewModel> GetMeetings(string token);
+    KeyValuePair<bool, string> DeleteMeeting(string token, Guid meetingId);
 
-    KeyValuePair<bool, Models.ViewModels.MeetingViewModel> CreateMeeting(string token,
-	                     Models.Entities.Meeting meeting,
-	                     List<MeetingAttendee> attendees,
-	                     List<MeetingAgenda> agenda,
-	                     List<MeetingNote> notes,
-	                     List<MeetingAttachment> attachements,
-	                     List<MinutzAction> actions);
-	  Models.ViewModels.MeetingViewModel UpdateMeeting(string token, Models.ViewModels.MeetingViewModel meetingViewModel);
+    KeyValuePair<bool, Minutz.Models.ViewModels.MeetingViewModel> CreateMeeting(string token,
+                       Minutz.Models.Entities.Meeting meeting,
+                       List<MeetingAttendee> attendees,
+                       List<MeetingAgenda> agenda,
+                       List<MeetingNote> notes,
+                       List<MeetingAttachment> attachements,
+                       List<MinutzAction> actions);
+    Minutz.Models.ViewModels.MeetingViewModel UpdateMeeting(string token, Minutz.Models.ViewModels.MeetingViewModel meetingViewModel);
 
-	  IEnumerable<MinutzAction> GetMinutzActions(string referenceId,
-	    string userTokenUid);
+    IEnumerable<MinutzAction> GetMinutzActions(string referenceId,
+      string userTokenUid);
 
-	  KeyValuePair<bool,string> SendMinutes(string token, Guid meetingId);
+    KeyValuePair<bool, string> SendMinutes(string token, Guid meetingId);
 
     IEnumerable<KeyValuePair<string, string>> ExtractQueries(string returnUri);
-	}
+  }
 }

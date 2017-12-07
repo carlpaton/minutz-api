@@ -1,8 +1,7 @@
 ﻿using System;
-
-namespace Minutz.Models.Entities
+namespace Api.Models
 {
-  public class MeetingAttachment
+  public class MeetingItemAttachment
   {
     public string Id { get; set; }
     public string ReferanceId { get; set; }

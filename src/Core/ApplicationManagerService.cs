@@ -1,6 +1,6 @@
 ﻿using Interface.Repositories;
 using Interface.Services;
-using Models.Entities;
+using Minutz.Models.Entities;
 
 namespace Core
 {
@@ -20,13 +20,13 @@ namespace Core
 
     public bool StartFullVersion(AuthRestModel user)
     {
-      var schemaCreate = _userRepository.CreateNewSchema(user, _applicationSetting.Schema, 
+      var schemaCreate = _userRepository.CreateNewSchema(user, _applicationSetting.Schema,
                                                          _applicationSetting.CreateConnectionString(
-                                                           _applicationSetting.Server, 
-                                                           _applicationSetting.Catalogue, 
+                                                           _applicationSetting.Server,
+                                                           _applicationSetting.Catalogue,
                                                            _applicationSetting.Username,
                                                            _applicationSetting.Password));
-      return  _applicationSetupRepository.CreateSchemaTables(_applicationSetting.Schema,schemaCreate,
+      return _applicationSetupRepository.CreateSchemaTables(_applicationSetting.Schema, schemaCreate,
                                                          _applicationSetting.CreateConnectionString(
                                                            _applicationSetting.Server,
                                                            _applicationSetting.Catalogue,

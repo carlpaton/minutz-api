@@ -5,11 +5,11 @@ namespace Api.Extensions
 {
   public static class MeetingExtensions
   {
-    public static Models.Entities.Meeting ToEntity(this Models.ViewModels.MeetingViewModel viewModel)
+    public static Minutz.Models.Entities.Meeting ToEntity(this Minutz.Models.ViewModels.MeetingViewModel viewModel)
     {
-      var result = new Models.Entities.Meeting
+      var result = new Minutz.Models.Entities.Meeting
       {
-        Id = viewModel.Id,
+        Id = Guid.Parse(viewModel.Id),
         Name = viewModel.Name,
         Date = viewModel.Date,
         Duration = viewModel.Duration,
@@ -29,11 +29,11 @@ namespace Api.Extensions
       return result;
     }
 
-    public static Models.ViewModels.MeetingViewModel ToViewModel(this Models.Entities.Meeting entity)
+    public static Minutz.Models.ViewModels.MeetingViewModel ToViewModel(this Minutz.Models.Entities.Meeting entity)
     {
-      var result = new Models.ViewModels.MeetingViewModel
+      var result = new Minutz.Models.ViewModels.MeetingViewModel
       {
-        Id = entity.Id,
+        Id = entity.Id.ToString(),
         Name = entity.Name,
         Date = entity.Date,
         Duration = entity.Duration,
@@ -54,15 +54,15 @@ namespace Api.Extensions
       return result;
     }
 
-    public static Models.ViewModels.MeetingViewModel ToViewModel(this Models.Entities.Meeting entity,
-                                                                      List<Models.Entities.MeetingAgenda> agendaItems,
-                                                                      List<Models.Entities.MeetingAttendee> attendees = null,
-                                                                      List<Models.Entities.MeetingNote> notes = null,
-                                                                      List<Models.Entities.MeetingAttachment> attachments = null)
+    public static Minutz.Models.ViewModels.MeetingViewModel ToViewModel(this Minutz.Models.Entities.Meeting entity,
+                                                                        List<Minutz.Models.Entities.MeetingAgenda> agendaItems,
+                                                                        List<Minutz.Models.Entities.MeetingAttendee> attendees = null,
+                                                                        List<Minutz.Models.Entities.MeetingNote> notes = null,
+                                                                        List<Minutz.Models.Entities.MeetingAttachment> attachments = null)
     {
-      var result = new Models.ViewModels.MeetingViewModel
+      var result = new Minutz.Models.ViewModels.MeetingViewModel
       {
-        Id = entity.Id,
+        Id = entity.Id.ToString(),
         Name = entity.Name,
         Date = entity.Date,
         Duration = entity.Duration,
@@ -79,34 +79,34 @@ namespace Api.Extensions
         TimeZone = entity.TimeZone,
         UpdatedDate = DateTime.UtcNow
       };
-      _defaultValues(result,agendaItems,attendees,notes,attachments);
+      _defaultValues(result, agendaItems, attendees, notes, attachments);
       return result;
     }
 
-    internal static void _defaultValues(Models.ViewModels.MeetingViewModel meetingViewModel,
-                                        List<Models.Entities.MeetingAgenda> agendaItems = null,
-                                        List<Models.Entities.MeetingAttendee> attendees = null,
-                                        List<Models.Entities.MeetingNote> notes = null,
-                                        List<Models.Entities.MeetingAttachment> attachments = null)
+    internal static void _defaultValues(Minutz.Models.ViewModels.MeetingViewModel meetingViewModel,
+                                        List<Minutz.Models.Entities.MeetingAgenda> agendaItems = null,
+                                        List<Minutz.Models.Entities.MeetingAttendee> attendees = null,
+                                        List<Minutz.Models.Entities.MeetingNote> notes = null,
+                                        List<Minutz.Models.Entities.MeetingAttachment> attachments = null)
     {
-      if (meetingViewModel.Id == Guid.Empty)
+      if (Guid.Parse(meetingViewModel.Id) == Guid.Empty)
       {
-        meetingViewModel.Id = Guid.NewGuid();
+        meetingViewModel.Id = Guid.NewGuid().ToString();
       }
       if (meetingViewModel.MeetingAgendaCollection == null)
-        meetingViewModel.MeetingAgendaCollection = new List<Models.Entities.MeetingAgenda>();
+        meetingViewModel.MeetingAgendaCollection = new List<Minutz.Models.Entities.MeetingAgenda>();
 
       if (meetingViewModel.MeetingAttendeeCollection == null)
-        meetingViewModel.MeetingAttendeeCollection = new List<Models.Entities.MeetingAttendee>();
+        meetingViewModel.MeetingAttendeeCollection = new List<Minutz.Models.Entities.MeetingAttendee>();
 
       if (meetingViewModel.AvailableAttendeeCollection == null)
-        meetingViewModel.AvailableAttendeeCollection = new List<Models.Entities.MeetingAttendee>();
+        meetingViewModel.AvailableAttendeeCollection = new List<Minutz.Models.Entities.MeetingAttendee>();
 
       if (meetingViewModel.MeetingNoteCollection == null)
-        meetingViewModel.MeetingNoteCollection = new List<Models.Entities.MeetingNote>();
+        meetingViewModel.MeetingNoteCollection = new List<Minutz.Models.Entities.MeetingNote>();
 
       if (meetingViewModel.MeetingAttachmentCollection == null)
-        meetingViewModel.MeetingAttachmentCollection = new List<Models.Entities.MeetingAttachment>();
+        meetingViewModel.MeetingAttachmentCollection = new List<Minutz.Models.Entities.MeetingAttachment>();
     }
   }
 }

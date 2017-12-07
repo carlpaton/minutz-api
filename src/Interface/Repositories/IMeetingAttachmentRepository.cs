@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Models.Entities;
+using Minutz.Models.Entities;
 
 namespace Interface.Repositories
 {

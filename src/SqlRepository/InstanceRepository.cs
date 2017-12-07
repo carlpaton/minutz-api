@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Interface.Repositories;
 using System.Data.SqlClient;
-using Models.Entities;
+using Minutz.Models.Entities;
 using System.Data;
 using System.Linq;
 using Dapper;
@@ -20,7 +20,7 @@ namespace SqlRepository
         return data;
       }
     }
-    public Instance GetByUsername(string username,string schema,string connectionString)
+    public Instance GetByUsername(string username, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {

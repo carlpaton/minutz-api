@@ -5,7 +5,7 @@ using Interface.Services;
 using Microsoft.AspNetCore.Mvc;
 using Notifications;
 using NUnit.Framework;
-using Models.Entities;
+using Minutz.Models.Entities;
 using NSubstitute;
 using NUnit.Framework.Internal;
 using Interface.Repositories;

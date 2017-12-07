@@ -1,7 +1,7 @@
 ﻿using Api.Controllers;
 using Interface.Services;
 using Microsoft.AspNetCore.Mvc;
-using Models.Entities;
+using Minutz.Models.Entities;
 using NUnit.Framework;
 using NSubstitute;
 
@@ -17,13 +17,13 @@ namespace Tests
       //Arrange
       var meetingService = Substitute.For<IMeetingService>();
       var controller = new MeetingController(meetingService);
-      var meeting = new Models.ViewModels.MeetingViewModel
+      var meeting = new Minutz.Models.ViewModels.MeetingViewModel
       {
         Name = string.Empty
       };
 
       //Act
-      var result = controller.CreateMeeting(meeting);
+      var result = controller.CreateMeeting(new Api.Models.MeetingItemViewModel());
 
       //Assert
       Assert.IsInstanceOf(typeof(BadRequestObjectResult), result);

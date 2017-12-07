@@ -1,10 +1,10 @@
-using Models.Entities;
+using Minutz.Models.Entities;
 
 namespace Interface.Services
 {
-    public interface IStartupService
-    {
-          bool SendInvitationMessage (MeetingAttendee attendee,
-                                      Meeting meeting);
-    }
+  public interface IStartupService
+  {
+    bool SendInvitationMessage(MeetingAttendee attendee,
+                                Meeting meeting);
+  }
 }

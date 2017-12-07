@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Interface.Repositories;
 using System.Data.SqlClient;
-using Models.Entities;
+using Minutz.Models.Entities;
 using System.Data;
 using System.Linq;
 using System;
@@ -47,7 +47,7 @@ namespace SqlRepository
         return data;
       }
     }
-    public bool Add(MinutzAction action,string schema, string connectionString)
+    public bool Add(MinutzAction action, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
@@ -68,14 +68,14 @@ namespace SqlRepository
                                                                 ,@DueDate
                                                                 ,@IsComplete)";
         var instance = dbConnection.Execute(insertSql, new
-                                                        {
-                                                          action.Id,
-                                                          action.ReferanceId,
-                                                          action.ActionText,
-                                                          action.PersonId,
-                                                          action.DueDate,
-                                                          action.IsComplete
-                                                        });
+        {
+          action.Id,
+          action.ReferanceId,
+          action.ActionText,
+          action.PersonId,
+          action.DueDate,
+          action.IsComplete
+        });
         return instance == 1;
       }
     }

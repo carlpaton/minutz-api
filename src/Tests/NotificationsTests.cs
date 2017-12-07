@@ -1,7 +1,7 @@
 using System;
 using Notifications;
 using NUnit.Framework;
-using Models.Entities;
+using Minutz.Models.Entities;
 
 namespace Tests
 {

@@ -1,13 +1,13 @@
-using Models.Entities;
+using Minutz.Models.Entities;
 namespace Core
 {
-    public class InvitationService
+  public class InvitationService
+  {
+    public bool InviteUser(MeetingAttendee invitee)
     {
-        public bool InviteUser(MeetingAttendee invitee)
-        {
-            return true;
-        }
+      return true;
     }
+  }
 }
 
 

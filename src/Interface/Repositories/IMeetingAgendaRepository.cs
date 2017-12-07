@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Models.Entities;
+using Minutz.Models.Entities;
 using System;
 
 namespace Interface.Repositories

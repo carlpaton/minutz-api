@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
-using Models.Entities;
+using Minutz.Models.Entities;
 using System.Linq;
 using System.Data;
 using Dapper;
@@ -9,7 +9,7 @@ using Interface.Repositories;
 
 namespace SqlRepository
 {
-  public class MeetingAttendeeRepository: IMeetingAttendeeRepository
+  public class MeetingAttendeeRepository : IMeetingAttendeeRepository
   {
     public MeetingAttendee Get(Guid id, string schema, string connectionString)
     {
