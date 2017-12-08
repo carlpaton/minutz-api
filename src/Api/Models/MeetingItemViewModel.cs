@@ -21,12 +21,7 @@ namespace Api.Models
     public string Purpose { get; set; }
     public string MeetingOwnerId { get; set; }
     public string Outcome { get; set; }
-    public List<MeetingItemAgenda> MeetingAgendaCollection { get; set; }
-    public List<MeetingItemAttachment> MeetingAttachmentCollection { get; set; }
-    public List<MeetingItemAttendee> MeetingAttendeeCollection { get; set; }
-    public List<MeetingItemAttendee> AvailableAttendeeCollection { get; set; }
-    public List<MeetingItemNote> MeetingNoteCollection { get; set; }
-    public List<MinutzItemAction> MeetingActionCollection { get; set; }
+
     public string ResultMessage { get; set; }
   }
 }

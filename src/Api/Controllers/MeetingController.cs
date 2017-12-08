@@ -58,20 +58,20 @@ namespace Api.Controllers
     /// </summary>
     /// <param name="meeting"></param>
     /// <returns>The created meetingViewModel object.</returns>
-    //[Authorize]
-    [HttpPut("api/meetingcreate", Name = "Create a meeting")]
+    [Authorize]
+    [HttpPut("api/meeting", Name = "Create a meeting")]
     [Produces("application/json")]
     //[ProducesResponseType(typeof(string), 400)]
     //[ProducesResponseType(typeof(Models.ViewModels.MeetingViewModel), 200)]
     //[SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Models.ViewModels.MeetingViewModel))]
     public IActionResult CreateMeeting([FromBody] MeetingItemViewModel data)
     {
-      var meeting = new Minutz.Models.ViewModels.MeetingViewModel();
-      if (string.IsNullOrEmpty(meeting.Name))
+      if (!data.IsValid())
       {
-        return BadRequest("Please provide a meetingViewModel name.");
+        return BadRequest("Please provide a valid meeting model.");
       }
-      //_defaultValues(meeting);
+
+      var meeting = data.ToMeetingViewModel();
 
       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
 
@@ -124,27 +124,6 @@ namespace Api.Controllers
       return BadRequest(result.Value);
     }
 
-    internal static void _defaultValues(Minutz.Models.ViewModels.MeetingViewModel meetingViewModel)
-    {
-      if (Guid.Parse(meetingViewModel.Id) == Guid.Empty)
-      {
-        meetingViewModel.Id = Guid.NewGuid().ToString();
-      }
-      if (meetingViewModel.MeetingAgendaCollection == null)
-        meetingViewModel.MeetingAgendaCollection = new List<Minutz.Models.Entities.MeetingAgenda>();
-
-      if (meetingViewModel.MeetingAttendeeCollection == null)
-        meetingViewModel.MeetingAttendeeCollection = new List<Minutz.Models.Entities.MeetingAttendee>();
-
-      if (meetingViewModel.AvailableAttendeeCollection == null)
-        meetingViewModel.AvailableAttendeeCollection = new List<Minutz.Models.Entities.MeetingAttendee>();
-
-      if (meetingViewModel.MeetingNoteCollection == null)
-        meetingViewModel.MeetingNoteCollection = new List<Minutz.Models.Entities.MeetingNote>();
-
-      if (meetingViewModel.MeetingAttachmentCollection == null)
-        meetingViewModel.MeetingAttachmentCollection = new List<Minutz.Models.Entities.MeetingAttachment>();
-    }
 
   }
 

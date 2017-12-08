@@ -40,7 +40,7 @@ namespace SqlRepository
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
-        string insertSql = $@"insert into [{schema}].[MeetingViewModel](
+        string insertSql = $@"insert into [{schema}].[Meeting](
                                                                  [Id]
                                                                 ,[Name]
                                                                 ,[Date]
@@ -65,37 +65,45 @@ namespace SqlRepository
                                                                 ,@UpdatedDate
                                                                 ,@Time
                                                                 ,@Duration
-                                                                 @IsReacurance
+                                                                ,@IsReacurance
                                                                 ,@IsPrivate
                                                                 ,@ReacuranceType
                                                                 ,@IsLocked
                                                                 ,@IsFormal
                                                                 ,@TimeZone
-                                                                 @Tag
+                                                                ,@Tag
                                                                 ,@Purpose
                                                                 ,@MeetingOwnerId
                                                                 ,@Outcome
                                                                 )";
-        var instance = dbConnection.Execute(insertSql, new
+        try
         {
-          action.Id,
-          action.Name,
-          action.Date,
-          action.UpdatedDate,
-          action.Time,
-          action.Duration,
-          action.IsReacurance,
-          action.IsPrivate,
-          action.ReacuranceType,
-          action.IsLocked,
-          action.IsFormal,
-          action.TimeZone,
-          action.Tag,
-          action.Purpose,
-          action.MeetingOwnerId,
-          action.Outcome
-        });
-        return instance == 1;
+          var instance = dbConnection.Execute(insertSql, new
+          {
+            action.Id,
+            action.Name,
+            action.Date,
+            action.UpdatedDate,
+            action.Time,
+            action.Duration,
+            action.IsReacurance,
+            action.IsPrivate,
+            action.ReacuranceType,
+            action.IsLocked,
+            action.IsFormal,
+            action.TimeZone,
+            action.Tag,
+            action.Purpose,
+            action.MeetingOwnerId,
+            action.Outcome
+          });
+          return instance == 1;
+        }
+        catch (Exception ex)
+        {
+          throw new Exception(ex.Message);
+        }
+
       }
     }
     public bool Update(Meeting action, string schema, string connectionString)

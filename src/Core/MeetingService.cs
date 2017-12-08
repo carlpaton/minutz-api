@@ -159,64 +159,64 @@ namespace Core
       var saveMeeting = _meetingRepository.Add(meeting, instance.Username, userConnectionString);
       if (saveMeeting)
       {
-        foreach (var agendaItem in agenda)
-        {
-          agendaItem.Id = Guid.NewGuid().ToString();
-          agendaItem.ReferenceId = meeting.Id.ToString();
-          var saveAgenda = _meetingAgendaRepository.Add(agendaItem, instance.Username, userConnectionString);
-          if (!saveAgenda)
-          {
-            return new KeyValuePair<bool, Minutz.Models.ViewModels.MeetingViewModel>(false,
-              new Minutz.Models.ViewModels.MeetingViewModel
-              {
-                ResultMessage = $"There was a issue creating the meetingViewModel agenda item for meetingViewModel {meeting.Name}."
-              });
-          }
-        }
+        //foreach (var agendaItem in agenda)
+        //{
+        //  agendaItem.Id = Guid.NewGuid().ToString();
+        //  agendaItem.ReferenceId = meeting.Id.ToString();
+        //  var saveAgenda = _meetingAgendaRepository.Add(agendaItem, instance.Username, userConnectionString);
+        //  if (!saveAgenda)
+        //  {
+        //    return new KeyValuePair<bool, Minutz.Models.ViewModels.MeetingViewModel>(false,
+        //      new Minutz.Models.ViewModels.MeetingViewModel
+        //      {
+        //        ResultMessage = $"There was a issue creating the meetingViewModel agenda item for meetingViewModel {meeting.Name}."
+        //      });
+        //  }
+        //}
 
-        foreach (var attendee in attendees)
-        {
-          attendee.Id = Guid.NewGuid().ToString();
-          attendee.ReferenceId = meeting.Id.ToString();
-          var savedAttendee = _meetingAttendeeRepository.Add(attendee, instance.Username, userConnectionString);
-          if (!savedAttendee)
-          {
-            return new KeyValuePair<bool, Minutz.Models.ViewModels.MeetingViewModel>(false, new Minutz.Models.ViewModels.MeetingViewModel { ResultMessage = $"There was a issue creating the meetingViewModel attendee for meetingViewModel {meeting.Name}" });
-          }
-        }
+        //foreach (var attendee in attendees)
+        //{
+        //  attendee.Id = Guid.NewGuid().ToString();
+        //  attendee.ReferenceId = meeting.Id.ToString();
+        //  var savedAttendee = _meetingAttendeeRepository.Add(attendee, instance.Username, userConnectionString);
+        //  if (!savedAttendee)
+        //  {
+        //    return new KeyValuePair<bool, Minutz.Models.ViewModels.MeetingViewModel>(false, new Minutz.Models.ViewModels.MeetingViewModel { ResultMessage = $"There was a issue creating the meetingViewModel attendee for meetingViewModel {meeting.Name}" });
+        //  }
+        //}
 
-        foreach (var attachment in attachements)
-        {
-          attachment.Id = Guid.NewGuid().ToString();
-          attachment.ReferanceId = meeting.Id.ToString();
-          var savedAttachment = _meetingAttachmentRepository.Add(attachment, instance.Username, userConnectionString);
-          if (!savedAttachment)
-          {
-            return new KeyValuePair<bool, Minutz.Models.ViewModels.MeetingViewModel>(false, new Minutz.Models.ViewModels.MeetingViewModel { ResultMessage = "There was a issue creating the meetingViewModel attachment for meetingViewModel {meetingViewModel.Name}" });
-          }
-        }
+        //foreach (var attachment in attachements)
+        //{
+        //  attachment.Id = Guid.NewGuid().ToString();
+        //  attachment.ReferanceId = meeting.Id.ToString();
+        //  var savedAttachment = _meetingAttachmentRepository.Add(attachment, instance.Username, userConnectionString);
+        //  if (!savedAttachment)
+        //  {
+        //    return new KeyValuePair<bool, Minutz.Models.ViewModels.MeetingViewModel>(false, new Minutz.Models.ViewModels.MeetingViewModel { ResultMessage = "There was a issue creating the meetingViewModel attachment for meetingViewModel {meetingViewModel.Name}" });
+        //  }
+        //}
 
-        foreach (var note in notes)
-        {
-          note.Id = Guid.NewGuid().ToString();
-          note.ReferanceId = meeting.Id.ToString();
-          var noteSaved = _meetingNoteRepository.Add(note, instance.Username, userConnectionString);
-          if (!noteSaved)
-          {
-            return new KeyValuePair<bool, Minutz.Models.ViewModels.MeetingViewModel>(false, new Minutz.Models.ViewModels.MeetingViewModel { ResultMessage = "There was a issue creating the meetingViewModel note for meetingViewModel {meetingViewModel.Name}" });
-          }
-        }
+        //foreach (var note in notes)
+        //{
+        //  note.Id = Guid.NewGuid().ToString();
+        //  note.ReferanceId = meeting.Id.ToString();
+        //  var noteSaved = _meetingNoteRepository.Add(note, instance.Username, userConnectionString);
+        //  if (!noteSaved)
+        //  {
+        //    return new KeyValuePair<bool, Minutz.Models.ViewModels.MeetingViewModel>(false, new Minutz.Models.ViewModels.MeetingViewModel { ResultMessage = "There was a issue creating the meetingViewModel note for meetingViewModel {meetingViewModel.Name}" });
+        //  }
+        //}
 
-        foreach (var action in actions)
-        {
-          action.Id = Guid.NewGuid().ToString();
-          action.ReferanceId = meeting.Id.ToString();
-          var actionSaved = _meetingActionRepository.Add(action, instance.Username, userConnectionString);
-          if (!actionSaved)
-          {
-            return new KeyValuePair<bool, Minutz.Models.ViewModels.MeetingViewModel>(false, new Minutz.Models.ViewModels.MeetingViewModel { ResultMessage = "There was a issue creating the meetingViewModel action for meetingViewModel {meetingViewModel.Name}" });
-          }
-        }
+        //foreach (var action in actions)
+        //{
+        //  action.Id = Guid.NewGuid().ToString();
+        //  action.ReferanceId = meeting.Id.ToString();
+        //  var actionSaved = _meetingActionRepository.Add(action, instance.Username, userConnectionString);
+        //  if (!actionSaved)
+        //  {
+        //    return new KeyValuePair<bool, Minutz.Models.ViewModels.MeetingViewModel>(false, new Minutz.Models.ViewModels.MeetingViewModel { ResultMessage = "There was a issue creating the meetingViewModel action for meetingViewModel {meetingViewModel.Name}" });
+        //  }
+        //}
 
         var result = new Minutz.Models.ViewModels.MeetingViewModel
         {

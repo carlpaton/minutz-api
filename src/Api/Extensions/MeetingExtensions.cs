@@ -5,11 +5,43 @@ namespace Api.Extensions
 {
   public static class MeetingExtensions
   {
+    public static Minutz.Models.ViewModels.MeetingViewModel ToMeetingViewModel(this Models.MeetingItemViewModel model)
+    {
+      var meetingId = model.Id == null ? Guid.NewGuid() : Guid.Parse(model.Id);
+      var result = new Minutz.Models.ViewModels.MeetingViewModel
+      {
+        Date = model.Date,
+        Duration = model.Duration,
+        Id = meetingId.ToString(),
+        IsFormal = model.IsFormal,
+        IsLocked = model.IsLocked,
+        IsPrivate = model.IsPrivate,
+        IsReacurance = model.IsReacurance,
+        MeetingOwnerId = model.MeetingOwnerId,
+        Name = model.Name,
+        Outcome = model.Outcome,
+        Purpose = model.Purpose,
+        ReacuranceType = model.ReacuranceType,
+        Tag = model.Tag,
+        Time = model.Time,
+        TimeZone = model.TimeZone,
+        UpdatedDate = model.UpdatedDate,
+        AvailableAttendeeCollection = new List<Minutz.Models.Entities.MeetingAttendee>(),
+        MeetingActionCollection = new List<Minutz.Models.Entities.MinutzAction>(),
+        MeetingAgendaCollection = new List<Minutz.Models.Entities.MeetingAgenda>(),
+        MeetingAttachmentCollection = new List<Minutz.Models.Entities.MeetingAttachment>(),
+        MeetingAttendeeCollection = new List<Minutz.Models.Entities.MeetingAttendee>(),
+        MeetingNoteCollection = new List<Minutz.Models.Entities.MeetingNote>()
+      };
+      return result;
+    }
+
     public static Minutz.Models.Entities.Meeting ToEntity(this Minutz.Models.ViewModels.MeetingViewModel viewModel)
     {
+      var meetingId = viewModel.Id == null ? Guid.NewGuid() : Guid.Parse(viewModel.Id);
       var result = new Minutz.Models.Entities.Meeting
       {
-        Id = Guid.Parse(viewModel.Id),
+        Id = meetingId,
         Name = viewModel.Name,
         Date = viewModel.Date,
         Duration = viewModel.Duration,

@@ -1,8 +1,8 @@
 ﻿namespace Api.Extensions
 {
-  public static class MeetingViewModelValidationExtention
+  public static class MeetingItemViewModelValidationExtention
   {
-    public static bool IsValid(this Minutz.Models.ViewModels.MeetingViewModel viewModel)
+    public static bool IsValid(this Models.MeetingItemViewModel viewItemModel)
     {
 
       return true;
