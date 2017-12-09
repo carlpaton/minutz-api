@@ -39,6 +39,15 @@ namespace Api.Controllers
       return null;
     }
 
+    [HttpPost("api/meetingAgenda/{id}")]
+    [Authorize]
+    public List<MeetingAgenda> UpdateMeetingAgendaitems([FromBody] List<MeetingAgenda> agendaitems)
+    {
+      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+      var result = _meetingService.UpdateMeetingAgendaItems(agendaitems, token);
+      return result;
+    }
+
     /// <summary>
     /// Create a meeting Agenda
     /// </summary>

@@ -30,7 +30,7 @@ namespace SqlRepository
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
-        var sql = $"select * from [{schema}].[MeetingAgenda] WHERE ReferenceId = '{referenceId.ToString()}'";
+        var sql = $"select * from [{schema}].[MeetingAgenda] WHERE ReferanceId = '{referenceId.ToString()}'";
         var data = dbConnection.Query<MeetingAgenda>(sql);
         return data.ToList();
       }
@@ -47,14 +47,18 @@ namespace SqlRepository
         return data;
       }
     }
-    public bool Add(MeetingAgenda action, string schema, string connectionString)
+    public bool Add(MeetingAgenda agendaItem, string schema, string connectionString)
     {
+      if(string.IsNullOrEmpty(agendaItem.Id.ToString()))
+      {
+        agendaItem.Id = Guid.NewGuid();
+      }
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
         string insertSql = $@"insert into [{schema}].[MeetingAgenda](
                                                                  [Id]
-                                                                ,[ReferenceId]
+                                                                ,[ReferanceId]
                                                                 ,[AgendaHeading]
                                                                 ,[AgendaText]
                                                                 ,[MeetingAttendeeId]
@@ -69,30 +73,30 @@ namespace SqlRepository
                                                                 ,@AgendaText
                                                                 ,@MeetingAttendeeId
                                                                 ,@Duration
-                                                                 @CreatedDate
+                                                                ,@CreatedDate
                                                                 ,@IsComplete
                                                                 )";
         var instance = dbConnection.Execute(insertSql, new
         {
-          action.Id,
-          action.ReferenceId,
-          action.AgendaHeading,
-          action.AgendaText,
-          action.MeetingAttendeeId,
-          action.Duration,
-          action.CreatedDate,
-          action.IsComplete
+          agendaItem.Id,
+          agendaItem.ReferenceId,
+          agendaItem.AgendaHeading,
+          agendaItem.AgendaText,
+          agendaItem.MeetingAttendeeId,
+          agendaItem.Duration,
+          agendaItem.CreatedDate,
+          agendaItem.IsComplete
         });
         return instance == 1;
       }
     }
-    public bool Update(MeetingAgenda action, string schema, string connectionString)
+    public bool Update(MeetingAgenda agendaItem, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
         string updateQuery = $@"UPDATE [{schema}].[MeetingAgenda] 
-                             SET ReferenceId = @ReferenceId, 
+                             SET ReferanceId = @ReferenceId, 
                                  AgendaHeading = @AgendaHeading, 
                                  AgendaText = @AgendaText, 
                                  MeetingAttendeeId = @MeetingAttendeeId,
@@ -102,13 +106,14 @@ namespace SqlRepository
                              WHERE Id = @Id";
         var instance = dbConnection.Execute(updateQuery, new
         {
-          action.ReferenceId,
-          action.AgendaHeading,
-          action.AgendaText,
-          action.MeetingAttendeeId,
-          action.Duration,
-          action.CreatedDate,
-          action.IsComplete
+          agendaItem.ReferenceId,
+          agendaItem.AgendaHeading,
+          agendaItem.AgendaText,
+          agendaItem.MeetingAttendeeId,
+          agendaItem.Duration,
+          agendaItem.CreatedDate,
+          agendaItem.IsComplete,
+          agendaItem.Id
         });
         return instance == 1;
       }

@@ -4,7 +4,7 @@ namespace Minutz.Models.Entities
 {
   public class MeetingAgenda
   {
-    public string Id { get; set; }
+    public Guid Id { get; set; }
     public string ReferenceId { get; set; }
     public string AgendaHeading { get; set; }
     public string AgendaText { get; set; }

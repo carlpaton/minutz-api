@@ -3,6 +3,7 @@ using Interface.Repositories;
 using Interface.Services;
 using Minutz.Models.Entities;
 using System;
+using System.Linq;
 
 namespace Core
 {
@@ -46,6 +47,105 @@ namespace Core
       _userRepository = userRepository;
       _applicationSetting = applicationSetting;
       _instanceRepository = instanceRepository;
+    }
+
+    public List<Minutz.Models.Entities.MeetingAgenda> UpdateMeetingAgendaItems(
+                                                List<Minutz.Models.Entities.MeetingAgenda> data,
+                                                string token)
+    {
+      var userInfo = _authenticationService.GetUserInfo(token);
+      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
+      var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
+                                                       _applicationSetting.Schema,
+                                                       _applicationSetting.CreateConnectionString(
+                                                          _applicationSetting.Server,
+                                                          _applicationSetting.Catalogue,
+                                                          _applicationSetting.Username,
+                                                          _applicationSetting.Password));
+      var userConnectionString = GetConnectionString(instance.Password, instance.Username);
+      if (data.Any())
+      {
+
+        var meetingAgendaItems = _meetingAgendaRepository.GetMeetingAgenda(
+                                                     Guid.Parse(data.FirstOrDefault().ReferenceId),
+                                                     instance.Username,
+                                                     userConnectionString);
+        foreach (var updateAgendaItem in data)
+        {
+          if (updateAgendaItem.Id == Guid.Empty)
+          {
+            updateAgendaItem.Id = Guid.NewGuid();
+          }
+          var q = meetingAgendaItems.FirstOrDefault(i => i.Id == updateAgendaItem.Id);
+          if (q != null)
+          {
+            _meetingAgendaRepository.Update(updateAgendaItem, instance.Username, userConnectionString);
+          }
+          else
+          {
+            _meetingAgendaRepository.Add(updateAgendaItem, instance.Username, userConnectionString);
+          }
+        }
+        return _meetingAgendaRepository.GetMeetingAgenda(
+                                                     Guid.Parse(data.FirstOrDefault().ReferenceId),
+                                                     instance.Username,
+                                                     userConnectionString);
+      }
+      foreach (var agendaitem in data)
+      {
+        _meetingAgendaRepository.Add(agendaitem, instance.Username, userConnectionString);
+      }
+      return _meetingAgendaRepository.GetMeetingAgenda(
+                                                       Guid.Parse(data.FirstOrDefault().ReferenceId),
+                                                       instance.Username,
+                                                       userConnectionString);
+    }
+
+    public List<Minutz.Models.Entities.MeetingAttendee> UpdateMeetingAttendees(
+                                                List<Minutz.Models.Entities.MeetingAttendee> data,
+                                                string token)
+    {
+      var userInfo = _authenticationService.GetUserInfo(token);
+      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
+      var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
+                                                       _applicationSetting.Schema,
+                                                       _applicationSetting.CreateConnectionString(
+                                                          _applicationSetting.Server,
+                                                          _applicationSetting.Catalogue,
+                                                          _applicationSetting.Username,
+                                                          _applicationSetting.Password));
+      var userConnectionString = GetConnectionString(instance.Password, instance.Username);
+      if (data.Any())
+      {
+        var attendees = _meetingAttendeeRepository.GetMeetingAttendees(
+          Guid.Parse(data.FirstOrDefault().ReferenceId),
+          instance.Username,
+          userConnectionString);
+        foreach (var attendee in data)
+        {
+          var q = attendees.FirstOrDefault(i => i.Id == attendee.Id);
+          if (q != null)
+          {
+            _meetingAttendeeRepository.Update(attendee, instance.Username, userConnectionString);
+          }
+          else
+          {
+            _meetingAttendeeRepository.Add(attendee, instance.Username, userConnectionString);
+          }
+        }
+        return _meetingAttendeeRepository.GetMeetingAttendees(
+          Guid.Parse(data.FirstOrDefault().ReferenceId),
+          instance.Username,
+          userConnectionString); ;
+      }
+      foreach (var newAttendee in data)
+      {
+        _meetingAttendeeRepository.Add(newAttendee, instance.Username, userConnectionString);
+      }
+      return _meetingAttendeeRepository.GetMeetingAttendees(
+            Guid.Parse(data.FirstOrDefault().ReferenceId),
+            instance.Username,
+            userConnectionString); ;
     }
 
     public Minutz.Models.ViewModels.MeetingViewModel GetMeeting(string token, string id)
@@ -259,6 +359,10 @@ namespace Core
                                                                                                     _applicationSetting.Username,
                                                                                                     _applicationSetting.Password));
       var userConnectionString = GetConnectionString(instance.Password, instance.Username);
+      if (string.IsNullOrEmpty(meetingViewModel.MeetingOwnerId))
+      {
+        meetingViewModel.MeetingOwnerId = userInfo.Sub;
+      }
       var meetingEntity = new Minutz.Models.Entities.Meeting
       {
         Id = Guid.Parse(meetingViewModel.Id),
@@ -282,10 +386,10 @@ namespace Core
       var result = _meetingRepository.Update(meetingEntity, instance.Username, userConnectionString);
       foreach (var agendaItem in meetingViewModel.MeetingAgendaCollection)
       {
-        var update = _meetingAgendaRepository.Get(Guid.Parse(agendaItem.Id), instance.Username, userConnectionString);
-        if (update == null || Guid.Parse(update.Id) == Guid.Empty)
+        var update = _meetingAgendaRepository.Get(agendaItem.Id, instance.Username, userConnectionString);
+        if (update == null || update.Id == Guid.Empty)
         {
-          agendaItem.Id = Guid.NewGuid().ToString();
+          agendaItem.Id = Guid.NewGuid();
           agendaItem.ReferenceId = meetingViewModel.Id.ToString();
           var saveAgenda = _meetingAgendaRepository.Add(agendaItem, instance.Username, userConnectionString);
         }
@@ -354,6 +458,14 @@ namespace Core
           var actionUpdate = _meetingActionRepository.Update(action, instance.Username, userConnectionString);
         }
       }
+
+      var agendaItems = _meetingAgendaRepository.GetMeetingAgenda(meetingEntity.Id, instance.Username, userConnectionString);
+      var availibeAttendees = _meetingAttendeeRepository.GetAvalibleAttendees(instance.Username, userConnectionString);
+      var attendees = _meetingAttendeeRepository.GetMeetingAttendees(meetingEntity.Id, instance.Username, userConnectionString);
+
+      meetingViewModel.AvailableAttendeeCollection = availibeAttendees;
+      meetingViewModel.MeetingAgendaCollection = agendaItems;
+      meetingViewModel.MeetingAttendeeCollection = attendees;
       return meetingViewModel;
     }
 
@@ -396,6 +508,23 @@ namespace Core
       if (!actionResult)
         return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel agenda actions.");
       return new KeyValuePair<bool, string>(true, "Successful.");
+    }
+
+    public Minutz.Models.Entities.MeetingAttendee GetAttendee(string token, Guid attendeeId, Guid meetingId)
+    {
+      var userInfo = _authenticationService.GetUserInfo(token);
+      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
+      var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
+                                                        _applicationSetting.Schema,
+                                                        _applicationSetting.CreateConnectionString(
+                                                                                                  _applicationSetting.Server,
+                                                                                                  _applicationSetting.Catalogue,
+                                                                                                  _applicationSetting.Username,
+                                                                                                  _applicationSetting.Password));
+      var userConnectionString = GetConnectionString(instance.Password, instance.Username);
+      var data = _meetingAttendeeRepository.GetMeetingAttendees(meetingId, instance.Username, userConnectionString)
+                                           .FirstOrDefault(i => i.Id == attendeeId.ToString());
+      return data;
     }
 
     public IEnumerable<Minutz.Models.Entities.MinutzAction> GetMinutzActions(string referenceId,

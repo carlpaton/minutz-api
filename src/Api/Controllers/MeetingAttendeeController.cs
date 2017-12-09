@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using Interface.Services;
@@ -37,10 +38,20 @@ namespace Api.Controllers
     /// <returns></returns>
     [HttpGet("api/meeting/{referenceId}/attendee/{id}")]
     [Authorize]
-    public MeetingAttendee Get(string referenceId, string id)
+    public MeetingAttendee GetMeetingAttendee(string referenceId, string id)
     {
       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      return new MeetingAttendee();
+      var result = _meetingService.GetAttendee(token,Guid.Parse(referenceId), Guid.Parse(id));
+      return result;
+    }
+
+    [HttpPost("api/updateMeetingAttendees")]
+    [Authorize]
+    public List<MeetingAttendee> UpdateMeetingAttendees(List<MeetingAttendee> attendees)
+    {
+      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+      var result = _meetingService.UpdateMeetingAttendees(attendees, token);
+      return result;
     }
 
     /// <summary>

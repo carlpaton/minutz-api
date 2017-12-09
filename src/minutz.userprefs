@@ -1,19 +1,12 @@
 ﻿<Properties StartupConfiguration="{67CA3E6C-1759-46F3-9312-BC67A5C9B677}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="SqlRepository/MeetingRespository.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Api/Controllers/MeetingController.cs">
     <Files>
-      <File FileName="Api/Controllers/MeetingController.cs" Line="74" Column="1" />
-      <File FileName="Core/MeetingService.cs" Line="146" Column="1" />
-      <File FileName="Api/Extensions/MeetingExtensions.cs" Line="42" Column="1" />
-      <File FileName="SqlRepository/MeetingRespository.cs" Line="79" Column="12" />
+      <File FileName="Api/Controllers/MeetingAgendaController.cs" Line="42" Column="33" />
+      <File FileName="Api/Controllers/MeetingAttendeeController.cs" Line="48" Column="42" />
+      <File FileName="Api/Controllers/MeetingController.cs" Line="71" Column="6" />
+      <File FileName="Interface/Services/IMeetingService.cs" Line="27" Column="53" />
+      <File FileName="Core/MeetingService.cs" Line="468" Column="62" />
     </Files>
-    <Pads>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State>
-          <Value>meeting</Value>
-          <Value>action</Value>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

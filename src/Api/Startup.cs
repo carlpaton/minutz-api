@@ -46,6 +46,8 @@ namespace Api
       services.AddTransient<IAuthenticationService, AuthenticationService>();
       services.AddTransient<IApplicationManagerService, ApplicationManagerService>();
       services.AddTransient<IMeetingService, MeetingService>();
+
+      services.AddMemoryCache();
       services.AddMvc();
       services.AddSwaggerGen(c =>
       {

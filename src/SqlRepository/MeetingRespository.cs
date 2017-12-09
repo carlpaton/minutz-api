@@ -106,12 +106,12 @@ namespace SqlRepository
 
       }
     }
-    public bool Update(Meeting action, string schema, string connectionString)
+    public bool Update(Meeting meeting, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
-        string updateQuery = $@"UPDATE [{schema}].[MeetingViewModel] 
+        string updateQuery = $@"UPDATE [{schema}].[Meeting] 
                              SET Name = @Name, 
                                  Date = @Date, 
                                  UpdatedDate = @UpdatedDate, 
@@ -122,29 +122,32 @@ namespace SqlRepository
                                  ReacuranceType = @ReacuranceType, 
                                  IsLocked = @IsLocked, 
                                  IsFormal = @IsFormal,
-                                 PersonId = @PersonId, 
-                                 DueDate = @DueDate, 
-                                 IsComplete = @IsComplete
-                             WHERE Id = @Id";
+                                 TimeZone = @TimeZone,
+                                 Tag = @Tag,
+                                 Purpose = @Purpose,
+                                 MeetingOwnerId = @MeetingOwnerId, 
+                                 Outcome = @Outcome
+                             WHERE Id   = @Id";
         var instance = dbConnection.Execute(updateQuery, new
         {
-          action.Name,
-          action.Date,
-          action.UpdatedDate,
-          action.Time,
-          action.Duration,
-          action.IsReacurance,
-          action.IsPrivate,
-          action.ReacuranceType,
-          action.IsLocked,
-          action.IsFormal,
-          action.TimeZone,
-          action.Tag,
-          action.Purpose,
-          action.MeetingOwnerId,
-          action.Outcome
+          meeting.Name,
+          meeting.Date,
+          meeting.UpdatedDate,
+          meeting.Time,
+          meeting.Duration,
+          meeting.IsReacurance,
+          meeting.IsPrivate,
+          meeting.ReacuranceType,
+          meeting.IsLocked,
+          meeting.IsFormal,
+          meeting.TimeZone,
+          meeting.Tag,
+          meeting.Purpose,
+          meeting.MeetingOwnerId,
+          meeting.Outcome,
+          meeting.Id
         });
-        return instance == 1;
+        return instance == 1; 
       }
     }
     public bool Delete(Guid id, string schema, string connectionString)

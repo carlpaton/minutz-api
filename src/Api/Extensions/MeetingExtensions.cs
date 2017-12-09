@@ -8,6 +8,34 @@ namespace Api.Extensions
     public static Minutz.Models.ViewModels.MeetingViewModel ToMeetingViewModel(this Models.MeetingItemViewModel model)
     {
       var meetingId = model.Id == null ? Guid.NewGuid() : Guid.Parse(model.Id);
+      if(string.IsNullOrEmpty(model.Tag))
+      {
+        model.Tag = string.Empty;
+      }
+      if(string.IsNullOrEmpty(model.Purpose))
+      {
+        model.Purpose = string.Empty;
+      }
+      if(string.IsNullOrEmpty(model.Outcome))
+      {
+        model.Outcome = string.Empty;
+      }
+      if(string.IsNullOrEmpty(model.ReacuranceType))
+      {
+        model.ReacuranceType = string.Empty;
+      }
+      if(model.Date == DateTime.MinValue || model.Date == null)
+      {
+        model.Date = DateTime.UtcNow;
+      }
+      if(model.UpdatedDate == DateTime.MinValue || model.UpdatedDate == null)
+      {
+        model.UpdatedDate = DateTime.UtcNow;
+      }
+      if(string.IsNullOrEmpty(model.TimeZone))
+      {
+        model.TimeZone = string.Empty;
+      }
       var result = new Minutz.Models.ViewModels.MeetingViewModel
       {
         Date = model.Date,

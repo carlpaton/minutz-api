@@ -9,14 +9,17 @@ using Microsoft.AspNetCore.Mvc;
 using Minutz.Models.ViewModels;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
+
 namespace Api.Controllers
 {
   public class MeetingController : Controller
   {
     private readonly IMeetingService _meetingService;
+
     public MeetingController(IMeetingService meetingService)
     {
       _meetingService = meetingService;
+
     }
 
     /// <summary>
@@ -64,11 +67,16 @@ namespace Api.Controllers
     //[ProducesResponseType(typeof(string), 400)]
     //[ProducesResponseType(typeof(Models.ViewModels.MeetingViewModel), 200)]
     //[SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Models.ViewModels.MeetingViewModel))]
-    public IActionResult CreateMeeting([FromBody] MeetingItemViewModel data)
+    public MeetingViewModel CreateMeeting([FromBody] MeetingItemViewModel data)
     {
+      if (data == null)
+      {
+        throw new Exception("The model processed is null");
+      }
       if (!data.IsValid())
       {
-        return BadRequest("Please provide a valid meeting model.");
+        throw new ArgumentException("Please provide a valid meeting model.");
+        //return BadRequest("Please provide a valid meeting model.");
       }
 
       var meeting = data.ToMeetingViewModel();
@@ -77,10 +85,10 @@ namespace Api.Controllers
 
       var result = _meetingService.CreateMeeting(token, meeting.ToEntity(), meeting.MeetingAttendeeCollection, meeting.MeetingAgendaCollection,
         meeting.MeetingNoteCollection, meeting.MeetingAttachmentCollection, meeting.MeetingActionCollection);
-      if (result.Key)
-        return Ok(result.Value);
+      //if (result.Key)
+      //return Ok(result.Value);
 
-      return BadRequest(result.Value.ResultMessage);
+      return result.Value; //BadRequest(result.Value.ResultMessage);
     }
 
     /// <summary>
@@ -93,13 +101,18 @@ namespace Api.Controllers
     [HttpPost("api/meeting/{id}", Name = "Update Meeting")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(string), 400)]
-    [ProducesResponseType(typeof(Minutz.Models.ViewModels.MeetingViewModel), 200)]
-    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Minutz.Models.ViewModels.MeetingViewModel))]
-    public IActionResult UpdateMeeting([FromBody] Minutz.Models.ViewModels.MeetingViewModel meeting)
+    [ProducesResponseType(typeof(MeetingItemViewModel), 200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingItemViewModel))]
+    public MeetingViewModel UpdateMeeting([FromBody] MeetingItemViewModel meeting)
     {
+      if (meeting == null)
+      {
+        throw new Exception("The model processed is null");
+      }
+      var viewModel = meeting.ToMeetingViewModel();
       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      var result = _meetingService.UpdateMeeting(token, meeting);
-      return Ok(result);
+      var result = _meetingService.UpdateMeeting(token, viewModel);
+      return result; //Ok(result);
     }
 
     /// <summary>
