@@ -49,7 +49,7 @@ namespace SqlRepository
     }
     public bool Add(MeetingAgenda agendaItem, string schema, string connectionString)
     {
-      if(string.IsNullOrEmpty(agendaItem.Id.ToString()))
+      if (string.IsNullOrEmpty(agendaItem.Id.ToString()))
       {
         agendaItem.Id = Guid.NewGuid();
       }
@@ -118,6 +118,14 @@ namespace SqlRepository
         return instance == 1;
       }
     }
+
+    /// <summary>
+    /// Deletes the meeting agenda.
+    /// </summary>
+    /// <returns><c>true</c>, if meeting agenda was deleted, <c>false</c> otherwise.</returns>
+    /// <param name="referenceId">Reference identifier.</param>
+    /// <param name="schema">Schema.</param>
+    /// <param name="connectionString">Connection string.</param>
     public bool DeleteMeetingAgenda(Guid referenceId, string schema, string connectionString)
     {
       if (referenceId == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))

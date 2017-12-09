@@ -11,6 +11,13 @@ namespace SqlRepository
 {
   public class MeetingRepository : IMeetingRepository
   {
+    /// <summary>
+    /// Get the specified id, schema and connectionString.
+    /// </summary>
+    /// <returns>The get.</returns>
+    /// <param name="id">Identifier.</param>
+    /// <param name="schema">Schema.</param>
+    /// <param name="connectionString">Connection string.</param>
     public Meeting Get(Guid id, string schema, string connectionString)
     {
       if (id == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
@@ -23,6 +30,13 @@ namespace SqlRepository
         return data;
       }
     }
+
+    /// <summary>
+    /// List the specified meetings for schema and connectionString.
+    /// </summary>
+    /// <returns>The list.</returns>
+    /// <param name="schema">Schema.</param>
+    /// <param name="connectionString">Connection string.</param>
     public List<Meeting> List(string schema, string connectionString)
     {
       if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(schema))
@@ -35,6 +49,14 @@ namespace SqlRepository
         return data;
       }
     }
+
+    /// <summary>
+    /// Add the specified action, schema and connectionString.
+    /// </summary>
+    /// <returns>The add.</returns>
+    /// <param name="action">Action.</param>
+    /// <param name="schema">Schema.</param>
+    /// <param name="connectionString">Connection string.</param>
     public bool Add(Meeting action, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
@@ -106,6 +128,14 @@ namespace SqlRepository
 
       }
     }
+
+    /// <summary>
+    /// Update the specified meeting, schema and connectionString.
+    /// </summary>
+    /// <returns>The update.</returns>
+    /// <param name="meeting">Meeting.</param>
+    /// <param name="schema">Schema.</param>
+    /// <param name="connectionString">Connection string.</param>
     public bool Update(Meeting meeting, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
@@ -147,9 +177,17 @@ namespace SqlRepository
           meeting.Outcome,
           meeting.Id
         });
-        return instance == 1; 
+        return instance == 1;
       }
     }
+
+    /// <summary>
+    /// Delete the specified id, schema and connectionString.
+    /// </summary>
+    /// <returns>The delete.</returns>
+    /// <param name="id">Identifier.</param>
+    /// <param name="schema">Schema.</param>
+    /// <param name="connectionString">Connection string.</param>
     public bool Delete(Guid id, string schema, string connectionString)
     {
       if (id == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))

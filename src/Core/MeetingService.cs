@@ -475,44 +475,69 @@ namespace Core
       return meetingViewModel;
     }
 
+    /// <summary>
+    /// Deletes the meeting.
+    /// </summary>
+    /// <returns>The meeting.</returns>
+    /// <param name="token">Token.</param>
+    /// <param name="meetingId">Meeting identifier.</param>
     public KeyValuePair<bool, string> DeleteMeeting(string token, Guid meetingId)
     {
-      var userInfo = _authenticationService.GetUserInfo(token);
-      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
-      var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
-                                                        _applicationSetting.Schema,
-                                                        _applicationSetting.CreateConnectionString(
-                                                                                                  _applicationSetting.Server,
-                                                                                                  _applicationSetting.Catalogue,
-                                                                                                  _applicationSetting.Username,
-                                                                                                  _applicationSetting.Password));
-      var userConnectionString = GetConnectionString(instance.Password, instance.Username);
+      var auth = new AuthenticationHelper(token, _authenticationService, _instanceRepository, _applicationSetting, _userValidationService);
 
-      var meetingResult = _meetingRepository.Delete(meetingId, instance.Username, userConnectionString);
+      var meetingResult = _meetingRepository.Delete(meetingId, auth.Instance.Username, auth.ConnectionString);
       if (!meetingResult)
+      {
         return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel.");
+      }
 
-      var meetingAgenda = _meetingAgendaRepository.DeleteMeetingAgenda(meetingId, instance.Username, userConnectionString);
-      if (!meetingAgenda)
-        return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel agenda items.");
+      if (_meetingAgendaRepository.GetMeetingAgenda(meetingId, auth.Instance.Username, auth.ConnectionString).Any())
+      {
+        var meetingAgenda = _meetingAgendaRepository.DeleteMeetingAgenda(meetingId, auth.Instance.Username, auth.ConnectionString);
+        if (!meetingAgenda)
+        {
+          return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel agenda items.");
+        }
+      }
 
-      var meetingAttendee = _meetingAttendeeRepository.DeleteMeetingAttendees(meetingId, instance.Username, userConnectionString);
-      if (!meetingAttendee)
-        return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel agenda attendee's.");
+      if (_meetingAttendeeRepository.GetMeetingAttendees(meetingId, auth.Instance.Username, auth.ConnectionString).Any())
+      {
+        var meetingAttendee = _meetingAttendeeRepository.DeleteMeetingAttendees(meetingId, auth.Instance.Username, auth.ConnectionString);
+        if (!meetingAttendee)
+        {
+          return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel agenda attendee's.");
+        }
+      }
 
-      var meetingAttachments =
-        _meetingAttachmentRepository.DeleteMeetingAcchments(meetingId, instance.Username, userConnectionString);
-      if (!meetingAttachments)
-        return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel agenda attachments.");
+      if (_meetingAttachmentRepository.GetMeetingAttachments(meetingId, auth.Instance.Username, auth.ConnectionString).Any())
+      {
+        var meetingAttachments =
+          _meetingAttachmentRepository.DeleteMeetingAcchments(meetingId, auth.Instance.Username, auth.ConnectionString);
+        if (!meetingAttachments)
+        {
+          return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel agenda attachments.");
+        }
+      }
 
-      var notesResult = _meetingNoteRepository.DeleteMeetingNotes(meetingId, instance.Username, userConnectionString);
-      if (!notesResult)
-        return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel agenda notes.");
+      if (_meetingNoteRepository.GetMeetingNotes(meetingId, auth.Instance.Username, auth.ConnectionString).Any())
+      {
+        var notesResult = _meetingNoteRepository.DeleteMeetingNotes(meetingId, auth.Instance.Username, auth.ConnectionString);
+        if (!notesResult)
+        {
+          return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel agenda notes.");
+        }
+      }
 
-      var actionResult =
-        _meetingActionRepository.DeleteMeetingActions(meetingId, instance.Username, userConnectionString);
-      if (!actionResult)
-        return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel agenda actions.");
+      if (_meetingActionRepository.GetMeetingActions(meetingId, auth.Instance.Username, auth.ConnectionString).Any())
+      {
+        var actionResult =
+            _meetingActionRepository.DeleteMeetingActions(meetingId, auth.Instance.Username, auth.ConnectionString);
+        if (!actionResult)
+        {
+          return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel agenda actions.");
+        }
+      }
+
       return new KeyValuePair<bool, string>(true, "Successful.");
     }
 

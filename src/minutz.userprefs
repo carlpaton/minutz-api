@@ -4,17 +4,18 @@
       <File FileName="Api/Controllers/MeetingController.cs" Line="56" Column="38" />
       <File FileName="Api/Extensions/MeetingExtensions.cs" Line="121" Column="90" />
       <File FileName="Interface/Services/IMeetingService.cs" Line="9" Column="57" />
-      <File FileName="Core/MeetingService.cs" Line="190" Column="5" />
-      <File FileName="Tests/MeetingControllerTests.cs" Line="26" Column="12" />
+      <File FileName="Core/MeetingService.cs" Line="540" Column="7" />
+      <File FileName="SqlRepository/MeetingAgendaRepository.cs" Line="136" Column="72" />
+      <File FileName="SqlRepository/MeetingRespository.cs" Line="204" Column="2" />
       <File FileName="src Status" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/SqlRepository/MeetingRespository.cs" relfile="SqlRepository/MeetingRespository.cs" line="104" column="43" />
-      <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/SqlRepository/MeetingRespository.cs" relfile="SqlRepository/MeetingRespository.cs" line="100" column="1" />
-      <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/SqlRepository/MeetingRespository.cs" relfile="SqlRepository/MeetingRespository.cs" line="81" column="1" />
+      <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/SqlRepository/MeetingRespository.cs" relfile="SqlRepository/MeetingRespository.cs" line="126" column="43" />
+      <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/SqlRepository/MeetingRespository.cs" relfile="SqlRepository/MeetingRespository.cs" line="122" column="1" />
+      <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/SqlRepository/MeetingRespository.cs" relfile="SqlRepository/MeetingRespository.cs" line="103" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
