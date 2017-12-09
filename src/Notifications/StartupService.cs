@@ -6,11 +6,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using Interface.Services;
-using Mailjet.Client;
-using Mailjet.Client.Resources;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Minutz.Models.Entities;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
@@ -25,7 +20,7 @@ namespace Notifications
       this._notify = notify;
     }
 
-    public bool SendInvitationMessage(Minutz.Models.Entities.MeetingAttendee attendee, Minutz.Models.Entities.Meeting meeting)
+    public bool SendInvitationMessage(Minutz.Models.Entities.MeetingAttendee attendee, Minutz.Models.ViewModels.MeetingViewModel meeting)
     {
       var to = new EmailAddress(attendee.Email, attendee.Name);
       var result = new SendGridClient(_notify.NotifyKey)

@@ -19,4 +19,7 @@
     <ProjectReference Include="..\SqlRepository\SqlRepository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="LogProvider\" />
+  </ItemGroup>
 </Project>

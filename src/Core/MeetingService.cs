@@ -175,7 +175,7 @@ namespace Core
         Outcome = meeting.Outcome,
         Purpose = meeting.Purpose,
         ReacuranceType = meeting.ReacuranceType,
-        Tag = meeting.Tag,
+        Tag = meeting.Tag.Split(',').ToList(),
         Time = meeting.Time,
         TimeZone = meeting.TimeZone,
         UpdatedDate = DateTime.UtcNow,
@@ -219,7 +219,7 @@ namespace Core
           Outcome = meeting.Outcome,
           Purpose = meeting.Purpose,
           ReacuranceType = meeting.ReacuranceType,
-          Tag = meeting.Tag,
+          Tag = meeting.Tag.Split(',').ToList(),
           Time = meeting.Time,
           TimeZone = meeting.TimeZone,
           UpdatedDate = DateTime.UtcNow,
@@ -337,7 +337,7 @@ namespace Core
           Purpose = meeting.Purpose,
           ReacuranceType = meeting.ReacuranceType,
           ResultMessage = "Successfully Created",
-          Tag = meeting.Tag,
+          Tag = meeting.Tag.Split(',').ToList(),
           Time = meeting.Time,
           TimeZone = meeting.TimeZone,
           UpdatedDate = DateTime.UtcNow
@@ -377,7 +377,7 @@ namespace Core
         Outcome = meetingViewModel.Outcome,
         Purpose = meetingViewModel.Purpose,
         ReacuranceType = meetingViewModel.ReacuranceType,
-        Tag = meetingViewModel.Tag,
+        Tag = String.Join(",", meetingViewModel.Tag.ToArray()),
         Time = meetingViewModel.Time,
         TimeZone = meetingViewModel.TimeZone,
         UpdatedDate = DateTime.UtcNow
@@ -565,6 +565,20 @@ namespace Core
       return new List<Minutz.Models.Entities.MinutzAction>();
     }
 
+    public void InviteUser(string token, MeetingAttendee attendee)
+    {
+      var userInfo = _authenticationService.GetUserInfo(token);
+      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
+      var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
+                                                        _applicationSetting.Schema,
+                                                        _applicationSetting.CreateConnectionString(
+                                                                                                    _applicationSetting.Server,
+                                                                                                    _applicationSetting.Catalogue,
+                                                                                                    _applicationSetting.Username,
+                                                                                                    _applicationSetting.Password));
+      var userConnectionString = GetConnectionString(instance.Password, instance.Username);
+
+    }
     public KeyValuePair<bool, string> SendMinutes(string token, Guid meetingId)
     {
       var meeting = this.GetMeeting(token, meetingId.ToString());

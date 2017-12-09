@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Api.Extensions
 {
@@ -8,31 +9,31 @@ namespace Api.Extensions
     public static Minutz.Models.ViewModels.MeetingViewModel ToMeetingViewModel(this Models.MeetingItemViewModel model)
     {
       var meetingId = model.Id == null ? Guid.NewGuid() : Guid.Parse(model.Id);
-      if(string.IsNullOrEmpty(model.Tag))
+      if (string.IsNullOrEmpty(model.Tag))
       {
         model.Tag = string.Empty;
       }
-      if(string.IsNullOrEmpty(model.Purpose))
+      if (string.IsNullOrEmpty(model.Purpose))
       {
         model.Purpose = string.Empty;
       }
-      if(string.IsNullOrEmpty(model.Outcome))
+      if (string.IsNullOrEmpty(model.Outcome))
       {
         model.Outcome = string.Empty;
       }
-      if(string.IsNullOrEmpty(model.ReacuranceType))
+      if (string.IsNullOrEmpty(model.ReacuranceType))
       {
         model.ReacuranceType = string.Empty;
       }
-      if(model.Date == DateTime.MinValue || model.Date == null)
+      if (model.Date == DateTime.MinValue || model.Date == null)
       {
         model.Date = DateTime.UtcNow;
       }
-      if(model.UpdatedDate == DateTime.MinValue || model.UpdatedDate == null)
+      if (model.UpdatedDate == DateTime.MinValue || model.UpdatedDate == null)
       {
         model.UpdatedDate = DateTime.UtcNow;
       }
-      if(string.IsNullOrEmpty(model.TimeZone))
+      if (string.IsNullOrEmpty(model.TimeZone))
       {
         model.TimeZone = string.Empty;
       }
@@ -50,7 +51,7 @@ namespace Api.Extensions
         Outcome = model.Outcome,
         Purpose = model.Purpose,
         ReacuranceType = model.ReacuranceType,
-        Tag = model.Tag,
+        //Tag =  model.Tag,
         Time = model.Time,
         TimeZone = model.TimeZone,
         UpdatedDate = model.UpdatedDate,
@@ -81,7 +82,7 @@ namespace Api.Extensions
         Outcome = viewModel.Outcome,
         Purpose = viewModel.Purpose,
         ReacuranceType = viewModel.ReacuranceType,
-        Tag = viewModel.Tag,
+        Tag = String.Join(",", viewModel.Tag.ToArray()),
         Time = viewModel.Time,
         TimeZone = viewModel.TimeZone,
         UpdatedDate = DateTime.UtcNow
@@ -105,7 +106,7 @@ namespace Api.Extensions
         Outcome = entity.Outcome,
         Purpose = entity.Purpose,
         ReacuranceType = entity.ReacuranceType,
-        Tag = entity.Tag,
+        Tag = entity.Tag.Split(',').ToList(),
         Time = entity.Time,
         TimeZone = entity.TimeZone,
         UpdatedDate = DateTime.UtcNow
@@ -134,7 +135,7 @@ namespace Api.Extensions
         Outcome = entity.Outcome,
         Purpose = entity.Purpose,
         ReacuranceType = entity.ReacuranceType,
-        Tag = entity.Tag,
+        Tag = entity.Tag.Split(',').ToList(),
         Time = entity.Time,
         TimeZone = entity.TimeZone,
         UpdatedDate = DateTime.UtcNow

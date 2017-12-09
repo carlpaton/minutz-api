@@ -101,18 +101,18 @@ namespace Api.Controllers
     [HttpPost("api/meeting/{id}", Name = "Update Meeting")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(string), 400)]
-    [ProducesResponseType(typeof(MeetingItemViewModel), 200)]
-    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingItemViewModel))]
-    public MeetingViewModel UpdateMeeting([FromBody] MeetingItemViewModel meeting)
+    [ProducesResponseType(typeof(MeetingViewModel), 200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingViewModel))]
+    public IActionResult UpdateMeeting([FromBody] MeetingViewModel meeting)
     {
       if (meeting == null)
       {
-        throw new Exception("The model processed is null");
+        return StatusCode(500);
       }
-      var viewModel = meeting.ToMeetingViewModel();
+      var viewModel = meeting;//.ToMeetingViewModel();
       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
       var result = _meetingService.UpdateMeeting(token, viewModel);
-      return result; //Ok(result);
+      return new ObjectResult(result);
     }
 
     /// <summary>

@@ -14,9 +14,11 @@ namespace Api.Controllers
   public class MeetingAttendeeController : Controller
   {
     private readonly IMeetingService _meetingService;
-    public MeetingAttendeeController(IMeetingService meetingService)
+    private readonly IStartupService _startupService;
+    public MeetingAttendeeController(IMeetingService meetingService, IStartupService startupService)
     {
       _meetingService = meetingService;
+      _startupService = startupService;
     }
 
     /// <summary>
@@ -41,7 +43,7 @@ namespace Api.Controllers
     public MeetingAttendee GetMeetingAttendee(string referenceId, string id)
     {
       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      var result = _meetingService.GetAttendee(token,Guid.Parse(referenceId), Guid.Parse(id));
+      var result = _meetingService.GetAttendee(token, Guid.Parse(referenceId), Guid.Parse(id));
       return result;
     }
 
@@ -72,7 +74,7 @@ namespace Api.Controllers
     /// <returns>A newly-created TodoItem</returns>
     /// <response code="201">Returns the newly-created item</response>
     /// <response code="400">If the item is null</response>
-    [HttpPut("api/meeting/{referenceId}/invite", Name = "Invite")]
+    [HttpPut("api/meeting/invite", Name = "Invite")]
     //[ProducesResponseType(typeof(MeetingAttendee),200)]
     //[SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingAttendee))]
     [Authorize]
@@ -87,12 +89,15 @@ namespace Api.Controllers
         return BadRequest("Please provide a valid name.");
       }
       System.Guid meetingId;
-      if (invitee.ReferenceId == null || System.Guid.TryParse(invitee.ReferenceId.ToString(), out meetingId))
+      if (invitee.ReferenceId == null || !System.Guid.TryParse(invitee.ReferenceId.ToString(), out meetingId))
       {
         return BadRequest("Please provide a valid meetingId");
       }
       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      return new ObjectResult(new MeetingAttendee());
+      var meeting = _meetingService.GetMeeting(token, invitee.ReferenceId);
+
+      var result = _startupService.SendInvitationMessage(invitee, meeting);
+      return new ObjectResult(invitee);
     }
 
     /// <summary>

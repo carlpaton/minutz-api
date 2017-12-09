@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Minutz.Models.Entities;
 
 namespace Minutz.Models.ViewModels
 {
@@ -18,17 +17,17 @@ namespace Minutz.Models.ViewModels
     public bool IsLocked { get; set; }
     public bool IsFormal { get; set; }
     public string TimeZone { get; set; }
-    public string Tag { get; set; }
+    public List<string> Tag { get; set; }
     public string Purpose { get; set; }
     public string MeetingOwnerId { get; set; }
     public string Outcome { get; set; }
 
-    public List<Minutz.Models.Entities.MeetingAgenda> MeetingAgendaCollection { get; set; }
-    public List<Minutz.Models.Entities.MeetingAttachment> MeetingAttachmentCollection { get; set; }
-    public List<Minutz.Models.Entities.MeetingAttendee> MeetingAttendeeCollection { get; set; }
-    public List<Minutz.Models.Entities.MeetingAttendee> AvailableAttendeeCollection { get; set; }
-    public List<Minutz.Models.Entities.MeetingNote> MeetingNoteCollection { get; set; }
-    public List<Minutz.Models.Entities.MinutzAction> MeetingActionCollection { get; set; }
+    public List<Entities.MeetingAgenda> MeetingAgendaCollection { get; set; }
+    public List<Entities.MeetingAttachment> MeetingAttachmentCollection { get; set; }
+    public List<Entities.MeetingAttendee> MeetingAttendeeCollection { get; set; }
+    public List<Entities.MeetingAttendee> AvailableAttendeeCollection { get; set; }
+    public List<Entities.MeetingNote> MeetingNoteCollection { get; set; }
+    public List<Entities.MinutzAction> MeetingActionCollection { get; set; }
 
     public string ResultMessage { get; set; }
   }

@@ -40,11 +40,11 @@ namespace Tests
       //Assert
     }
 
-    //[Test]
+    [Test]
     public void TestSendNotification()
     {
-      var meeting = new Meeting();
-      meeting.Id = Guid.NewGuid();
+      var meeting = new Minutz.Models.ViewModels.MeetingViewModel();
+      meeting.Id = Guid.NewGuid().ToString();
       meeting.Name = "Demo MeetingViewModel";
       var attendee = new MeetingAttendee();
       attendee.Email = "leeroya@gmail.com";

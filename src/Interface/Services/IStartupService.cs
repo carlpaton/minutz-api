@@ -5,6 +5,6 @@ namespace Interface.Services
   public interface IStartupService
   {
     bool SendInvitationMessage(MeetingAttendee attendee,
-                                Meeting meeting);
+                                Minutz.Models.ViewModels.MeetingViewModel meeting);
   }
 }
