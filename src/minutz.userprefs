@@ -1,25 +1,10 @@
 ﻿<Properties StartupConfiguration="{67CA3E6C-1759-46F3-9312-BC67A5C9B677}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="src Status">
     <Files>
-      <File FileName="Api/Controllers/MeetingController.cs" Line="113" Column="41" />
-      <File FileName="Core/MeetingService.cs" Line="457" Column="133" />
+      <File FileName="Api/Controllers/MeetingController.cs" Line="79" Column="67" />
+      <File FileName="Api/Extensions/MeetingExtensions.cs" Line="121" Column="90" />
       <File FileName="src Status" />
     </Files>
-    <Pads>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State>
-          <Value>meeting</Value>
-          <Value>action</Value>
-        </State>
-      </Pad>
-      <Pad Id="MonoDevelop.UnitTesting.TestPad">
-        <State name="__root__">
-          <Node name="minutz" expanded="True">
-            <Node name="Tests" selected="True" />
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

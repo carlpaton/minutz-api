@@ -30,7 +30,7 @@ namespace SqlRepository
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
-        var sql = $"select * from [{schema}].[MeetingNote] WHERE ReferenceId = '{referenceId.ToString()}'";
+        var sql = $"select * from [{schema}].[MeetingNote] WHERE ReferanceId = '{referenceId.ToString()}'";
         var data = dbConnection.Query<MeetingNote>(sql);
         return data.ToList();
       }

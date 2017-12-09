@@ -68,6 +68,58 @@ namespace Api.Extensions
     public static Minutz.Models.Entities.Meeting ToEntity(this Minutz.Models.ViewModels.MeetingViewModel viewModel)
     {
       var meetingId = viewModel.Id == null ? Guid.NewGuid() : Guid.Parse(viewModel.Id);
+      if (viewModel.Tag == null)
+      {
+        viewModel.Tag = new List<string>();
+      }
+      if (viewModel.Date == DateTime.MinValue)
+      {
+        viewModel.Date = DateTime.UtcNow;
+      }
+      if (viewModel.UpdatedDate == DateTime.MinValue)
+      {
+        viewModel.UpdatedDate = DateTime.UtcNow;
+      }
+      if (string.IsNullOrEmpty(viewModel.Purpose))
+      {
+        viewModel.Purpose = string.Empty;
+      }
+      if (string.IsNullOrEmpty(viewModel.Outcome))
+      {
+        viewModel.Outcome = string.Empty;
+      }
+      if (string.IsNullOrEmpty(viewModel.ReacuranceType))
+      {
+        viewModel.ReacuranceType = string.Empty;
+      }
+      if (string.IsNullOrEmpty(viewModel.TimeZone))
+      {
+        viewModel.TimeZone = string.Empty;
+      }
+      if (viewModel.AvailableAttendeeCollection == null)
+      {
+        viewModel.AvailableAttendeeCollection = new List<Minutz.Models.Entities.MeetingAttendee>();
+      }
+      if (viewModel.MeetingAgendaCollection == null)
+      {
+        viewModel.MeetingAgendaCollection = new List<Minutz.Models.Entities.MeetingAgenda>();
+      }
+      if (viewModel.MeetingAttendeeCollection == null)
+      {
+        viewModel.MeetingAttendeeCollection = new List<Minutz.Models.Entities.MeetingAttendee>();
+      }
+      if (viewModel.MeetingAttachmentCollection == null)
+      {
+        viewModel.MeetingAttachmentCollection = new List<Minutz.Models.Entities.MeetingAttachment>();
+      }
+      if (viewModel.MeetingActionCollection == null)
+      {
+        viewModel.MeetingActionCollection = new List<Minutz.Models.Entities.MinutzAction>();
+      }
+      if (viewModel.MeetingNoteCollection == null)
+      {
+        viewModel.MeetingNoteCollection = new List<Minutz.Models.Entities.MeetingNote>();
+      }
       var result = new Minutz.Models.Entities.Meeting
       {
         Id = meetingId,

@@ -24,7 +24,7 @@ namespace Core.Helper
                                                                                                 applicationSetting.Catalogue,
                                                                                                 applicationSetting.Username,
                                                                                                 applicationSetting.Password));
-      var userConnectionString = applicationSetting.CreateConnectionString(
+      this.ConnectionString = applicationSetting.CreateConnectionString(
                                                                             applicationSetting.Server,
                                                                             applicationSetting.Catalogue,
                                                                             this.Instance.Username,

@@ -23,6 +23,7 @@ namespace SqlRepository
         return data;
       }
     }
+
     public List<MeetingAttachment> GetMeetingAttachments(Guid referenceId, string schema, string connectionString)
     {
       if (referenceId == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
@@ -30,7 +31,7 @@ namespace SqlRepository
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
-        var sql = $"select * from [{schema}].[MeetingAttachment] WHERE ReferenceId = '{referenceId.ToString()}'";
+        var sql = $"select * from [{schema}].[MeetingAttachment] WHERE ReferanceId = '{referenceId.ToString()}'";
         var data = dbConnection.Query<MeetingAttachment>(sql);
         return data.ToList();
       }
@@ -54,7 +55,7 @@ namespace SqlRepository
         dbConnection.Open();
         string insertSql = $@"insert into [{schema}].[MeetingAttachment](
                                                                  [Id]
-                                                                ,[ReferenceId]
+                                                                ,[ReferanceId]
                                                                 ,[FileName]
                                                                 ,[MeetingAttendeeId]
                                                                 ,[Date]
@@ -86,7 +87,7 @@ namespace SqlRepository
       {
         dbConnection.Open();
         string updateQuery = $@"UPDATE [{schema}].[MeetingAttachment] 
-                             SET ReferenceId = @ReferenceId, 
+                             SET ReferanceId = @ReferenceId, 
                                  FileName = @FileName, 
                                  MeetingAttendeeId = @MeetingAttendeeId, 
                                  Date = @Date,

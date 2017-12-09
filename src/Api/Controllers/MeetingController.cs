@@ -62,33 +62,31 @@ namespace Api.Controllers
     /// <param name="meeting"></param>
     /// <returns>The created meetingViewModel object.</returns>
     [Authorize]
-    [HttpPut("api/meeting", Name = "Create a meeting")]
+    [HttpPut("api/meeting/create", Name = "Create a meeting")]
     [Produces("application/json")]
-    //[ProducesResponseType(typeof(string), 400)]
-    //[ProducesResponseType(typeof(Models.ViewModels.MeetingViewModel), 200)]
-    //[SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Models.ViewModels.MeetingViewModel))]
-    public MeetingViewModel CreateMeeting([FromBody] MeetingItemViewModel data)
+    [ProducesResponseType(typeof(string), 400)]
+    [ProducesResponseType(typeof(MeetingViewModel), 200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingViewModel))]
+    public IActionResult CreateMeeting([FromBody] MeetingViewModel data)
     {
       if (data == null)
       {
-        throw new Exception("The model processed is null");
+        return StatusCode(500);
       }
-      if (!data.IsValid())
-      {
-        throw new ArgumentException("Please provide a valid meeting model.");
-        //return BadRequest("Please provide a valid meeting model.");
-      }
-
-      var meeting = data.ToMeetingViewModel();
 
       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
 
-      var result = _meetingService.CreateMeeting(token, meeting.ToEntity(), meeting.MeetingAttendeeCollection, meeting.MeetingAgendaCollection,
-        meeting.MeetingNoteCollection, meeting.MeetingAttachmentCollection, meeting.MeetingActionCollection);
-      //if (result.Key)
-      //return Ok(result.Value);
-
-      return result.Value; //BadRequest(result.Value.ResultMessage);
+      var result = _meetingService.CreateMeeting(token, data.ToEntity(),
+                                                 data.MeetingAttendeeCollection,
+                                                 data.MeetingAgendaCollection,
+                                                 data.MeetingNoteCollection,
+                                                 data.MeetingAttachmentCollection,
+                                                 data.MeetingActionCollection);
+      if (result.Key)
+      {
+        return new ObjectResult(result.Value);
+      }
+      return new BadRequestResult();
     }
 
     /// <summary>
