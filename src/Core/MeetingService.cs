@@ -4,6 +4,7 @@ using Interface.Services;
 using Minutz.Models.Entities;
 using System;
 using System.Linq;
+using Core.Helper;
 
 namespace Core
 {
@@ -349,19 +350,11 @@ namespace Core
 
     public Minutz.Models.ViewModels.MeetingViewModel UpdateMeeting(string token, Minutz.Models.ViewModels.MeetingViewModel meetingViewModel)
     {
-      var userInfo = _authenticationService.GetUserInfo(token);
-      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
-      var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
-                                                        _applicationSetting.Schema,
-                                                        _applicationSetting.CreateConnectionString(
-                                                                                                    _applicationSetting.Server,
-                                                                                                    _applicationSetting.Catalogue,
-                                                                                                    _applicationSetting.Username,
-                                                                                                    _applicationSetting.Password));
-      var userConnectionString = GetConnectionString(instance.Password, instance.Username);
+      var auth = new AuthenticationHelper(token, _authenticationService, _instanceRepository, _applicationSetting, _userValidationService);
+
       if (string.IsNullOrEmpty(meetingViewModel.MeetingOwnerId))
       {
-        meetingViewModel.MeetingOwnerId = userInfo.Sub;
+        meetingViewModel.MeetingOwnerId = auth.UserInfo.Sub;
       }
       var meetingEntity = new Minutz.Models.Entities.Meeting
       {
@@ -383,85 +376,85 @@ namespace Core
         UpdatedDate = DateTime.UtcNow
       };
 
-      var result = _meetingRepository.Update(meetingEntity, instance.Username, userConnectionString);
+      var result = _meetingRepository.Update(meetingEntity, auth.Instance.Username, auth.ConnectionString);
       foreach (var agendaItem in meetingViewModel.MeetingAgendaCollection)
       {
-        var update = _meetingAgendaRepository.Get(agendaItem.Id, instance.Username, userConnectionString);
+        var update = _meetingAgendaRepository.Get(agendaItem.Id, auth.Instance.Username, auth.ConnectionString);
         if (update == null || update.Id == Guid.Empty)
         {
           agendaItem.Id = Guid.NewGuid();
           agendaItem.ReferenceId = meetingViewModel.Id.ToString();
-          var saveAgenda = _meetingAgendaRepository.Add(agendaItem, instance.Username, userConnectionString);
+          var saveAgenda = _meetingAgendaRepository.Add(agendaItem, auth.Instance.Username, auth.ConnectionString);
         }
         else
         {
-          var updateAgenda = _meetingAgendaRepository.Update(agendaItem, instance.Username, userConnectionString);
+          var updateAgenda = _meetingAgendaRepository.Update(agendaItem, auth.Instance.Username, auth.ConnectionString);
         }
       }
 
       foreach (var attendee in meetingViewModel.MeetingAttendeeCollection)
       {
-        var attendeeResult = _meetingAttendeeRepository.Get(Guid.Parse(attendee.Id), instance.Username, userConnectionString);
+        var attendeeResult = _meetingAttendeeRepository.Get(Guid.Parse(attendee.Id), auth.Instance.Username, auth.ConnectionString);
         if (attendeeResult == null || Guid.Parse(attendeeResult.Id) == Guid.Empty)
         {
           attendee.Id = Guid.NewGuid().ToString();
           attendee.ReferenceId = meetingViewModel.Id;
-          var savedAttendee = _meetingAttendeeRepository.Add(attendee, instance.Username, userConnectionString);
+          var savedAttendee = _meetingAttendeeRepository.Add(attendee, auth.Instance.Username, auth.ConnectionString);
         }
         else
         {
-          var savedAttendee = _meetingAttendeeRepository.Update(attendee, instance.Username, userConnectionString);
+          var savedAttendee = _meetingAttendeeRepository.Update(attendee, auth.Instance.Username, auth.ConnectionString);
         }
       }
 
       foreach (var attachment in meetingViewModel.MeetingAttachmentCollection)
       {
-        var attachmentResult = _meetingAttachmentRepository.Get(Guid.Parse(attachment.Id), instance.Username, userConnectionString);
+        var attachmentResult = _meetingAttachmentRepository.Get(Guid.Parse(attachment.Id), auth.Instance.Username, auth.ConnectionString);
         if (attachmentResult == null || Guid.Parse(attachmentResult.Id) == Guid.Empty)
         {
           attachment.Id = Guid.NewGuid().ToString();
           attachment.ReferanceId = meetingViewModel.Id;
-          var savedAttachment = _meetingAttachmentRepository.Add(attachment, instance.Username, userConnectionString);
+          var savedAttachment = _meetingAttachmentRepository.Add(attachment, auth.Instance.Username, auth.ConnectionString);
         }
         else
         {
-          var updateAttachment = _meetingAttachmentRepository.Update(attachment, instance.Username, userConnectionString);
+          var updateAttachment = _meetingAttachmentRepository.Update(attachment, auth.Instance.Username, auth.ConnectionString);
         }
       }
 
       foreach (var note in meetingViewModel.MeetingNoteCollection)
       {
-        var savedNote = _meetingAttachmentRepository.Get(Guid.Parse(note.Id), instance.Username, userConnectionString);
+        var savedNote = _meetingAttachmentRepository.Get(Guid.Parse(note.Id), auth.Instance.Username, auth.ConnectionString);
         if (savedNote == null || Guid.Parse(savedNote.Id) == Guid.Empty)
         {
           note.Id = Guid.NewGuid().ToString();
           note.ReferanceId = meetingViewModel.Id;
-          var noteSaved = _meetingNoteRepository.Add(note, instance.Username, userConnectionString);
+          var noteSaved = _meetingNoteRepository.Add(note, auth.Instance.Username, auth.ConnectionString);
         }
         else
         {
-          var noteUpdate = _meetingNoteRepository.Update(note, instance.Username, userConnectionString);
+          var noteUpdate = _meetingNoteRepository.Update(note, auth.Instance.Username, auth.ConnectionString);
         }
       }
 
       foreach (var action in meetingViewModel.MeetingActionCollection)
       {
-        var actionAction = _meetingActionRepository.Get(Guid.Parse(action.Id), instance.Username, userConnectionString);
+        var actionAction = _meetingActionRepository.Get(Guid.Parse(action.Id), auth.Instance.Username, auth.ConnectionString);
         if (actionAction == null || Guid.Parse(actionAction.Id) == Guid.Empty)
         {
           action.Id = Guid.NewGuid().ToString();
           action.ReferanceId = meetingViewModel.Id;
-          var actionSaved = _meetingActionRepository.Add(action, instance.Username, userConnectionString);
+          var actionSaved = _meetingActionRepository.Add(action, auth.Instance.Username, auth.ConnectionString);
         }
         else
         {
-          var actionUpdate = _meetingActionRepository.Update(action, instance.Username, userConnectionString);
+          var actionUpdate = _meetingActionRepository.Update(action, auth.Instance.Username, auth.ConnectionString);
         }
       }
 
-      var agendaItems = _meetingAgendaRepository.GetMeetingAgenda(meetingEntity.Id, instance.Username, userConnectionString);
-      var availibeAttendees = _meetingAttendeeRepository.GetAvalibleAttendees(instance.Username, userConnectionString);
-      var attendees = _meetingAttendeeRepository.GetMeetingAttendees(meetingEntity.Id, instance.Username, userConnectionString);
+      var agendaItems = _meetingAgendaRepository.GetMeetingAgenda(meetingEntity.Id, auth.Instance.Username, auth.ConnectionString);
+      var availibeAttendees = _meetingAttendeeRepository.GetAvalibleAttendees(auth.Instance.Username, auth.ConnectionString);
+      var attendees = _meetingAttendeeRepository.GetMeetingAttendees(meetingEntity.Id, auth.Instance.Username, auth.ConnectionString);
 
       meetingViewModel.AvailableAttendeeCollection = availibeAttendees;
       meetingViewModel.MeetingAgendaCollection = agendaItems;
@@ -579,6 +572,7 @@ namespace Core
       var userConnectionString = GetConnectionString(instance.Password, instance.Username);
 
     }
+
     public KeyValuePair<bool, string> SendMinutes(string token, Guid meetingId)
     {
       var meeting = this.GetMeeting(token, meetingId.ToString());

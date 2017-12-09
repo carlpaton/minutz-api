@@ -109,9 +109,8 @@ namespace Api.Controllers
       {
         return StatusCode(500);
       }
-      var viewModel = meeting;//.ToMeetingViewModel();
       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      var result = _meetingService.UpdateMeeting(token, viewModel);
+      var result = _meetingService.UpdateMeeting(token, meeting);
       return new ObjectResult(result);
     }
 

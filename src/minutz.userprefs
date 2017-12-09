@@ -1,10 +1,8 @@
 ﻿<Properties StartupConfiguration="{67CA3E6C-1759-46F3-9312-BC67A5C9B677}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="src Status">
     <Files>
-      <File FileName="Api/Controllers/MeetingController.cs" Line="106" Column="57" />
-      <File FileName="Models/ViewModels/MeetingViewModel.cs" Line="18" Column="39" />
-      <File FileName="Core/MeetingService.cs" Line="380" Column="63" />
-      <File FileName="Api/Extensions/MeetingExtensions.cs" Line="138" Column="44" />
+      <File FileName="Api/Controllers/MeetingController.cs" Line="113" Column="41" />
+      <File FileName="Core/MeetingService.cs" Line="457" Column="133" />
       <File FileName="src Status" />
     </Files>
     <Pads>
@@ -29,13 +27,13 @@
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/SqlRepository/MeetingRespository.cs" relfile="SqlRepository/MeetingRespository.cs" line="104" column="43" />
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/SqlRepository/MeetingRespository.cs" relfile="SqlRepository/MeetingRespository.cs" line="100" column="1" />
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/SqlRepository/MeetingRespository.cs" relfile="SqlRepository/MeetingRespository.cs" line="81" column="1" />
-      <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/Api/Controllers/MeetingController.cs" relfile="Api/Controllers/MeetingController.cs" line="108" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
     <Watch file="Api/Controllers/MeetingController.cs" line="74" offsetX="707" offsetY="838" expression="meeting" liveUpdate="True" />
     <Watch file="Api/Extensions/MeetingExtensions.cs" line="38" offsetX="908" offsetY="555" expression="viewModel" liveUpdate="False" />
     <Watch file="SqlRepository/MeetingRespository.cs" line="38" offsetX="619" offsetY="555" expression="action" liveUpdate="False" />
+    <Watch file="Api/Controllers/MeetingController.cs" line="106" offsetX="619" offsetY="1035" expression="meeting" liveUpdate="False" />
   </MonoDevelop.Ide.DebuggingService.PinnedWatches>
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.ItemProperties.Api PreferredExecutionTarget="MonoDevelop.Default" />
