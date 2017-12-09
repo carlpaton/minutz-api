@@ -1,8 +1,11 @@
 ﻿<Properties StartupConfiguration="{67CA3E6C-1759-46F3-9312-BC67A5C9B677}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="src Status">
     <Files>
-      <File FileName="Api/Controllers/MeetingController.cs" Line="79" Column="67" />
+      <File FileName="Api/Controllers/MeetingController.cs" Line="56" Column="38" />
       <File FileName="Api/Extensions/MeetingExtensions.cs" Line="121" Column="90" />
+      <File FileName="Interface/Services/IMeetingService.cs" Line="9" Column="57" />
+      <File FileName="Core/MeetingService.cs" Line="190" Column="5" />
+      <File FileName="Tests/MeetingControllerTests.cs" Line="26" Column="12" />
       <File FileName="src Status" />
     </Files>
   </MonoDevelop.Ide.Workbench>

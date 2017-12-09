@@ -149,19 +149,17 @@ namespace Core
             userConnectionString); ;
     }
 
+    /// <summary>
+    /// Gets the meeting.
+    /// </summary>
+    /// <returns>The meeting.</returns>
+    /// <param name="token">Token.</param>
+    /// <param name="id">Identifier.</param>
     public Minutz.Models.ViewModels.MeetingViewModel GetMeeting(string token, string id)
     {
-      var userInfo = _authenticationService.GetUserInfo(token);
-      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
-      var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
-                                                       _applicationSetting.Schema,
-                                                       _applicationSetting.CreateConnectionString(
-                                                          _applicationSetting.Server,
-                                                          _applicationSetting.Catalogue,
-                                                          _applicationSetting.Username,
-                                                          _applicationSetting.Password));
-      var userConnectionString = GetConnectionString(instance.Password, instance.Username);
-      var meeting = _meetingRepository.Get(Guid.Parse(id), instance.Username, userConnectionString);
+      var auth = new AuthenticationHelper(token, _authenticationService, _instanceRepository, _applicationSetting, _userValidationService);
+
+      var meeting = _meetingRepository.Get(Guid.Parse(id), auth.Instance.Username, auth.ConnectionString);
       var meetingViewModel = new Minutz.Models.ViewModels.MeetingViewModel
       {
         Id = meeting.Id.ToString(),
@@ -180,30 +178,26 @@ namespace Core
         Time = meeting.Time,
         TimeZone = meeting.TimeZone,
         UpdatedDate = DateTime.UtcNow,
-        AvailableAttendeeCollection = _meetingAttendeeRepository.GetAvalibleAttendees(instance.Username, userConnectionString),
-        MeetingAgendaCollection = _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, instance.Username, userConnectionString),
-        MeetingAttachmentCollection = _meetingAttachmentRepository.GetMeetingAttachments(meeting.Id, instance.Username, userConnectionString),
-        MeetingAttendeeCollection = _meetingAttendeeRepository.GetMeetingAttendees(meeting.Id, instance.Username, userConnectionString),
-        MeetingNoteCollection = _meetingNoteRepository.GetMeetingNotes(meeting.Id, instance.Username, userConnectionString)
+        AvailableAttendeeCollection = _meetingAttendeeRepository.GetAvalibleAttendees(auth.Instance.Username, auth.ConnectionString),
+        MeetingAgendaCollection = _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, auth.Instance.Username, auth.ConnectionString),
+        MeetingAttachmentCollection = _meetingAttachmentRepository.GetMeetingAttachments(meeting.Id, auth.Instance.Username, auth.ConnectionString),
+        MeetingAttendeeCollection = _meetingAttendeeRepository.GetMeetingAttendees(meeting.Id, auth.Instance.Username, auth.ConnectionString),
+        MeetingNoteCollection = _meetingNoteRepository.GetMeetingNotes(meeting.Id, auth.Instance.Username, auth.ConnectionString)
       };
       return meetingViewModel;
     }
 
+    /// <summary>
+    /// Gets the meetings.
+    /// </summary>
+    /// <returns>The meetings.</returns>
+    /// <param name="token">Token.</param>
     public IEnumerable<Minutz.Models.ViewModels.MeetingViewModel> GetMeetings(string token)
     {
-      var userInfo = _authenticationService.GetUserInfo(token);
-      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
-      var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
-                                                        _applicationSetting.Schema,
-                                                        _applicationSetting.CreateConnectionString(
-                                                                                                    _applicationSetting.Server,
-                                                                                                    _applicationSetting.Catalogue,
-                                                                                                    _applicationSetting.Username,
-                                                                                                    _applicationSetting.Password));
-      var userConnectionString = GetConnectionString(instance.Password, instance.Username);
+      var auth = new AuthenticationHelper(token, _authenticationService, _instanceRepository, _applicationSetting, _userValidationService);
 
       var result = new List<Minutz.Models.ViewModels.MeetingViewModel>();
-      var meetings = _meetingRepository.List(instance.Username, userConnectionString);
+      var meetings = _meetingRepository.List(auth.Instance.Username, auth.ConnectionString);
       foreach (var meeting in meetings)
       {
         var meetingViewModel = new Minutz.Models.ViewModels.MeetingViewModel
@@ -224,11 +218,11 @@ namespace Core
           Time = meeting.Time,
           TimeZone = meeting.TimeZone,
           UpdatedDate = DateTime.UtcNow,
-          AvailableAttendeeCollection = _meetingAttendeeRepository.GetAvalibleAttendees(instance.Username, userConnectionString),
-          MeetingAgendaCollection = _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, instance.Username, userConnectionString),
-          MeetingAttachmentCollection = _meetingAttachmentRepository.GetMeetingAttachments(meeting.Id, instance.Username, userConnectionString),
-          MeetingAttendeeCollection = _meetingAttendeeRepository.GetMeetingAttendees(meeting.Id, instance.Username, userConnectionString),
-          MeetingNoteCollection = _meetingNoteRepository.GetMeetingNotes(meeting.Id, instance.Username, userConnectionString)
+          AvailableAttendeeCollection = _meetingAttendeeRepository.GetAvalibleAttendees(auth.Instance.Username, auth.ConnectionString),
+          MeetingAgendaCollection = _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, auth.Instance.Username, auth.ConnectionString),
+          MeetingAttachmentCollection = _meetingAttachmentRepository.GetMeetingAttachments(meeting.Id, auth.Instance.Username, auth.ConnectionString),
+          MeetingAttendeeCollection = _meetingAttendeeRepository.GetMeetingAttendees(meeting.Id, auth.Instance.Username, auth.ConnectionString),
+          MeetingNoteCollection = _meetingNoteRepository.GetMeetingNotes(meeting.Id, auth.Instance.Username, auth.ConnectionString)
         };
 
         result.Add(meetingViewModel);

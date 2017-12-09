@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Minutz.Models.Entities;
 using NUnit.Framework;
 using NSubstitute;
+using Minutz.Models.ViewModels;
 
 namespace Tests
 {
@@ -23,7 +24,7 @@ namespace Tests
       };
 
       //Act
-      var result = controller.CreateMeeting(new Api.Models.MeetingItemViewModel());
+      var result = controller.CreateMeeting(new MeetingViewModel());
 
       //Assert
       Assert.IsInstanceOf(typeof(BadRequestObjectResult), result);
