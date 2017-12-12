@@ -11,6 +11,13 @@ namespace SqlRepository
 {
   public class MeetingAttendeeRepository : IMeetingAttendeeRepository
   {
+    /// <summary>
+    /// Get the specified id, schema and connectionString.
+    /// </summary>
+    /// <returns>The get.</returns>
+    /// <param name="id">Identifier.</param>
+    /// <param name="schema">Schema.</param>
+    /// <param name="connectionString">Connection string.</param>
     public MeetingAttendee Get(Guid id, string schema, string connectionString)
     {
       if (id == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
@@ -23,6 +30,14 @@ namespace SqlRepository
         return data;
       }
     }
+
+    /// <summary>
+    /// Gets the meeting attendees.
+    /// </summary>
+    /// <returns>The meeting attendees.</returns>
+    /// <param name="referenceId">Reference identifier.</param>
+    /// <param name="schema">Schema.</param>
+    /// <param name="connectionString">Connection string.</param>
     public List<MeetingAttendee> GetMeetingAttendees(Guid referenceId, string schema, string connectionString)
     {
       if (referenceId == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
@@ -35,6 +50,13 @@ namespace SqlRepository
         return data.ToList();
       }
     }
+
+    /// <summary>
+    /// Gets the avalible attendees.
+    /// </summary>
+    /// <returns>The avalible attendees.</returns>
+    /// <param name="schema">Schema.</param>
+    /// <param name="connectionString">Connection string.</param>
     public List<MeetingAttendee> GetAvalibleAttendees(string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
@@ -45,6 +67,13 @@ namespace SqlRepository
         return data.ToList();
       }
     }
+
+    /// <summary>
+    /// List the specified schema and connectionString.
+    /// </summary>
+    /// <returns>The list.</returns>
+    /// <param name="schema">Schema.</param>
+    /// <param name="connectionString">Connection string.</param>
     public IEnumerable<MeetingAttendee> List(string schema, string connectionString)
     {
       if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(schema))
@@ -57,10 +86,22 @@ namespace SqlRepository
         return data;
       }
     }
-    public bool Add(MeetingAttendee action, string schema, string connectionString)
+
+    /// <summary>
+    /// Add the specified action, schema and connectionString.
+    /// </summary>
+    /// <returns>The add.</returns>
+    /// <param name="attendee">Action.</param>
+    /// <param name="schema">Schema.</param>
+    /// <param name="connectionString">Connection string.</param>
+    public bool Add(MeetingAttendee attendee, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
+        if (string.IsNullOrEmpty(attendee.Id))
+        {
+          attendee.Id = Guid.NewGuid().ToString();
+        }
         dbConnection.Open();
         string insertSql = $@"insert into [{schema}].[MeetingAttendee](
                                                                  [Id]
@@ -70,20 +111,63 @@ namespace SqlRepository
                                                                 ) 
                                                          values(
                                                                  @Id
-                                                                ,@ReferanceId
+                                                                ,@ReferenceId
                                                                 ,@PersonIdentity
                                                                 ,@Role
                                                                 )";
         var instance = dbConnection.Execute(insertSql, new
         {
-          action.Id,
-          action.ReferenceId,
-          action.PersonIdentity,
-          action.Role
+          attendee.Id,
+          attendee.ReferenceId,
+          attendee.PersonIdentity,
+          attendee.Role
         });
         return instance == 1;
       }
     }
+
+    public bool AddInvitee(MeetingAttendee attendee, string schema, string connectionString)
+    {
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        if (string.IsNullOrEmpty(attendee.Id))
+        {
+          attendee.Id = Guid.NewGuid().ToString();
+        }
+        dbConnection.Open();
+        string insertSql = $@"insert into [{schema}].[AvailibleAttendee](
+                                                                 [Id]
+                                                                ,[ReferanceId]
+                                                                ,[PersonIdentity]
+                                                                ,[Status]
+                                                                ,[Role]
+                                                                ) 
+                                                         values(
+                                                                 @Id
+                                                                ,@ReferenceId
+                                                                ,@PersonIdentity
+                                                                ,@Status
+                                                                ,@Role
+                                                                )";
+        var instance = dbConnection.Execute(insertSql, new
+        {
+          attendee.Id,
+          attendee.ReferenceId,
+          attendee.PersonIdentity,
+          attendee.Status,
+          attendee.Role
+        });
+        return instance == 1;
+      }
+    }
+
+    /// <summary>
+    /// Update the specified action, schema and connectionString.
+    /// </summary>
+    /// <returns>The update.</returns>
+    /// <param name="action">Action.</param>
+    /// <param name="schema">Schema.</param>
+    /// <param name="connectionString">Connection string.</param>
     public bool Update(MeetingAttendee action, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
@@ -103,6 +187,14 @@ namespace SqlRepository
         return instance == 1;
       }
     }
+
+    /// <summary>
+    /// Deletes the meeting attendees.
+    /// </summary>
+    /// <returns><c>true</c>, if meeting attendees was deleted, <c>false</c> otherwise.</returns>
+    /// <param name="referanceId">Referance identifier.</param>
+    /// <param name="schema">Schema.</param>
+    /// <param name="connectionString">Connection string.</param>
     public bool DeleteMeetingAttendees(Guid referanceId, string schema, string connectionString)
     {
       if (referanceId == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
@@ -115,6 +207,14 @@ namespace SqlRepository
         return instance == 1;
       }
     }
+
+    /// <summary>
+    /// Delete the specified id, schema and connectionString.
+    /// </summary>
+    /// <returns>The delete.</returns>
+    /// <param name="id">Identifier.</param>
+    /// <param name="schema">Schema.</param>
+    /// <param name="connectionString">Connection string.</param>
     public bool Delete(Guid id, string schema, string connectionString)
     {
       if (id == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))

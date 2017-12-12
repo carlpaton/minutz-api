@@ -74,7 +74,7 @@ namespace Api.Controllers
     /// <returns>A newly-created TodoItem</returns>
     /// <response code="201">Returns the newly-created item</response>
     /// <response code="400">If the item is null</response>
-    [HttpPut("api/meeting/invite", Name = "Invite")]
+    [HttpPut("api/meetingAttendee/invite", Name = "Invite")]
     //[ProducesResponseType(typeof(MeetingAttendee),200)]
     //[SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingAttendee))]
     [Authorize]
@@ -96,8 +96,20 @@ namespace Api.Controllers
       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
       var meeting = _meetingService.GetMeeting(token, invitee.ReferenceId);
 
+      invitee.PersonIdentity = invitee.Email;
+      invitee.Role = "invited";
+      invitee.Status = "invited";
       var result = _startupService.SendInvitationMessage(invitee, meeting);
-      return new ObjectResult(invitee);
+      if (result)
+      {
+        var savedUser = _meetingService.InviteUser(token, invitee);
+        if (savedUser)
+        {
+          return new ObjectResult(invitee);
+        }
+        return BadRequest("There was a issue saving the invited user.");
+      }
+      return BadRequest("There was a issue inviting the user.");
     }
 
     /// <summary>

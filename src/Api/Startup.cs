@@ -10,6 +10,7 @@ using Core.ExternalServices;
 using Interface.Services;
 using SqlRepository;
 using Core;
+using Notifications;
 
 namespace Api
 {
@@ -46,6 +47,10 @@ namespace Api
       services.AddTransient<IAuthenticationService, AuthenticationService>();
       services.AddTransient<IApplicationManagerService, ApplicationManagerService>();
       services.AddTransient<IMeetingService, MeetingService>();
+
+      services.AddTransient<INotify, Notify>();
+      services.AddTransient<IStartupService, StartupService>();
+
 
       services.AddMemoryCache();
       services.AddMvc();

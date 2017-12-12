@@ -348,7 +348,9 @@ namespace Core
     /// <returns>The meeting.</returns>
     /// <param name="token">Token.</param>
     /// <param name="meetingViewModel">Meeting view model.</param>
-    public Minutz.Models.ViewModels.MeetingViewModel UpdateMeeting(string token, Minutz.Models.ViewModels.MeetingViewModel meetingViewModel)
+    public Minutz.Models.ViewModels.MeetingViewModel UpdateMeeting(
+                                                                    string token,
+                                                                    Minutz.Models.ViewModels.MeetingViewModel meetingViewModel)
     {
       var auth = new AuthenticationHelper(token, _authenticationService, _instanceRepository, _applicationSetting, _userValidationService);
 
@@ -541,7 +543,7 @@ namespace Core
       return new KeyValuePair<bool, string>(true, "Successful.");
     }
 
-    public Minutz.Models.Entities.MeetingAttendee GetAttendee(string token, Guid attendeeId, Guid meetingId)
+    public MeetingAttendee GetAttendee(string token, Guid attendeeId, Guid meetingId)
     {
       var userInfo = _authenticationService.GetUserInfo(token);
       var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
@@ -558,7 +560,7 @@ namespace Core
       return data;
     }
 
-    public IEnumerable<Minutz.Models.Entities.MinutzAction> GetMinutzActions(string referenceId,
+    public IEnumerable<MinutzAction> GetMinutzActions(string referenceId,
                                                       string token)
     {
       if (string.IsNullOrEmpty(referenceId))
@@ -596,19 +598,13 @@ namespace Core
       return new List<Minutz.Models.Entities.MinutzAction>();
     }
 
-    public void InviteUser(string token, MeetingAttendee attendee)
+    public bool InviteUser(
+                          string token,
+                          MeetingAttendee attendee)
     {
-      var userInfo = _authenticationService.GetUserInfo(token);
-      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
-      var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
-                                                        _applicationSetting.Schema,
-                                                        _applicationSetting.CreateConnectionString(
-                                                                                                    _applicationSetting.Server,
-                                                                                                    _applicationSetting.Catalogue,
-                                                                                                    _applicationSetting.Username,
-                                                                                                    _applicationSetting.Password));
-      var userConnectionString = GetConnectionString(instance.Password, instance.Username);
+      var auth = new AuthenticationHelper(token, _authenticationService, _instanceRepository, _applicationSetting, _userValidationService);
 
+      return _meetingAttendeeRepository.AddInvitee(attendee, auth.Instance.Username, auth.ConnectionString);
     }
 
     public KeyValuePair<bool, string> SendMinutes(string token, Guid meetingId)

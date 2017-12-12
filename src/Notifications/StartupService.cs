@@ -30,7 +30,11 @@ namespace Notifications
                                                                                meeting.Name))
                                       .Result;
       var resultBody = result.Body.ReadAsStringAsync().Result;
-      return true;
+      if (result.StatusCode == System.Net.HttpStatusCode.OK || result.StatusCode == System.Net.HttpStatusCode.Accepted)
+      {
+        return true;
+      }
+      return false;
     }
 
     internal SendGridMessage CreateInvitationMessage(EmailAddress to,
@@ -61,7 +65,7 @@ namespace Notifications
       message.AppendLine($"<div><h2>Welcome {attendeeName},</h2></div>");
       message.AppendLine($"<div><p>You are invited to: {meetingName} .</p></div>");
       message.AppendLine($"<div><p></p></div>");
-      message.AppendLine($"<div><p>Click <a href='{_notify.DestinationBaseAddress}?meetingId={meetingId}'>Join</a> to accept the meeting request, and start collaborating. </p></div>");
+      message.AppendLine($"<div><p>Click <a href='{_notify.DestinationBaseAddress}?id={meetingId}'>Join</a> to accept the meeting request, and start collaborating. </p></div>");
       message.AppendLine($"<div></div>");
       return message.ToString();
     }

@@ -35,6 +35,7 @@
     <ProjectReference Include="..\Interface\Interface.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
     <ProjectReference Include="..\SqlRepository\SqlRepository.csproj" />
+    <ProjectReference Include="..\Notifications\Notifications.csproj" />
   </ItemGroup>
 
   <ItemGroup>
