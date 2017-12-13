@@ -45,6 +45,11 @@ namespace Interface.Services
                                           string token,
                                           Guid meetingId);
 
+    KeyValuePair<bool, string> SendInvatations(
+                                              string token,
+                                              Guid meetingId,
+                                              IInvatationService invatationService);
+
     IEnumerable<KeyValuePair<string, string>> ExtractQueries(string returnUri);
 
     MeetingAttendee GetAttendee(

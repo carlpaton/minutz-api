@@ -617,6 +617,19 @@ namespace Core
       return new KeyValuePair<bool, string>(true, "");
     }
 
+    public KeyValuePair<bool, string> SendInvatations(
+                                                      string token,
+                                                      Guid meetingId,
+                                                      IInvatationService invatationService)
+    {
+      var meeting = this.GetMeeting(token, meetingId.ToString());
+      foreach (var attendee in meeting.MeetingAttendeeCollection)
+      {
+        var invatation = invatationService.SendMeetingInvatation(attendee, meeting);
+      }
+      return new KeyValuePair<bool, string>(true, "successful");
+    }
+
     public IEnumerable<KeyValuePair<string, string>> ExtractQueries(string returnUri)
     {
       var queries = new List<KeyValuePair<string, string>>();

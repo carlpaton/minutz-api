@@ -47,6 +47,7 @@ namespace Api
       services.AddTransient<IAuthenticationService, AuthenticationService>();
       services.AddTransient<IApplicationManagerService, ApplicationManagerService>();
       services.AddTransient<IMeetingService, MeetingService>();
+      services.AddTransient<IInvatationService, InvatationService>();
 
       services.AddTransient<INotify, Notify>();
       services.AddTransient<IStartupService, StartupService>();

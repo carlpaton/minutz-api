@@ -1,27 +1,31 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 using Interface.Services;
+using Minutz.Models.Entities;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
 namespace Notifications
 {
-  public class StartupService : IStartupService
+  public class InvatationService : IInvatationService
   {
     private readonly INotify _notify;
     private readonly string _invitationSubject = "You are invited to a Minutz Meeting.";
-    public StartupService(INotify notify)
+
+    public InvatationService(INotify notify)
     {
       this._notify = notify;
     }
 
-    public bool SendInvitationMessage(Minutz.Models.Entities.MeetingAttendee attendee, Minutz.Models.ViewModels.MeetingViewModel meeting)
+    public bool SendMeetingInvatation(MeetingAttendee attendee,
+                                      Minutz.Models.ViewModels.MeetingViewModel meeting)
     {
       var to = new EmailAddress(attendee.Email, attendee.Name);
       var result = new SendGridClient(_notify.NotifyKey)
                                       .SendEmailAsync(CreateInvitationMessage(to,
                                                                                _invitationSubject,
                                                                                meeting.Id.ToString(),
-                                                                               meeting.Name))
+                                                                               meeting.Name, meeting.MeetingAgendaCollection))
                                       .Result;
       var resultBody = result.Body.ReadAsStringAsync().Result;
       if (result.StatusCode == System.Net.HttpStatusCode.OK || result.StatusCode == System.Net.HttpStatusCode.Accepted)
@@ -34,13 +38,14 @@ namespace Notifications
     internal SendGridMessage CreateInvitationMessage(EmailAddress to,
                                                      string subject,
                                                      string meetingId,
-                                                     string meetingName)
+                                                     string meetingName,
+                                                     List<MeetingAgenda> agenda)
     {
       var message = MailHelper.CreateSingleEmail(CreateFromUser(),
                                                   to,
                                                   subject,
-                                                  createInvitationTextMessage(),
-                                                  createInvitationHtmlMessage(to.Name, meetingId, meetingName));
+                                                  createInvitationTextMessage(to.Name, meetingId, meetingName, agenda),
+                                                  createInvitationHtmlMessage(to.Name, meetingId, meetingName, agenda));
       message.SetTemplateId(_notify.NotifyDefaultTemplateKey);
       return message;
     }
@@ -53,17 +58,25 @@ namespace Notifications
 
     internal string createInvitationHtmlMessage(string attendeeName,
                                                 string meetingId,
-                                                string meetingName)
+                                                string meetingName,
+                                                List<MeetingAgenda> agenda)
     {
       var message = new StringBuilder();
       message.AppendLine($"<div><h2>Welcome {attendeeName},</h2></div>");
-      message.AppendLine($"<div><p>You are invited to: {meetingName} .</p></div>");
+      message.AppendLine($"<div><p>You are invited to the meeting: {meetingName} .</p></div>");
       message.AppendLine($"<div><p></p></div>");
+      foreach (var agendaItem in agenda)
+      {
+        message.AppendLine($"<div><div>{agendaItem.AgendaText}</div><div></div></div>");
+      }
       message.AppendLine($"<div><p>Click <a href='{_notify.DestinationBaseAddress}?id={meetingId}'>Join</a> to accept the meeting request, and start collaborating. </p></div>");
       message.AppendLine($"<div></div>");
       return message.ToString();
     }
-    internal string createInvitationTextMessage()
+    internal string createInvitationTextMessage(string attendeeName,
+                                                string meetingId,
+                                                string meetingName,
+                                                List<MeetingAgenda> agenda)
     {
       return "and easy to do anywhere, even with C#";
     }

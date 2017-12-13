@@ -15,11 +15,13 @@ namespace Api.Controllers
   public class MeetingController : Controller
   {
     private readonly IMeetingService _meetingService;
+    private readonly IInvatationService _invatationService;
 
-    public MeetingController(IMeetingService meetingService)
+    public MeetingController(IMeetingService meetingService,
+                             IInvatationService invatationService)
     {
       _meetingService = meetingService;
-
+      _invatationService = invatationService;
     }
 
     /// <summary>
@@ -134,6 +136,24 @@ namespace Api.Controllers
       return BadRequest(result.Value);
     }
 
+    [Authorize]
+    [HttpPost("api/sendmeetinginvatations/{meetingId}")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(string), 400)]
+    [ProducesResponseType(typeof(string), 200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(string))]
+    public IActionResult SendMeetingInvatations(string meetingId)
+    {
+      if (string.IsNullOrEmpty(meetingId))
+        return BadRequest("Please provide a valid id");
+      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+      var meeting = _meetingService.GetMeeting(token, meetingId);
+      foreach (var attendee in meeting.MeetingAttendeeCollection)
+      {
+        var result = _invatationService.SendMeetingInvatation(attendee, meeting);
+      }
+      return Ok();
+    }
 
   }
 
