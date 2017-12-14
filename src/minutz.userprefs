@@ -9,8 +9,7 @@
       <File FileName="Interface/Repositories/IMeetingAttendeeRepository.cs" Line="17" Column="42" />
       <File FileName="Notifications/Notify.cs" Line="6" Column="2" />
       <File FileName="Notifications/InvatationService.cs" Line="10" Column="54" />
-      <File FileName="Api/Controllers/MeetingController.cs" Line="140" Column="53" />
-      <File FileName="Tests/MeetingControllerTests.cs" Line="17" Column="6" />
+      <File FileName="Api/Controllers/MeetingController.cs" Line="165" Column="55" />
       <File FileName="src Status" />
     </Files>
   </MonoDevelop.Ide.Workbench>
