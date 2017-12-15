@@ -44,7 +44,8 @@ namespace Api.Controllers
     public List<MeetingAgenda> UpdateMeetingAgendaitems([FromBody] List<MeetingAgenda> agendaitems)
     {
       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      var result = _meetingService.UpdateMeetingAgendaItems(agendaitems, token);
+      var id = agendaitems.First().ReferenceId;
+      var result = _meetingService.UpdateMeetingAgendaItems(id,agendaitems, token);
       return result;
     }
 

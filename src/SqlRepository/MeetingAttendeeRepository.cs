@@ -47,6 +47,10 @@ namespace SqlRepository
         dbConnection.Open();
         var sql = $"select * from [{schema}].[MeetingAttendee] WHERE ReferanceId = '{referenceId.ToString()}'";
         var data = dbConnection.Query<MeetingAttendee>(sql);
+        foreach(var item in data){
+          item.ReferenceId = referenceId;
+          
+        }
         return data.ToList();
       }
     }
@@ -98,9 +102,9 @@ namespace SqlRepository
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
-        if (string.IsNullOrEmpty(attendee.Id))
+        if (attendee.Id != Guid.Empty)
         {
-          attendee.Id = Guid.NewGuid().ToString();
+          attendee.Id = Guid.NewGuid();
         }
         dbConnection.Open();
         string insertSql = $@"insert into [{schema}].[MeetingAttendee](
@@ -130,9 +134,9 @@ namespace SqlRepository
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
-        if (string.IsNullOrEmpty(attendee.Id))
+        if (attendee.Id != Guid.Empty)
         {
-          attendee.Id = Guid.NewGuid().ToString();
+          attendee.Id = Guid.NewGuid();
         }
         dbConnection.Open();
         string insertSql = $@"insert into [{schema}].[AvailibleAttendee](
@@ -165,25 +169,20 @@ namespace SqlRepository
     /// Update the specified action, schema and connectionString.
     /// </summary>
     /// <returns>The update.</returns>
-    /// <param name="action">Action.</param>
+    /// <param name="attendee">Action.</param>
     /// <param name="schema">Schema.</param>
     /// <param name="connectionString">Connection string.</param>
-    public bool Update(MeetingAttendee action, string schema, string connectionString)
+    public bool Update(MeetingAttendee attendee, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
         string updateQuery = $@"UPDATE [{schema}].[MeetingAttendee] 
-                             SET ReferanceId = @ReferanceId, 
-                                 PersonIdentity = @PersonIdentity, 
-                                 Role = @Role
-                             WHERE Id = @Id";
-        var instance = dbConnection.Execute(updateQuery, new
-        {
-          action.ReferenceId,
-          action.PersonIdentity,
-          action.Role
-        });
+                             SET Referanceid = '{attendee.ReferenceId.ToString()}', 
+                                 PersonIdentity = '{attendee.PersonIdentity}', 
+                                 Role = '{attendee.Role}'
+                             WHERE Id = '{attendee.Id}' ";
+        var instance = dbConnection.Execute(updateQuery);
         return instance == 1;
       }
     }

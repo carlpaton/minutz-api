@@ -8,17 +8,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		..\readme.md = ..\readme.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepository", "SqlRepository\SqlRepository.csproj", "{D67455E8-3A1D-4A1D-A961-665DAB8173DE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlRepository", "SqlRepository\SqlRepository.csproj", "{D67455E8-3A1D-4A1D-A961-665DAB8173DE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{DD1A3AE2-D676-40BA-BB30-B69D36DC3037}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{DD1A3AE2-D676-40BA-BB30-B69D36DC3037}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interface", "Interface\Interface.csproj", "{84690333-1173-49AD-9A8D-0FFFD8FAFB1B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interface", "Interface\Interface.csproj", "{84690333-1173-49AD-9A8D-0FFFD8FAFB1B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{CD1615FC-B2E3-4CB9-B632-90A258AB28E4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{CD1615FC-B2E3-4CB9-B632-90A258AB28E4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{67CA3E6C-1759-46F3-9312-BC67A5C9B677}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{67CA3E6C-1759-46F3-9312-BC67A5C9B677}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{9D3CF96A-2902-49C4-8760-8A9F3BC3303C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{9D3CF96A-2902-49C4-8760-8A9F3BC3303C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{48E551FF-BB15-457A-8BB2-C0D6EB2DB908}"
 	ProjectSection(SolutionItems) = preProject
@@ -28,9 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{48E551FF
 		..\.docker\buildagent\Dockerfile = ..\.docker\buildagent\Dockerfile
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notifications", "Notifications\Notifications.csproj", "{10DCF7F9-BAAD-4232-82EE-E1DAEC6D8FE9}"
-EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{50956871-20AC-4C11-B10F-5984AB726248}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notifications", "Notifications\Notifications.csproj", "{10DCF7F9-BAAD-4232-82EE-E1DAEC6D8FE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,11 +79,6 @@ Global
 		{10DCF7F9-BAAD-4232-82EE-E1DAEC6D8FE9}.pipelines|Any CPU.Build.0 = Debug|Any CPU
 		{10DCF7F9-BAAD-4232-82EE-E1DAEC6D8FE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10DCF7F9-BAAD-4232-82EE-E1DAEC6D8FE9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{50956871-20AC-4C11-B10F-5984AB726248}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{50956871-20AC-4C11-B10F-5984AB726248}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{50956871-20AC-4C11-B10F-5984AB726248}.pipelines|Any CPU.ActiveCfg = Debug|Any CPU
-		{50956871-20AC-4C11-B10F-5984AB726248}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{50956871-20AC-4C11-B10F-5984AB726248}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

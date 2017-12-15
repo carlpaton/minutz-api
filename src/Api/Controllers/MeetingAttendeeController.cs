@@ -94,7 +94,7 @@ namespace Api.Controllers
         return BadRequest("Please provide a valid meetingId");
       }
       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      var meeting = _meetingService.GetMeeting(token, invitee.ReferenceId);
+      var meeting = _meetingService.GetMeeting(token, invitee.ReferenceId.ToString());
 
       invitee.PersonIdentity = invitee.Email;
       invitee.Role = "invited";

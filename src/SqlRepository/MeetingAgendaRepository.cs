@@ -90,7 +90,10 @@ namespace SqlRepository
         return instance == 1;
       }
     }
-    public bool Update(MeetingAgenda agendaItem, string schema, string connectionString)
+    public bool Update(
+      MeetingAgenda agendaItem,
+      string schema,
+      string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {

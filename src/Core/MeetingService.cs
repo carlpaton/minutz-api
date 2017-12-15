@@ -51,6 +51,7 @@ namespace Core
     }
 
     public List<Minutz.Models.Entities.MeetingAgenda> UpdateMeetingAgendaItems(
+                                                string meetingId,
                                                 List<Minutz.Models.Entities.MeetingAgenda> data,
                                                 string token)
     {
@@ -80,6 +81,9 @@ namespace Core
           var q = meetingAgendaItems.FirstOrDefault(i => i.Id == updateAgendaItem.Id);
           if (q != null)
           {
+            if(updateAgendaItem.ReferenceId == null){
+              updateAgendaItem.ReferenceId = meetingId;
+            }
             _meetingAgendaRepository.Update(updateAgendaItem, instance.Username, userConnectionString);
           }
           else
@@ -119,7 +123,7 @@ namespace Core
       if (data.Any())
       {
         var attendees = _meetingAttendeeRepository.GetMeetingAttendees(
-          Guid.Parse(data.FirstOrDefault().ReferenceId),
+          data.FirstOrDefault().ReferenceId,
           instance.Username,
           userConnectionString);
         foreach (var attendee in data)
@@ -135,7 +139,7 @@ namespace Core
           }
         }
         return _meetingAttendeeRepository.GetMeetingAttendees(
-          Guid.Parse(data.FirstOrDefault().ReferenceId),
+          data.FirstOrDefault().ReferenceId,
           instance.Username,
           userConnectionString); ;
       }
@@ -144,7 +148,7 @@ namespace Core
         _meetingAttendeeRepository.Add(newAttendee, instance.Username, userConnectionString);
       }
       return _meetingAttendeeRepository.GetMeetingAttendees(
-            Guid.Parse(data.FirstOrDefault().ReferenceId),
+            data.FirstOrDefault().ReferenceId,
             instance.Username,
             userConnectionString); ;
     }
@@ -258,7 +262,7 @@ namespace Core
       {
         Name = auth.UserInfo.Name,
         Email = auth.UserInfo.Email,
-        Id = auth.UserInfo.Sub,
+        Id = Guid.NewGuid(),
         PersonIdentity = auth.UserInfo.Sub,
         Role = "Meeting Owner",
         Status = "Pending"
@@ -284,8 +288,8 @@ namespace Core
 
         foreach (var attendee in attendees)
         {
-          attendee.Id = Guid.NewGuid().ToString();
-          attendee.ReferenceId = meeting.Id.ToString();
+          attendee.Id = Guid.NewGuid();
+          attendee.ReferenceId = meeting.Id;
           var savedAttendee = _meetingAttendeeRepository.Add(attendee, auth.Instance.Username, auth.ConnectionString);
           if (!savedAttendee)
           {
@@ -404,6 +408,10 @@ namespace Core
         }
         else
         {
+          if(agendaItem.ReferenceId == null)
+          {
+            agendaItem.ReferenceId = meetingEntity.Id.ToString();
+          }
           var updateAgenda = _meetingAgendaRepository.Update(agendaItem, auth.Instance.Username, auth.ConnectionString);
         }
       }
@@ -411,11 +419,11 @@ namespace Core
       // Update the attendees
       foreach (var attendee in meetingViewModel.MeetingAttendeeCollection)
       {
-        var attendeeResult = _meetingAttendeeRepository.Get(Guid.Parse(attendee.Id), auth.Instance.Username, auth.ConnectionString);
-        if (attendeeResult == null || Guid.Parse(attendeeResult.Id) == Guid.Empty)
+        var attendeeResult = _meetingAttendeeRepository.Get(attendee.Id, auth.Instance.Username, auth.ConnectionString);
+        if (attendeeResult == null || attendeeResult.Id == Guid.Empty)
         {
-          attendee.Id = Guid.NewGuid().ToString();
-          attendee.ReferenceId = meetingViewModel.Id;
+          attendee.Id = Guid.NewGuid();
+          attendee.ReferenceId = Guid.Parse(meetingViewModel.Id);
           var savedAttendee = _meetingAttendeeRepository.Add(attendee, auth.Instance.Username, auth.ConnectionString);
         }
         else
@@ -569,7 +577,7 @@ namespace Core
                                                                                                   _applicationSetting.Password));
       var userConnectionString = GetConnectionString(instance.Password, instance.Username);
       var data = _meetingAttendeeRepository.GetMeetingAttendees(meetingId, instance.Username, userConnectionString)
-                                           .FirstOrDefault(i => i.Id == attendeeId.ToString());
+                                           .FirstOrDefault(i => i.Id == attendeeId);
       return data;
     }
 

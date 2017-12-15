@@ -1,17 +1,9 @@
 ﻿<Properties StartupConfiguration="{67CA3E6C-1759-46F3-9312-BC67A5C9B677}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Tests/MeetingControllerTests.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SqlRepository/MeetingAttendeeRepository.cs">
     <Files>
-      <File FileName="Api/Controllers/MeetingAttendeeController.cs" Line="105" Column="47" />
-      <File FileName="Notifications/StartupService.cs" Line="11" Column="86" />
-      <File FileName="Core/MeetingService.cs" Line="335" Column="31" />
-      <File FileName="SqlRepository/MeetingAttendeeRepository.cs" Line="12" Column="53" />
-      <File FileName="Interface/Services/IMeetingService.cs" Line="51" Column="65" />
-      <File FileName="Interface/Repositories/IMeetingAttendeeRepository.cs" Line="17" Column="42" />
-      <File FileName="Notifications/Notify.cs" Line="6" Column="2" />
-      <File FileName="Notifications/InvatationService.cs" Line="10" Column="54" />
-      <File FileName="Api/Controllers/MeetingController.cs" Line="100" Column="49" />
-      <File FileName="Core/Helper/HumanFriendlyIntegerExtension.cs" Line="4" Column="16" />
-      <File FileName="Tests/MeetingControllerTests.cs" Line="28" Column="46" />
+      <File FileName="Core/MeetingService.cs" Line="1" Column="1" />
+      <File FileName="Api/Controllers/MeetingAttendeeController.cs" Line="97" Column="84" />
+      <File FileName="SqlRepository/MeetingAttendeeRepository.cs" Line="43" Column="30" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
@@ -20,6 +12,7 @@
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/SqlRepository/MeetingRespository.cs" relfile="SqlRepository/MeetingRespository.cs" line="126" column="43" />
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/SqlRepository/MeetingRespository.cs" relfile="SqlRepository/MeetingRespository.cs" line="122" column="1" />
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/SqlRepository/MeetingRespository.cs" relfile="SqlRepository/MeetingRespository.cs" line="103" column="1" />
+      <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/SqlRepository/MeetingAttendeeRepository.cs" relfile="SqlRepository/MeetingAttendeeRepository.cs" line="54" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
