@@ -11,8 +11,8 @@ namespace SqlRepository {
   public class UserRepository : IUserRepository {
     public bool CheckIfNewUser (string authUserId, string schema, string connectionString) {
       using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
-        var sql = $"select Identityid FROM [{schema}].[Person]  WHERE Identityid = @Identityid";
-        dbConnection.Open ();
+        var sql = $"select Identityid FROM [{schema}].[Person]  WHERE Identityid = '{authUserId}' ";
+        //dbConnection.Open ();
         var user = dbConnection.Query<Person> (sql, new { Identityid = (string) authUserId });
         return user.Any ();
       }
@@ -63,9 +63,9 @@ namespace SqlRepository {
       string schema,
       string connectionString) {
       using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
-        var sql = $"select * FROM [{schema}].[Person] WHERE Identityid = @Identityid";
-        dbConnection.Open ();
-        var query = dbConnection.Query<Person> (sql, new { Identityid = (string) authUserId });
+        var sql = $"select * FROM [{schema}].[Person] WHERE Identityid ='{authUserId}'; ";
+        //dbConnection.Open ();
+        var query = dbConnection.Query<Person> (sql);
         if (query.Any ()) {
           var user = query.FirstOrDefault ();
           if (user != null)
@@ -174,15 +174,11 @@ namespace SqlRepository {
       try {
         using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
           var sql = $@"CREATE LOGIN {user}   
-                      WITH PASSWORD = '{password}';  
-                    GO  
-
-                      CREATE USER {user}  FOR LOGIN {user};  
-                    GO";
+                      WITH PASSWORD = '{password}' ";
 
           return dbConnection.Execute (sql) == -1;
         }
-      } catch (Exception) {
+      } catch (Exception ex) {
         return false;
       }
     }
@@ -206,7 +202,7 @@ namespace SqlRepository {
           var createSchemaLoginResult = dbConnection.Execute (createSchemaLogin);
           return createSchemaLoginResult == -1;
         }
-      } catch (Exception) {
+      } catch (Exception ex) {
         return false;
       }
 
@@ -244,7 +240,7 @@ namespace SqlRepository {
           return instance == 1;
         }
 
-      } catch (Exception) {
+      } catch (Exception ex) {
         return false;
       }
 
