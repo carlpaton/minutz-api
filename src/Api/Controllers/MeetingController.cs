@@ -64,7 +64,6 @@ namespace Api.Controllers
     /// <summary>
     /// Create a meetingViewModel
     /// </summary>
-    /// <param name="meeting"></param>
     /// <returns>The created meetingViewModel object.</returns>
     [Authorize]
     [HttpPut("api/meeting/create", Name = "Create a meeting")]
@@ -72,14 +71,30 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(MeetingViewModel), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingViewModel))]
-    public IActionResult CreateMeeting([FromBody] MeetingViewModel data)
+    public IActionResult CreateMeeting()
     {
-      if (data == null)
-      {
-        return StatusCode(500);
-      }
-
       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+      var data = new MeetingViewModel
+      {
+        Id = Guid.NewGuid().ToString(),
+        AvailableAttendeeCollection = new List<Minutz.Models.Entities.MeetingAttendee>(),
+        Date = DateTime.UtcNow,
+        Duration = 60,
+        IsFormal = false,
+        IsLocked = false,
+        IsPrivate = true,
+        IsReacurance = false,
+        Locations = string.Empty,
+        MeetingActionCollection = new List<Minutz.Models.Entities.MinutzAction>(),
+        MeetingAgendaCollection = new List<Minutz.Models.Entities.MeetingAgenda>(),
+        MeetingAttachmentCollection = new List<Minutz.Models.Entities.MeetingAttachment>(),
+        MeetingAttendeeCollection = new List<Minutz.Models.Entities.MeetingAttendee>(),
+        MeetingNoteCollection = new List<Minutz.Models.Entities.MeetingNote>(),
+        Outcome = string.Empty,
+        Purpose = string.Empty,
+        ReacuranceType = "None",
+        UpdatedDate = DateTime.UtcNow
+      };
 
       var result = _meetingService.CreateMeeting(token, data.ToEntity(),
                                                  data.MeetingAttendeeCollection,
@@ -158,7 +173,7 @@ namespace Api.Controllers
       return Ok();
     }
 
-    [HttpPost("api/UploadMeertingFiles")]
+    [HttpPost("api/UploadMeetingFiles")]
     public async Task<IActionResult> Post(List<IFormFile> files)
     {
       long size = files.Sum(f => f.Length);

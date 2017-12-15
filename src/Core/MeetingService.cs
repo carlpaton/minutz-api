@@ -242,14 +242,27 @@ namespace Core
     /// <param name="attachements">Attachements.</param>
     /// <param name="actions">Actions.</param>
     public KeyValuePair<bool, Minutz.Models.ViewModels.MeetingViewModel> CreateMeeting(string token,
-                                                                                       Minutz.Models.Entities.Meeting meeting,
-                                                                                       List<Minutz.Models.Entities.MeetingAttendee> attendees,
-                                                                                       List<Minutz.Models.Entities.MeetingAgenda> agenda,
-                                                                                       List<Minutz.Models.Entities.MeetingNote> notes,
-                                                                                       List<Minutz.Models.Entities.MeetingAttachment> attachements,
-                                                                                       List<Minutz.Models.Entities.MinutzAction> actions)
+                                                                                       Meeting meeting,
+                                                                                       List<MeetingAttendee> attendees,
+                                                                                       List<MeetingAgenda> agenda,
+                                                                                       List<MeetingNote> notes,
+                                                                                       List<MeetingAttachment> attachements,
+                                                                                       List<MinutzAction> actions)
     {
       var auth = new AuthenticationHelper(token, _authenticationService, _instanceRepository, _applicationSetting, _userValidationService);
+      var meetingCount = _meetingRepository.List(auth.Instance.Username, auth.ConnectionString).Count().IntegerToWritten();
+      meeting.Name = $"{ auth.UserInfo.Name}'s {meetingCount} meeting";
+      meeting.MeetingOwnerId = auth.UserInfo.Sub;
+
+      attendees.Add(new MeetingAttendee
+      {
+        Name = auth.UserInfo.Name,
+        Email = auth.UserInfo.Email,
+        Id = auth.UserInfo.Sub,
+        PersonIdentity = auth.UserInfo.Sub,
+        Role = "Meeting Owner",
+        Status = "Pending"
+      });
 
       var saveMeeting = _meetingRepository.Add(meeting, auth.Instance.Username, auth.ConnectionString);
       if (saveMeeting)

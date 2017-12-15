@@ -20,12 +20,22 @@ namespace Core
 
     public bool StartFullVersion(AuthRestModel user)
     {
-      var schemaCreate = _userRepository.CreateNewSchema(user, _applicationSetting.Schema,
-                                                         _applicationSetting.CreateConnectionString(
+      var masterConnectionString = _applicationSetting.CreateConnectionString(
+                                                           _applicationSetting.Server,
+                                                           "master",
+                                                           _applicationSetting.Username,
+                                                           _applicationSetting.Password);
+      var userConnectionString = _applicationSetting.CreateConnectionString(
                                                            _applicationSetting.Server,
                                                            _applicationSetting.Catalogue,
                                                            _applicationSetting.Username,
-                                                           _applicationSetting.Password));
+                                                           _applicationSetting.Password);
+      var schemaCreate = _userRepository.CreateNewSchema(
+      user,
+      _applicationSetting.Schema,
+      userConnectionString,
+      masterConnectionString);
+                                                         
       return _applicationSetupRepository.CreateSchemaTables(_applicationSetting.Schema, schemaCreate,
                                                          _applicationSetting.CreateConnectionString(
                                                            _applicationSetting.Server,

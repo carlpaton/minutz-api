@@ -25,7 +25,7 @@ namespace Tests
       };
 
       //Act
-      var result = controller.CreateMeeting(new MeetingViewModel());
+      var result = controller.CreateMeeting();
 
       //Assert
       Assert.IsInstanceOf(typeof(BadRequestObjectResult), result);

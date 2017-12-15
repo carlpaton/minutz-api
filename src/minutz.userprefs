@@ -1,16 +1,17 @@
 ﻿<Properties StartupConfiguration="{67CA3E6C-1759-46F3-9312-BC67A5C9B677}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="src Status">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Tests/MeetingControllerTests.cs">
     <Files>
       <File FileName="Api/Controllers/MeetingAttendeeController.cs" Line="105" Column="47" />
       <File FileName="Notifications/StartupService.cs" Line="11" Column="86" />
-      <File FileName="Core/MeetingService.cs" Line="11" Column="41" />
+      <File FileName="Core/MeetingService.cs" Line="335" Column="31" />
       <File FileName="SqlRepository/MeetingAttendeeRepository.cs" Line="12" Column="53" />
       <File FileName="Interface/Services/IMeetingService.cs" Line="51" Column="65" />
       <File FileName="Interface/Repositories/IMeetingAttendeeRepository.cs" Line="17" Column="42" />
       <File FileName="Notifications/Notify.cs" Line="6" Column="2" />
       <File FileName="Notifications/InvatationService.cs" Line="10" Column="54" />
-      <File FileName="Api/Controllers/MeetingController.cs" Line="165" Column="55" />
-      <File FileName="src Status" />
+      <File FileName="Api/Controllers/MeetingController.cs" Line="100" Column="49" />
+      <File FileName="Core/Helper/HumanFriendlyIntegerExtension.cs" Line="4" Column="16" />
+      <File FileName="Tests/MeetingControllerTests.cs" Line="28" Column="46" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

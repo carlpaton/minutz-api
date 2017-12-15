@@ -16,6 +16,7 @@ namespace Minutz.Models.ViewModels
     public string ReacuranceType { get; set; }
     public bool IsLocked { get; set; }
     public bool IsFormal { get; set; }
+    public string Locations {get;set;}
     public string TimeZone { get; set; }
     public List<string> Tag { get; set; }
     public string Purpose { get; set; }
