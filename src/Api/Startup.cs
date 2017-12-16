@@ -57,7 +57,7 @@ namespace Api
       services.AddMvc();
       services.AddSwaggerGen(c =>
       {
-        c.SwaggerDoc("v1", new Info { Title = "Minutz Api", Version = "v1" });
+        c.SwaggerDoc("v1", new Info { Title = "Minutz Api", Version = "V1.1" });
       });
       string domain = "https://dockerdurban.auth0.com/";
       services.AddCors(options =>
@@ -82,15 +82,24 @@ namespace Api
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
     {
+      if (env.IsDevelopment())
+      {
+        app.UseDeveloperExceptionPage();
+      }
+      else
+      {
+        // when an exception occurs, route to /Home/Error
+        app.UseExceptionHandler("/Home/Error");
+      }
+
       loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+      loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Error);
       loggerFactory.AddDebug();
       app.UseAuthentication();
       app.UseSwagger();
       app.UseSwaggerUI(c =>
       {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Minutz Api V1");
-
-        //c.ConfigureOAuth2("BYX4QbM30OOpDSEaLFvBKddyJ5zBOQYa", null, null, null, " ", new { audience = "https://dockerdurban.auth0.com/api/v2/" });
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Minutz Api V1.1");
       });
 
       app.UseCors("AllowAllOrigins");

@@ -254,8 +254,8 @@ namespace Core
                                                                                        List<MinutzAction> actions)
     {
       var auth = new AuthenticationHelper(token, _authenticationService, _instanceRepository, _applicationSetting, _userValidationService);
-      var meetingCount = _meetingRepository.List(auth.Instance.Username, auth.ConnectionString).Count().IntegerToWritten();
-      meeting.Name = $"{ auth.UserInfo.Name}'s {meetingCount} meeting";
+      //var meetingCount = _meetingRepository.List(auth.Instance.Username, auth.ConnectionString).Count().IntegerToWritten();
+      meeting.Name = " demo"; //$"{DateTime.UtcNow.ToLocalTime()}"; //$"{ auth.UserInfo.Name}'s {meetingCount} meeting";
       meeting.MeetingOwnerId = auth.UserInfo.Sub;
 
       attendees.Add(new MeetingAttendee

@@ -68,7 +68,7 @@ namespace Api.Controllers {
     public IActionResult CreateMeeting () {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       var data = new MeetingViewModel {
-        Id = Guid.NewGuid ().ToString (),
+        Id = Guid.NewGuid().ToString(),
         AvailableAttendeeCollection = new List<Minutz.Models.Entities.MeetingAttendee> (),
         Date = DateTime.UtcNow,
         Duration = 60,
