@@ -23,5 +23,5 @@ pipelines:
           #- dotnet test src/TestIntegrations/TestIntegrations.csproj
           # - dotnet publish src/minutz.sln -c pipelines -o ../../dist
           - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
-          - docker build -t $IMAGE_COMPLETE_NAME -f api.Dockerfile .
+          - docker build -t $IMAGE_COMPLETE_NAME .
           - docker push $IMAGE_COMPLETE_NAME
