@@ -57,7 +57,7 @@ namespace Api
       services.AddMvc();
       services.AddSwaggerGen(c =>
       {
-        c.SwaggerDoc("v1", new Info { Title = "Minutz Api", Version = "V1.1" });
+        c.SwaggerDoc("v1", new Info { Title = "Minutz Api", Version = "V1.3" });
       });
       string domain = "https://dockerdurban.auth0.com/";
       services.AddCors(options =>
@@ -99,7 +99,7 @@ namespace Api
       app.UseSwagger();
       app.UseSwaggerUI(c =>
       {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Minutz Api V1.1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Minutz Api V1.3");
       });
 
       app.UseCors("AllowAllOrigins");

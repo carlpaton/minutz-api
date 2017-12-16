@@ -12,10 +12,12 @@ namespace Api.Controllers
   public class HomeController : Controller
   {
     // GET: /<controller>/
+    [Route("Home/Index")]
     public IActionResult Index()
     {
       return View();
     }
+    [Route("Home/Error")]
     public IActionResult Error()
     {
       // Get the details of the exception that occurred
