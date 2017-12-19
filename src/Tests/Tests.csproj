@@ -20,4 +20,7 @@
     <ProjectReference Include="..\Notifications\Notifications.csproj" />
     <ProjectReference Include="..\SqlRepository\SqlRepository.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="RepositoryTests\" />
+  </ItemGroup>
 </Project>

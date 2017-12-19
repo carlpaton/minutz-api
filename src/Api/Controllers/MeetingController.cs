@@ -65,7 +65,7 @@ namespace Api.Controllers
     /// </summary>
     /// <returns>The created meetingViewModel object.</returns>
     [Authorize]
-    [HttpGet("api/meeting/create", Name = "Create a meeting")]
+    [HttpPut("api/meeting/create", Name = "Create a meeting")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(MeetingViewModel), 200)]

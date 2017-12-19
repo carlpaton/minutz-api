@@ -82,15 +82,15 @@ namespace Api
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
     {
-      if (env.IsDevelopment())
-      {
-        app.UseDeveloperExceptionPage();
-      }
-      else
-      {
-        // when an exception occurs, route to /Home/Error
-        app.UseExceptionHandler("/Home/Error");
-      }
+      //if (env.IsDevelopment())
+      //{
+      //  app.UseDeveloperExceptionPage();
+      //}
+      //else
+      //{
+      //  // when an exception occurs, route to /Home/Error
+      //  app.UseExceptionHandler("/Home/Error");
+      //}
 
       loggerFactory.AddConsole(Configuration.GetSection("Logging"));
       loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Error);

@@ -23,6 +23,7 @@ namespace SqlRepository
         return data;
       }
     }
+
     public MinutzAction Get(Guid id, string schema, string connectionString)
     {
       if (id == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
@@ -35,6 +36,7 @@ namespace SqlRepository
         return data;
       }
     }
+
     public IEnumerable<MinutzAction> List(string schema, string connectionString)
     {
       if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(schema))
@@ -47,6 +49,7 @@ namespace SqlRepository
         return data;
       }
     }
+
     public bool Add(MinutzAction action, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
@@ -79,6 +82,7 @@ namespace SqlRepository
         return instance == 1;
       }
     }
+
     public bool Update(MinutzAction action, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))

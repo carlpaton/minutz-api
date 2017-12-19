@@ -1,17 +1,39 @@
 ﻿<Properties StartupConfiguration="{67CA3E6C-1759-46F3-9312-BC67A5C9B677}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Api/Controllers/MeetingActionController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="src Status">
     <Files>
-      <File FileName="Core/MeetingService.cs" Line="1" Column="1" />
       <File FileName="Api/Controllers/MeetingAttendeeController.cs" Line="97" Column="84" />
       <File FileName="SqlRepository/MeetingAttendeeRepository.cs" Line="43" Column="30" />
-      <File FileName="Api/Startup.cs" Line="102" Column="71" />
-      <File FileName="Api/Controllers/HomeController.cs" Line="23" Column="7" />
+      <File FileName="Api/Startup.cs" Line="71" Column="44" />
+      <File FileName="Api/Controllers/HomeController.cs" Line="20" Column="18" />
       <File FileName="Api/appsettings.json" Line="1" Column="1" />
       <File FileName="Notifications/ErrorNotification.cs" Line="18" Column="30" />
+      <File FileName="Api/Controllers/MeetingController.cs" Line="1" Column="1" />
+      <File FileName="SqlRepository/LogRepository.cs" Line="20" Column="69" />
+      <File FileName="Tests/RepositoryTests/LogRespositoryTests.cs" Line="13" Column="131" />
       <File FileName="src Status" />
-      <File FileName="Api/Controllers/MeetingController.cs" Line="68" Column="13" />
-      <File FileName="Api/Controllers/MeetingActionController.cs" Line="1" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="MonoDevelop.UnitTesting.TestPad">
+        <State name="__root__">
+          <Node name="minutz" expanded="True">
+            <Node name="Tests" expanded="True">
+              <Node name="Tests" expanded="True">
+                <Node name="RepositoryTests" expanded="True">
+                  <Node name="LogRespositoryTests" expanded="True" selected="True">
+                    <Node name="Log_GivenInvalidInputs_ShouldThrowException(&quot;Server=tcp:127" expanded="True">
+                      <Node name="0" expanded="True">
+                        <Node name="0" expanded="True" />
+                      </Node>
+                    </Node>
+                  </Node>
+                  <Node name="LogRespositoryTests" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

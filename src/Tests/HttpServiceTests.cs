@@ -1,11 +1,13 @@
 using System;
 using NUnit.Framework;
 
-namespace Tests {
+namespace Tests
+{
   [TestFixture]
-  public class HttpServiceTests {
+  public class HttpServiceTests
+  {
     [Test]
-    public void Get_Given_Should () 
+    public void Get_Given_Should()
     {
       var q = true;
       Assert.IsTrue(q);
