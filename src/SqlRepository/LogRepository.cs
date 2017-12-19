@@ -2,10 +2,11 @@
 using System.Data;
 using System.Data.SqlClient;
 using Dapper;
+using Interface.Repositories;
 
 namespace SqlRepository
 {
-  public class LogRepository
+  public class LogRepository : ILogRepository
   {
     public bool Log(string schema,
                     string connectionString,

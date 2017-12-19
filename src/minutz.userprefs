@@ -8,8 +8,7 @@
       <File FileName="Api/appsettings.json" Line="1" Column="1" />
       <File FileName="Notifications/ErrorNotification.cs" Line="18" Column="30" />
       <File FileName="Api/Controllers/MeetingController.cs" Line="1" Column="1" />
-      <File FileName="SqlRepository/LogRepository.cs" Line="20" Column="69" />
-      <File FileName="Tests/RepositoryTests/LogRespositoryTests.cs" Line="13" Column="131" />
+      <File FileName="SqlRepository/LogRepository.cs" Line="14" Column="37" />
       <File FileName="src Status" />
     </Files>
     <Pads>
@@ -19,14 +18,7 @@
             <Node name="Tests" expanded="True">
               <Node name="Tests" expanded="True">
                 <Node name="RepositoryTests" expanded="True">
-                  <Node name="LogRespositoryTests" expanded="True" selected="True">
-                    <Node name="Log_GivenInvalidInputs_ShouldThrowException(&quot;Server=tcp:127" expanded="True">
-                      <Node name="0" expanded="True">
-                        <Node name="0" expanded="True" />
-                      </Node>
-                    </Node>
-                  </Node>
-                  <Node name="LogRespositoryTests" expanded="True" />
+                  <Node name="LogRespositoryTests" selected="True" />
                 </Node>
               </Node>
             </Node>
