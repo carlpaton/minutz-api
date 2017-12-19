@@ -11,6 +11,7 @@ using Interface.Services;
 using SqlRepository;
 using Core;
 using Notifications;
+using Core.LogProvider;
 
 namespace Api
 {
@@ -40,18 +41,21 @@ namespace Api
       services.AddTransient<IMeetingAttachmentRepository, MeetingAttachmentRepository>();
       services.AddTransient<IMeetingNoteRepository, MeetingNoteRepository>();
       services.AddTransient<IInstanceRepository, InstanceRepository>();
+      services.AddTransient<ILogRepository, LogRepository>();
 
       //Services
       services.AddTransient<IApplicationSetting, ApplicationSetting>();
+      services.AddTransient<INotify, Notify>();
+      services.AddTransient<ILogService, LogService>();
+
+      //Features
       services.AddTransient<IUserValidationService, UserValidationService>();
       services.AddTransient<IAuthenticationService, AuthenticationService>();
       services.AddTransient<IApplicationManagerService, ApplicationManagerService>();
       services.AddTransient<IMeetingService, MeetingService>();
+
       services.AddTransient<IInvatationService, InvatationService>();
-
-      services.AddTransient<INotify, Notify>();
       services.AddTransient<IStartupService, StartupService>();
-
 
       services.AddMemoryCache();
       services.AddMvc();

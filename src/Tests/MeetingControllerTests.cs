@@ -18,7 +18,10 @@ namespace Tests
       //Arrange
       var meetingService = Substitute.For<IMeetingService>();
       var inviteService = Substitute.For<IInvatationService>();
-      var controller = new MeetingController(meetingService, inviteService);
+      var logService = Substitute.For<ILogService>();
+      var controller = new MeetingController(meetingService,
+                                             inviteService,
+                                             logService);
       var meeting = new Minutz.Models.ViewModels.MeetingViewModel
       {
         Name = string.Empty

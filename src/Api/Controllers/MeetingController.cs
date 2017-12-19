@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Api.Extensions;
-using Api.Models;
+using Minutz.Models;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,12 +18,15 @@ namespace Api.Controllers
   {
     private readonly IMeetingService _meetingService;
     private readonly IInvatationService _invatationService;
+    private readonly ILogService _logService;
 
     public MeetingController(IMeetingService meetingService,
-      IInvatationService invatationService)
+                             IInvatationService invatationService,
+                             ILogService logService)
     {
-      _meetingService = meetingService;
-      _invatationService = invatationService;
+      this._meetingService = meetingService;
+      this._invatationService = invatationService;
+      this._logService = logService;
     }
 
     /// <summary>
@@ -39,8 +42,9 @@ namespace Api.Controllers
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(List<Minutz.Models.ViewModels.MeetingViewModel>))]
     public IActionResult GetMeetings()
     {
+      this._logService.Log(LogLevel.Info, "GetMeetings called.");
       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      return Ok(_meetingService.GetMeetings(token));
+      return Ok(this._meetingService.GetMeetings(token));
     }
 
     /// <summary>
@@ -57,7 +61,7 @@ namespace Api.Controllers
     public IActionResult GetMeeting(string id)
     {
       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      return Ok(_meetingService.GetMeeting(token, id));
+      return Ok(this._meetingService.GetMeeting(token, id));
     }
 
     /// <summary>

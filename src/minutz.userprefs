@@ -1,14 +1,10 @@
 ﻿<Properties StartupConfiguration="{67CA3E6C-1759-46F3-9312-BC67A5C9B677}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="src Status">
     <Files>
-      <File FileName="Api/Controllers/MeetingAttendeeController.cs" Line="97" Column="84" />
-      <File FileName="SqlRepository/MeetingAttendeeRepository.cs" Line="43" Column="30" />
-      <File FileName="Api/Startup.cs" Line="71" Column="44" />
-      <File FileName="Api/Controllers/HomeController.cs" Line="20" Column="18" />
-      <File FileName="Api/appsettings.json" Line="1" Column="1" />
-      <File FileName="Notifications/ErrorNotification.cs" Line="18" Column="30" />
-      <File FileName="Api/Controllers/MeetingController.cs" Line="1" Column="1" />
-      <File FileName="SqlRepository/LogRepository.cs" Line="14" Column="37" />
+      <File FileName="Api/Controllers/MeetingController.cs" Line="45" Column="63" />
+      <File FileName="Core/MeetingService.cs" Line="20" Column="68" />
+      <File FileName="Api/Startup.cs" Line="58" Column="64" />
+      <File FileName="Tests/MeetingControllerTests.cs" Line="23" Column="46" />
       <File FileName="src Status" />
     </Files>
     <Pads>
