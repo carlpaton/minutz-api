@@ -34,7 +34,7 @@ namespace Api.Controllers
     /// passed to get the instance id to call the correct schema in the database.
     /// </summary>
     /// <returns>Collection of MeetingViewModel objects</returns>
-    [Authorize]
+    //[Authorize]
     [Produces("application/json")]
     [HttpGet("api/meetings", Name = "Get all meetings for a user")]
     [ProducesResponseType(typeof(string), 400)]

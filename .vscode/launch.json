@@ -4,7 +4,6 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
         {
             "name": ".NET Core Launch (console)",
             "type": "coreclr",
@@ -19,18 +18,17 @@
             "env": {
                 "AUTHORITY": "https://dockerdurban.auth0.com/",
                 "ASPNETCORE_ENVIRONMENT": "Development",
-                "SERVER_ADDRESS": "tcp:docker-durban.database.windows.net,1433",
-                "DEFAULT_CATALOGUE": "minutz-test",
+                "SERVER_ADDRESS": "tcp:127.0.0.1,1433",
+                "DEFAULT_CATALOGUE": "minutz",
                 "DEFAULT_SCHEMA": "app",
-                "DEFAULT_USER": "tzatziki",
-                "DEFAULT_PASSWORD": "40Tep25hUXnz",
+                "DEFAULT_USER": "sa",
+                "DEFAULT_PASSWORD": "password1234$",
                 "NOTIFY-DEFAULT-TEMPLATE-KEY": "716b366a-5d7f-4e19-a07c-bb32762903e5",
                 "NOTIFY-KEY": "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",
                 "NOTIFY-USER": "Minutz",
                 "NOTIFY-INVITATION-ADDRESS": "invitation@minutz.net",
                 "UI-BASE-URL": "http://test.minutz.net"
-                
-            }
+                }                
         },
         {
             "name": ".NET Core Launch (web)",

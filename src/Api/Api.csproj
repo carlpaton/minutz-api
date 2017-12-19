@@ -13,8 +13,6 @@
   <ItemGroup>
     <Folder Include="wwwroot\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\" />
-    <Folder Include="Views\Home\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,4 +42,7 @@
     <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Controllers\HomeController.cs" />
+  </ItemGroup>
 </Project>

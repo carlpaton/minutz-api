@@ -12,6 +12,7 @@ using SqlRepository;
 using Core;
 using Notifications;
 using Core.LogProvider;
+using System.Collections.Generic;
 
 namespace Api
 {
@@ -62,6 +63,17 @@ namespace Api
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new Info { Title = "Minutz Api", Version = "V1.3" });
+        //c.AddSecurityDefinition("oauth2", new OAuth2Scheme
+        //{
+        //  Type = "oauth2",
+        //  Flow = "implicit",
+        //  AuthorizationUrl = "http://localhost:65510/swagger/",
+        //  Scopes = new Dictionary<string, string>
+        //            {
+        //                { "readAccess", "Access read operations" },
+        //                { "writeAccess", "Access write operations" }
+        //            }
+        //});
       });
       string domain = "https://dockerdurban.auth0.com/";
       services.AddCors(options =>
@@ -86,18 +98,9 @@ namespace Api
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
     {
-      //if (env.IsDevelopment())
-      //{
-      //  app.UseDeveloperExceptionPage();
-      //}
-      //else
-      //{
-      //  // when an exception occurs, route to /Home/Error
-      //  app.UseExceptionHandler("/Home/Error");
-      //}
 
-      loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-      loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Error);
+      //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+      //loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Error);
       loggerFactory.AddDebug();
       app.UseAuthentication();
       app.UseSwagger();
