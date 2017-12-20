@@ -1,4 +1,6 @@
-﻿namespace Interface.Repositories
+﻿using System.Collections.Generic;
+
+namespace Interface.Repositories
 {
   public interface ILogRepository
   {
@@ -7,5 +9,7 @@
              int logId,
              string logLevel,
              string log);
+    List<Models.Entities.EventLog> Logs(string schema,
+                                        string connectionString);
   }
 }

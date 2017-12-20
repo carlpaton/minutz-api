@@ -12,5 +12,6 @@
                                   string catalogue,
                                   string username,
                                   string password);
+    string CreateConnectionString ();
   }
 }
