@@ -14,35 +14,35 @@ namespace Notifications
 
     public Notify()
     {
-      if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("NOTIFY-KEY")))
-      {
-        throw new ArgumentNullException("The environment variable: NOTIFY-KEY, was not supplied, please set this variable and try again.");
-      }
-      this.NotifyKey = Environment.GetEnvironmentVariable("NOTIFY-KEY");
+      // if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("NOTIFY-KEY")))
+      // {
+      //   throw new ArgumentNullException("The environment variable: NOTIFY-KEY, was not supplied, please set this variable and try again.");
+      // }
+      this.NotifyKey = "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"; //Environment.GetEnvironmentVariable("NOTIFY-KEY");
 
-      if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("NOTIFY-DEFAULT-TEMPLATE-KEY")))
-      {
-        throw new ArgumentException("The environment variable: NOTIFY-DEFAULT-TEMPLATE-KEY, was not supplied, please set this variable and try again.");
-      }
-      this.NotifyDefaultTemplateKey = Environment.GetEnvironmentVariable("NOTIFY-DEFAULT-TEMPLATE-KEY");
+      // if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("NOTIFY-DEFAULT-TEMPLATE-KEY")))
+      // {
+      //   throw new ArgumentException("The environment variable: NOTIFY-DEFAULT-TEMPLATE-KEY, was not supplied, please set this variable and try again.");
+      // }
+      this.NotifyDefaultTemplateKey = "716b366a-5d7f-4e19-a07c-bb32762903e5";//Environment.GetEnvironmentVariable("NOTIFY-DEFAULT-TEMPLATE-KEY");
 
-      if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("NOTIFY-USER")))
-      {
-        throw new ArgumentException("The environment variable: NOTIFY-USER, was not supplied, please set this variable and try again.");
-      }
-      this.NotifyUser = Environment.GetEnvironmentVariable("NOTIFY-USER");
+      // if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("NOTIFY-USER")))
+      // {
+      //   throw new ArgumentException("The environment variable: NOTIFY-USER, was not supplied, please set this variable and try again.");
+      // }
+      this.NotifyUser = "Minutz"; //Environment.GetEnvironmentVariable("NOTIFY-USER");
 
-      if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("UI-BASE-URL")))
-      {
-        throw new ArgumentException("The environment variable: UI-BASE-URL, was not supplied, please set this variable and try again.");
-      }
-      this.DestinationBaseAddress = Environment.GetEnvironmentVariable("UI-BASE-URL");
+      // if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("UI-BASE-URL")))
+      // {
+      //   throw new ArgumentException("The environment variable: UI-BASE-URL, was not supplied, please set this variable and try again.");
+      // }
+      this.DestinationBaseAddress = "http://test.minutz.net"; //Environment.GetEnvironmentVariable("UI-BASE-URL");
 
-      if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("NOTIFY-INVITATION-ADDRESS")))
-      {
-        throw new ArgumentException("The environment variable: NOTIFY-INVITATION-ADDRESS, was not supplied, please set this variable and try again.");
-      }
-      this.NotifyInvitationAddress = Environment.GetEnvironmentVariable("NOTIFY-INVITATION-ADDRESS");
+      // if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("NOTIFY-INVITATION-ADDRESS")))
+      // {
+      //   throw new ArgumentException("The environment variable: NOTIFY-INVITATION-ADDRESS, was not supplied, please set this variable and try again.");
+      // }
+      this.NotifyInvitationAddress = "invitation@minutz.net"; //Environment.GetEnvironmentVariable("NOTIFY-INVITATION-ADDRESS");
     }
   }
 }

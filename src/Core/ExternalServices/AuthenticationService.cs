@@ -9,7 +9,8 @@ namespace Core.ExternalServices
   {
     private readonly IApplicationSetting _applicationSetting;
     private IMemoryCache _cache;
-    public AuthenticationService(IApplicationSetting applicationSetting, IMemoryCache memoryCache)
+    public AuthenticationService(IApplicationSetting applicationSetting,
+                                 IMemoryCache memoryCache)
     {
       _applicationSetting = applicationSetting;
       _cache = memoryCache;

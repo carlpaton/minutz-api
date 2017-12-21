@@ -28,7 +28,7 @@ namespace SqlRepository {
       using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
         try {
           dbConnection.Open ();
-          logLevel.Trim('\'');
+          log.Trim('\'');
           string updateQuery = $@"INSERT INTO [{schema}].[EventLog]
                                VALUES (
                                 {logId.ToString()}

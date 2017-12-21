@@ -44,7 +44,7 @@ namespace Api.Controllers {
     public IActionResult GetMeetings () {
 
       _logger.LogInformation(Core.LogProvider.LoggingEvents.ListItems, "GetMeetings {ID}", 1);
-      using (_logger.BeginScope ("Message {HoleValue}", DateTime.Now)) {
+      
         try {
           this._logService.Log (Minutz.Models.LogLevel.Info, "GetMeetings called.");
           var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
@@ -55,7 +55,7 @@ namespace Api.Controllers {
           _logger.LogError(ex,"GetMeetings method in meeting controller");
           return StatusCode(500);
         }
-      }
+      
     }
 
     /// <summary>
@@ -85,7 +85,9 @@ namespace Api.Controllers {
     [ProducesResponseType (typeof (MeetingViewModel), 200)]
     [SwaggerResponse ((int) System.Net.HttpStatusCode.OK, Type = typeof (MeetingViewModel))]
     public IActionResult CreateMeeting () {
+      _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - entry point {ID}", 1);
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
+      _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - token {ID}", 1);
       var data = new MeetingViewModel {
         Id = Guid.NewGuid ().ToString (),
         AvailableAttendeeCollection = new List<Minutz.Models.Entities.MeetingAttendee> (),
@@ -109,6 +111,7 @@ namespace Api.Controllers {
         UpdatedDate = DateTime.UtcNow
       };
 
+      _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - created viewmodel {ID}", 1);
       var result = _meetingService.CreateMeeting (token, data.ToEntity (),
         data.MeetingAttendeeCollection,
         data.MeetingAgendaCollection,

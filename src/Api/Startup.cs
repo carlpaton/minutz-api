@@ -16,7 +16,7 @@ using Swashbuckle.AspNetCore.Swagger;
 
 namespace Api {
   public class Startup {
-    public static string _version = "V1.7";
+    public static string _version = "V1.10";
     public Startup (IHostingEnvironment env) {
       var builder = new ConfigurationBuilder ()
         .SetBasePath (env.ContentRootPath)
@@ -95,7 +95,7 @@ namespace Api {
 
       loggerFactory.AddConsole (Configuration.GetSection ("Logging"));
       //loggerFactory.AddApplicationInsights (app.ApplicationServices, LogLevel.Error);
-      loggerFactory.AddProvider (new LoggerFileProvider ());
+      loggerFactory.AddProvider (new LoggerDBProvider ());
       loggerFactory.AddDebug ();
       app.UseAuthentication ();
       app.UseSwagger ();

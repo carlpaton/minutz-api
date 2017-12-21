@@ -5,6 +5,7 @@ using Minutz.Models.Entities;
 using NUnit.Framework;
 using NSubstitute;
 using Minutz.Models.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace Tests
 {
@@ -19,9 +20,11 @@ namespace Tests
       var meetingService = Substitute.For<IMeetingService>();
       var inviteService = Substitute.For<IInvatationService>();
       var logService = Substitute.For<ILogService>();
+      var loggerFactory = Substitute.For<ILoggerFactory>();
       var controller = new MeetingController(meetingService,
                                              inviteService,
-                                             logService);
+                                             logService,
+                                             loggerFactory);
       var meeting = new Minutz.Models.ViewModels.MeetingViewModel
       {
         Name = string.Empty

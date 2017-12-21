@@ -9,6 +9,7 @@ using Minutz.Models.Entities;
 using NSubstitute;
 using NUnit.Framework.Internal;
 using Interface.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace Tests
 {
@@ -31,6 +32,7 @@ namespace Tests
       var instanceRepository = Substitute.For<IInstanceRepository>();
       var meetingAttachmentRepository = Substitute.For<IMeetingAttachmentRepository>();
       var meetingNoteRepository = Substitute.For<IMeetingNoteRepository>();
+      var loggerFactory = Substitute.For<ILoggerFactory>();
       var meetingService =
         new MeetingService(
         meetingRepository,
@@ -44,7 +46,7 @@ namespace Tests
         applicationSetting,
         instanceRepository,
         meetingAttachmentRepository,
-        meetingNoteRepository);
+        meetingNoteRepository, loggerFactory);
       //Act
 
       //Assert
@@ -67,6 +69,7 @@ namespace Tests
       var instanceRepository = Substitute.For<IInstanceRepository>();
       var meetingattachmentRepository = Substitute.For<IMeetingAttachmentRepository>();
       var meetingNoteRepository = Substitute.For<IMeetingNoteRepository>();
+      var loggerFactory = Substitute.For<ILoggerFactory>();
       var meetingService =
         new MeetingService(
           meetingRepository,
@@ -80,7 +83,7 @@ namespace Tests
           applicationSetting,
           instanceRepository,
           meetingattachmentRepository,
-          meetingNoteRepository);
+          meetingNoteRepository, loggerFactory);
       //Act
 
       //Assert

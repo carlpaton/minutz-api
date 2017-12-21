@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using SqlRepository;
 
 namespace Core.LogProvider {
-    public class LoggerFileProvider : ILoggerProvider {
+    public class LoggerDBProvider : ILoggerProvider {
         ILogger ILoggerProvider.CreateLogger (string categoryName) {
             return new Logger(categoryName);
         }
