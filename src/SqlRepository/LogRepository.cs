@@ -16,8 +16,8 @@ namespace SqlRepository {
       if (string.IsNullOrEmpty (connectionString))
         throw new ArgumentException ("The connectionString is not supplied");
 
-      if (string.IsNullOrEmpty (schema))
-        throw new ArgumentException ("The schema was not supplied.");
+//      if (string.IsNullOrEmpty (schema))
+//        throw new ArgumentException ("The schema was not supplied.");
 
       if (string.IsNullOrEmpty (logLevel))
         throw new ArgumentException ("The loglevel was not supplied.");
@@ -29,7 +29,7 @@ namespace SqlRepository {
         try {
           dbConnection.Open ();
           log.Trim('\'');
-          string updateQuery = $@"INSERT INTO [{schema}].[EventLog]
+          string updateQuery = $@"INSERT INTO [app].[EventLog]
                                VALUES (
                                 {logId.ToString()}
                               ,'{logLevel}'
@@ -38,7 +38,7 @@ namespace SqlRepository {
           var instance = dbConnection.Execute (updateQuery);
           return instance == 1;
         } catch (Exception ex) {
-          throw new Exception("Insert into eventlog:", ex.InnerException);
+            throw new Exception("Insert into eventlog:", ex.InnerException);
         }
       }
     }

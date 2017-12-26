@@ -18,60 +18,60 @@ namespace Api.Controllers
     /// Get all agenda items for a meeting
     /// </summary>
     /// <returns>Collection of MeetingAgenda objects</returns>
-    [HttpGet("api/meeting/{referenceId}/attachments")]
-    [Authorize]
-    public List<MeetingAttachment> Get(string referenceId)
-    {
-      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      return new List<MeetingAttachment>();
-    }
+     [HttpGet("api/meeting/{referenceId}/attachments")]
+     [Authorize]
+     public List<MeetingAttachment> Get(string referenceId)
+     {
+       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       return new List<MeetingAttachment>();
+     }
 
     /// <summary>
     ///  Returns one instance of a meeting agenda
     /// </summary>
     /// <returns>MeetingAgenda object</returns>
-    [HttpGet("api/meeting/{referenceId}/attachment/{id}")]
-    [Authorize]
-    public MeetingAttachment Get(string referenceId, string id)
-    {
-      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      return new MeetingAttachment();
-    }
+     [HttpGet("api/meeting/{referenceId}/attachment/{id}")]
+     [Authorize]
+     public MeetingAttachment Get(string referenceId, string id)
+     {
+       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       return new MeetingAttachment();
+     }
 
     /// <summary>
     /// Create a meeting Agenda
     /// </summary>
     /// <returns></returns>
-    [HttpPut("api/meeting/{referenceId}/attachment")]
-    [Authorize]
-    public MeetingAttachment Put([FromBody] MeetingAttachment attachment)
-    {
-      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      return new MeetingAttachment();
-    }
+     [HttpPut("api/meeting/{referenceId}/attachment")]
+     [Authorize]
+     public MeetingAttachment Put([FromBody] MeetingAttachment attachment)
+     {
+       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       return new MeetingAttachment();
+     }
 
     /// <summary>
     /// Update the MeetingViewModel Agenda
     /// </summary>
     /// <returns></returns>
-    [HttpPost("api/meeting/{referenceId}/attachment/{id}")]
-    [Authorize]
-    public MeetingAttachment Post([FromBody] List<IFormFile> files, string referenceId, string id)
-    {
-      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      return new MeetingAttachment();
-    }
+     [HttpPost("api/meeting/{referenceId}/attachment/{id}")]
+     [Authorize]
+     public MeetingAttachment Post([FromBody] List<IFormFile> files, string referenceId, string id)
+     {
+       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       return new MeetingAttachment();
+     }
 
     /// <summary>
     /// Delete the single instance of the agenda item.
     /// </summary>
     /// <returns>true if successful and false if failure.</returns>
-    [HttpDelete("api/meeting/{referenceId}/attachment/{id}")]
-    [Authorize]
-    public bool Delete(string referenceId, string id)
-    {
-      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      return true;
-    }
+     [HttpDelete("api/meeting/{referenceId}/attachment/{id}")]
+     [Authorize]
+     public bool Delete(string referenceId, string id)
+     {
+       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       return true;
+     }
   }
 }
