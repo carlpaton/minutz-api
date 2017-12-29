@@ -4,63 +4,65 @@ using Minutz.Models.Entities;
 
 namespace Interface.Services
 {
-  public interface IMeetingService
-  {
-    Minutz.Models.ViewModels.MeetingViewModel GetMeeting(
-                                                        string token,
-                                                        string id);
+	public interface IMeetingService
+	{
+		MeetingAgenda CreateMeetingAgendaItem(MeetingAgenda agenda, string token);
+		
+		Minutz.Models.ViewModels.MeetingViewModel GetMeeting(
+			string token,
+			string id);
 
-    IEnumerable<Minutz.Models.ViewModels.MeetingViewModel> GetMeetings(string token);
+		IEnumerable<Minutz.Models.ViewModels.MeetingViewModel> GetMeetings(string token);
 
-    KeyValuePair<bool, string> DeleteMeeting(
-                                            string token,
-                                            Guid meetingId);
+		KeyValuePair<bool, string> DeleteMeeting(
+			string token,
+			Guid meetingId);
 
-    List<MeetingAttendee> UpdateMeetingAttendees(
-                                                List<MeetingAttendee> data,
-                                                string token);
+		List<MeetingAttendee> UpdateMeetingAttendees(
+			List<MeetingAttendee> data,
+			string token);
 
-    List<MeetingAgenda> UpdateMeetingAgendaItems(
-                                                string meetingid,
-                                                List<MeetingAgenda> data,
-                                                string token);
+		List<MeetingAgenda> UpdateMeetingAgendaItems(
+			string meetingid,
+			List<MeetingAgenda> data,
+			string token);
 
-    KeyValuePair<bool, Minutz.Models.ViewModels.MeetingViewModel> CreateMeeting(
-                                                                               string token,
-                                                                               Meeting meeting,
-                                                                               List<MeetingAttendee> attendees,
-                                                                               List<MeetingAgenda> agenda,
-                                                                               List<MeetingNote> notes,
-                                                                               List<MeetingAttachment> attachements,
-                                                                               List<MinutzAction> actions);
+		KeyValuePair<bool, Minutz.Models.ViewModels.MeetingViewModel> CreateMeeting(
+			string token,
+			Meeting meeting,
+			List<MeetingAttendee> attendees,
+			List<MeetingAgenda> agenda,
+			List<MeetingNote> notes,
+			List<MeetingAttachment> attachements,
+			List<MinutzAction> actions);
 
-    Minutz.Models.ViewModels.MeetingViewModel UpdateMeeting(
-                                                            string token,
-                                                            Minutz.Models.ViewModels.MeetingViewModel meetingViewModel);
+		Minutz.Models.ViewModels.MeetingViewModel UpdateMeeting(
+			string token,
+			Minutz.Models.ViewModels.MeetingViewModel meetingViewModel);
 
-    IEnumerable<MinutzAction> GetMinutzActions(
-                                              string referenceId,
-                                              string userTokenUid);
+		IEnumerable<MinutzAction> GetMinutzActions(
+			string referenceId,
+			string userTokenUid);
 
-    KeyValuePair<bool, string> SendMinutes(
-                                          string token,
-                                          Guid meetingId);
+		KeyValuePair<bool, string> SendMinutes(
+			string token,
+			Guid meetingId);
 
-    KeyValuePair<bool, string> SendInvatations(
-                                              string token,
-                                              Guid meetingId,
-                                              IInvatationService invatationService);
+		KeyValuePair<bool, string> SendInvatations(
+			string token,
+			Guid meetingId,
+			IInvatationService invatationService);
 
-    IEnumerable<KeyValuePair<string, string>> ExtractQueries(string returnUri);
+		IEnumerable<KeyValuePair<string, string>> ExtractQueries(string returnUri);
 
-    MeetingAttendee GetAttendee(
-                                string token,
-                                Guid attendeeId,
-                                Guid meetingId);
+		MeetingAttendee GetAttendee(
+			string token,
+			Guid attendeeId,
+			Guid meetingId);
 
 
-    bool InviteUser(
-                    string token,
-                    MeetingAttendee attendee);
-  }
+		bool InviteUser(
+			string token,
+			MeetingAttendee attendee);
+	}
 }

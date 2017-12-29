@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Core;
+﻿using Core;
 using Core.ExternalServices;
 using Core.LogProvider;
 using Interface.Repositories;
 using Interface.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Notifications;
 using SqlRepository;
 using Swashbuckle.AspNetCore.Swagger;
@@ -21,16 +17,27 @@ namespace Minutz.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup (IHostingEnvironment env) 
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder ()
+                .SetBasePath (env.ContentRootPath)
+                .AddJsonFile ("appsettings.json", optional : false, reloadOnChange : true)
+                .AddJsonFile ($"appsettings.{env.EnvironmentName}.json", optional : true)
+                .AddEnvironmentVariables ();
+            Configuration = builder.Build ();
         }
-
+        
+        private string _domain = "https://dockerdurban.auth0.com/";
+        public const string Version = "3.0.2.102-V1.4.13";
+        public const string Title = "Minutz Api";
+        
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMemoryCache ();
+            
             services.AddTransient<IUserRepository, UserRepository> ();
             services.AddTransient<IApplicationSetupRepository, ApplicationSetupRepository> ();
             services.AddTransient<IMeetingRepository, MeetingRepository> ();
@@ -56,30 +63,48 @@ namespace Minutz.Api
             services.AddTransient<IInvatationService, InvatationService> ();
             services.AddTransient<IStartupService, StartupService> ();
             
-            services.AddMvc();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info { Title = "Minutz Api", Version = "v1.11", TermsOfService = "TOU"});
+            services.AddMemoryCache ();
+            services.AddMvc ();
+            services.AddSwaggerGen (c => {
+                c.SwaggerDoc ("v1", new Info { Title = "Minutz Api", Version = Startup.Version     });
             });
-            
+            string domain = "https://dockerdurban.auth0.com/";
+            services.AddCors (options => {
+                options.AddPolicy ("AllowAllOrigins",
+                    builder => {
+                        builder.AllowAnyMethod ().AllowAnyHeader ().AllowAnyOrigin ();
+                    });
+            });
+            services.AddAuthentication (options => {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer (options => {
+                options.Authority = domain;
+                options.Audience = "https://dockerdurban.auth0.com/api/v2/";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddConsole (Configuration.GetSection ("Logging"));
+            //loggerFactory.AddProvider (new LoggerDBProvider ());
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseAuthentication ();
             app.UseSwagger();
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Minutz Api V1.11");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", Startup.Version);
             });
-            app.UseMvc();
+            app.UseCors ("AllowAllOrigins");
+            app.UseMvc ();
         }
     }
 }

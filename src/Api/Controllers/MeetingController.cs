@@ -84,7 +84,7 @@ namespace Api.Controllers {
      [ProducesResponseType (typeof (string), 400)]
      [ProducesResponseType (typeof (MeetingViewModel), 200)]
      [SwaggerResponse ((int) System.Net.HttpStatusCode.OK, Type = typeof (MeetingViewModel))]
-     public IActionResult CreateMeeting () {
+       public IActionResult CreateMeeting () {
        _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - entry point {ID}", 1);
        var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
        _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - token {ID}", 1);

@@ -68,17 +68,9 @@ namespace Api.Controllers
        var payload = JsonConvert.SerializeObject(agenda);
        _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem," sent data {payload}", payload);
        var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-       var data = new List<Minutz.Models.Entities.MeetingAgenda>();
-       agenda.Id = Guid.NewGuid();
-       data.Add(agenda);
-       var result = _meetingService.UpdateMeetingAgendaItems(agenda.ReferenceId, data,token);
-       if(result.Any()){
-         var item = result.FirstOrDefault(i=> i.Id == agenda.Id);
-         if(item != null){
-           return item;
-         }
-       }
-       return new MeetingAgenda();
+
+       var result = _meetingService.CreateMeetingAgendaItem(agenda, token);
+       return result;
      }
 
     /// <summary>
