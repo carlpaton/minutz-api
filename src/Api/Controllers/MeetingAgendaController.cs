@@ -14,6 +14,8 @@ namespace Api.Controllers
   {
     private readonly IMeetingService _meetingService;
     private readonly ILogger _logger;
+    internal const string _defaultAgendaId = "e38b69b3-8f2a-4979-9323-1819db4331f8";
+    
     public MeetingAgendaController(IMeetingService meetingService,
                                    ILoggerFactory logger)
     {
@@ -68,7 +70,7 @@ namespace Api.Controllers
        var payload = JsonConvert.SerializeObject(agenda);
        _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem," sent data {payload}", payload);
        var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-
+       if (agenda.Id == Guid.Parse(_defaultAgendaId)) agenda.Id = Guid.NewGuid();
        var result = _meetingService.CreateMeetingAgendaItem(agenda, token);
        return result;
      }
