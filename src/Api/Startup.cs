@@ -28,7 +28,7 @@ namespace Minutz.Api
         }
         
         private string _domain = "https://dockerdurban.auth0.com/";
-        public const string Version = "3.0.2.102-V1.4.13";
+        public const string Version = "3.0.2.102-V1.4.14";
         public const string Title = "Minutz Api";
         
         public IConfiguration Configuration { get; }
@@ -66,7 +66,7 @@ namespace Minutz.Api
             services.AddMemoryCache ();
             services.AddMvc ();
             services.AddSwaggerGen (c => {
-                c.SwaggerDoc ("v1", new Info { Title = "Minutz Api", Version = Startup.Version     });
+                c.SwaggerDoc ("v1", new Info { Title = Startup.Title, Version = Startup.Version     });
             });
             string domain = "https://dockerdurban.auth0.com/";
             services.AddCors (options => {
