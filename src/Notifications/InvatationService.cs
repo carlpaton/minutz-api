@@ -24,6 +24,7 @@ namespace Notifications
       var result = new SendGridClient(_notify.NotifyKey)
                                       .SendEmailAsync(CreateInvitationMessage(to,
                                                                                _invitationSubject,
+                                                                               meeting.Location,
                                                                                meeting.Id.ToString(),
                                                                                meeting.Name, meeting.MeetingAgendaCollection))
                                       .Result;
@@ -37,6 +38,7 @@ namespace Notifications
 
     internal SendGridMessage CreateInvitationMessage(EmailAddress to,
                                                      string subject,
+                                                      string location,
                                                      string meetingId,
                                                      string meetingName,
                                                      List<MeetingAgenda> agenda)
@@ -46,6 +48,7 @@ namespace Notifications
                                                   subject,
                                                   createInvitationTextMessage(to.Name, meetingId, meetingName, agenda),
                                                   createInvitationHtmlMessage(to.Name, meetingId, meetingName, agenda));
+      message.CreateCalenderEvent(to.Email,to.Name,location,meetingName);
       message.SetTemplateId(_notify.NotifyDefaultTemplateKey);
       return message;
     }

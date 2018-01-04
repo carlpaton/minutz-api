@@ -107,7 +107,7 @@ namespace Api.Controllers {
          MeetingNoteCollection = new List<Minutz.Models.Entities.MeetingNote> (),
          Outcome = string.Empty,
          Purpose = string.Empty,
-         ReacuranceType = "None",
+         ReacuranceType = 0,
          UpdatedDate = DateTime.UtcNow
        };
 

@@ -50,7 +50,7 @@ namespace Api.Extensions
         Name = model.Name,
         Outcome = model.Outcome,
         Purpose = model.Purpose,
-        ReacuranceType = model.ReacuranceType,
+        ReacuranceType = int.Parse( model.ReacuranceType),
         //Tag =  model.Tag,
         Time = model.Time,
         TimeZone = model.TimeZone,
@@ -88,10 +88,10 @@ namespace Api.Extensions
       {
         viewModel.Outcome = string.Empty;
       }
-      if (string.IsNullOrEmpty(viewModel.ReacuranceType))
-      {
-        viewModel.ReacuranceType = string.Empty;
-      }
+//      if (string.IsNullOrEmpty(viewModel.ReacuranceType))
+//      {
+//        viewModel.ReacuranceType = string.Empty;
+//      }
       if (string.IsNullOrEmpty(viewModel.TimeZone))
       {
         viewModel.TimeZone = string.Empty;
@@ -133,7 +133,7 @@ namespace Api.Extensions
         MeetingOwnerId = viewModel.MeetingOwnerId,
         Outcome = viewModel.Outcome,
         Purpose = viewModel.Purpose,
-        ReacuranceType = viewModel.ReacuranceType,
+        ReacuranceType = viewModel.ReacuranceType.ToString(),
         Tag = String.Join(",", viewModel.Tag.ToArray()),
         Time = viewModel.Time,
         TimeZone = viewModel.TimeZone,
@@ -157,7 +157,7 @@ namespace Api.Extensions
         MeetingOwnerId = entity.MeetingOwnerId,
         Outcome = entity.Outcome,
         Purpose = entity.Purpose,
-        ReacuranceType = entity.ReacuranceType,
+        ReacuranceType = int.Parse( entity.ReacuranceType),
         Tag = entity.Tag.Split(',').ToList(),
         Time = entity.Time,
         TimeZone = entity.TimeZone,
@@ -186,7 +186,7 @@ namespace Api.Extensions
         MeetingOwnerId = entity.MeetingOwnerId,
         Outcome = entity.Outcome,
         Purpose = entity.Purpose,
-        ReacuranceType = entity.ReacuranceType,
+        ReacuranceType = int.Parse( entity.ReacuranceType),
         Tag = entity.Tag.Split(',').ToList(),
         Time = entity.Time,
         TimeZone = entity.TimeZone,

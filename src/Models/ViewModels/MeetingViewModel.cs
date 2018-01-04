@@ -13,7 +13,7 @@ namespace Minutz.Models.ViewModels
     public int Duration { get; set; }
     public bool IsReacurance { get; set; }
     public bool IsPrivate { get; set; }
-    public string ReacuranceType { get; set; }
+    public int ReacuranceType { get; set; }
     public bool IsLocked { get; set; }
     public bool IsFormal { get; set; }
     public string Location {get;set;}

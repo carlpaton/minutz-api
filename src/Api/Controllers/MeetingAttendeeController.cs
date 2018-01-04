@@ -14,11 +14,11 @@ namespace Api.Controllers
   public class MeetingAttendeeController : Controller
   {
     private readonly IMeetingService _meetingService;
-    private readonly IStartupService _startupService;
-    public MeetingAttendeeController(IMeetingService meetingService, IStartupService startupService)
+    private readonly IInvatationService _invationService;
+    public MeetingAttendeeController(IMeetingService meetingService, IInvatationService invatationService)
     {
       _meetingService = meetingService;
-      _startupService = startupService;
+      _invationService = invatationService;
     }
 
     /// <summary>
@@ -99,7 +99,7 @@ namespace Api.Controllers
        invitee.PersonIdentity = invitee.Email;
        invitee.Role = "invited";
        invitee.Status = "invited";
-       var result = _startupService.SendInvitationMessage(invitee, meeting);
+       var result = _invationService.SendMeetingInvatation(invitee, meeting);
        if (result)
        {
          var savedUser = _meetingService.InviteUser(token, invitee);
