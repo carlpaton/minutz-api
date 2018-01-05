@@ -50,6 +50,8 @@ namespace Minutz.Api
             services.AddTransient<ILogRepository, LogRepository> ();
             services.AddTransient<IReminderRepository, ReminderRepository>();
             services.AddTransient<INotificationRoleRepository, NotificationRoleRepository>();
+            services.AddTransient<INotificationTypeRepository, NotificationTypeRepository>();
+            
             
 
             //Services
@@ -67,6 +69,8 @@ namespace Minutz.Api
             services.AddTransient<IStartupService, StartupService> ();
             services.AddTransient<IReminderService, ReminderService>();
             services.AddTransient<INotificationRoleService, NotificationRoleService>();
+            services.AddTransient<INotificationTypeService, NotificationTypeService>();
+            
             
             
             services.AddMemoryCache ();
