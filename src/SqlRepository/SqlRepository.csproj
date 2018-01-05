@@ -1,13 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <RootNamespace>SqlRepository</RootNamespace>
     <AssemblyName>SqlRepository</AssemblyName>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='pipelines|AnyCPU'" />
-
   <ItemGroup>
     <None Remove="Scripts\createapplicationCatalogue.sql" />
     <None Remove="Scripts\createapplicationInstanceTable.sql" />
@@ -15,7 +12,6 @@
     <None Remove="Scripts\createapplicationSchema.sql" />
     <None Remove="Scripts\createdatabase.sql" />
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Include="Scripts\createapplicationCatalogue.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -33,20 +29,16 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Include="Scripts\createdatabase.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="dapper" Version="1.50.2" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Interface\Interface.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
   </ItemGroup>
-
 </Project>

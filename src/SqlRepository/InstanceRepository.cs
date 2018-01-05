@@ -20,6 +20,7 @@ namespace SqlRepository
         return data;
       }
     }
+    
     public Instance GetByUsername(string username, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
@@ -30,5 +31,7 @@ namespace SqlRepository
         return data;
       }
     }
+    
+    
   }
 }

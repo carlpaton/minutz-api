@@ -96,7 +96,7 @@ namespace Api.Controllers {
          IsFormal = false,
          IsLocked = false,
          IsPrivate = true,
-         Time = "12:00",
+         Time = "12",
          TimeZoneOffSet = 2,
          IsReacurance = false,
          Location = "Durban",
