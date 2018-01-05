@@ -72,7 +72,7 @@ namespace Minutz.Api
             services.AddTransient<INotificationRoleService, NotificationRoleService>();
             services.AddTransient<INotificationTypeService, NotificationTypeService>();
             services.AddTransient<ISubscriptionService, SubscriptionService>();
-            
+            services.AddTransient<IInstanceService, InstanceService>();
             
             services.AddMemoryCache ();
             services.AddMvc ();

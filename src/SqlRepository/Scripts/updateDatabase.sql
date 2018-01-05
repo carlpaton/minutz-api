@@ -27,6 +27,8 @@ GO
 ALTER TABLE app.instance
 ADD reminderId INT NULL
 
+
+
 -- - id
 -- - username
 -- - password
@@ -52,6 +54,8 @@ CREATE TABLE app.subscription
     [Cost] INT  NULL
 )
 GO
+
+
 
 CREATE TABLE app.notificationType
 (

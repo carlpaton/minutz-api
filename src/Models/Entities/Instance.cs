@@ -15,7 +15,7 @@ namespace Minutz.Models.Entities
     public byte[] Logo { get; set; }
     public string Colour { get; set; }
     public string Style { get; set; }
-    public bool AllowInformation { get; set; }
+    public bool AllowInformal { get; set; }
     public int NotificationTypeId { get; set; }
     public int NotificationRoleId { get; set; }
     public int ReminderId { get; set; }
