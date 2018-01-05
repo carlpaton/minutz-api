@@ -77,7 +77,7 @@ namespace SqlRepository
 				var notificationRoleSql = $"select * from [{schema}].{_notificationRole}";
 				var notificationRole = dbConnection.Query<NotificationRole>(notificationRoleSql).ToList().First(i=> i.Id == notificationRoleId);
 
-				var updateUserSql = $"UPDATE [{schema}].{_instance} SET notificationRoleId = '{notificationRoleId}' WHERE Username = '{instanceId}' ";
+				var updateUserSql = $"UPDATE [{schema}].{_instance} SET notificationRoleId = {notificationRoleId} WHERE Username = '{instanceId}' ";
 				var updateUserResult = dbConnection.Execute(updateUserSql);
 				
 				return notificationRole;

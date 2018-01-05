@@ -76,7 +76,7 @@ namespace SqlRepository
 				var remindersSql = $"select * from [{schema}].{_reminder}";
 				var reminder = dbConnection.Query<Reminder>(remindersSql).ToList().First(i=> i.Id == reminderId);
 
-				var updateUserSql = $"UPDATE [{schema}].{_instance} SET reminderId = '{reminderId}' WHERE Username = '{instanceId}' ";
+				var updateUserSql = $"UPDATE [{schema}].{_instance} SET reminderId = {reminderId} WHERE Username = '{instanceId}' ";
 				var updateUserResult = dbConnection.Execute(updateUserSql);
 				
 				return reminder;

@@ -77,7 +77,7 @@ namespace SqlRepository
 				var notificationTypeSql = $"select * from [{schema}].{_notificationType}";
 				var notificationType = dbConnection.Query<NotificationType>(notificationTypeSql).ToList().First(i=> i.Id == notificationTypeid);
 
-				var updateUserSql = $"UPDATE [{schema}].{_instance} SET notificationTypeId = '{notificationTypeid}' WHERE Username = '{instanceId}' ";
+				var updateUserSql = $"UPDATE [{schema}].{_instance} SET notificationTypeId = {notificationTypeid} WHERE Username = '{instanceId}' ";
 				var updateUserResult = dbConnection.Execute(updateUserSql);
 				
 				return notificationType;

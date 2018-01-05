@@ -18,7 +18,7 @@ namespace Api.Controllers
 		[HttpGet("api/notificationTypes")]
 		[Authorize]
 		[Produces("application/json")]
-		public IActionResult Reminders()
+		public IActionResult SotificationTypes()
 		{
 			var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
 			var result = this._notificationTypeService.GetList(token);
@@ -28,7 +28,7 @@ namespace Api.Controllers
 		[HttpGet("api/notificationType")]
 		[Authorize]
 		[Produces("application/json")]
-		public IActionResult Reminder()
+		public IActionResult NotificationType()
 		{
 			var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
 			var result = this._notificationTypeService.GetNotificationType(token);
@@ -38,7 +38,7 @@ namespace Api.Controllers
 		[HttpPost("api/notificationType/{notificationTypeId}")]
 		[Authorize]
 		[Produces("application/json")]
-		public IActionResult SendMinutes(int notificationTypeId)
+		public IActionResult SetNotificationType(int notificationTypeId)
 		{
 			var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
 			var result = this._notificationTypeService.SetNotificationTypeForSchema(token,notificationTypeId);

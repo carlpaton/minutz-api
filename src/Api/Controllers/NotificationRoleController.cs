@@ -17,7 +17,7 @@ namespace Api.Controllers
 		[HttpGet("api/notificationRoles")]
 		[Authorize]
 		[Produces("application/json")]
-		public IActionResult Reminders()
+		public IActionResult NotificationRoles()
 		{
 			var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
 			var result = this._notificationRoleService.GetList(token);
@@ -27,7 +27,7 @@ namespace Api.Controllers
 		[HttpGet("api/notificationRole")]
 		[Authorize]
 		[Produces("application/json")]
-		public IActionResult Reminder()
+		public IActionResult nNotificationRole()
 		{
 			var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
 			var result = this._notificationRoleService.GetNotificationRole(token);
@@ -37,7 +37,7 @@ namespace Api.Controllers
 		[HttpPost("api/notificationRole/{notificationRoleId}")]
 		[Authorize]
 		[Produces("application/json")]
-		public IActionResult SendMinutes(int notificationRoleId)
+		public IActionResult SetNotificationRole(int notificationRoleId)
 		{
 			var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
 			var result = this._notificationRoleService.SetNotificationRoleForSchema(token,notificationRoleId);

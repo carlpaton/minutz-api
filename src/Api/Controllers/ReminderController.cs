@@ -37,7 +37,7 @@ namespace Api.Controllers
 		[HttpPost("api/reminder/{reminderId}")]
 		[Authorize]
 		[Produces("application/json")]
-		public IActionResult SendMinutes(int reminderId)
+		public IActionResult SetReminder(int reminderId)
 		{
 			var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
 			var result = this._reminderService.SetReminderForSchema(token,reminderId);
