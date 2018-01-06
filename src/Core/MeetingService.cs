@@ -297,6 +297,9 @@ namespace Core
 			meeting.Name = " demo";
 			meeting.MeetingOwnerId = auth.UserInfo.Sub;
 			this._logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - Service - auth ", auth);
+			var availibleAttendees =
+				_meetingAttendeeRepository.GetAvalibleAttendees(auth.Instance.Username, auth.ConnectionString);
+			
 			attendees.Add(new MeetingAttendee
 			{
 				Name = auth.UserInfo.Name,
@@ -398,6 +401,7 @@ namespace Core
 					MeetingAgendaCollection = agenda,
 					Name = meeting.Name,
 					MeetingAttendeeCollection = attendees,
+					AvailableAttendeeCollection = availibleAttendees,
 					Date = meeting.Date,
 					MeetingAttachmentCollection = attachements,
 					Duration = meeting.Duration,
