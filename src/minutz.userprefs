@@ -1,10 +1,9 @@
 ﻿<Properties StartupConfiguration="{67CA3E6C-1759-46F3-9312-BC67A5C9B677}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="src Status">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Core/MeetingService.cs">
     <Files>
       <File FileName="Api/Controllers/MeetingAttendeeController.cs" Line="105" Column="49" />
       <File FileName="Core/MeetingService.cs" Line="697" Column="7" />
       <File FileName="SqlRepository/MeetingAttendeeRepository.cs" Line="162" Column="22" />
-      <File FileName="src Status" />
     </Files>
     <Pads>
       <Pad Id="MonoDevelop.UnitTesting.TestPad">

@@ -48,6 +48,12 @@ CREATE TABLE app.Person
 )
 GO
 
+
+ALTER TABLE app.Person
+ADD Related varchar(max);
+
+GO
+
 CREATE TABLE app.Instance
 (
   Id                 INT IDENTITY,
@@ -67,6 +73,7 @@ CREATE TABLE app.Instance
   reminderId         INT
 )
 GO
+
 
 CREATE TABLE app.EventLog
 (

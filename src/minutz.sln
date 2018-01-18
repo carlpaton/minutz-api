@@ -6,6 +6,8 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{2D076928-7547-4398-857B-0E723CD4C952}"
 	ProjectSection(SolutionItems) = preProject
 		..\readme.md = ..\readme.md
+		..\documentation\setup-database.sql = ..\documentation\setup-database.sql
+		..\documentation\alter-reset-account.sql = ..\documentation\alter-reset-account.sql
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlRepository", "SqlRepository\SqlRepository.csproj", "{D67455E8-3A1D-4A1D-A961-665DAB8173DE}"
