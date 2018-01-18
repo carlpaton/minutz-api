@@ -1,49 +1,49 @@
 {
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:65509/",
-      "sslPort": 0
-    }
-  },
-  "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "environmentVariables": {
-        "AUTHORITY": "https://dockerdurban.auth0.com/",
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "SERVER_ADDRESS": "tcp:docker-durban.database.windows.net,1433",
-        "DEFAULT_CATALOGUE": "minutz-test",
-        "DEFAULT_SCHEMA": "app",
-        "DEFAULT_USER": "tzatziki",
-        "DEFAULT_PASSWORD": "40Tep25hUXnz",
-        "NOTIFY-DEFAULT-TEMPLATE-KEY": "716b366a-5d7f-4e19-a07c-bb32762903e5",
-        "NOTIFY-KEY": "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",
-        "NOTIFY-USER": "Minutz",
-        "UI-BASE-URL": "http://test.minutz.net"
-      }
+    "iisSettings": {
+        "windowsAuthentication": false,
+        "anonymousAuthentication": true,
+        "iisExpress": {
+            "applicationUrl": "http://localhost:65509/",
+            "sslPort": 0
+        }
     },
-    "Api": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "environmentVariables": {
-        "AUTHORITY": "https://dockerdurban.auth0.com/",
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "SERVER_ADDRESS": "tcp:docker-durban.database.windows.net,1433",
-        "DEFAULT_CATALOGUE": "minutz-test",
-        "DEFAULT_SCHEMA": "app",
-        "DEFAULT_USER": "tzatziki",
-        "DEFAULT_PASSWORD": "40Tep25hUXnz",
-        "NOTIFY-DEFAULT-TEMPLATE-KEY": "716b366a-5d7f-4e19-a07c-bb32762903e5",
-        "NOTIFY-KEY": "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",
-        "NOTIFY-USER": "Minutz",
-        "UI-BASE-URL": "http://test.minutz.net"
-      },
-      "applicationUrl": "http://localhost:65510/"
+    "profiles": {
+        "IIS Express": {
+            "commandName": "IISExpress",
+            "launchBrowser": true,
+            "launchUrl": "swagger",
+            "environmentVariables": {
+                "AUTHORITY": "https://dockerdurban.auth0.com/",
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "SERVER_ADDRESS": "tcp:docker-durban.database.windows.net,1433",
+                "DEFAULT_CATALOGUE": "minutz-test",
+                "DEFAULT_SCHEMA": "app",
+                "DEFAULT_USER": "tzatziki",
+                "DEFAULT_PASSWORD": "40Tep25hUXnz",
+                "NOTIFY-DEFAULT-TEMPLATE-KEY": "716b366a-5d7f-4e19-a07c-bb32762903e5",
+                "NOTIFY-KEY": "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",
+                "NOTIFY-USER": "Minutz",
+                "UI-BASE-URL": "http://test.minutz.net"
+            }
+        },
+        "Api": {
+            "commandName": "Project",
+            "launchBrowser": true,
+            "launchUrl": "swagger",
+            "environmentVariables": {
+                "AUTHORITY": "https://dockerdurban.auth0.com/",
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "SERVER_ADDRESS": "tcp:127.0.0.1,1401",
+                "DEFAULT_CATALOGUE": "minutz-test",
+                "DEFAULT_SCHEMA": "app",
+                "DEFAULT_USER": "sa",
+                "DEFAULT_PASSWORD": "password1234$",
+                "NOTIFY-DEFAULT-TEMPLATE-KEY": "716b366a-5d7f-4e19-a07c-bb32762903e5",
+                "NOTIFY-KEY": "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",
+                "NOTIFY-USER": "Minutz",
+                "UI-BASE-URL": "http://test.minutz.net"
+            },
+            "applicationUrl": "http://localhost:65510/"
+        }
     }
-  }
 }

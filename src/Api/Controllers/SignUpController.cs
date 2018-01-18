@@ -5,13 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
-  [Route ("api/[controller]")]
+  [Route("api/[controller]")]
   public class SignUpController : Controller
   {
     private readonly IUserValidationService _userValidationService;
     private readonly IAuthenticationService _authenticationService;
     private readonly IApplicationManagerService _applicationManagerService;
-    public SignUpController (IUserValidationService userValidationService,
+    public SignUpController(IUserValidationService userValidationService,
       IAuthenticationService authenticationService,
       IApplicationManagerService applicationManagerService)
     {
@@ -25,12 +25,13 @@ namespace Api.Controllers
     /// <returns>If it was successful or not</returns>
     [Authorize]
     [HttpPost]
-    public bool Post ()
+    public bool Post()
     {
-      var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
-      var userInfo = _authenticationService.GetUserInfo (token);
-      var person = _userValidationService.GetUser (userInfo.Sub);
-      return _applicationManagerService.StartFullVersion (person);
+      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+      var userInfo = _authenticationService.GetUserInfo(token);
+      var person = _userValidationService.GetUser(userInfo.Sub);
+      var result = _applicationManagerService.StartFullVersion(person);
+      return result;
     }
   }
 }

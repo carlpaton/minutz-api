@@ -22,5 +22,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="RepositoryTests\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
 </Project>
