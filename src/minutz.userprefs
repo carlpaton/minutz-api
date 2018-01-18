@@ -1,9 +1,12 @@
 ﻿<Properties StartupConfiguration="{67CA3E6C-1759-46F3-9312-BC67A5C9B677}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Core/MeetingService.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Api/Extensions/RequestExtensions.cs">
     <Files>
       <File FileName="Api/Controllers/MeetingAttendeeController.cs" Line="105" Column="49" />
-      <File FileName="Core/MeetingService.cs" Line="697" Column="7" />
+      <File FileName="Core/MeetingService.cs" Line="694" Column="115" />
       <File FileName="SqlRepository/MeetingAttendeeRepository.cs" Line="162" Column="22" />
+      <File FileName="Core/UserValidationService.cs" Line="42" Column="83" />
+      <File FileName="Api/Controllers/UserController.cs" Line="29" Column="22" />
+      <File FileName="Api/Extensions/RequestExtensions.cs" Line="6" Column="48" />
     </Files>
     <Pads>
       <Pad Id="MonoDevelop.UnitTesting.TestPad">

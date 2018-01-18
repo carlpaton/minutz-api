@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Api.Extensions;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,8 +27,7 @@ namespace Api.Controllers
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(AuthRestModel))]
     public IActionResult Get()
     {
-      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      var userInfo = _authenticationService.GetUserInfo(token);
+      var userInfo = _authenticationService.GetUserInfo(Request.Token());
       if (!_userValidationService.IsNewUser(userInfo.Sub))
         _userValidationService.CreateAttendee(userInfo);
       var result = _userValidationService.GetUser(userInfo.Sub);
