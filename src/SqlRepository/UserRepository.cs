@@ -11,8 +11,22 @@ namespace SqlRepository
 {
   public class UserRepository : IUserRepository
   {
-    public bool CheckIfNewUser(string authUserId, string schema, string connectionString)
+    public bool CheckIfNewUser((string key, string reference) reference,
+                               string authUserId,
+                               string schema,
+                               string connectionString)
     {
+      if (string.IsNullOrEmpty(reference.key) || string.IsNullOrEmpty(reference.reference))
+      {
+        using (IDbConnection dbConnection = new SqlConnection(connectionString))
+        {
+          var sql = $"select Identityid FROM [{schema}].[Person]  WHERE Identityid = '{authUserId}' ";
+          //dbConnection.Open ();
+          var user = dbConnection.Query<Person>(sql, new { Identityid = (string)authUserId });
+          return user.Any();
+        }
+      }
+
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         var sql = $"select Identityid FROM [{schema}].[Person]  WHERE Identityid = '{authUserId}' ";

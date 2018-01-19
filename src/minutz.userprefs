@@ -1,12 +1,13 @@
 ﻿<Properties StartupConfiguration="{67CA3E6C-1759-46F3-9312-BC67A5C9B677}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Api/Extensions/RequestExtensions.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="src Status">
     <Files>
       <File FileName="Api/Controllers/MeetingAttendeeController.cs" Line="105" Column="49" />
       <File FileName="Core/MeetingService.cs" Line="694" Column="115" />
       <File FileName="SqlRepository/MeetingAttendeeRepository.cs" Line="162" Column="22" />
-      <File FileName="Core/UserValidationService.cs" Line="42" Column="83" />
-      <File FileName="Api/Controllers/UserController.cs" Line="29" Column="22" />
-      <File FileName="Api/Extensions/RequestExtensions.cs" Line="6" Column="48" />
+      <File FileName="Core/UserValidationService.cs" Line="40" Column="77" />
+      <File FileName="Api/Controllers/UserController.cs" Line="33" Column="87" />
+      <File FileName="SqlRepository/UserRepository.cs" Line="38" Column="5" />
+      <File FileName="src Status" />
     </Files>
     <Pads>
       <Pad Id="MonoDevelop.UnitTesting.TestPad">
@@ -14,8 +15,10 @@
           <Node name="minutz" expanded="True">
             <Node name="Tests" expanded="True">
               <Node name="Tests" expanded="True">
-                <Node name="Extensions" expanded="True">
-                  <Node name="StringExtensionTests" expanded="True" selected="True" />
+                <Node name="Extensions" expanded="True" />
+                <Node name="RepositoryTests" expanded="True">
+                  <Node name="LogRespositoryTests" expanded="True" />
+                  <Node name="oryTests" expanded="True" />
                 </Node>
               </Node>
             </Node>
@@ -30,6 +33,7 @@
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/SqlRepository/MeetingRespository.cs" relfile="SqlRepository/MeetingRespository.cs" line="103" column="1" />
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/Api/Controllers/SignUpController.cs" relfile="Api/Controllers/SignUpController.cs" line="34" column="21" />
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/Tests/Extensions/StringExtensionTests.cs" relfile="Tests/Extensions/StringExtensionTests.cs" line="48" column="1" />
+      <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/SqlRepository/Extensions/StringReferenceExtension.cs" relfile="SqlRepository/Extensions/StringReferenceExtension.cs" line="20" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
