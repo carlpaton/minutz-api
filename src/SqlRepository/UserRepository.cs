@@ -16,17 +16,6 @@ namespace SqlRepository
                                string schema,
                                string connectionString)
     {
-      if (string.IsNullOrEmpty(reference.key) || string.IsNullOrEmpty(reference.reference))
-      {
-        using (IDbConnection dbConnection = new SqlConnection(connectionString))
-        {
-          var sql = $"select Identityid FROM [{schema}].[Person]  WHERE Identityid = '{authUserId}' ";
-          //dbConnection.Open ();
-          var user = dbConnection.Query<Person>(sql, new { Identityid = (string)authUserId });
-          return user.Any();
-        }
-      }
-
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         var sql = $"select Identityid FROM [{schema}].[Person]  WHERE Identityid = '{authUserId}' ";
@@ -36,8 +25,13 @@ namespace SqlRepository
       }
     }
 
-    public string CreateNewUser(AuthRestModel authUser, string schema, string connectionString)
+    public string CreateNewUser((string key, string reference) relationship,
+                                AuthRestModel authUser,
+                                string schema,
+                                string connectionString)
     {
+      //check if key == guest then write - guest and use the instanceid update availibleattendees, 
+
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         var sql = $@"insert into [{schema}].[Person](

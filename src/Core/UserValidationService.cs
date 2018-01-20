@@ -39,7 +39,11 @@ namespace Core
 
     public string CreateAttendee(AuthRestModel authUser, string referenceKey)
     {
-      return _userRepository.CreateNewUser(authUser, _applicationSetting.Schema,
+      (string key, string reference) reference = (string.Empty, string.Empty);
+      if (!string.IsNullOrEmpty(referenceKey))
+        reference = referenceKey.TupleSplit();
+
+      return _userRepository.CreateNewUser(reference, authUser, _applicationSetting.Schema,
         _applicationSetting.CreateConnectionString(_applicationSetting.Server,
                                                    _applicationSetting.Catalogue,
                                                    _applicationSetting.Username,

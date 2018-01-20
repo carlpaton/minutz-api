@@ -1,12 +1,10 @@
 ﻿<Properties StartupConfiguration="{67CA3E6C-1759-46F3-9312-BC67A5C9B677}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="src Status">
     <Files>
-      <File FileName="Api/Controllers/MeetingAttendeeController.cs" Line="105" Column="49" />
-      <File FileName="Core/MeetingService.cs" Line="694" Column="115" />
-      <File FileName="SqlRepository/MeetingAttendeeRepository.cs" Line="162" Column="22" />
-      <File FileName="Core/UserValidationService.cs" Line="40" Column="77" />
-      <File FileName="Api/Controllers/UserController.cs" Line="33" Column="87" />
-      <File FileName="SqlRepository/UserRepository.cs" Line="38" Column="5" />
+      <File FileName="Core/UserValidationService.cs" Line="40" Column="78" />
+      <File FileName="SqlRepository/UserRepository.cs" Line="30" Column="47" />
+      <File FileName="Interface/Repositories/IUserRepository.cs" Line="13" Column="25" />
+      <File FileName="Api/Startup.cs" Line="31" Column="36" />
       <File FileName="src Status" />
     </Files>
     <Pads>
@@ -14,13 +12,7 @@
         <State name="__root__">
           <Node name="minutz" expanded="True">
             <Node name="Tests" expanded="True">
-              <Node name="Tests" expanded="True">
-                <Node name="Extensions" expanded="True" />
-                <Node name="RepositoryTests" expanded="True">
-                  <Node name="LogRespositoryTests" expanded="True" />
-                  <Node name="oryTests" expanded="True" />
-                </Node>
-              </Node>
+              <Node name="Tests" expanded="True" />
             </Node>
           </Node>
         </State>
@@ -34,6 +26,7 @@
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/Api/Controllers/SignUpController.cs" relfile="Api/Controllers/SignUpController.cs" line="34" column="21" />
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/Tests/Extensions/StringExtensionTests.cs" relfile="Tests/Extensions/StringExtensionTests.cs" line="48" column="1" />
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/SqlRepository/Extensions/StringReferenceExtension.cs" relfile="SqlRepository/Extensions/StringReferenceExtension.cs" line="20" column="1" />
+      <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/Tests/MeetingControllerTests.cs" relfile="Tests/MeetingControllerTests.cs" line="34" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>

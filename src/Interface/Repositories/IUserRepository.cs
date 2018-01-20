@@ -10,6 +10,7 @@ namespace Interface.Repositories
                         string schema,
                         string connectionString);
     string CreateNewUser(
+                        (string key, string reference) relationship,
                         AuthRestModel authUser,
                         string schema,
                         string connectionString);

@@ -25,12 +25,14 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(AuthRestModel), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(AuthRestModel))]
-    public IActionResult Get()
+    public IActionResult Get(string reference)
     {
-      var referenceStringFromQueryString = string.Empty;
+      if (reference.ToLower() == "none") reference = string.Empty;
+
       var userInfo = _authenticationService.GetUserInfo(Request.Token());
-      if (!_userValidationService.IsNewUser(userInfo.Sub, referenceStringFromQueryString))
-        _userValidationService.CreateAttendee(userInfo, referenceStringFromQueryString);
+      if (!_userValidationService.IsNewUser(userInfo.Sub, reference))
+        _userValidationService.CreateAttendee(userInfo, reference);
+
       var result = _userValidationService.GetUser(userInfo.Sub);
       return Ok(result);
     }

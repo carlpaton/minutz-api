@@ -13,7 +13,7 @@ namespace Tests
   public class MeetingControllerTests
   {
 
-    [Test]
+    // [Test]
     public void Get_GivenEmptyMeetingName_ShouldReturnBadRequest()
     {
       //Arrange
