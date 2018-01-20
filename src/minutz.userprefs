@@ -5,6 +5,7 @@
       <File FileName="SqlRepository/UserRepository.cs" Line="30" Column="47" />
       <File FileName="Interface/Repositories/IUserRepository.cs" Line="13" Column="25" />
       <File FileName="Api/Startup.cs" Line="31" Column="36" />
+      <File FileName="Api/Controllers/UserController.cs" Line="33" Column="8" />
       <File FileName="src Status" />
     </Files>
     <Pads>
