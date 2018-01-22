@@ -1,29 +1,17 @@
 ﻿<Properties StartupConfiguration="{67CA3E6C-1759-46F3-9312-BC67A5C9B677}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="src Status">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SqlRepository/UserRepository.cs">
     <Files>
       <File FileName="Core/UserValidationService.cs" Line="40" Column="78" />
-      <File FileName="SqlRepository/UserRepository.cs" Line="30" Column="47" />
+      <File FileName="SqlRepository/UserRepository.cs" Line="29" Column="32" />
       <File FileName="Interface/Repositories/IUserRepository.cs" Line="13" Column="25" />
       <File FileName="Api/Startup.cs" Line="31" Column="36" />
-      <File FileName="Api/Controllers/UserController.cs" Line="33" Column="8" />
-      <File FileName="src Status" />
+      <File FileName="Api/Controllers/UserController.cs" Line="23" Column="16" />
+      <File FileName="SqlRepository/MeetingRespository.cs" Line="60" Column="76" />
     </Files>
-    <Pads>
-      <Pad Id="MonoDevelop.UnitTesting.TestPad">
-        <State name="__root__">
-          <Node name="minutz" expanded="True">
-            <Node name="Tests" expanded="True">
-              <Node name="Tests" expanded="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/SqlRepository/MeetingRespository.cs" relfile="SqlRepository/MeetingRespository.cs" line="103" column="1" />
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/Api/Controllers/SignUpController.cs" relfile="Api/Controllers/SignUpController.cs" line="34" column="21" />
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/Tests/Extensions/StringExtensionTests.cs" relfile="Tests/Extensions/StringExtensionTests.cs" line="48" column="1" />
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/SqlRepository/Extensions/StringReferenceExtension.cs" relfile="SqlRepository/Extensions/StringReferenceExtension.cs" line="20" column="1" />

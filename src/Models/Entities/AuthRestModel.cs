@@ -12,5 +12,6 @@
     public string Role { get; set; }
     public string Company { get; set; }
     public string InstanceId { get; set; }
+    public string Related { get; set; }
   }
 }

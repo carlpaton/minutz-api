@@ -6,6 +6,7 @@ using System.Text;
 using Dapper;
 using Interface.Repositories;
 using Minutz.Models.Entities;
+using SqlRepository.Extensions;
 
 namespace SqlRepository
 {
@@ -31,6 +32,15 @@ namespace SqlRepository
                                 string connectionString)
     {
       //check if key == guest then write - guest and use the instanceid update availibleattendees, 
+      if (!string.IsNullOrEmpty(relationship.key))
+      {
+        authUser.Role = relationship.key;
+        authUser.Related = relationship.reference;
+      }
+      else
+      {
+        authUser.Related = string.Empty;
+      }
 
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
@@ -43,7 +53,8 @@ namespace SqlRepository
                                                     ,[Email]
                                                     ,[Role]
                                                     ,[Active]
-                                                    ,[InstanceId]) 
+                                                    ,[InstanceId]
+                                                    ,[Related]) 
                                             values(
                                                     @Identityid
                                                     ,@FirstName
@@ -53,7 +64,8 @@ namespace SqlRepository
                                                     ,@Email
                                                     ,@Role
                                                     ,@Active
-                                                    ,@InstanceId)";
+                                                    ,@InstanceId
+                                                    ,@Related)";
         dbConnection.Open();
         var user = dbConnection.Execute(sql, new
         {
@@ -65,7 +77,8 @@ namespace SqlRepository
           Email = authUser.Email,
           Role = "Attendee",
           Active = true,
-          InstanceId = string.Empty
+          InstanceId = string.Empty,
+          Related = authUser.Related
         });
         if (user == 1)
           return "Attendee";
@@ -97,7 +110,8 @@ namespace SqlRepository
               Picture = user.ProfilePicture,
               Role = user.Role,
               Sub = user.Identityid,
-              InstanceId = user.InstanceId
+              InstanceId = user.InstanceId,
+              Related = user.Related
             };
         }
         throw new System.Exception("User does not exist in the datastore.");
