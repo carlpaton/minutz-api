@@ -41,7 +41,24 @@ namespace Core
     {
       (string key, string reference) reference = (string.Empty, string.Empty);
       if (!string.IsNullOrEmpty(referenceKey))
+      {
         reference = referenceKey.TupleSplit();
+        switch(reference.key)
+        {
+          case  Core.Helper.AuthenticationHelper.Guest:
+          authUser.Role = Core.Helper.AuthenticationHelper.Guest;
+          authUser.Related = reference.reference;
+          break;
+          case Core.Helper.AuthenticationHelper.User:
+          authUser.Role = Core.Helper.AuthenticationHelper.User;
+          authUser.Related = reference.reference;
+          break;
+          case Core.Helper.AuthenticationHelper.Admin:
+          authUser.Role = Core.Helper.AuthenticationHelper.Admin;
+          authUser.Related = reference.reference;
+          break;
+        }
+      }
 
       return _userRepository.CreateNewUser(reference, authUser, _applicationSetting.Schema,
         _applicationSetting.CreateConnectionString(_applicationSetting.Server,

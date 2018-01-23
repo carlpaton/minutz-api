@@ -8,12 +8,10 @@ namespace Core.Helper
 {
   public class AuthenticationHelper
   {
-    public enum Role
-    {
-      User = 1,
-      Guest = 2,
-      Admin = 3
-    }
+    public const string User = "User";
+    public const string Guest = "Guest";
+    public const string Admin = "Admin";
+    
     public AuthRestModel UserInfo { get; private set; }
     public Instance Instance { get; private set; }
     public string ConnectionString { get; private set; }
@@ -25,8 +23,9 @@ namespace Core.Helper
                                 IUserValidationService userValidationService)
     {
       this.UserInfo = userValidationService.GetUser(authenticationService.GetUserInfo(token).Sub);
-      if(string.IsNullOrEmpty(this.UserInfo.Related))
+      if(string.IsNullOrEmpty(this.UserInfo.Related))// this will use the defasult user instance id, this is if the user is a owner
       {
+        
         this.Instance = instanceRepository.GetByUsername(this.UserInfo.InstanceId,
                                                               applicationSetting.Schema,
                                                               applicationSetting.CreateConnectionString(
