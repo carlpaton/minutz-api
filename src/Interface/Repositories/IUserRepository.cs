@@ -23,5 +23,10 @@ namespace Interface.Repositories
                           string schema,
                           string connectionString,
                           string masterConnectionString);
+
+    (bool condition, string message) Reset(
+                          string connectionString,
+                          string instanceId,
+                          string instanceName);
   }
 }

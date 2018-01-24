@@ -1,12 +1,12 @@
 ﻿<Properties StartupConfiguration="{67CA3E6C-1759-46F3-9312-BC67A5C9B677}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="SqlRepository/UserRepository.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="src Status">
     <Files>
-      <File FileName="Core/UserValidationService.cs" Line="40" Column="78" />
-      <File FileName="SqlRepository/UserRepository.cs" Line="29" Column="32" />
-      <File FileName="Interface/Repositories/IUserRepository.cs" Line="13" Column="25" />
+      <File FileName="Core/UserValidationService.cs" Line="62" Column="43" />
+      <File FileName="SqlRepository/UserRepository.cs" Line="170" Column="63" />
       <File FileName="Api/Startup.cs" Line="31" Column="36" />
       <File FileName="Api/Controllers/UserController.cs" Line="23" Column="16" />
       <File FileName="SqlRepository/MeetingRespository.cs" Line="60" Column="76" />
+      <File FileName="src Status" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

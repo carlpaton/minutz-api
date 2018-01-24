@@ -43,20 +43,30 @@ namespace Core
       if (!string.IsNullOrEmpty(referenceKey))
       {
         reference = referenceKey.TupleSplit();
-        switch(reference.key)
+        switch (reference.key)
         {
-          case  Core.Helper.AuthenticationHelper.Guest:
-          authUser.Role = Core.Helper.AuthenticationHelper.Guest;
-          authUser.Related = reference.reference;
-          break;
+          case Core.Helper.AuthenticationHelper.Guest:
+            authUser.Role = Core.Helper.AuthenticationHelper.Guest;
+            authUser.Related = reference.reference;
+            break;
           case Core.Helper.AuthenticationHelper.User:
-          authUser.Role = Core.Helper.AuthenticationHelper.User;
-          authUser.Related = reference.reference;
-          break;
+            authUser.Role = Core.Helper.AuthenticationHelper.User;
+            if (reference.reference == Core.Helper.AuthenticationHelper.User)
+            {
+              authUser.Related = string.Empty;
+            }
+            else
+            {
+              if (!string.IsNullOrEmpty(reference.reference))
+              {
+                authUser.Related = reference.reference;
+              }
+            }
+            break;
           case Core.Helper.AuthenticationHelper.Admin:
-          authUser.Role = Core.Helper.AuthenticationHelper.Admin;
-          authUser.Related = reference.reference;
-          break;
+            authUser.Role = Core.Helper.AuthenticationHelper.Admin;
+            authUser.Related = reference.reference;
+            break;
         }
       }
 

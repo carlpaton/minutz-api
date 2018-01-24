@@ -142,6 +142,40 @@ namespace SqlRepository
       return username;
     }
 
+
+    /// <summary>
+    /// Reset tables and account.
+    /// </summary>
+    /// <returns>The reset.</returns>
+    /// <param name="connectionString">Connection string.</param>
+    /// <param name="instanceId">Instance identifier.</param>
+    /// <param name="instanceName">This is the email address in the instance table i.e. info@docker.durban</param>
+    public (bool condition, string message) Reset(
+      string connectionString,
+      string instanceId,
+      string instanceName)
+    {
+
+      string sql = $@"
+        DROP SCHEMA {instanceId};
+        DROP USER {instanceId};
+        DROP LOGIN {instanceId};
+        EXECUTE [app].[resetAccount]'{instanceId}','{instanceName}','{instanceId}'    
+      ";
+
+      try
+      {
+        using (IDbConnection dbConnection = new SqlConnection(connectionString))
+        {
+          return (dbConnection.Execute(sql) == -1, "successful");
+        }
+      }
+      catch (Exception ex)
+      {
+        return (false, ex.Message);
+      }
+    }
+
     internal string CreatePassword(int length)
     {
       const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890123456789@#";
@@ -153,6 +187,8 @@ namespace SqlRepository
       }
       return res.ToString();
     }
+
+
 
     internal bool createSecurityUser(string connectionString, string user, string password)
     {
@@ -168,7 +204,7 @@ namespace SqlRepository
       }
       catch (Exception ex)
       {
-
+        Console.WriteLine(ex.Message);
         return false;
       }
     }

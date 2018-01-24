@@ -3,6 +3,7 @@ namespace Core.Helper
 {
   public static class StringExtensions
   {
+    
     public static (string key, string value) TupleSplit(this string inputString)
     {
       if (string.IsNullOrEmpty(inputString)) throw new ArgumentException("inputString, was empty.");
