@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
-  [Route("api/[controller]")]
   public class SignUpController : Controller
   {
     private readonly IUserValidationService _userValidationService;
@@ -24,14 +23,30 @@ namespace Api.Controllers
     /// </summary>
     /// <returns>If it was successful or not</returns>
     [Authorize]
-    [HttpPost]
-    public bool Post()
+    [HttpPost("api/Signup")]
+    public IActionResult Post()
     {
       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
       var userInfo = _authenticationService.GetUserInfo(token);
       var person = _userValidationService.GetUser(userInfo.Sub);
       var result = _applicationManagerService.StartFullVersion(person);
-      return result;
+      if (result.condition)
+        return Ok();
+      return StatusCode(500, result.message);
+    }
+
+    [Authorize]
+    [HttpPost("api/reset")]
+    public IActionResult ResetAccount()
+    {
+      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+      var userInfo = _authenticationService.GetUserInfo(token);
+      var person = _userValidationService.GetUser(userInfo.Sub);
+
+      var result = _applicationManagerService.StartFullVersion(person);
+      if (result.condition)
+        return Ok();
+      return StatusCode(500, result.message);
     }
   }
 }

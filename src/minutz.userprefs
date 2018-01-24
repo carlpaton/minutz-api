@@ -1,18 +1,22 @@
 ﻿<Properties StartupConfiguration="{67CA3E6C-1759-46F3-9312-BC67A5C9B677}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="src Status">
     <Files>
-      <File FileName="Core/UserValidationService.cs" Line="62" Column="43" />
-      <File FileName="SqlRepository/UserRepository.cs" Line="170" Column="63" />
+      <File FileName="Core/UserValidationService.cs" Line="40" Column="78" />
+      <File FileName="SqlRepository/UserRepository.cs" Line="205" Column="24" />
       <File FileName="Api/Startup.cs" Line="31" Column="36" />
       <File FileName="Api/Controllers/UserController.cs" Line="23" Column="16" />
       <File FileName="SqlRepository/MeetingRespository.cs" Line="60" Column="76" />
+      <File FileName="Interface/Repositories/IUserRepository.cs" Line="28" Column="21" />
+      <File FileName="Api/Controllers/SignUpController.cs" Line="7" Column="2" />
+      <File FileName="Core/ApplicationManagerService.cs" Line="29" Column="87" />
+      <File FileName="Interface/Services/IApplicationManagerService.cs" Line="9" Column="38" />
       <File FileName="src Status" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/Api/Controllers/SignUpController.cs" relfile="Api/Controllers/SignUpController.cs" line="34" column="21" />
+      <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/Api/Controllers/SignUpController.cs" relfile="Api/Controllers/SignUpController.cs" line="35" column="21" />
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/Tests/Extensions/StringExtensionTests.cs" relfile="Tests/Extensions/StringExtensionTests.cs" line="48" column="1" />
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/SqlRepository/Extensions/StringReferenceExtension.cs" relfile="SqlRepository/Extensions/StringReferenceExtension.cs" line="20" column="1" />
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/Tests/MeetingControllerTests.cs" relfile="Tests/MeetingControllerTests.cs" line="34" column="1" />

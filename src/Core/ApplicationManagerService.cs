@@ -19,7 +19,18 @@ namespace Core
       _applicationSetting = applicationSetting;
     }
 
-    public bool StartFullVersion(AuthRestModel user)
+    public (bool condition, string message) ResetAcccount(AuthRestModel user)
+    {
+      var connectionString = _applicationSetting.CreateConnectionString(
+                                                           _applicationSetting.Server,
+                                                           _applicationSetting.Catalogue,
+                                                           _applicationSetting.Username,
+                                                           _applicationSetting.Password);
+      return this._userRepository.Reset(connectionString, user.InstanceId, user.Name);
+
+    }
+
+    public (bool condition, string message) StartFullVersion(AuthRestModel user)
     {
       user.Role = "Owner";
       var masterConnectionString = _applicationSetting.CreateConnectionString(
@@ -48,10 +59,10 @@ namespace Core
       }
       catch (Exception ex)
       {
-        return false;
+        return (false, ex.Message);
       }
 
-      return true;
+      return (true, "successfull");
     }
   }
 }
