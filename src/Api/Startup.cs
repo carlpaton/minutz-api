@@ -80,7 +80,7 @@ namespace Minutz.Api
       {
         c.SwaggerDoc("v1", new Info { Title = Startup.Title, Version = Startup.Version });
       });
-      string domain = "https://dockerdurban.auth0.com/";
+      string domain = this._domain;// "https://dockerdurban.auth0.com/";
       services.AddCors(options =>
       {
         options.AddPolicy("AllowAllOrigins",

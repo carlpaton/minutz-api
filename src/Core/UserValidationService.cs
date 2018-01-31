@@ -69,7 +69,7 @@ namespace Core
             break;
         }
       }
-
+      authUser.Role = "Guest";
       return _userRepository.CreateNewUser(reference, authUser, _applicationSetting.Schema,
         _applicationSetting.CreateConnectionString(_applicationSetting.Server,
                                                    _applicationSetting.Catalogue,

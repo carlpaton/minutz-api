@@ -75,13 +75,13 @@ namespace SqlRepository
           FullName = authUser.Name,
           ProfilePicture = authUser.Picture,
           Email = authUser.Email,
-          Role = "Attendee",
+          Role = authUser.Role,
           Active = true,
           InstanceId = string.Empty,
           Related = authUser.Related
         });
         if (user == 1)
-          return "Attendee";
+          return "Guest";
         throw new System.Exception("There was a issue inserting the new user");
       }
     }
@@ -134,11 +134,12 @@ namespace SqlRepository
       var id = authUser.Sub.Split('|')[1];
       var username = $"A_{id}";
       var password = CreatePassword(10);
-      createSecurityUser(masterConnectionString, username, password);
-      createLoginSchemaUser(connectionString, username);
-      createSchema(connectionString, username);
-      createInstanceRecord(connectionString, "app", authUser.Name, username, password, true, 1);
-      updatePersonRecord(connectionString, "app", username, authUser.Sub);
+      this.createSecurityUser(masterConnectionString, username, password);
+      this.createLoginSchemaUser(connectionString, username);
+      this.createSchema(connectionString, username);
+      this.createInstanceRecord(connectionString, "app", authUser.Name, username, password, true, 1);
+      this.updatePersonRecord(connectionString, "app", username, authUser.Sub);
+      this.updatePersonRoleRecord(connectionString, "app", authUser.Sub, authUser.Role);
       return username;
     }
 
@@ -157,10 +158,10 @@ namespace SqlRepository
     {
 
       string sql = $@"
+        EXECUTE [app].[resetAccount]'{instanceId}','{instanceName}','{instanceId}'    
         DROP SCHEMA {instanceId};
         DROP USER {instanceId};
         DROP LOGIN {instanceId};
-        EXECUTE [app].[resetAccount]'{instanceId}','{instanceName}','{instanceId}'    
       ";
 
       try
@@ -239,6 +240,7 @@ namespace SqlRepository
       }
       catch (Exception ex)
       {
+        Console.WriteLine(ex.Message);
         return false;
       }
     }
@@ -281,6 +283,7 @@ namespace SqlRepository
       }
       catch (Exception ex)
       {
+        Console.WriteLine(ex.Message);
         return false;
       }
     }
@@ -296,6 +299,27 @@ namespace SqlRepository
         using (IDbConnection dbConnection = new SqlConnection(connectionString))
         {
           var updateUserSql = $"UPDATE [{schema}].[Person] SET InstanceId = '{username}' WHERE Identityid = '{identity}' ";
+          var updateUserResult = dbConnection.Execute(updateUserSql);
+          return updateUserResult == 1;
+        }
+      }
+      catch (Exception)
+      {
+        return false;
+      }
+    }
+
+    internal bool updatePersonRoleRecord(
+      string connectionString,
+      string schema,
+      string identity,
+      string role)
+    {
+      try
+      {
+        using (IDbConnection dbConnection = new SqlConnection(connectionString))
+        {
+          var updateUserSql = $"UPDATE [{schema}].[Person] SET [Role] = '{role}' WHERE Identityid = '{identity}' ";
           var updateUserResult = dbConnection.Execute(updateUserSql);
           return updateUserResult == 1;
         }

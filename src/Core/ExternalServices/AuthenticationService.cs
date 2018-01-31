@@ -16,10 +16,17 @@ namespace Core.ExternalServices
       _cache = memoryCache;
     }
 
+    public AuthRestModel ResetUserInfo(string token)
+    {
+      this._cache.Remove(token);
+      return this.GetUserInfo(token);
+    }
+
     public AuthRestModel GetUserInfo(string token)
     {
       AuthRestModel result;
-      if (!_cache.TryGetValue(token, out result)){
+      if (!_cache.TryGetValue(token, out result))
+      {
         var httpResult = Helper.HttpService.Get($"{_applicationSetting.Authority}userinfo", token);
         result = Newtonsoft.Json.JsonConvert.DeserializeObject<AuthRestModel>(httpResult);
         // Set cache options.

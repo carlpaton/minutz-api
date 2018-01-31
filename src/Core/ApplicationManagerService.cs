@@ -32,7 +32,7 @@ namespace Core
 
     public (bool condition, string message) StartFullVersion(AuthRestModel user)
     {
-      user.Role = "Owner";
+      user.Role = "User";
       var masterConnectionString = _applicationSetting.CreateConnectionString(
                                                            _applicationSetting.Server,
                                                            "master",

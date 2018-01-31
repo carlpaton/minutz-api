@@ -30,7 +30,7 @@ namespace Api.Controllers
       var userInfo = _authenticationService.GetUserInfo(token);
       var person = _userValidationService.GetUser(userInfo.Sub);
       var result = _applicationManagerService.StartFullVersion(person);
-      if (result.condition)
+      if (result.condition || result.message == "successfull")
         return Ok();
       return StatusCode(500, result.message);
     }
@@ -43,7 +43,7 @@ namespace Api.Controllers
       var userInfo = _authenticationService.GetUserInfo(token);
       var person = _userValidationService.GetUser(userInfo.Sub);
 
-      var result = _applicationManagerService.StartFullVersion(person);
+      var result = _applicationManagerService.ResetAcccount(person);
       if (result.condition)
         return Ok();
       return StatusCode(500, result.message);
