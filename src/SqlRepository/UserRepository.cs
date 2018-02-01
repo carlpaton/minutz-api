@@ -158,10 +158,12 @@ namespace SqlRepository
     {
 
       string sql = $@"
-        EXECUTE [app].[resetAccount]'{instanceId}','{instanceName}','{instanceId}'    
+        EXECUTE [app].[resetAccount]'{instanceId}','{instanceName}','{instanceId}' 
+        ALTER DATABASE [MINUTZ-TEST] set single_user with rollback immediate;  
         DROP SCHEMA {instanceId};
         DROP USER {instanceId};
         DROP LOGIN {instanceId};
+        ALTER DATABASE [MINUTZ-TEST] set MULTI_USER;
       ";
 
       try
