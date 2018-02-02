@@ -36,7 +36,7 @@ namespace Notifications
       // {
       //   throw new ArgumentException("The environment variable: UI-BASE-URL, was not supplied, please set this variable and try again.");
       // }
-      this.DestinationBaseAddress = "http://test.minutz.net"; //Environment.GetEnvironmentVariable("UI-BASE-URL");
+      this.DestinationBaseAddress = Environment.GetEnvironmentVariable("UI-BASE-URL");
 
       // if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("NOTIFY-INVITATION-ADDRESS")))
       // {

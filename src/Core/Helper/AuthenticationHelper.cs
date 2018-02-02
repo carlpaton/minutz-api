@@ -40,7 +40,11 @@ namespace Core.Helper
       {
         if (this.UserInfo.Related.Contains("&"))
         {
-          (string instanceId, string meetingId) relatedInstance = this.UserInfo.Related.SplitToList("&", ";").FirstOrDefault(); // This is to be updated to allow multiple
+          string relatedstring = this.UserInfo.Related;
+          if (this.UserInfo.Related.Contains('|'))
+            relatedstring = this.UserInfo.Related.TupleSplit().value;
+
+          (string instanceId, string meetingId) relatedInstance = relatedstring.SplitToList("&", ";").FirstOrDefault(); // This is to be updated to allow multiple
           this.Instance = instanceRepository.GetByUsername(relatedInstance.instanceId,
                                                                         applicationSetting.Schema,
                                                                         applicationSetting.CreateConnectionString(

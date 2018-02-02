@@ -15,7 +15,7 @@ namespace Interface.Services
     (bool condition,
      int statusCode,
      string message,
-     IEnumerable<Minutz.Models.ViewModels.MeetingViewModel> value) GetMeetings(string token);
+     IEnumerable<Minutz.Models.ViewModels.MeetingViewModel> value) GetMeetings(string token, string reference);
 
     KeyValuePair<bool, string> DeleteMeeting(
       string token,
@@ -66,6 +66,10 @@ namespace Interface.Services
 
     bool InviteUser(
       string token,
-      MeetingAttendee attendee);
+      MeetingAttendee attendee,
+      string referenceMeetingId,
+      string inviteEmail);
+    
+    Instance GetInstance(string token);
   }
 }

@@ -11,5 +11,6 @@ namespace Interface.Repositories
     bool Add(Meeting meeting, string schema, string connectionString);
     bool Update(Meeting meeting, string schema, string connectionString);
     bool Delete(Guid id, string schema, string connectionString);
+    List<Meeting> List(string schema, string connectionString, List<string> meetingIds);
   }
 }

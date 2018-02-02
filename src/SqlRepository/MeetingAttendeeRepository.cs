@@ -130,10 +130,18 @@ namespace SqlRepository
       }
     }
 
-    public bool AddInvitee(MeetingAttendee attendee, string schema, string connectionString)
+    public bool AddInvitee(
+      MeetingAttendee attendee,
+      string schema,
+      string connectionString,
+      string defaultConnectionString,
+      string defaultSchema,
+      string referenceMeetingId,
+      string inviteEmail)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
+        string reference = $"invite|{schema}&{referenceMeetingId}";
         if (attendee.Id != Guid.Empty)
         {
           attendee.Id = Guid.NewGuid();
@@ -161,6 +169,20 @@ namespace SqlRepository
           attendee.Status,
           attendee.Role
         });
+        // try
+        // {
+        //   using (IDbConnection defaultConnection = new SqlConnection(defaultConnectionString))
+        //   {
+        //     var updateUserSql = $"UPDATE [{defaultSchema}].[Person] SET Related = '{reference}' WHERE Email = '{inviteEmail}' ";
+        //     var updateUserResult = defaultConnection.Execute(updateUserSql);
+        //     //return updateUserResult == 1;
+        //   }
+        // }
+        // catch (Exception)
+        // {
+        //   return false;
+        // }
+
         return instance == 1;
       }
     }

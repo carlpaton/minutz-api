@@ -44,12 +44,17 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(List<Minutz.Models.ViewModels.MeetingViewModel>), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(List<Minutz.Models.ViewModels.MeetingViewModel>))]
-    public IActionResult GetMeetings()
+    public IActionResult GetMeetings(string reference)
     {
+      if (!string.IsNullOrEmpty(reference))
+      {
+        if (reference.ToLower() == "none") reference = string.Empty;
+      }
+
       _logger.LogInformation(Core.LogProvider.LoggingEvents.ListItems, "GetMeetings {ID}", 1);
       this._logService.Log(Minutz.Models.LogLevel.Info, "GetMeetings called.");
       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      var meetingsResult = this._meetingService.GetMeetings(token);
+      var meetingsResult = this._meetingService.GetMeetings(token, reference);
       if (meetingsResult.condition == true && meetingsResult.statusCode == 200)
         return Ok(meetingsResult.value);
       if (meetingsResult.condition == true && meetingsResult.statusCode == 404)
@@ -65,12 +70,12 @@ namespace Api.Controllers
     /// <param name="id">MeetingViewModel identifier [Guid]</param>
     /// <returns>The meetingViewModel object.</returns>
     [Authorize]
-    [HttpGet("api/meeting/{id}", Name = "Get a meeting for a user by id")]
+    [HttpGet("api/meeting", Name = "Get a meeting for a user by id")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(Minutz.Models.ViewModels.MeetingViewModel), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Minutz.Models.ViewModels.MeetingViewModel))]
-    public IActionResult GetMeeting(string id)
+    public IActionResult GetMeeting(string id, string related)
     {
       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
       return Ok(this._meetingService.GetMeeting(token, id));
@@ -196,7 +201,7 @@ namespace Api.Controllers
       var meeting = _meetingService.GetMeeting(token, meetingId);
       foreach (var attendee in meeting.MeetingAttendeeCollection)
       {
-        var result = _invatationService.SendMeetingInvatation(attendee, meeting);
+        var result = _invatationService.SendMeetingInvatation(attendee, meeting, "instanceId");
       }
       return Ok();
     }

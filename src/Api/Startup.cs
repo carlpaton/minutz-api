@@ -28,7 +28,7 @@ namespace Minutz.Api
     }
 
     private string _domain = "https://dockerdurban.auth0.com/";
-    public const string Version = "3.0.2.156-develop";
+    public const string Version = "3.0.3";
     public const string Title = "Minutz Api";
 
     public IConfiguration Configuration { get; }

@@ -1,11 +1,14 @@
 ﻿<Properties StartupConfiguration="{67CA3E6C-1759-46F3-9312-BC67A5C9B677}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="src Status">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Api/Controllers/MeetingController.cs">
     <Files>
-      <File FileName="Api/Controllers/MeetingController.cs" Line="119" Column="59" />
-      <File FileName="Core/MeetingService.cs" Line="619" Column="60" />
+      <File FileName="Api/Controllers/MeetingController.cs" Line="72" Column="7" />
+      <File FileName="Core/MeetingService.cs" Line="340" Column="1" />
+      <File FileName="Core/UserValidationService.cs" Line="28" Column="47" />
+      <File FileName="Interface/Services/IMeetingService.cs" Line="18" Column="110" />
       <File FileName="SqlRepository/SubscriptionRepository.cs" Line="1" Column="1" />
-      <File FileName="SqlRepository/UserRepository.cs" Line="162" Column="37" />
-      <File FileName="src Status" />
+      <File FileName="Api/Controllers/UserController.cs" Line="32" Column="41" />
+      <File FileName="Core/Helper/AuthenticationHelper.cs" Line="9" Column="36" />
+      <File FileName="SqlRepository/MeetingRespository.cs" Line="12" Column="50" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
@@ -14,7 +17,9 @@
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/Tests/Extensions/StringExtensionTests.cs" relfile="Tests/Extensions/StringExtensionTests.cs" line="48" column="1" />
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/SqlRepository/Extensions/StringReferenceExtension.cs" relfile="SqlRepository/Extensions/StringReferenceExtension.cs" line="20" column="1" />
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/Tests/MeetingControllerTests.cs" relfile="Tests/MeetingControllerTests.cs" line="34" column="1" />
-      <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/Core/MeetingService.cs" relfile="Core/MeetingService.cs" line="190" column="1" />
+      <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/Core/MeetingService.cs" relfile="Core/MeetingService.cs" line="302" column="1" />
+      <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/Api/Controllers/MeetingController.cs" relfile="Api/Controllers/MeetingController.cs" line="151" column="1" />
+      <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/Api/Controllers/MeetingController.cs" relfile="Api/Controllers/MeetingController.cs" line="80" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
@@ -22,6 +27,7 @@
     <Watch file="Api/Extensions/MeetingExtensions.cs" line="38" offsetX="908" offsetY="555" expression="viewModel" liveUpdate="False" />
     <Watch file="SqlRepository/MeetingRespository.cs" line="38" offsetX="619" offsetY="555" expression="action" liveUpdate="False" />
     <Watch file="Api/Controllers/MeetingController.cs" line="106" offsetX="619" offsetY="1035" expression="meeting" liveUpdate="False" />
+    <Watch file="Core/MeetingService.cs" line="262" offsetX="858" offsetY="1380" expression="auth.Instance.Username" liveUpdate="False" />
   </MonoDevelop.Ide.DebuggingService.PinnedWatches>
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.ItemProperties.Api PreferredExecutionTarget="MonoDevelop.Default" />

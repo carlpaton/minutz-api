@@ -18,8 +18,8 @@
             "env": {
                 "AUTHORITY": "https://dockerdurban.auth0.com/",
                 "ASPNETCORE_ENVIRONMENT": "Development",
-                "SERVER_ADDRESS": "tcp:127.0.0.1,1433",
-                "DEFAULT_CATALOGUE": "minutz",
+                "SERVER_ADDRESS": "tcp:127.0.0.1,1401",
+                "DEFAULT_CATALOGUE": "minutz-test",
                 "DEFAULT_SCHEMA": "app",
                 "DEFAULT_USER": "sa",
                 "DEFAULT_PASSWORD": "password1234$",
@@ -27,7 +27,7 @@
                 "NOTIFY-KEY": "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",
                 "NOTIFY-USER": "Minutz",
                 "NOTIFY-INVITATION-ADDRESS": "invitation@minutz.net",
-                "UI-BASE-URL": "http://test.minutz.net"
+                "UI-BASE-URL": "localhost:4200"
                 }                
         },
         {

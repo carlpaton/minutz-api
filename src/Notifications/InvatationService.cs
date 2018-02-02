@@ -18,7 +18,8 @@ namespace Notifications
     }
 
     public bool SendMeetingInvatation(MeetingAttendee attendee,
-                                      Minutz.Models.ViewModels.MeetingViewModel meeting)
+                                      Minutz.Models.ViewModels.MeetingViewModel meeting,
+                                      string instanceId)
     {
       var to = new EmailAddress(attendee.Email, attendee.Name);
       var result = new SendGridClient(_notify.NotifyKey)
@@ -26,7 +27,8 @@ namespace Notifications
                                                                                _invitationSubject,
                                                                                meeting.Location,
                                                                                meeting.Id.ToString(),
-                                                                               meeting.Name, meeting.MeetingAgendaCollection))
+                                                                               meeting.Name, meeting.MeetingAgendaCollection,
+                                                                               instanceId))
                                       .Result;
       var resultBody = result.Body.ReadAsStringAsync().Result;
       if (result.StatusCode == System.Net.HttpStatusCode.OK || result.StatusCode == System.Net.HttpStatusCode.Accepted)
@@ -41,13 +43,14 @@ namespace Notifications
                                                       string location,
                                                      string meetingId,
                                                      string meetingName,
-                                                     List<MeetingAgenda> agenda)
+                                                     List<MeetingAgenda> agenda,
+                                                     string instanceId)
     {
       var message = MailHelper.CreateSingleEmail(CreateFromUser(),
                                                   to,
                                                   subject,
                                                   createInvitationTextMessage(to.Name, meetingId, meetingName, agenda),
-                                                  createInvitationHtmlMessage(to.Name, meetingId, meetingName, agenda));
+                                                  createInvitationHtmlMessage(to.Name, meetingId, meetingName, agenda, instanceId));
       message.CreateCalenderEvent(to.Email,to.Name,location,meetingName);
       message.SetTemplateId(_notify.NotifyDefaultTemplateKey);
       return message;
@@ -62,7 +65,8 @@ namespace Notifications
     internal string createInvitationHtmlMessage(string attendeeName,
                                                 string meetingId,
                                                 string meetingName,
-                                                List<MeetingAgenda> agenda)
+                                                List<MeetingAgenda> agenda,
+                                                string instanceId)
     {
       var message = new StringBuilder();
       message.AppendLine($"<div><h2>Welcome {attendeeName},</h2></div>");
@@ -72,7 +76,8 @@ namespace Notifications
       {
         message.AppendLine($"<div><div>{agendaItem.AgendaText}</div><div></div></div>");
       }
-      message.AppendLine($"<div><p>Click <a href='{_notify.DestinationBaseAddress}?id={meetingId}'>Join</a> to accept the meeting request, and start collaborating. </p></div>");
+      string referanceString = $"{_notify.DestinationBaseAddress}?invite|{instanceId}&{meetingId}";
+      message.AppendLine($"<div><p>Click <a href='{referanceString}'>Join</a> to accept the meeting request, and start collaborating. </p></div>");
       message.AppendLine($"<div></div>");
       return message.ToString();
     }

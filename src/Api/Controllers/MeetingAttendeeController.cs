@@ -95,14 +95,14 @@ namespace Api.Controllers
        }
        var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
        var meeting = _meetingService.GetMeeting(token, invitee.ReferenceId.ToString());
-
+       var instance = _meetingService.GetInstance(token);
        invitee.PersonIdentity = invitee.Email;
        invitee.Role = "invited";
        invitee.Status = "invited";
-       var result = _invationService.SendMeetingInvatation(invitee, meeting);
+       var result = _invationService.SendMeetingInvatation(invitee, meeting,instance.Username);
        if (result)
        {
-         var savedUser = _meetingService.InviteUser(token, invitee);
+         var savedUser = _meetingService.InviteUser(token, invitee,meeting.Id,invitee.Email);
          if (savedUser)
          {
            return new ObjectResult(invitee);
