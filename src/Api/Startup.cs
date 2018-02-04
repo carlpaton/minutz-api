@@ -1,6 +1,8 @@
 ﻿using Core;
 using Core.ExternalServices;
 using Core.LogProvider;
+using Core.Validation;
+using Interface;
 using Interface.Repositories;
 using Interface.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -38,6 +40,7 @@ namespace Minutz.Api
     {
       services.AddMemoryCache();
 
+      services.AddTransient<IValidationService, ValidationService>();
       services.AddTransient<IUserRepository, UserRepository>();
       services.AddTransient<IApplicationSetupRepository, ApplicationSetupRepository>();
       services.AddTransient<IMeetingRepository, MeetingRepository>();

@@ -1,16 +1,5 @@
 ﻿<Properties StartupConfiguration="{67CA3E6C-1759-46F3-9312-BC67A5C9B677}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Api/Controllers/MeetingController.cs">
-    <Files>
-      <File FileName="Api/Controllers/MeetingController.cs" Line="72" Column="7" />
-      <File FileName="Core/MeetingService.cs" Line="340" Column="1" />
-      <File FileName="Core/UserValidationService.cs" Line="28" Column="47" />
-      <File FileName="Interface/Services/IMeetingService.cs" Line="18" Column="110" />
-      <File FileName="SqlRepository/SubscriptionRepository.cs" Line="1" Column="1" />
-      <File FileName="Api/Controllers/UserController.cs" Line="32" Column="41" />
-      <File FileName="Core/Helper/AuthenticationHelper.cs" Line="9" Column="36" />
-      <File FileName="SqlRepository/MeetingRespository.cs" Line="12" Column="50" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>

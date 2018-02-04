@@ -9,5 +9,8 @@
     "buildagent",
     "dcproj",
     "minutz"
-  ]
+  ],
+  "csharpfixformat.style.braces.onSameLine": false,
+  "csharp.testsCodeLens.enabled": true,
+  "csharpfixformat.sort.usings.enabled": true
 }
