@@ -1,5 +1,10 @@
 ﻿<Properties StartupConfiguration="{67CA3E6C-1759-46F3-9312-BC67A5C9B677}|Default">
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="AuthRepo/Class1.cs">
+    <Files>
+      <File FileName="Api/Startup.cs" Line="15" Column="21" />
+      <File FileName="AuthRepo/Class1.cs" Line="3" Column="35" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
