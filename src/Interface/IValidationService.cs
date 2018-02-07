@@ -2,8 +2,18 @@ namespace Interface
 {
     public interface IValidationService
     {
-         (bool condition, string message) ValidEmail (string input);
+        string InvalidEmailMessage { get; }
+        
+        string ValidEmailMessage { get; }
 
-         (bool condition, string message) ValidPassword (string input);
+        string ValidPasswordMessage { get; }
+
+        string InvalidPasswordMessage { get; }
+
+        string InvalidPasswordStrengthMessage { get; }
+
+        (bool condition, string message) ValidEmail (string input);
+
+        (bool condition, string message) ValidPassword (string input);
     }
 }
