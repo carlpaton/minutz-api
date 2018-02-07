@@ -28,7 +28,14 @@ namespace Api.Controllers
     public IActionResult Login (string email, string password, string fullName)
     {
       var emailValidation = this._validationService.ValidEmail(email);
-      if(!emailValidation.condition) return StatusCode(404,emailValidation);
+      var passwordValidation = this._validationService.ValidPassword(password);
+      if(!emailValidation.condition)
+        return StatusCode(404,emailValidation.message);
+
+      if(!passwordValidation.condition)
+        return StatusCode(404, passwordValidation.message);
+
+      
       return Ok ();
     }
 
