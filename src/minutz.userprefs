@@ -1,9 +1,22 @@
 ﻿<Properties StartupConfiguration="{67CA3E6C-1759-46F3-9312-BC67A5C9B677}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="AuthRepo/Class1.cs">
-    <Files>
-      <File FileName="Api/Startup.cs" Line="15" Column="21" />
-      <File FileName="AuthRepo/Class1.cs" Line="3" Column="35" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
+    <Pads>
+      <Pad Id="MonoDevelop.UnitTesting.TestPad">
+        <State name="__root__">
+          <Node name="minutz" expanded="True">
+            <Node name="Tests" expanded="True">
+              <Node name="Tests" expanded="True">
+                <Node name="RepositoryTests" expanded="True">
+                  <Node name="Auth0SettingTests" expanded="True">
+                    <Node name="Test" selected="True" />
+                  </Node>
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -14,6 +27,9 @@
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/Core/MeetingService.cs" relfile="Core/MeetingService.cs" line="302" column="1" />
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/Api/Controllers/MeetingController.cs" relfile="Api/Controllers/MeetingController.cs" line="151" column="1" />
       <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/Api/Controllers/MeetingController.cs" relfile="Api/Controllers/MeetingController.cs" line="80" column="1" />
+      <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/AuthRepo/Auth0Settings.cs" relfile="AuthRepo/Auth0Settings.cs" line="73" column="1" />
+      <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/AuthRepo/Auth0Settings.cs" relfile="AuthRepo/Auth0Settings.cs" line="53" column="23" />
+      <Breakpoint file="/Users/leeroyashworth/Projects/minutz-api/src/AuthRepo/Auth0Settings.cs" relfile="AuthRepo/Auth0Settings.cs" line="43" column="21" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
