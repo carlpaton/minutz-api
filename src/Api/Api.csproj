@@ -56,7 +56,7 @@
     <ProjectReference Include="..\Models\Models.csproj" />
     <ProjectReference Include="..\Notifications\Notifications.csproj" />
     <ProjectReference Include="..\SqlRepository\SqlRepository.csproj" />
-    <ProjectReference Include="..\AuthRepo\AuthenticationRepository.csproj" />
+    <ProjectReference Include="..\AuthenticationRepository\AuthenticationRepository.csproj" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services" />
