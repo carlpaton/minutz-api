@@ -1,19 +1,17 @@
-using System;
 using AuthenticationRepository;
 using NUnit.Framework;
 
-
 namespace Tests.RepositoryTests
 {
-  [TestFixture]
-  public class Auth0SettingTests
-  {
-    [Test]
-    public void Token()
+    [TestFixture]
+    public class Auth0SettingTests
     {
-      var service = new Auth0Settings();
-      var result = service.Token();
-      Assert.IsTrue(true);
+        [Test]
+        public void Test ()
+        {
+            var q = new Auth0Settings ();
+            q.CreateUser ();
+            Assert.IsTrue (true);
+        }
     }
-  }
 }
