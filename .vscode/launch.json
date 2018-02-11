@@ -27,7 +27,11 @@
                 "NOTIFY_KEY": "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",
                 "NOTIFY_USER": "Minutz",
                 "NOTIFY_INVITATION_ADDRESS": "invitation@minutz.net",
-                "UI_BASE_URL": "localhost:4200"
+                "UI_BASE_URL": "localhost:4200",
+                "CLIENTID":"WDzuh9escySpPeAF5V0t2HdC3Lmo68a-",
+                "DOMAIN":"minutz.eu.auth0.com",
+                "CLIENTSECRET":"_kVUASQWVawA2pwYry-xP53kQpOALkEj_IGLWCSspXkpUFRtE_W-Gg74phrxZkz8",
+                "CONNECTION":"Username-Password-Authentication"
                 }                
         },
         {
