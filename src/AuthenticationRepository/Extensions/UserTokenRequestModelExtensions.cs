@@ -1,6 +1,6 @@
 using System.Net.Http;
 using System.Text;
-using AuthenticationRepository.Models;
+using Models.Auth0Models;
 
 namespace AuthenticationRepository.Extensions
 {

@@ -1,5 +1,5 @@
 ﻿using System;
-namespace AuthenticationRepository.Models
+namespace Models.Auth0Models
 {
   public class UserTokenRequestModel
   {

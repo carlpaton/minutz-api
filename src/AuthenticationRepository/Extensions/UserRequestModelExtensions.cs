@@ -1,5 +1,4 @@
-using AuthenticationRepository.Models;
-using AuthRepo.Models;
+using Models.Auth0Models;
 using System.Net.Http;
 using System.Text;
 

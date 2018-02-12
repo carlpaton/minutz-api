@@ -1,5 +1,6 @@
 using System;
 using AuthenticationRepository;
+using Models.Auth0Models;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 

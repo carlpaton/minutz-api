@@ -1,7 +1,5 @@
 ﻿using System;
 using AuthenticationRepository.Extensions;
-using AuthenticationRepository.Models;
-using AuthRepo.Models;
 using Interface.Repositories;
 using Interface.Services;
 using Minutz.Models.Entities;
@@ -9,13 +7,14 @@ using System.Net.Http;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using Models;
+using Models.Auth0Models;
 
 namespace AuthenticationRepository
 {
   public class Auth0Repository : IAuth0Repository
   {
-    internal string _urlSignUp = "https://minutz.eu.auth0.com/dbconnections/signup";
-    internal string _urlToken = "https://minutz.eu.auth0.com/oauth/token";
+    internal string _urlSignUp = $"https://{Environment.GetEnvironmentVariable ("DOMAIN")}/dbconnections/signup";
+    internal string _urlToken = $"https://{Environment.GetEnvironmentVariable ("DOMAIN")}/oauth/token";
     internal string _clientId = Environment.GetEnvironmentVariable ("CLIENTID");
     internal string _domain = Environment.GetEnvironmentVariable ("DOMAIN");
     internal string _clientSecret = Environment.GetEnvironmentVariable ("CLIENTSECRET");
@@ -71,16 +70,16 @@ namespace AuthenticationRepository
 
     }
 
-    public (bool condition, string message, string token) CreateToken (
+    public (bool condition, string message, UserResponseModel tokenResponse) CreateToken (
       string username, string password)
     {
       if (string.IsNullOrEmpty (username))
       {
-        return (false, this._validationMessage, string.Empty);
+        return (false, this._validationMessage, null);
       }
       if (string.IsNullOrEmpty (password))
       {
-        return (false, this._validationMessage, string.Empty);
+        return (false, this._validationMessage, null);
       }
       var requestBody = new UserTokenRequestModel
       {
@@ -96,9 +95,11 @@ namespace AuthenticationRepository
       var tokenRequestResult = this._httpService.Post (this._urlToken, conx);
       if (tokenRequestResult.condition)
       {
-        return (tokenRequestResult.condition, "Success", tokenRequestResult.result);
+        return (tokenRequestResult.condition,
+                "Success",
+                Newtonsoft.Json.JsonConvert.DeserializeObject<UserResponseModel>(tokenRequestResult.result));
       }
-      return (tokenRequestResult.condition, tokenRequestResult.result, string.Empty);
+      return (tokenRequestResult.condition, tokenRequestResult.result, null);
     }
   }
 }

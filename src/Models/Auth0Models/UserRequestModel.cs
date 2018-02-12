@@ -1,7 +1,6 @@
 ﻿using System;
-using AuthRepo.Models;
 
-namespace AuthenticationRepository.Models
+namespace Models.Auth0Models
 {
   public class UserRequestModel
   {

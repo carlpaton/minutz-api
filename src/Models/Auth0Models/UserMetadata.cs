@@ -1,4 +1,4 @@
-namespace AuthRepo.Models
+namespace Models.Auth0Models
 {
   public class UserMetadata
   {
