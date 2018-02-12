@@ -1,4 +1,5 @@
 ﻿using System;
+using AuthenticationRepository;
 using Core;
 using Core.ExternalServices;
 using Core.LogProvider;
@@ -60,6 +61,8 @@ namespace Minutz.Api
       services.AddTransient<IApplicationSetting, ApplicationSetting>();
       services.AddTransient<INotify, Notify>();
       services.AddTransient<ILogService, LogService>();
+
+      services.AddTransient< IAuth0Repository,Auth0Repository>();
 
       //Features
       services.AddTransient<IUserValidationService, UserValidationService>();

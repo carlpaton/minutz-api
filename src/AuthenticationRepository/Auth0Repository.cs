@@ -21,12 +21,12 @@ namespace AuthenticationRepository
     internal string _connection = Environment.GetEnvironmentVariable ("CONNECTION");
     internal string _validationMessage = "The username or password was not supplied or is incorrect. Please provide valid details.";
     private readonly IHttpService _httpService;
-    private readonly ILogger _logger;
-
-    public Auth0Repository (ILogger<Auth0Repository> logger)
+    private readonly ILogService _logService;
+    public Auth0Repository (
+      ILogService logService)
     {
       this._httpService = new HttpService ();
-      this._logger = logger;
+      this._logService = logService;
     }
     public AuthRestModel CreateUser (
       string name, string email, string password, string role, string instanceId)
@@ -81,6 +81,7 @@ namespace AuthenticationRepository
       {
         return (false, this._validationMessage, null);
       }
+      this._logService.Log(Minutz.Models.LogLevel.Info, $"username: {username} - password:{password}");
       var requestBody = new UserTokenRequestModel
       {
         grant_type = "password",
@@ -90,9 +91,9 @@ namespace AuthenticationRepository
         client_secret = this._clientSecret,
         connection = this._connection
       }.ToJSON ();
-      var conx =  requestBody.ToStringContent ();
-      this._logger.LogInformation(LoggingEvents.ListItems,requestBody.ToString());
-      var tokenRequestResult = this._httpService.Post (this._urlToken, conx);
+      this._logService.Log(Minutz.Models.LogLevel.Info, requestBody.ToString());
+      var tokenRequestResult = this._httpService.Post (this._urlToken, requestBody.ToStringContent ());
+      this._logService.Log(Minutz.Models.LogLevel.Info, tokenRequestResult.result);
       if (tokenRequestResult.condition)
       {
         return (tokenRequestResult.condition,

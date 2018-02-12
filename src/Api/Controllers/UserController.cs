@@ -24,19 +24,23 @@ namespace Api.Controllers
       this._validationService = validationService;
     }
 
-    [HttpPost]
-    public IActionResult Login (string email, string password, string fullName)
+    [HttpPost("api/user/login", Name = "Log in the user.")]
+    public IActionResult Login (string username, string password)
     {
-      var emailValidation = this._validationService.ValidEmail(email);
-      var passwordValidation = this._validationService.ValidPassword(password);
-      if(!emailValidation.condition)
-        return StatusCode(404,emailValidation.message);
+      //var emailValidation = this._validationService.ValidEmail(email);
+      //var passwordValidation = this._validationService.ValidPassword(password);
+      if(string.IsNullOrEmpty(username))
+        return StatusCode(404,"please provide a valid username or password");
 
-      if(!passwordValidation.condition)
-        return StatusCode(404, passwordValidation.message);
+      if(string.IsNullOrEmpty(password))
+        return StatusCode(404,"please provide a valid username or password");
 
-      
-      return Ok ();
+      var loginResult = this._authenticationService.Login(username,password);
+      if(loginResult.condition)
+      {
+       return Ok (loginResult.tokenResponse);
+      }
+      return StatusCode(404, new { Message = loginResult.message });
     }
 
     [Authorize]
