@@ -7,6 +7,8 @@ using Interface.Services;
 using Minutz.Models.Entities;
 using System.Net.Http;
 using System.Text;
+using Microsoft.Extensions.Logging;
+using Models;
 
 namespace AuthenticationRepository
 {
@@ -20,10 +22,12 @@ namespace AuthenticationRepository
     internal string _connection = Environment.GetEnvironmentVariable ("CONNECTION");
     internal string _validationMessage = "The username or password was not supplied or is incorrect. Please provide valid details.";
     private readonly IHttpService _httpService;
+    private readonly ILogger _logger;
 
-    public Auth0Repository ()
+    public Auth0Repository (ILogger<Auth0Repository> logger)
     {
       this._httpService = new HttpService ();
+      this._logger = logger;
     }
     public AuthRestModel CreateUser (
       string name, string email, string password, string role, string instanceId)
@@ -88,6 +92,7 @@ namespace AuthenticationRepository
         connection = this._connection
       }.ToJSON ();
       var conx =  requestBody.ToStringContent ();
+      this._logger.LogInformation(LoggingEvents.ListItems,requestBody.ToString());
       var tokenRequestResult = this._httpService.Post (this._urlToken, conx);
       if (tokenRequestResult.condition)
       {

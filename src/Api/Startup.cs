@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using System;
+using Core;
 using Core.ExternalServices;
 using Core.LogProvider;
 using Core.Validation;
@@ -26,10 +27,9 @@ namespace Minutz.Api
           .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
           .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
           .AddEnvironmentVariables();
+      
       Configuration = builder.Build();
     }
-
-    private string _domain = "https://dockerdurban.auth0.com/";
     public const string Version = "3.0.3";
     public const string Title = "Minutz Api";
 
@@ -56,8 +56,6 @@ namespace Minutz.Api
       services.AddTransient<INotificationTypeRepository, NotificationTypeRepository>();
       services.AddTransient<ISubscriptionRepository, SubscriptionRepository>();
 
-
-
       //Services
       services.AddTransient<IApplicationSetting, ApplicationSetting>();
       services.AddTransient<INotify, Notify>();
@@ -83,7 +81,6 @@ namespace Minutz.Api
       {
         c.SwaggerDoc("v1", new Info { Title = Startup.Title, Version = Startup.Version });
       });
-      string domain = this._domain;// "https://dockerdurban.auth0.com/";
       services.AddCors(options =>
       {
         options.AddPolicy("AllowAllOrigins",
@@ -99,8 +96,8 @@ namespace Minutz.Api
 
       }).AddJwtBearer(options =>
       {
-        options.Authority = domain;
-        options.Audience = "https://dockerdurban.auth0.com/api/v2/";
+        options.Authority = $"https://{Environment.GetEnvironmentVariable("DOMAIN")}/";
+        options.Audience = $"https://{Environment.GetEnvironmentVariable("DOMAIN")}/api/v2/";
       });
     }
 

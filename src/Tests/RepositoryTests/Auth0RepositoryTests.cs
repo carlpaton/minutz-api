@@ -1,5 +1,6 @@
 using System;
 using AuthenticationRepository;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 
 namespace Tests.RepositoryTests
@@ -19,7 +20,8 @@ namespace Tests.RepositoryTests
         [Test]
         public void CreateToken_GivenEmptyUserName_ShouldReturnFalseAndMessage ()
         {
-            var repository = new Auth0Repository ();
+            var logger = NSubstitute.Substitute.For<ILogger<Auth0Repository> >();
+            var repository = new Auth0Repository (logger);
             var result = repository.CreateToken (string.Empty, "password");
             Assert.IsFalse (result.condition);
             Assert.AreSame (result.message, this._validationMessage);
@@ -28,7 +30,8 @@ namespace Tests.RepositoryTests
         [Test]
         public void CreateToken_GivenEmptyPassword_ShouldReturnFalseAndMessage ()
         {
-            var repository = new Auth0Repository ();
+            var logger = NSubstitute.Substitute.For<ILogger<Auth0Repository> >();
+            var repository = new Auth0Repository (logger);
             var result = repository.CreateToken (string.Empty, "password");
             Assert.IsFalse (result.condition);
             Assert.AreSame (result.message, this._validationMessage);
@@ -37,7 +40,8 @@ namespace Tests.RepositoryTests
         [Test]
         public void CreateToken_GivenInvalidUsernamePassword_ShouldReturnTrueAndTokenWithSuccessMessage ()
         {
-            var repository = new Auth0Repository ();
+            var logger = NSubstitute.Substitute.For<ILogger<Auth0Repository> >();
+            var repository = new Auth0Repository (logger);
             var result = repository.CreateToken ("leeroya", "@nathan001");
             Assert.IsFalse (result.condition);
         }
@@ -45,7 +49,8 @@ namespace Tests.RepositoryTests
         [Test]
         public void CreateToken_GivenUsernamePassword_ShouldReturnTrueAndTokenWithSuccessMessage ()
         {
-            var repository = new Auth0Repository ();
+            var logger = NSubstitute.Substitute.For<ILogger<Auth0Repository> >();
+            var repository = new Auth0Repository (logger);
             var result = repository.CreateToken ("leeroya", "@nathan01");
             Assert.IsTrue (result.condition);
             Assert.AreSame (result.message, "Success");
