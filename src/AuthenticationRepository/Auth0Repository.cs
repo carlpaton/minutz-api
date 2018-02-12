@@ -81,11 +81,11 @@ namespace AuthenticationRepository
       var requestBody = new UserTokenRequestModel
       {
         grant_type = "password",
-          username = username,
-          password = password,
-          client_id = "WDzuh9escySpPeAF5V0t2HdC3Lmo68a-",
-          client_secret = "_kVUASQWVawA2pwYry-xP53kQpOALkEj_IGLWCSspXkpUFRtE_W-Gg74phrxZkz8",
-          connection = "Username-Password-Authentication"
+        username = username,
+        password = password,
+        client_id = this._clientId,
+        client_secret = this._clientSecret,
+        connection = this._connection
       }.ToJSON ();
       var conx =  requestBody.ToStringContent ();
       var tokenRequestResult = this._httpService.Post (this._urlToken, conx);

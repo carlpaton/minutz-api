@@ -1,3 +1,4 @@
+using System;
 using AuthenticationRepository;
 using NUnit.Framework;
 
@@ -6,6 +7,13 @@ namespace Tests.RepositoryTests
     [TestFixture]
     public class Auth0RepositoryTests
     {
+        public Auth0RepositoryTests()
+        {
+            Environment.SetEnvironmentVariable("CLIENTID", "WDzuh9escySpPeAF5V0t2HdC3Lmo68a-");
+            Environment.SetEnvironmentVariable("DOMAIN", "minutz.eu.auth0.com");
+            Environment.SetEnvironmentVariable("CLIENTSECRET", "_kVUASQWVawA2pwYry-xP53kQpOALkEj_IGLWCSspXkpUFRtE_W-Gg74phrxZkz8");
+            Environment.SetEnvironmentVariable("CONNECTION", "Username-Password-Authentication");
+        }
         internal string _validationMessage = "The username or password was not supplied or is incorrect. Please provide valid details.";
 
         [Test]
@@ -42,13 +50,5 @@ namespace Tests.RepositoryTests
             Assert.IsTrue (result.condition);
             Assert.AreSame (result.message, "Success");
         }
-
-        // [Test]
-        // public void Test ()
-        // {
-        //     var q = new Auth0Repository ();
-        //     //q.CreateUser ();
-        //     Assert.IsTrue (true);
-        // }
     }
 }
