@@ -102,10 +102,42 @@ namespace Core.ExternalServices
               this._auth0Repository.CreateToken (username, password);
             if (!newUserTokenResponse.condition)
             {
-              this._logService.Log (Minutz.Models.LogLevel.Error, $"[(bool condition, string message, UserResponseModel tokenResponse) tokenResponse] There was a issue getting the token info for user {email}");
+              this._logService.Log (Minutz.Models.LogLevel.Error, $"[(bool condition, string message, UserResponseModel tokenResponse) newUserTokenResponse] There was a issue getting the token for user {email}");
               return (newUserTokenResponse.condition, newUserTokenResponse.message, null);
             }
+            (bool condition, string message, AuthRestModel infoResponse) newInfoResponseResult =
+              this._auth0Repository.GetUserInfo (newUserTokenResponse.tokenResponse.access_token);
+            if (!newInfoResponseResult.condition)
+            {
+              this._logService.Log (Minutz.Models.LogLevel.Error, $"[(bool condition, string message, AuthRestModel infoResponse) newInfoResponseResult] There was a issue getting the token info for user {email}");
+              return (newInfoResponseResult.condition, newInfoResponseResult.message, null);
+            }
+            // create the schema as the user is trial user;
+            (string userConnectionString, string masterConnectionString) connectionStrings = this.GetConnectionStrings ();
+            string schemaCreateResult = _userRepository.CreateNewSchema (
+              newInfoResponseResult.infoResponse, connectionStrings.userConnectionString, connectionStrings.masterConnectionString);
 
+            // create the tables as the user is trial user;
+            bool tablesCreateResult = this._applicationSetupRepository.CreateSchemaTables (
+              _applicationSetting.Schema, schemaCreateResult, _applicationSetting.CreateConnectionString ());
+            Instance newInstance = this._instanceRepository.GetByUsername (existsResult.person.InstanceId, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+            AuthRestModel createAuthRestResult = new AuthRestModel
+            {
+              Company = newInstance.Company,
+              InstanceId = schemaCreateResult,
+              FirstName = existsResult.person.FirstName,
+              LastName = existsResult.person.LastName,
+              Role = existsResult.person.Role,
+              Email = existsResult.person.Email,
+              TokenExpire = newUserTokenResponse.tokenResponse.expires_in,
+              AccessToken = newUserTokenResponse.tokenResponse.access_token,
+              Picture = newInfoResponseResult.infoResponse.Picture,
+              IsVerified = newInfoResponseResult.infoResponse.IsVerified,
+              Sub = newInfoResponseResult.infoResponse.Sub,
+              Name = newInfoResponseResult.infoResponse.Name,
+              Related = existsResult.person.Related
+            };
+            return ();
             break;
           case RoleTypes.Guest:
             if (string.IsNullOrEmpty (existsResult.person.InstanceId))
