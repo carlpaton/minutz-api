@@ -27,6 +27,9 @@ GO
 ALTER TABLE app.instance
 ADD reminderId INT NULL
 
+GO
+ALTER TABLE app.instance
+ADD company VARCHAR(200) NULL
 
 
 -- - id

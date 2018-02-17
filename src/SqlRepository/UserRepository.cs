@@ -1,23 +1,36 @@
 ﻿using System;
-using Dapper;
-using Interface.Repositories;
-using Minutz.Models.Entities;
-using SqlRepository.Extensions;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using Dapper;
+using Interface.Repositories;
 using Interface.Services;
+using Minutz.Models.Entities;
+using SqlRepository.Extensions;
 
 namespace SqlRepository
 {
   public class UserRepository : IUserRepository
   {
     private readonly ILogService _logService;
-    public UserRepository(ILogService logService)
+    public UserRepository (ILogService logService)
     {
       this._logService = logService;
     }
+
+    public (bool condition, string message, Person person) GetUserByEmail (
+      string email, string schema, string connectionString)
+    {
+      using (IDbConnection dbConnection = new SqlConnection (connectionString))
+      {
+        var sql = $"SELECT * FROM [{schema}].[Person] WHERE Email = '{email}' ";
+        var user = dbConnection.Query<Person> (sql).ToList();
+        return (user.Any (),user.Any ()? "User exists": "No User with that email exists.", user.FirstOrDefault());
+      }
+    }
+
     public bool CheckIfNewUser ((string key, string reference) reference,
       string authUserId,
       string schema,

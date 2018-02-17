@@ -16,7 +16,6 @@ namespace AuthenticationRepository
   {
     internal string _urlSignUp = $"https://{Environment.GetEnvironmentVariable ("DOMAIN")}/dbconnections/signup";
     internal string _urlToken = $"https://{Environment.GetEnvironmentVariable ("DOMAIN")}/oauth/token";
-
     internal string _urlInfo = $"https://{Environment.GetEnvironmentVariable ("DOMAIN")}/userinfo";
     internal string _clientId = Environment.GetEnvironmentVariable ("CLIENTID");
     internal string _domain = Environment.GetEnvironmentVariable ("DOMAIN");
