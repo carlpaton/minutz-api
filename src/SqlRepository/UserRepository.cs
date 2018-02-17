@@ -162,9 +162,7 @@ namespace SqlRepository
     }
 
     public AuthRestModel GetUser (
-      string authUserId,
-      string schema,
-      string connectionString)
+      string authUserId, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {

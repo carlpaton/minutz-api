@@ -120,7 +120,13 @@ namespace Core.ExternalServices
             // create the tables as the user is trial user;
             bool tablesCreateResult = this._applicationSetupRepository.CreateSchemaTables (
               _applicationSetting.Schema, schemaCreateResult, _applicationSetting.CreateConnectionString ());
-            Instance newInstance = this._instanceRepository.GetByUsername (existsResult.person.InstanceId, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+            if (!tablesCreateResult)
+            {
+              this._logService.Log (Minutz.Models.LogLevel.Error, $"[(bool condition, string message, AuthRestModel infoResponse) newInfoResponseResult] There was a issue creating the tables for user {email}");
+              return (tablesCreateResult, "There was a problem creating the records.", null);
+            }
+            Instance newInstance =
+              this._instanceRepository.GetByUsername (existsResult.person.InstanceId, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
             AuthRestModel createAuthRestResult = new AuthRestModel
             {
               Company = newInstance.Company,
@@ -137,14 +143,25 @@ namespace Core.ExternalServices
               Name = newInfoResponseResult.infoResponse.Name,
               Related = existsResult.person.Related
             };
-            return ();
-            break;
+            return (tablesCreateResult, "Success", createAuthRestResult);
           case RoleTypes.Guest:
-            if (string.IsNullOrEmpty (existsResult.person.InstanceId))
+
+            (bool condition, string message, UserResponseModel tokenResponse) guestTokenResponse =
+              this._auth0Repository.CreateToken (username, password);
+            if (!guestTokenResponse.condition)
             {
-              //get token by 
-              return ();
+              this._logService.Log (Minutz.Models.LogLevel.Error, $"[(bool condition, string message, UserResponseModel tokenResponse) guestTokenResponse] There was a issue getting the token info for user {email}");
+              return (guestTokenResponse.condition, guestTokenResponse.message, null);
             }
+
+            (bool condition, string message, AuthRestModel infoResponse) guestinfoResponseResult =
+              this._auth0Repository.GetUserInfo (guestTokenResponse.tokenResponse.access_token);
+            if (!guestinfoResponseResult.condition)
+            {
+              this._logService.Log (Minutz.Models.LogLevel.Error, $"[(bool condition, string message, AuthRestModel infoResponse) guestinfoResponseResult] There was a issue getting the token info for user {email}");
+              return (guestinfoResponseResult.condition, guestinfoResponseResult.message, null);
+            }
+
             break;
           case RoleTypes.Admin:
             break;
