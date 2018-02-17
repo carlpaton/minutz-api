@@ -47,9 +47,9 @@ namespace Core
       {
         var schemaCreate = _userRepository.CreateNewSchema(
                                                     user,
-                                                    _applicationSetting.Schema,
                                                     userConnectionString,
                                                     masterConnectionString);
+
         _applicationSetupRepository.CreateSchemaTables(_applicationSetting.Schema, schemaCreate,
                                       _applicationSetting.CreateConnectionString(
                                                                     _applicationSetting.Server,

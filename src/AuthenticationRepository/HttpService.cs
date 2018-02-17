@@ -5,10 +5,17 @@ namespace AuthenticationRepository
 {
     public class HttpService : IHttpService
     {
-        public string Get (
+        public (bool condition, string result) Get (
             string endpoint, string token)
         {
-            throw new System.NotImplementedException ();
+            var httpClient = new HttpClient ();
+            httpClient.DefaultRequestHeaders.Add ("Authorization", token);
+            HttpResponseMessage response = httpClient.GetAsync (endpoint).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                return (true, response.Content.ReadAsStringAsync ().Result);
+            }
+            return (false, response.ReasonPhrase);
         }
 
         public (bool condition, string result) Post (
@@ -16,6 +23,15 @@ namespace AuthenticationRepository
         {
             var client = new HttpClient ();
             var result = client.PostAsync (endpoint, body).Result;
+            return (result.IsSuccessStatusCode, result.Content.ReadAsStringAsync ().Result);
+        }
+
+        public (bool condition, string result) Post (
+            string endpoint, StringContent body, string token)
+        {
+            var httpClient = new HttpClient ();
+            httpClient.DefaultRequestHeaders.Add ("Authorization", token);
+            var result = httpClient.PostAsync (endpoint, body).Result;
             return (result.IsSuccessStatusCode, result.Content.ReadAsStringAsync ().Result);
         }
     }

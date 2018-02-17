@@ -1,48 +1,41 @@
 ﻿using System;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
 using Dapper;
 using Interface.Repositories;
 using Minutz.Models.Entities;
 using SqlRepository.Extensions;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+using Interface.Services;
 
 namespace SqlRepository
 {
   public class UserRepository : IUserRepository
   {
-    public bool CheckIfNewUser((string key, string reference) reference,
-                               string authUserId,
-                               string schema,
-                               string connectionString)
+    private readonly ILogService _logService;
+    public UserRepository(ILogService logService)
     {
-      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      this._logService = logService;
+    }
+    public bool CheckIfNewUser ((string key, string reference) reference,
+      string authUserId,
+      string schema,
+      string connectionString)
+    {
+      using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {
         var sql = $"select Identityid FROM [{schema}].[Person]  WHERE Identityid = '{authUserId}' ";
         //dbConnection.Open ();
-        var user = dbConnection.Query<Person>(sql, new { Identityid = (string)authUserId });
-        return user.Any();
+        var user = dbConnection.Query<Person> (sql, new { Identityid = (string) authUserId });
+        return user.Any ();
       }
     }
 
-    public string CreateNewUser((string key, string reference) relationship,
-                                AuthRestModel authUser,
-                                string schema,
-                                string connectionString)
+    public (bool condition, string message) CreateNewUser (
+      AuthRestModel authUser, string schema, string connectionString)
     {
-      //check if key == guest then write - guest and use the instanceid update availibleattendees, 
-      if (!string.IsNullOrEmpty(relationship.key))
-      {
-        authUser.Role = relationship.key;
-        authUser.Related = relationship.reference;
-      }
-      else
-      {
-        authUser.Related = string.Empty;
-      }
-
-      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {
         var sql = $@"insert into [{schema}].[Person](
                                                     [Identityid]
@@ -66,39 +59,108 @@ namespace SqlRepository
                                                     ,@Active
                                                     ,@InstanceId
                                                     ,@Related)";
-        dbConnection.Open();
-        var user = dbConnection.Execute(sql, new
+        dbConnection.Open ();
+        var user = dbConnection.Execute (sql, new
         {
           Identityid = authUser.Sub,
-          FirstName = string.Empty,
-          LastName = string.Empty,
-          FullName = authUser.Name,
-          ProfilePicture = authUser.Picture,
-          Email = authUser.Email,
-          Role = authUser.Role,
-          Active = true,
-          InstanceId = string.Empty,
-          Related = authUser.Related
+            FirstName = string.Empty,
+            LastName = string.Empty,
+            FullName = authUser.Name,
+            ProfilePicture = authUser.Picture,
+            Email = authUser.Email,
+            Role = authUser.Role,
+            Active = true,
+            InstanceId = string.Empty,
+            Related = authUser.Related
         });
         if (user == 1)
-          return "Guest";
-        throw new System.Exception("There was a issue inserting the new user");
+        {
+          return (true, "Success");
+        }
+        this._logService.Log (Minutz.Models.LogLevel.Error, $"There was a issue inserting the new user");
+        return (false, "There was a issue inserting the new user");
       }
     }
 
-    public AuthRestModel GetUser(
+    /// <summary>
+    /// To be depricated
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="reference"></param>
+    /// <returns></returns>
+    public string CreateNewUser ((string key, string reference) relationship,
+      AuthRestModel authUser,
+      string schema,
+      string connectionString)
+    {
+      //check if key == guest then write - guest and use the instanceid update availibleattendees, 
+      if (!string.IsNullOrEmpty (relationship.key))
+      {
+        authUser.Role = relationship.key;
+        authUser.Related = relationship.reference;
+      }
+      else
+      {
+        authUser.Related = string.Empty;
+      }
+
+      using (IDbConnection dbConnection = new SqlConnection (connectionString))
+      {
+        var sql = $@"insert into [{schema}].[Person](
+                                                    [Identityid]
+                                                    ,[FirstName]
+                                                    ,[LastName]
+                                                    ,[FullName]
+                                                    ,[ProfilePicture]
+                                                    ,[Email]
+                                                    ,[Role]
+                                                    ,[Active]
+                                                    ,[InstanceId]
+                                                    ,[Related]) 
+                                            values(
+                                                    @Identityid
+                                                    ,@FirstName
+                                                    ,@LastName
+                                                    ,@FullName
+                                                    ,@ProfilePicture
+                                                    ,@Email
+                                                    ,@Role
+                                                    ,@Active
+                                                    ,@InstanceId
+                                                    ,@Related)";
+        dbConnection.Open ();
+        var user = dbConnection.Execute (sql, new
+        {
+          Identityid = authUser.Sub,
+            FirstName = string.Empty,
+            LastName = string.Empty,
+            FullName = authUser.Name,
+            ProfilePicture = authUser.Picture,
+            Email = authUser.Email,
+            Role = authUser.Role,
+            Active = true,
+            InstanceId = string.Empty,
+            Related = authUser.Related
+        });
+        if (user == 1)
+          return "Guest";
+        throw new System.Exception ("There was a issue inserting the new user");
+      }
+    }
+
+    public AuthRestModel GetUser (
       string authUserId,
       string schema,
       string connectionString)
     {
-      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {
         var sql = $"select * FROM [{schema}].[Person] WHERE Identityid ='{authUserId}'; ";
         //dbConnection.Open ();
-        var query = dbConnection.Query<Person>(sql);
-        if (query.Any())
+        var query = dbConnection.Query<Person> (sql);
+        if (query.Any ())
         {
-          var user = query.FirstOrDefault();
+          var user = query.FirstOrDefault ();
           if (user != null)
             return new AuthRestModel
             {
@@ -114,7 +176,7 @@ namespace SqlRepository
               Related = user.Related
             };
         }
-        throw new System.Exception("User does not exist in the datastore.");
+        throw new System.Exception ("User does not exist in the datastore.");
       }
     }
 
@@ -125,24 +187,20 @@ namespace SqlRepository
     /// <param name="schema"></param>
     /// <param name="connectionString"></param>
     /// <returns>Schema value</returns>
-    public string CreateNewSchema(
-      AuthRestModel authUser,
-      string schema,
-      string connectionString,
-      string masterConnectionString)
+    public string CreateNewSchema (
+      AuthRestModel authUser, string connectionString, string masterConnectionString)
     {
-      var id = authUser.Sub.Split('|')[1];
+      var id = authUser.Sub.Split ('|') [1];
       var username = $"A_{id}";
-      var password = CreatePassword(10);
-      this.createSecurityUser(masterConnectionString, username, password);
-      this.createLoginSchemaUser(connectionString, username);
-      this.createSchema(connectionString, username);
-      this.createInstanceRecord(connectionString, "app", authUser.Name, username, password, true, 1);
-      this.updatePersonRecord(connectionString, "app", username, authUser.Sub);
-      this.updatePersonRoleRecord(connectionString, "app", authUser.Sub, authUser.Role);
+      var password = CreatePassword (10);
+      this.createSecurityUser (masterConnectionString, username, password);
+      this.createLoginSchemaUser (connectionString, username);
+      this.createSchema (connectionString, username);
+      this.createInstanceRecord (connectionString, "app", authUser.Name, username, password, true, 1);
+      this.updatePersonRecord (connectionString, "app", username, authUser.Sub);
+      this.updatePersonRoleRecord (connectionString, "app", authUser.Sub, authUser.Role);
       return username;
     }
-
 
     /// <summary>
     /// Reset tables and account.
@@ -151,7 +209,7 @@ namespace SqlRepository
     /// <param name="connectionString">Connection string.</param>
     /// <param name="instanceId">Instance identifier.</param>
     /// <param name="instanceName">This is the email address in the instance table i.e. info@docker.durban</param>
-    public (bool condition, string message) Reset(
+    public (bool condition, string message) Reset (
       string connectionString,
       string instanceId,
       string instanceName)
@@ -168,9 +226,9 @@ namespace SqlRepository
 
       try
       {
-        using (IDbConnection dbConnection = new SqlConnection(connectionString))
+        using (IDbConnection dbConnection = new SqlConnection (connectionString))
         {
-          return (dbConnection.Execute(sql) == -1, "successful");
+          return (dbConnection.Execute (sql) == -1, "successful");
         }
       }
       catch (Exception ex)
@@ -179,47 +237,45 @@ namespace SqlRepository
       }
     }
 
-    internal string CreatePassword(int length)
+    internal string CreatePassword (int length)
     {
       const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890123456789@#";
-      StringBuilder res = new StringBuilder();
-      Random rnd = new Random();
+      StringBuilder res = new StringBuilder ();
+      Random rnd = new Random ();
       while (0 < length--)
       {
-        res.Append(valid[rnd.Next(valid.Length)]);
+        res.Append (valid[rnd.Next (valid.Length)]);
       }
-      return res.ToString();
+      return res.ToString ();
     }
 
-
-
-    internal bool createSecurityUser(string connectionString, string user, string password)
+    internal bool createSecurityUser (string connectionString, string user, string password)
     {
       try
       {
-        using (IDbConnection dbConnection = new SqlConnection(connectionString))
+        using (IDbConnection dbConnection = new SqlConnection (connectionString))
         {
           var sql = $@"CREATE LOGIN {user}   
                       WITH PASSWORD = '{password}' ";
 
-          return dbConnection.Execute(sql) == -1;
+          return dbConnection.Execute (sql) == -1;
         }
       }
       catch (Exception ex)
       {
-        Console.WriteLine(ex.Message);
+        Console.WriteLine (ex.Message);
         return false;
       }
     }
 
-    internal bool createSchema(string connectionString, string user)
+    internal bool createSchema (string connectionString, string user)
     {
       try
       {
-        using (IDbConnection dbConnection = new SqlConnection(connectionString))
+        using (IDbConnection dbConnection = new SqlConnection (connectionString))
         {
           var createSchema = $"CREATE schema {user} authorization {user};";
-          var createSchemaResult = dbConnection.Execute(createSchema);
+          var createSchemaResult = dbConnection.Execute (createSchema);
           return createSchemaResult == -1;
         }
       }
@@ -229,25 +285,25 @@ namespace SqlRepository
       }
     }
 
-    internal bool createLoginSchemaUser(string connectionString, string user)
+    internal bool createLoginSchemaUser (string connectionString, string user)
     {
       try
       {
-        using (IDbConnection dbConnection = new SqlConnection(connectionString))
+        using (IDbConnection dbConnection = new SqlConnection (connectionString))
         {
           var createSchemaLogin = $"CREATE USER {user} FOR LOGIN {user};";
-          var createSchemaLoginResult = dbConnection.Execute(createSchemaLogin);
+          var createSchemaLoginResult = dbConnection.Execute (createSchemaLogin);
           return createSchemaLoginResult == -1;
         }
       }
       catch (Exception ex)
       {
-        Console.WriteLine(ex.Message);
+        Console.WriteLine (ex.Message);
         return false;
       }
     }
 
-    internal bool createInstanceRecord(
+    internal bool createInstanceRecord (
       string connectionString,
       string schema,
       string Name,
@@ -258,7 +314,7 @@ namespace SqlRepository
     {
       try
       {
-        using (IDbConnection dbConnection = new SqlConnection(connectionString))
+        using (IDbConnection dbConnection = new SqlConnection (connectionString))
         {
           var insertSql = $@"insert into [{schema}].[Instance](
                                                                  [Name]
@@ -272,7 +328,7 @@ namespace SqlRepository
                                                                 ,@Password
                                                                 ,@Active
                                                                 ,@Type)";
-          var instance = dbConnection.Execute(insertSql, new
+          var instance = dbConnection.Execute (insertSql, new
           {
             Name,
             Username,
@@ -285,12 +341,12 @@ namespace SqlRepository
       }
       catch (Exception ex)
       {
-        Console.WriteLine(ex.Message);
+        Console.WriteLine (ex.Message);
         return false;
       }
     }
 
-    internal bool updatePersonRecord(
+    internal bool updatePersonRecord (
       string connectionString,
       string schema,
       string username,
@@ -298,10 +354,10 @@ namespace SqlRepository
     {
       try
       {
-        using (IDbConnection dbConnection = new SqlConnection(connectionString))
+        using (IDbConnection dbConnection = new SqlConnection (connectionString))
         {
           var updateUserSql = $"UPDATE [{schema}].[Person] SET InstanceId = '{username}' WHERE Identityid = '{identity}' ";
-          var updateUserResult = dbConnection.Execute(updateUserSql);
+          var updateUserResult = dbConnection.Execute (updateUserSql);
           return updateUserResult == 1;
         }
       }
@@ -311,7 +367,7 @@ namespace SqlRepository
       }
     }
 
-    internal bool updatePersonRoleRecord(
+    internal bool updatePersonRoleRecord (
       string connectionString,
       string schema,
       string identity,
@@ -319,10 +375,10 @@ namespace SqlRepository
     {
       try
       {
-        using (IDbConnection dbConnection = new SqlConnection(connectionString))
+        using (IDbConnection dbConnection = new SqlConnection (connectionString))
         {
           var updateUserSql = $"UPDATE [{schema}].[Person] SET [Role] = '{role}' WHERE Identityid = '{identity}' ";
-          var updateUserResult = dbConnection.Execute(updateUserSql);
+          var updateUserResult = dbConnection.Execute (updateUserSql);
           return updateUserResult == 1;
         }
       }
