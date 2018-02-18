@@ -23,6 +23,9 @@ namespace Interface.Repositories
     string CreateNewSchema (
       AuthRestModel authUser, string connectionString, string masterConnectionString);
 
+    (bool condition, string message) UpdatePerson (
+      string connectionString, string schema, Person person);
+
     (bool condition, string message) Reset (
       string connectionString, string instanceId, string instanceName);
   }

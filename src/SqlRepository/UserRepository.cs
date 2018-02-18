@@ -26,15 +26,13 @@ namespace SqlRepository
       using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {
         var sql = $"SELECT * FROM [{schema}].[Person] WHERE Email = '{email}' ";
-        var user = dbConnection.Query<Person> (sql).ToList();
-        return (user.Any (),user.Any ()? "User exists": "No User with that email exists.", user.FirstOrDefault());
+        var user = dbConnection.Query<Person> (sql).ToList ();
+        return (user.Any (), user.Any () ? "User exists" : "No User with that email exists.", user.FirstOrDefault ());
       }
     }
 
     public bool CheckIfNewUser ((string key, string reference) reference,
-      string authUserId,
-      string schema,
-      string connectionString)
+      string authUserId, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {
@@ -102,9 +100,7 @@ namespace SqlRepository
     /// <param name="reference"></param>
     /// <returns></returns>
     public string CreateNewUser ((string key, string reference) relationship,
-      AuthRestModel authUser,
-      string schema,
-      string connectionString)
+      AuthRestModel authUser, string schema, string connectionString)
     {
       //check if key == guest then write - guest and use the instanceid update availibleattendees, 
       if (!string.IsNullOrEmpty (relationship.key))
@@ -213,6 +209,34 @@ namespace SqlRepository
       return username;
     }
 
+    public (bool condition, string message) UpdatePerson (
+      string connectionString, string schema, Person person)
+    {
+      try
+      {
+        using (IDbConnection dbConnection = new SqlConnection (connectionString))
+        {
+          var updateUserSql = $@"UPDATE [{schema}].[Person] 
+          SET InstanceId = '{person.InstanceId}',
+          [FirstName] = '{person.FirstName}' ,
+          [LastName] = '{person.LastName}' ,
+          [FullName] = '{person.FullName}' ,
+          [ProfilePicture] = '{person.ProfilePicture}' ,
+          [Role] = '{person.Role}' ,
+          [Active] = '{person.Active}' ,
+          [Related] = '{person.Related}' 
+          WHERE Email = '{person.Email}' 
+          ";
+          var updateUserResult = dbConnection.Execute (updateUserSql);
+          return (updateUserResult == 1, updateUserResult == 1 ? "Success": "There was a issue with the update of person.");
+        }
+      }
+      catch (Exception ex)
+      {
+        return (false, $"There was a {ex.Message}");
+      }
+    }
+
     /// <summary>
     /// Reset tables and account.
     /// </summary>
@@ -221,11 +245,8 @@ namespace SqlRepository
     /// <param name="instanceId">Instance identifier.</param>
     /// <param name="instanceName">This is the email address in the instance table i.e. info@docker.durban</param>
     public (bool condition, string message) Reset (
-      string connectionString,
-      string instanceId,
-      string instanceName)
+      string connectionString, string instanceId, string instanceName)
     {
-
       string sql = $@"
         EXECUTE [app].[resetAccount]'{instanceId}','{instanceName}','{instanceId}' 
         ALTER DATABASE [MINUTZ-TEST] set single_user with rollback immediate;  
@@ -234,7 +255,6 @@ namespace SqlRepository
         DROP LOGIN {instanceId};
         ALTER DATABASE [MINUTZ-TEST] set MULTI_USER;
       ";
-
       try
       {
         using (IDbConnection dbConnection = new SqlConnection (connectionString))
@@ -315,13 +335,7 @@ namespace SqlRepository
     }
 
     internal bool createInstanceRecord (
-      string connectionString,
-      string schema,
-      string Name,
-      string Username,
-      string Password,
-      bool Active,
-      int Type)
+      string connectionString, string schema, string Name, string Username, string Password, bool Active, int Type)
     {
       try
       {
@@ -358,10 +372,7 @@ namespace SqlRepository
     }
 
     internal bool updatePersonRecord (
-      string connectionString,
-      string schema,
-      string username,
-      string identity)
+      string connectionString, string schema, string username, string identity)
     {
       try
       {
@@ -379,10 +390,7 @@ namespace SqlRepository
     }
 
     internal bool updatePersonRoleRecord (
-      string connectionString,
-      string schema,
-      string identity,
-      string role)
+      string connectionString, string schema, string identity, string role)
     {
       try
       {
