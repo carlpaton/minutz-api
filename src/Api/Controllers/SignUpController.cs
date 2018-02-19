@@ -11,7 +11,7 @@ namespace Api.Controllers
     private readonly IUserValidationService _userValidationService;
     private readonly IAuthenticationService _authenticationService;
     private readonly IApplicationManagerService _applicationManagerService;
-    public SignUpController(IUserValidationService userValidationService,
+    public SignUpController (IUserValidationService userValidationService,
       IAuthenticationService authenticationService,
       IApplicationManagerService applicationManagerService)
     {
@@ -24,35 +24,43 @@ namespace Api.Controllers
     /// </summary>
     /// <returns>If it was successful or not</returns>
     //[Authorize]
-    [HttpPost("api/Signup")]
-    public IActionResult Post([FromBody] dynamic user)
+    [HttpPost ("api/Signup")]
+    public IActionResult Post ([FromBody] dynamic user)
     {
-      var email = user.email.ToString();
-      var name = user.name.ToString();
-      var password = user.password.ToString();
-      var username = user.username.ToString();
+      var email = user.email.ToString ();
+      var name = user.name.ToString ();
+      var password = user.password.ToString ();
+      var username = user.username.ToString ();
+      var instanceId = user.RefInstanceId.ToString();
+      var meetingId = user.refMeetingId.ToString();
+      string role = "Guest";
+      if(string.IsNullOrEmpty(instanceId))
+      {
+        role = "User";
+      }
       //var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
       //var userInfo = _authenticationService.GetUserInfo(token);
       //var person = _userValidationService.GetUser(userInfo.Sub);
       //var result = _applicationManagerService.StartFullVersion(person);
-      (bool condition, string message, AuthRestModel tokenResponse) result = this._authenticationService.CreateUser(name, username,email, password);
+      (bool condition, string message, AuthRestModel tokenResponse) result =
+        this._authenticationService.CreateUser (name, username, email, password,role, instanceId, meetingId);
       if (result.condition || result.message == "successfull")
-        return Ok(result.tokenResponse);
-      return StatusCode(500, result.message);
+        return Ok (result.tokenResponse);
+      return StatusCode (500, result.message);
     }
 
     [Authorize]
-    [HttpPost("api/reset")]
-    public IActionResult ResetAccount()
+    [HttpPost ("api/reset")]
+    public IActionResult ResetAccount ()
     {
-      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      var userInfo = _authenticationService.GetUserInfo(token);
-      var person = _userValidationService.GetUser(userInfo.Sub);
+      var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
+      var userInfo = _authenticationService.GetUserInfo (token);
+      var person = _userValidationService.GetUser (userInfo.Sub);
 
-      var result = _applicationManagerService.ResetAcccount(person);
+      var result = _applicationManagerService.ResetAcccount (person);
       if (result.condition)
-        return Ok();
-      return StatusCode(500, result.message);
+        return Ok ();
+      return StatusCode (500, result.message);
     }
   }
 }

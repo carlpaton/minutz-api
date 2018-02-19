@@ -1,10 +1,11 @@
-﻿using Interface.Repositories;
-using System.Data.SqlClient;
+﻿using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.IO;
-using Dapper;
 using System.Reflection;
 using System.Text;
+using Dapper;
+using Interface.Repositories;
 
 namespace SqlRepository
 {
@@ -25,15 +26,15 @@ namespace SqlRepository
     /// </summary>
     /// <param name="connectionString" typeof="string">The full connectionsting of the sql database</param>
     /// <returns typeof="boolean">If connection was successfull</returns>
-    public bool Exists(string connectionString)
+    public bool Exists (string connectionString)
     {
-      if (string.IsNullOrEmpty(connectionString))
-        throw new System.ArgumentNullException("connection string is not provided.");
+      if (string.IsNullOrEmpty (connectionString))
+        throw new System.ArgumentNullException ("connection string is not provided.");
       try
       {
-        using (IDbConnection dbConnection = new SqlConnection(connectionString))
+        using (IDbConnection dbConnection = new SqlConnection (connectionString))
         {
-          dbConnection.Open();
+          dbConnection.Open ();
           return true;
         }
       }
@@ -49,76 +50,78 @@ namespace SqlRepository
     /// <param name="connectionString"  typeof="string">tcp: sql connection string</param>
     /// <param name="catalogueName"  typeof="string">The database name to be used.</param>
     /// <returns></returns>
-    public bool CreateApplicationCatalogue(string connectionString, string catalogueName)
+    public bool CreateApplicationCatalogue (string connectionString, string catalogueName)
     {
-      if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(catalogueName))
-        throw new System.ArgumentNullException("conneciton string or catalogue needs to be provided.");
-      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      if (string.IsNullOrEmpty (connectionString) || string.IsNullOrEmpty (catalogueName))
+        throw new System.ArgumentNullException ("conneciton string or catalogue needs to be provided.");
+      using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {
-        var sql = GetCreateCatalogueScriptSqlFromFile(catalogueName);
-        dbConnection.Open();
-        int result = dbConnection.Execute(sql);
+        var sql = GetCreateCatalogueScriptSqlFromFile (catalogueName);
+        dbConnection.Open ();
+        int result = dbConnection.Execute (sql);
         if (result == -1)
           return true;
         return false;
       }
     }
 
-    public bool CreateApplicationSchema(string connectionString, string catalogueName, string schema)
+    public bool CreateApplicationSchema (string connectionString, string catalogueName, string schema)
     {
-      if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(catalogueName) || string.IsNullOrEmpty(schema))
-        throw new System.ArgumentNullException("please provide a valid connectionstring, catalogue and schema");
-      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      if (string.IsNullOrEmpty (connectionString) || string.IsNullOrEmpty (catalogueName) || string.IsNullOrEmpty (schema))
+        throw new System.ArgumentNullException ("please provide a valid connectionstring, catalogue and schema");
+      using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {
-        var sql = GetCreateSchemaScriptSqlFromFile(catalogueName, schema);
-        dbConnection.Open();
-        int result = dbConnection.Execute(sql);
+        var sql = GetCreateSchemaScriptSqlFromFile (catalogueName, schema);
+        dbConnection.Open ();
+        int result = dbConnection.Execute (sql);
         if (result == -1)
           return true;
         return false;
       }
     }
 
-    public bool CreateApplicationInstance(string connectionString, string catalogueName, string schema)
+    public bool CreateApplicationInstance (string connectionString, string catalogueName, string schema)
     {
-      if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(catalogueName) || string.IsNullOrEmpty(schema))
-        throw new System.ArgumentNullException("please provide a valid connectionstring, catalogue and schema");
-      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      if (string.IsNullOrEmpty (connectionString) || string.IsNullOrEmpty (catalogueName) || string.IsNullOrEmpty (schema))
+        throw new System.ArgumentNullException ("please provide a valid connectionstring, catalogue and schema");
+      using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {
-        var sql = GetCreateInstanceScriptSqlFromFile(catalogueName, schema);
-        dbConnection.Open();
-        int result = dbConnection.Execute(sql);
+        var sql = GetCreateInstanceScriptSqlFromFile (catalogueName, schema);
+        dbConnection.Open ();
+        int result = dbConnection.Execute (sql);
         if (result == -1)
           return true;
         return false;
       }
     }
 
-    public bool CreateApplicationPerson(string connectionString, string catalogueName, string schema)
+    public bool CreateApplicationPerson (
+      string connectionString, string catalogueName, string schema)
     {
 
-      if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(catalogueName) || string.IsNullOrEmpty(schema))
-        throw new System.ArgumentNullException("please provide a valid connectionstring, catalogue and schema");
-      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      if (string.IsNullOrEmpty (connectionString) || string.IsNullOrEmpty (catalogueName) || string.IsNullOrEmpty (schema))
+        throw new System.ArgumentNullException ("please provide a valid connectionstring, catalogue and schema");
+      using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {
-        var sql = GetCreatePersonScriptSqlFromFile(catalogueName, schema);
-        dbConnection.Open();
-        int result = dbConnection.Execute(sql);
+        var sql = GetCreatePersonScriptSqlFromFile (catalogueName, schema);
+        dbConnection.Open ();
+        int result = dbConnection.Execute (sql);
         if (result == -1)
           return true;
         return false;
       }
     }
 
-    public bool CreateApplicationStoredProcedureInstanceUser(string connectionString, string catalogueName, string schema)
+    public bool CreateApplicationStoredProcedureInstanceUser (
+      string connectionString, string catalogueName, string schema)
     {
-      if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(catalogueName) || string.IsNullOrEmpty(schema))
-        throw new System.ArgumentNullException("please provide a valid connectionstring, catalogue and schema");
-      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      if (string.IsNullOrEmpty (connectionString) || string.IsNullOrEmpty (catalogueName) || string.IsNullOrEmpty (schema))
+        throw new System.ArgumentNullException ("please provide a valid connectionstring, catalogue and schema");
+      using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {
-        var sql = GetCreateStoredProcedureInstanceUserScriptSqlFromFile(catalogueName, schema);
-        dbConnection.Open();
-        int result = dbConnection.Execute(sql);
+        var sql = GetCreateStoredProcedureInstanceUserScriptSqlFromFile (catalogueName, schema);
+        dbConnection.Open ();
+        int result = dbConnection.Execute (sql);
         if (result == -1)
           return true;
         return false;
@@ -132,44 +135,50 @@ namespace SqlRepository
     /// <param name="schema">User scoped Schema</param>
     /// <param name="connectionString">Default schema connection string </param>
     /// <returns>created the tables for the new schema</returns>
-    public bool CreateSchemaTables(string systemSchema,string schema, string connectionString)
+    public bool CreateSchemaTables (
+      string systemSchema, string schema, string connectionString)
     {
-      if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(schema))
-        throw new System.ArgumentNullException("please provide a valid connectionstring or schema");
-      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      if (string.IsNullOrEmpty (connectionString) || string.IsNullOrEmpty (schema))
+        throw new System.ArgumentNullException ("please provide a valid connectionstring or schema");
+      using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {
-        var sql = $"[{systemSchema}].[createMeetingSchema]@tenant='{schema}'";
-        var result = dbConnection.Execute(sql);
-        if (result == 1)
+        try
+        {
+          var sql = $"[{systemSchema}].[createMeetingSchema]@tenant='{schema}'";
+          var result = dbConnection.Execute (sql);
           return true;
-        return false;
+        }
+        catch (Exception)
+        {
+          return false;
+        }
       }
     }
 
-    internal string GetCreateCatalogueScriptSqlFromFile(string catalogue)
+    internal string GetCreateCatalogueScriptSqlFromFile (string catalogue)
     {
-      var contents = File.ReadAllText($"{CurrentLocation}Scripts\\{CreateApplicationCatalogueSql}");
-      return contents.Replace(SqlCatalogueKey, catalogue);
+      var contents = File.ReadAllText ($"{CurrentLocation}Scripts\\{CreateApplicationCatalogueSql}");
+      return contents.Replace (SqlCatalogueKey, catalogue);
     }
-    internal string GetCreateSchemaScriptSqlFromFile(string catalogue, string schema)
+    internal string GetCreateSchemaScriptSqlFromFile (string catalogue, string schema)
     {
-      var contents = File.ReadAllText($"{CurrentLocation}Scripts\\{CreateApplicationSchemaSql}").Replace(SqlCatalogueKey, catalogue);
-      return contents.Replace(SqlSchemaKey, schema);
+      var contents = File.ReadAllText ($"{CurrentLocation}Scripts\\{CreateApplicationSchemaSql}").Replace (SqlCatalogueKey, catalogue);
+      return contents.Replace (SqlSchemaKey, schema);
     }
-    internal string GetCreateInstanceScriptSqlFromFile(string catalogue, string schema)
+    internal string GetCreateInstanceScriptSqlFromFile (string catalogue, string schema)
     {
-      var contents = File.ReadAllText($"{CurrentLocation}Scripts\\{CreateApplicationInstanceSql}").Replace(SqlCatalogueKey, catalogue);
-      return contents.Replace(SqlSchemaKey, schema);
+      var contents = File.ReadAllText ($"{CurrentLocation}Scripts\\{CreateApplicationInstanceSql}").Replace (SqlCatalogueKey, catalogue);
+      return contents.Replace (SqlSchemaKey, schema);
     }
-    internal string GetCreatePersonScriptSqlFromFile(string catalogue, string schema)
+    internal string GetCreatePersonScriptSqlFromFile (string catalogue, string schema)
     {
-      var contents = File.ReadAllText($"{CurrentLocation}Scripts\\{CreateApplicationPersonSql}").Replace(SqlCatalogueKey, catalogue);
-      return contents.Replace(SqlSchemaKey, schema);
+      var contents = File.ReadAllText ($"{CurrentLocation}Scripts\\{CreateApplicationPersonSql}").Replace (SqlCatalogueKey, catalogue);
+      return contents.Replace (SqlSchemaKey, schema);
     }
-    internal string GetCreateStoredProcedureInstanceUserScriptSqlFromFile(string catalogue, string schema)
+    internal string GetCreateStoredProcedureInstanceUserScriptSqlFromFile (string catalogue, string schema)
     {
-      var contents = File.ReadAllText($"{CurrentLocation}Scripts\\{CreateApplication_spCreateInstanceUserSql}").Replace(SqlCatalogueKey, catalogue);
-      return contents.Replace(SqlSchemaKey, schema);
+      var contents = File.ReadAllText ($"{CurrentLocation}Scripts\\{CreateApplication_spCreateInstanceUserSql}").Replace (SqlCatalogueKey, catalogue);
+      return contents.Replace (SqlSchemaKey, schema);
     }
   }
 }

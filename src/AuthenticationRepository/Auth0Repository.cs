@@ -61,7 +61,7 @@ namespace AuthenticationRepository
       (bool condition, string message, UserResponseModel tokenResponse) tokenResult = this.CreateToken (username, password);
       if (tokenResult.condition)
       {
-        (bool condition, string message, AuthRestModel infoResponse) userInfoResult = this.GetUserInfo (tokenResult.tokenResponse.id_token);
+        (bool condition, string message, AuthRestModel infoResponse) userInfoResult = this.GetUserInfo (tokenResult.tokenResponse.access_token);
         if(userInfoResult.condition)
         {
           result.Sub = userInfoResult.infoResponse.Sub;

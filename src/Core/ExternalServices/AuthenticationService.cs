@@ -61,7 +61,7 @@ namespace Core.ExternalServices
       {
         var instanceId = Guid.NewGuid ().ToString ();
         (bool condition, string message, AuthRestModel tokenResponse) createNewAuth0Response =
-          this._auth0Repository.CreateUser (name, username, email, password, "User", $"A_{instanceId}");
+          this._auth0Repository.CreateUser (name, username, email, password, role, $"A_{instanceId}");
         if (!createNewAuth0Response.condition)
         {
           this._logService.Log (Minutz.Models.LogLevel.Error, $"[(bool condition, string message, UserResponseModel tokenResponse) tokenResponse] There was a issue getting the token info for user {email}");
@@ -147,7 +147,7 @@ namespace Core.ExternalServices
             return (tablesCreateResult, "There was a problem creating the records.", null);
           }
           Instance newInstance =
-            this._instanceRepository.GetByUsername (existsResult.person.InstanceId, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+            this._instanceRepository.GetByUsername (schemaCreateResult, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
           AuthRestModel createAuthRestResult = new AuthRestModel
           {
             Company = newInstance.Company,
@@ -225,7 +225,7 @@ namespace Core.ExternalServices
           };
           return (true, "Success", guestAuthRestResult);
         case RoleTypes.Admin:
-          break;
+          return (false, "", null);
       }
 
       // var instanceId = Guid.NewGuid ().ToString ();
@@ -248,7 +248,7 @@ namespace Core.ExternalServices
       //     _applicationSetting.Schema, schemaCreateResult, _applicationSetting.CreateConnectionString ());
 
       // }
-      // return auth0Response;
+      return (false, "Not a valid role was supplied.", null);
     }
 
     public AuthRestModel ResetUserInfo (string token)

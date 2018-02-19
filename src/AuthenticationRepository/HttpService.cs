@@ -9,7 +9,7 @@ namespace AuthenticationRepository
             string endpoint, string token)
         {
             var httpClient = new HttpClient ();
-            httpClient.DefaultRequestHeaders.Add ("Authorization", token);
+            httpClient.DefaultRequestHeaders.Add ("Authorization", $"Bearer {token}");
             HttpResponseMessage response = httpClient.GetAsync (endpoint).Result;
             if (response.IsSuccessStatusCode)
             {
