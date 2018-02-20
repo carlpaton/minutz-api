@@ -30,20 +30,24 @@ namespace Api.Controllers
     }
 
     [HttpPost("api/user/login", Name = "Log in the user.")]
-    public IActionResult Login (string username, string password)
+    public IActionResult Login ([FromBody]dynamic user)
     {
       var hasHeader = Request.Headers.ToList().Any(i => i.Key == "x-auth-header");
       if(!hasHeader)
       {
         this._logService.Log(Minutz.Models.LogLevel.Info, "The request did not have x-auth-header header.");
         return StatusCode(404,"please provide a valid username or password");
-      }
+      }    
       var authHeaderValue = Request.Headers.ToList().First(i => i.Key == "x-auth-header").Value;
       if(authHeaderValue != this._auth)
       {
         this._logService.Log(Minutz.Models.LogLevel.Info, "The request had a x-auth-header header, but the value did not match the configuration for the instance.");
         return StatusCode(404,"please provide a valid username or password");
       }
+
+      var username = user.username.ToString ();
+      var instanceId = user.instanceId.ToString ();
+      var password = user.password.ToString ();
 
       if(string.IsNullOrEmpty(username))
       {
@@ -57,10 +61,10 @@ namespace Api.Controllers
         return StatusCode(404,"please provide a valid username or password");
       }
 
-      var loginResult = this._authenticationService.Login(username,password);
+      var loginResult = this._authenticationService.Login(username,password, instanceId);
       if(loginResult.condition)
       {
-       return Ok (loginResult.tokenResponse);
+       return Ok (new { Value = loginResult.infoResponse, Message = loginResult.message });
       }
       return StatusCode(404, new { Message = loginResult.message });
     }

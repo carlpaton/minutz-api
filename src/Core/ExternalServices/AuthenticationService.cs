@@ -35,10 +35,38 @@ namespace Core.ExternalServices
       this._instanceRepository = instanceRepository;
     }
 
-    public (bool condition, string message, UserResponseModel tokenResponse) Login (
-      string email, string password)
+    public (bool condition, string message, AuthRestModel infoResponse) Login (
+      string username, string password, string instanceId)
     {
-      return this._auth0Repository.CreateToken (email, password);
+      if (string.IsNullOrEmpty (username))
+      {
+        this._logService.Log (Minutz.Models.LogLevel.Error, $"[(bool condition, string message, AuthRestModel infoResponse)] There was a issue logging in for user {username}");
+        return (false, "Please provide a valid username or password", null);
+      }
+      if (string.IsNullOrEmpty (password))
+      {
+        this._logService.Log (Minutz.Models.LogLevel.Error, $"[(bool condition, string message, AuthRestModel infoResponse)] There was a issue logging in for user {username}");
+        return (false, "Please provide a valid username or password", null);
+      }
+
+      (bool condition, string message, UserResponseModel tokenResponse) tokenResult =
+        this._auth0Repository.CreateToken (username, password);
+
+      (bool condition, string message, AuthRestModel infoResponse) userInfo =
+        this._auth0Repository.GetUserInfo (tokenResult.tokenResponse.access_token);
+
+      userInfo.infoResponse.AccessToken = tokenResult.tokenResponse.access_token;
+      userInfo.infoResponse.TokenExpire = tokenResult.tokenResponse.expires_in;
+
+      if (string.IsNullOrEmpty (instanceId))
+      {
+        instanceId = $"A_{userInfo.infoResponse.Sub.Split ('|')[1]}";
+      }
+       (bool condition, string message, Person person) existsResult =
+        this._userRepository.GetUserByEmail (userInfo.infoResponse.Email, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+      Instance instance = this._instanceRepository.GetByUsername (instanceId, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+      
+      return (userInfo.condition, userInfo.message, userInfo.infoResponse);
     }
 
     /// <summary>

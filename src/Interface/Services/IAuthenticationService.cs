@@ -8,8 +8,8 @@ namespace Interface.Services
     (bool condition, string message, AuthRestModel tokenResponse) CreateUser (
       string name, string username, string email, string password, string role, string invitationInstanceId, string meetingId);
 
-    (bool condition, string message, UserResponseModel tokenResponse) Login (
-      string email, string password);
+    (bool condition, string message, AuthRestModel infoResponse) Login (
+      string username, string password, string instanceId);
 
     AuthRestModel GetUserInfo(string token);
 
