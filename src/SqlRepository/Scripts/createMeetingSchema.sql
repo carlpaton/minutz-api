@@ -29,7 +29,8 @@ CREATE TABLE [' + @tenant +'].[MeetingAttendee] (
   [Id] uniqueidentifier NOT NULL,
   [ReferanceId] uniqueidentifier NOT NULL,
   [PersonIdentity] VARCHAR (255) NULL,
-  [Role] VARCHAR (255) NULL
+  [Role] VARCHAR (255) NULL,
+  [Status] VARCHAR (255) NULL
 )
 
 CREATE TABLE [' + @tenant +'].[AvailibleAttendee] (

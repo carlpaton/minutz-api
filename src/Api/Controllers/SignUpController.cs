@@ -33,17 +33,17 @@ namespace Api.Controllers
       var username = user.username.ToString ();
       var instanceId = user.RefInstanceId.ToString();
       var meetingId = user.refMeetingId.ToString();
-      string role = "Guest";
-      if(string.IsNullOrEmpty(instanceId))
-      {
-        role = "User";
-      }
-      //var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      //var userInfo = _authenticationService.GetUserInfo(token);
-      //var person = _userValidationService.GetUser(userInfo.Sub);
-      //var result = _applicationManagerService.StartFullVersion(person);
+      var role = user.role.ToString(); 
+
+      // string role = "Guest";
+      // if(string.IsNullOrEmpty(instanceId))
+      // {
+      //   role = "User";
+      // }
+
       (bool condition, string message, AuthRestModel tokenResponse) result =
         this._authenticationService.CreateUser (name, username, email, password,role, instanceId, meetingId);
+
       if (result.condition || result.message == "successfull")
         return Ok (result.tokenResponse);
       return StatusCode (500, result.message);
