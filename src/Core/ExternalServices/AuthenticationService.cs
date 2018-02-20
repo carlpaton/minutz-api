@@ -88,6 +88,14 @@ namespace Core.ExternalServices {
           this._logService.Log (Minutz.Models.LogLevel.Error, $"[(bool condition, string message, UserResponseModel tokenResponse) tokenResponse] There was a issue getting the token info for user {email}");
           return (createNewAuth0Response.condition, createNewAuth0Response.message, null);
         }
+
+        if (!string.IsNullOrEmpty (invitationInstanceId) && !string.IsNullOrEmpty (meetingId)) {
+          List<(string instanceId, string meetingId)> relatedInstances = new List<(string instanceId, string meetingId)> ();
+          relatedInstances.Add ((invitationInstanceId, meetingId));
+          string updatedRelatedString = relatedInstances.ToRelatedString ();
+          createNewAuth0Response.tokenResponse.Related = updatedRelatedString;
+        }
+
         var createNewUserResult = this._userRepository.CreateNewUser (createNewAuth0Response.tokenResponse, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
         if (!createNewUserResult.condition) {
           this._logService.Log (Minutz.Models.LogLevel.Error, $"[(bool condition, string message, UserResponseModel tokenResponse) tokenResponse] There was a issue getting the token info for user {email}");
@@ -158,8 +166,26 @@ namespace Core.ExternalServices {
             this._logService.Log (Minutz.Models.LogLevel.Error, $"[(bool condition, string message, AuthRestModel infoResponse) newInfoResponseResult] There was a issue creating the tables for user {email}");
             return (tablesCreateResult, "There was a problem creating the records.", null);
           }
-          Instance newInstance =
-            this._instanceRepository.GetByUsername (schemaCreateResult, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+          Instance newInstance;
+          if (!string.IsNullOrEmpty (invitationInstanceId)) {
+            if (schemaCreateResult != invitationInstanceId) {
+              var related = existsResult.person.Related.SplitToList (Minutz.Models.StringDeviders.InstanceStringDevider, Minutz.Models.StringDeviders.MeetingStringDevider);
+              if (related.Any (i => i.instanceId == invitationInstanceId)) {
+                newInstance =
+                  this._instanceRepository.GetByUsername (invitationInstanceId, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+              }else{
+                newInstance =
+                  this._instanceRepository.GetByUsername (schemaCreateResult, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+              }
+            } else {
+              newInstance =
+                this._instanceRepository.GetByUsername (schemaCreateResult, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+            }
+          } else {
+            newInstance =
+              this._instanceRepository.GetByUsername (schemaCreateResult, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+          }
+
           AuthRestModel createAuthRestResult = new AuthRestModel {
             Company = newInstance.Company,
             InstanceId = schemaCreateResult,
@@ -231,8 +257,8 @@ namespace Core.ExternalServices {
           }
 
           (bool condition, string message) meetingResult = this._meetingAttendeeRepository.UpdateInviteeStatus (
-            existsResult.person.Email,existsResult.person.Identityid ,"Accepted", invitationInstanceId, this._applicationSetting.CreateConnectionString (
-            this._applicationSetting.Server, this._applicationSetting.Catalogue, guestInstance.Username, guestInstance.Password));
+            existsResult.person.Email, existsResult.person.Identityid, "Accepted", invitationInstanceId, this._applicationSetting.CreateConnectionString (
+              this._applicationSetting.Server, this._applicationSetting.Catalogue, guestInstance.Username, guestInstance.Password));
 
           AuthRestModel guestAuthRestResult = new AuthRestModel {
             Company = guestInstance.Company,
