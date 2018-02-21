@@ -86,7 +86,13 @@ namespace Core.ExternalServices
       }
 
       Instance instance = this._instanceRepository.GetByUsername (instanceId, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
-
+      userInfo.infoResponse.InstanceId = instance.Username;
+      userInfo.infoResponse.Company = instance.Company;
+      userInfo.infoResponse.Related = existsResult.person.Related;
+      userInfo.infoResponse.Role = existsResult.person.Role;
+      userInfo.infoResponse.FirstName = existsResult.person.FirstName;
+      userInfo.infoResponse.LastName = existsResult.person.LastName;
+      userInfo.infoResponse.Email = existsResult.person.Email;
       return (userInfo.condition, userInfo.message, userInfo.infoResponse);
     }
 
