@@ -199,7 +199,7 @@ namespace SqlRepository
     {
       var id = authUser.Sub.Split ('|') [1];
       var username = $"A_{id}";
-      var password = CreatePassword (10);
+      var password = CreatePassword (10); //need to salt the password and username
       this.createSecurityUser (masterConnectionString, username, password);
       this.createLoginSchemaUser (connectionString, username);
       this.createSchema (connectionString, username);

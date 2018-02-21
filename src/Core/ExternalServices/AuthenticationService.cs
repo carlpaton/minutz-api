@@ -95,7 +95,8 @@ namespace Core.ExternalServices {
           string updatedRelatedString = relatedInstances.ToRelatedString ();
           createNewAuth0Response.tokenResponse.Related = updatedRelatedString;
         }
-
+        createNewAuth0Response.tokenResponse.Role = role;
+        createNewAuth0Response.tokenResponse.FirstName = name;
         var createNewUserResult = this._userRepository.CreateNewUser (createNewAuth0Response.tokenResponse, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
         if (!createNewUserResult.condition) {
           this._logService.Log (Minutz.Models.LogLevel.Error, $"[(bool condition, string message, UserResponseModel tokenResponse) tokenResponse] There was a issue getting the token info for user {email}");
@@ -156,6 +157,8 @@ namespace Core.ExternalServices {
           }
           // create the schema as the user is trial user;
           (string userConnectionString, string masterConnectionString) connectionStrings = this.GetConnectionStrings ();
+          newInfoResponseResult.infoResponse.Role = role;
+          newInfoResponseResult.infoResponse.FirstName = name;
           string schemaCreateResult = _userRepository.CreateNewSchema (
             newInfoResponseResult.infoResponse, connectionStrings.userConnectionString, connectionStrings.masterConnectionString);
 
@@ -173,7 +176,7 @@ namespace Core.ExternalServices {
               if (related.Any (i => i.instanceId == invitationInstanceId)) {
                 newInstance =
                   this._instanceRepository.GetByUsername (invitationInstanceId, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
-              }else{
+              } else {
                 newInstance =
                   this._instanceRepository.GetByUsername (schemaCreateResult, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
               }
@@ -188,7 +191,7 @@ namespace Core.ExternalServices {
 
           AuthRestModel createAuthRestResult = new AuthRestModel {
             Company = newInstance.Company,
-            InstanceId = schemaCreateResult,
+            InstanceId = newInstance.Username,
             FirstName = existsResult.person.FirstName,
             LastName = existsResult.person.LastName,
             Role = existsResult.person.Role,
