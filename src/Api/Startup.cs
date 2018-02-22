@@ -31,7 +31,7 @@ namespace Minutz.Api
       
       Configuration = builder.Build();
     }
-    public const string Version = "3.0.3";
+    public const string Version = "3.0.5";
     public const string Title = "Minutz Api";
 
     public IConfiguration Configuration { get; }
