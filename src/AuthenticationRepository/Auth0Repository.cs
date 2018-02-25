@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net.Http;
+using System.Text;
 using AuthenticationRepository.Extensions;
 using Interface.Repositories;
 using Interface.Services;
@@ -7,8 +9,6 @@ using Microsoft.Extensions.Logging;
 using Minutz.Models.Entities;
 using Models;
 using Models.Auth0Models;
-using System.Net.Http;
-using System.Text;
 
 namespace AuthenticationRepository
 {
@@ -62,7 +62,7 @@ namespace AuthenticationRepository
       if (tokenResult.condition)
       {
         (bool condition, string message, AuthRestModel infoResponse) userInfoResult = this.GetUserInfo (tokenResult.tokenResponse.access_token);
-        if(userInfoResult.condition)
+        if (userInfoResult.condition)
         {
           result.Sub = userInfoResult.infoResponse.Sub;
           result.Picture = userInfoResult.infoResponse.Picture;
@@ -111,7 +111,7 @@ namespace AuthenticationRepository
         // Save data in cache.
         _cache.Set (token, authResult, cacheEntryOptions);
       }
-      return (requestResult,"Success",authResult);
+      return (requestResult, "Success", authResult);
     }
 
     public (bool condition, string message, UserResponseModel tokenResponse) CreateToken (
@@ -140,11 +140,21 @@ namespace AuthenticationRepository
       this._logService.Log (Minutz.Models.LogLevel.Info, tokenRequestResult.result);
       if (tokenRequestResult.condition)
       {
+        var token = Newtonsoft.Json.JsonConvert.DeserializeObject<UserResponseModel> (tokenRequestResult.result);
+        token.expires_in = this.JavascriptTime ();
         return (tokenRequestResult.condition,
-          "Success",
-          Newtonsoft.Json.JsonConvert.DeserializeObject<UserResponseModel> (tokenRequestResult.result));
+          "Success", token
+        );
       }
       return (tokenRequestResult.condition, tokenRequestResult.result, null);
+    }
+
+    internal int JavascriptTime ()
+    {
+      return (int) DateTime.UtcNow
+        .AddDays (1)
+        .Subtract (new DateTime (1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
+        .TotalMilliseconds;
     }
   }
 }
