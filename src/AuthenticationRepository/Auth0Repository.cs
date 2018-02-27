@@ -141,7 +141,7 @@ namespace AuthenticationRepository
       if (tokenRequestResult.condition)
       {
         var token = Newtonsoft.Json.JsonConvert.DeserializeObject<UserResponseModel> (tokenRequestResult.result);
-        token.expires_in = this.JavascriptTime ();
+        token.expires_in = DateTime.UtcNow.AddDays(1).ToString("yyyy-MM-ddTHH:mm:ss");
         return (tokenRequestResult.condition,
           "Success", token
         );
@@ -152,9 +152,7 @@ namespace AuthenticationRepository
     internal int JavascriptTime ()
     {
       return (int) DateTime.UtcNow
-        .AddDays (1)
-        .Subtract (new DateTime (1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
-        .TotalMilliseconds;
+        .AddDays(1).Minute;
     }
   }
 }

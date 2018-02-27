@@ -11,7 +11,7 @@ namespace Api.Controllers
 {
   public class UserController : Controller
   {
-    internal string _auth = "auth";
+    internal string _auth = "x-auth-minutz";
     private readonly IUserValidationService _userValidationService;
     private readonly IAuthenticationService _authenticationService;
     private readonly IValidationService _validationService;

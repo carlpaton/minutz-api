@@ -15,6 +15,6 @@
     public string Related { get; set; }
     public bool IsVerified { get; set; }
     public string AccessToken { get; set; }
-    public int TokenExpire { get; set; }
+    public string TokenExpire { get; set; }
   }
 }
