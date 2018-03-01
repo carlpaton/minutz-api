@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,13 +37,22 @@ namespace Api.Controllers
     public IActionResult Post ([FromBody] dynamic user)
     {
       _logService.Log(LogLevel.Info, JsonConvert.SerializeObject(user));
-      var email = user.email.ToString ();
-      var name = user.name.ToString ();
-      var password = user.password.ToString ();
-      var username = user.username.ToString ();
-      var instanceId = user.RefInstanceId.ToString();
-      var meetingId = user.refMeetingId.ToString();
-      var role = user.role.ToString();
+      try
+      {
+        var email = user.email.ToString ();
+        var name = user.name.ToString ();
+        var password = user.password.ToString ();
+        var username = user.username.ToString ();
+        var instanceId = user.RefInstanceId.ToString();
+        var meetingId = user.refMeetingId.ToString();
+        var role = user.role.ToString();
+      }
+      catch (Exception e)
+      {
+        _logService.Log(LogLevel.Info, e.Message);
+        return StatusCode(500, "Could not user some/any imputs provided.");
+      }
+      
 
       if (string.IsNullOrEmpty(email))
       {
