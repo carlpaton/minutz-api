@@ -133,6 +133,12 @@ namespace Core.ExternalServices
         }
         createNewAuth0Response.tokenResponse.Role = role;
         createNewAuth0Response.tokenResponse.FirstName = name;
+        createNewAuth0Response.tokenResponse.Nickname = name;
+        if (string.IsNullOrEmpty (invitationInstanceId))
+        {
+          createNewAuth0Response.tokenResponse.Company = $"{name}'s Company";
+          
+        }
         var createNewUserResult = this._userRepository.CreateNewUser (createNewAuth0Response.tokenResponse, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
         if (!createNewUserResult.condition)
         {
