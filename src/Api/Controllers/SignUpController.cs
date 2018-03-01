@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Api.Extensions;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,16 +37,24 @@ namespace Api.Controllers
     [HttpPost ("api/Signup")]
     public IActionResult Post ([FromBody] dynamic user)
     {
+      var email = string.Empty;
+      var name = string.Empty;
+      var password = string.Empty;
+      var username = string.Empty;
+      var instanceId = string.Empty;
+      var meetingId = string.Empty;
+      var role = string.Empty;
+    
       _logService.Log(LogLevel.Info, JsonConvert.SerializeObject(user));
       try
       {
-        var email = user.email.ToString ();
-        var name = user.name.ToString ();
-        var password = user.password.ToString ();
-        var username = user.username.ToString ();
-        var instanceId = user.RefInstanceId.ToString();
-        var meetingId = user.refMeetingId.ToString();
-        var role = user.role.ToString();
+         email = user.email.ToString ();
+         name = user.name.ToString ();
+         password = user.password.ToString ();
+         username = user.username.ToString ();
+         instanceId = user.RefInstanceId.ToString();
+         meetingId = user.refMeetingId.ToString();
+         role = user.role.ToString();
       }
       catch (Exception e)
       {
