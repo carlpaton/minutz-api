@@ -57,6 +57,7 @@ namespace Core.ExternalServices
       (bool condition, string message, AuthRestModel infoResponse) userInfo =
         this._auth0Repository.GetUserInfo (tokenResult.tokenResponse.access_token);
 
+      userInfo.infoResponse.IdToken = tokenResult.tokenResponse.id_token;
       userInfo.infoResponse.AccessToken = tokenResult.tokenResponse.access_token;
       userInfo.infoResponse.TokenExpire = tokenResult.tokenResponse.expires_in;
 

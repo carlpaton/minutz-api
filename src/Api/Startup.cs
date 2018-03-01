@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using AuthenticationRepository;
 using Core;
 using Core.ExternalServices;
@@ -10,9 +11,11 @@ using Interface.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Azure.KeyVault.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Notifications;
 using SqlRepository;
 using Swashbuckle.AspNetCore.Swagger;
@@ -21,6 +24,14 @@ namespace Minutz.Api
 {
   public class Startup
   {
+    internal string _urlSignUp = $"https://minutz.eu.auth0.com/dbconnections/signup";
+    internal string _urlToken = $"https://minutz.eu.auth0.com/oauth/token";
+    internal string _urlInfo = $"https://minutz.eu.auth0.com/userinfo";
+    internal string _clientId = "WDzuh9escySpPeAF5V0t2HdC3Lmo68a-";//Environment.GetEnvironmentVariable ("CLIENTID");
+    internal string _domain = "minutz.eu.auth0.com";//Environment.GetEnvironmentVariable ("DOMAIN");
+    internal string _clientSecret = "_kVUASQWVawA2pwYry-xP53kQpOALkEj_IGLWCSspXkpUFRtE_W-Gg74phrxZkz8"; //Environment.GetEnvironmentVariable ("CLIENTSECRET");
+    internal string _connection = "Username-Password-Authentication"; //Environment.GetEnvironmentVariable ("CONNECTION");
+    internal string _validationMessage = "The username or password was not supplied or is incorrect. Please provide valid details.";
     public Startup(IHostingEnvironment env)
     {
       var builder = new ConfigurationBuilder()
@@ -93,6 +104,9 @@ namespace Minutz.Api
               builder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
             });
       });
+      
+      
+      
       services.AddAuthentication(options =>
       {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -100,8 +114,19 @@ namespace Minutz.Api
 
       }).AddJwtBearer(options =>
       {
-        options.Authority = $"https://{Environment.GetEnvironmentVariable("DOMAIN")}/";
-        options.Audience = $"https://{Environment.GetEnvironmentVariable("DOMAIN")}/api/v2/";
+        options.SaveToken = true;
+        options.Authority = $"https://{this._domain}/";
+        options.Audience = $"https://{this._domain}/api/v2/";
+//        options.TokenValidationParameters = new TokenValidationParameters
+//        {
+//          ValidateIssuer = true,
+//          ValidateAudience = true,
+//          ValidateLifetime = true,
+//          ValidateIssuerSigningKey = true,
+//          ValidIssuer = $"https://{this._domain}/",
+//          ValidAudience = $"https://{this._domain}/",
+//          IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this._clientSecret))
+//        };
       });
     }
 
