@@ -2,6 +2,7 @@
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using Minutz.Models;
 using Minutz.Models.Entities;
 using Newtonsoft.Json;
@@ -41,8 +42,31 @@ namespace Api.Controllers
       var username = user.username.ToString ();
       var instanceId = user.RefInstanceId.ToString();
       var meetingId = user.refMeetingId.ToString();
-      var role = user.role.ToString(); 
+      var role = user.role.ToString();
+
+      if (string.IsNullOrEmpty(email))
+      {
+        return StatusCode(401, new { Message = "Please provide a email address" });
+      }
+      if (string.IsNullOrEmpty(email))
+      {
+        return StatusCode(401, new { Message = "Please provide a email address" });
+      }
+
+      if (!email.CheckEmail())
+      {
+        return StatusCode(401, new { Message = "Please provide a valid email address" });
+      }
+      if (string.IsNullOrEmpty(username))
+      {
+        return StatusCode(401, new { Message = "Please provide a username" });
+      }
+      if (string.IsNullOrEmpty(password))
+      {
+        return StatusCode(401, new { Message = "Please provide a password" });
+      }
       
+
       // string role = "Guest";
       // if(string.IsNullOrEmpty(instanceId))
       // {

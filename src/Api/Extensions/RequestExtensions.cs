@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net.Mail;
 using Microsoft.AspNetCore.Http;
 
 namespace Api.Extensions
@@ -16,5 +17,16 @@ namespace Api.Extensions
         throw new NullReferenceException("There was a problem with the token provided, it seems empty.");
       return request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
     }
+
+    public static bool CheckEmail(this string email)
+    {
+      try
+      {
+        MailAddress m = new MailAddress(email);        return true;
+      }
+      catch (FormatException)
+      {
+        return false;
+      }    }
   }
 }
