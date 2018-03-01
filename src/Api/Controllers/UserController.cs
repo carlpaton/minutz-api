@@ -4,6 +4,7 @@ using Interface;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Minutz.Models;
 using Minutz.Models.Entities;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -81,7 +82,7 @@ namespace Api.Controllers
       {
         if (reference.ToLower () == "none") reference = string.Empty;
       }
-
+      
       var userInfo = _authenticationService.GetUserInfo (Request.Token ());
       if (!_userValidationService.IsNewUser (userInfo.Sub, reference))
         _userValidationService.CreateAttendee (userInfo, reference);

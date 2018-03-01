@@ -2,7 +2,9 @@
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Minutz.Models;
 using Minutz.Models.Entities;
+using Newtonsoft.Json;
 
 namespace Api.Controllers
 {
@@ -11,13 +13,18 @@ namespace Api.Controllers
     private readonly IUserValidationService _userValidationService;
     private readonly IAuthenticationService _authenticationService;
     private readonly IApplicationManagerService _applicationManagerService;
-    public SignUpController (IUserValidationService userValidationService,
+    private readonly ILogService _logService;
+    
+    public SignUpController (
+      IUserValidationService userValidationService,
       IAuthenticationService authenticationService,
-      IApplicationManagerService applicationManagerService)
+      IApplicationManagerService applicationManagerService,
+      ILogService logService)
     {
       _userValidationService = userValidationService;
       _authenticationService = authenticationService;
       _applicationManagerService = applicationManagerService;
+      this._logService = logService;
     }
     /// <summary>
     /// Use this to start the full version.
@@ -27,6 +34,7 @@ namespace Api.Controllers
     [HttpPost ("api/Signup")]
     public IActionResult Post ([FromBody] dynamic user)
     {
+      _logService.Log(LogLevel.Info, JsonConvert.SerializeObject(user));
       var email = user.email.ToString ();
       var name = user.name.ToString ();
       var password = user.password.ToString ();
@@ -34,7 +42,7 @@ namespace Api.Controllers
       var instanceId = user.RefInstanceId.ToString();
       var meetingId = user.refMeetingId.ToString();
       var role = user.role.ToString(); 
-
+      
       // string role = "Guest";
       // if(string.IsNullOrEmpty(instanceId))
       // {
@@ -43,7 +51,10 @@ namespace Api.Controllers
 
       (bool condition, string message, AuthRestModel tokenResponse) result =
         this._authenticationService.CreateUser (name, username, email, password,role, instanceId, meetingId);
-
+      
+      _logService.Log(LogLevel.Info, JsonConvert.SerializeObject(result));
+      _logService.Log(LogLevel.Info, JsonConvert.SerializeObject(result.tokenResponse));
+      
       if (result.condition || result.message == "successfull")
         return Ok (result.tokenResponse);
       return StatusCode (500, result.message);

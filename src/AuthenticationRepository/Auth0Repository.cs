@@ -14,13 +14,13 @@ namespace AuthenticationRepository
 {
   public class Auth0Repository : IAuth0Repository
   {
-    internal string _urlSignUp = $"https://{Environment.GetEnvironmentVariable ("DOMAIN")}/dbconnections/signup";
-    internal string _urlToken = $"https://{Environment.GetEnvironmentVariable ("DOMAIN")}/oauth/token";
-    internal string _urlInfo = $"https://{Environment.GetEnvironmentVariable ("DOMAIN")}/userinfo";
-    internal string _clientId = Environment.GetEnvironmentVariable ("CLIENTID");
-    internal string _domain = Environment.GetEnvironmentVariable ("DOMAIN");
-    internal string _clientSecret = Environment.GetEnvironmentVariable ("CLIENTSECRET");
-    internal string _connection = Environment.GetEnvironmentVariable ("CONNECTION");
+    internal string _urlSignUp = $"https://minutz.eu.auth0.com/dbconnections/signup";
+    internal string _urlToken = $"https://minutz.eu.auth0.com/oauth/token";
+    internal string _urlInfo = $"https://minutz.eu.auth0.com/userinfo";
+    internal string _clientId = "WDzuh9escySpPeAF5V0t2HdC3Lmo68a-";//Environment.GetEnvironmentVariable ("CLIENTID");
+    internal string _domain = "minutz.eu.auth0.com";//Environment.GetEnvironmentVariable ("DOMAIN");
+    internal string _clientSecret = "_kVUASQWVawA2pwYry-xP53kQpOALkEj_IGLWCSspXkpUFRtE_W-Gg74phrxZkz8"; //Environment.GetEnvironmentVariable ("CLIENTSECRET");
+    internal string _connection = "Username-Password-Authentication"; //Environment.GetEnvironmentVariable ("CONNECTION");
     internal string _validationMessage = "The username or password was not supplied or is incorrect. Please provide valid details.";
     private readonly IHttpService _httpService;
     private readonly ILogService _logService;

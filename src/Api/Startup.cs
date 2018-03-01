@@ -31,7 +31,7 @@ namespace Minutz.Api
       
       Configuration = builder.Build();
     }
-    public const string Version = "3.0.5";
+    public const string Version = "3.1.0";
     public const string Title = "Minutz Api";
 
     public IConfiguration Configuration { get; }
@@ -40,6 +40,7 @@ namespace Minutz.Api
     public void ConfigureServices(IServiceCollection services)
     {
 
+      
       services.AddTransient<IValidationService, ValidationService>();
       services.AddTransient<IUserRepository, UserRepository>();
       services.AddTransient<IApplicationSetupRepository, ApplicationSetupRepository>();
@@ -79,9 +80,10 @@ namespace Minutz.Api
 
       services.AddMemoryCache();
       services.AddMvc();
+      var version = Configuration.GetSection("Version").Value;
       services.AddSwaggerGen(c =>
       {
-        c.SwaggerDoc("v1", new Info { Title = Startup.Title, Version = Startup.Version });
+        c.SwaggerDoc("v1", new Info { Title = Startup.Title, Version = version });
       });
       services.AddCors(options =>
       {
@@ -115,11 +117,11 @@ namespace Minutz.Api
       }
       app.UseAuthentication();
       app.UseSwagger();
-
+      var version = Configuration.GetSection("Version").Value;
       // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
       app.UseSwaggerUI(c =>
       {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", Startup.Version);
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", version);
       });
       app.UseCors("AllowAllOrigins");
       app.UseMvc();
