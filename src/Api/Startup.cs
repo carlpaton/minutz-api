@@ -116,7 +116,8 @@ namespace Minutz.Api
       {
         options.SaveToken = true;
         options.Authority = $"https://{this._domain}/";
-        options.Audience = $"https://{this._domain}/api/v2/";
+        options.Audience = $"https://localhost:4200";
+        //options.Audience = $"https://{this._domain}/api/v2/";
 //        options.TokenValidationParameters = new TokenValidationParameters
 //        {
 //          ValidateIssuer = true,
