@@ -116,18 +116,7 @@ namespace Minutz.Api
       {
         options.SaveToken = true;
         options.Authority = $"https://{this._domain}/";
-        options.Audience = $"https://localhost:4200";
-        //options.Audience = $"https://{this._domain}/api/v2/";
-//        options.TokenValidationParameters = new TokenValidationParameters
-//        {
-//          ValidateIssuer = true,
-//          ValidateAudience = true,
-//          ValidateLifetime = true,
-//          ValidateIssuerSigningKey = true,
-//          ValidIssuer = $"https://{this._domain}/",
-//          ValidAudience = $"https://{this._domain}/",
-//          IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this._clientSecret))
-//        };
+        options.Audience = _clientId;
       });
     }
 
