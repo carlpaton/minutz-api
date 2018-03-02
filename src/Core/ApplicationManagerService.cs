@@ -19,9 +19,20 @@ namespace Core
       _applicationSetting = applicationSetting;
     }
 
-    public bool StartFullVersion(AuthRestModel user)
+    public (bool condition, string message) ResetAcccount(AuthRestModel user)
     {
-      user.Role = "Owner";
+      var connectionString = _applicationSetting.CreateConnectionString(
+                                                           _applicationSetting.Server,
+                                                           _applicationSetting.Catalogue,
+                                                           _applicationSetting.Username,
+                                                           _applicationSetting.Password);
+      return this._userRepository.Reset(connectionString, user.InstanceId, user.Name);
+
+    }
+
+    public (bool condition, string message) StartFullVersion(AuthRestModel user)
+    {
+      user.Role = "User";
       var masterConnectionString = _applicationSetting.CreateConnectionString(
                                                            _applicationSetting.Server,
                                                            "master",
@@ -36,9 +47,9 @@ namespace Core
       {
         var schemaCreate = _userRepository.CreateNewSchema(
                                                     user,
-                                                    _applicationSetting.Schema,
                                                     userConnectionString,
                                                     masterConnectionString);
+
         _applicationSetupRepository.CreateSchemaTables(_applicationSetting.Schema, schemaCreate,
                                       _applicationSetting.CreateConnectionString(
                                                                     _applicationSetting.Server,
@@ -48,10 +59,10 @@ namespace Core
       }
       catch (Exception ex)
       {
-        return false;
+        return (false, ex.Message);
       }
 
-      return true;
+      return (true, "successfull");
     }
   }
 }

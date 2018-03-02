@@ -12,5 +12,10 @@
     public string Role { get; set; }
     public string Company { get; set; }
     public string InstanceId { get; set; }
+    public string Related { get; set; }
+    public bool IsVerified { get; set; }
+    public string AccessToken { get; set; }
+    public string IdToken { get; set; }
+    public string TokenExpire { get; set; }
   }
 }

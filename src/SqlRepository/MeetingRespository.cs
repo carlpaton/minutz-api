@@ -50,6 +50,28 @@ namespace SqlRepository
       }
     }
 
+    public List<Meeting> List(string schema, string connectionString, List<string> meetingIds)
+    {
+      if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(schema))
+        throw new ArgumentException("Please provide a valid schema or connection string.");
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        dbConnection.Open();
+        var sql = $"select * from [{schema}].[Meeting]";
+        var data = dbConnection.Query<Meeting>(sql).ToList();
+        List<Meeting> filtered = new List<Meeting>();
+        foreach (var meeting in data)
+        {
+          foreach (var filterId in meetingIds)
+          {
+            if (meeting.Id.ToString() == filterId)
+              filtered.Add(meeting);
+          }
+        }
+        return filtered;
+      }
+    }
+
     /// <summary>
     /// Add the specified action, schema and connectionString.
     /// </summary>

@@ -1,0 +1,21 @@
+SELECT TOP (1000) [Id]
+      ,[Identityid]
+      ,[FirstName]
+      ,[LastName]
+      ,[FullName]
+      ,[ProfilePicture]
+      ,[Email]
+      ,[Role]
+      ,[Active]
+      ,[InstanceId]
+      ,[Related]
+  FROM [minutz-test].[app].[Person]
+select * from A_117330763949240782758.AvailibleAttendee
+select * from A_117330763949240782758.MeetingAttendee
+select * from app.EventLog
+select * from [minutz-test].[app].[Person]
+select * from app.Instance
+  EXEC [app].[resetAccount]'A_5a8bf517a7572d61b3f476c2','leeroya@gmail.com','A_5a8bf517a7572d61b3f476c2'
+  drop SCHEMA A_5a8bf517a7572d61b3f476c2
+  drop USER A_5a8bf517a7572d61b3f476c2
+  drop login  A_5a8bf517a7572d61b3f476c2

@@ -1,4 +1,4 @@
-﻿namespace Minutz.Models
+﻿  namespace Minutz.Models
 {
   public enum LogLevel
   {

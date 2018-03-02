@@ -7,7 +7,7 @@ namespace Tests
 {
   public class NotificationsTests
   {
-    [Test]
+    //[Test]
     public void Notify_Given_EmptyApiKeyEnvironmentSetting_Should_ThrowException()
     {
       //Arrange
@@ -18,7 +18,7 @@ namespace Tests
       //Assert
     }
 
-    [Test]
+    //[Test]
     public void Notify_Given_EmptyDefaultTemplateApiKeyEnvironmentSetting_Should_ThrowException()
     {
       //Arrange
@@ -29,7 +29,7 @@ namespace Tests
       //Assert
     }
 
-    [Test]
+    //[Test]
     public void Notify_Given_EmptyNotifyUserEnvironmentSetting_Should_ThrowException()
     {
       //Arrange
@@ -40,7 +40,7 @@ namespace Tests
       //Assert
     }
 
-    [Test]
+    //[Test] this is a integration test
     public void TestSendNotification()
     {
       var meeting = new Minutz.Models.ViewModels.MeetingViewModel();
