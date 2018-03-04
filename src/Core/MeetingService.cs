@@ -394,8 +394,9 @@ namespace Core
     {
       this._logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - Service - entry point {ID}",
         1);
-      var auth = new AuthenticationHelper(token, _authenticationService, _instanceRepository, _applicationSetting,
-        _userValidationService);
+      
+      
+      var auth = new AuthenticationHelper(token, _authenticationService, _instanceRepository, _applicationSetting, _userValidationService);
       if (!string.IsNullOrEmpty(auth.UserInfo.InstanceId))
       {
         this._logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - Service - auth ", auth);
