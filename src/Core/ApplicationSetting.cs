@@ -1,10 +1,19 @@
 ﻿using System;
+using Interface.Repositories;
 using Interface.Services;
+using Minutz.Models.Entities;
 
 namespace Core
 {
   public class ApplicationSetting : IApplicationSetting
   {
+    private readonly IInstanceRepository _instanceRepository;
+
+    public ApplicationSetting(IInstanceRepository instanceRepository)
+    {
+      _instanceRepository = instanceRepository;
+    }
+
     public string Server => Environment.GetEnvironmentVariable("SERVER_ADDRESS");
 
     public string Catalogue => Environment.GetEnvironmentVariable("DEFAULT_CATALOGUE");
@@ -28,6 +37,14 @@ namespace Core
     public string CreateConnectionString()
     {
       return $"Server={this.Server};User ID={this.Username};pwd={this.Password};database={this.Catalogue};";
+    }
+
+    public string GetInstancePassword(string instance)
+    {
+
+      var instanceObject = _instanceRepository.GetByUsername(instance, "app", CreateConnectionString());
+      
+      return instanceObject.Password;
     }
   }
 }

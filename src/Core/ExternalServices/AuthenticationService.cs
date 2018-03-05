@@ -21,7 +21,8 @@ namespace Core.ExternalServices
     private readonly IInstanceRepository _instanceRepository;
     private readonly ILogService _logService;
     private IMemoryCache _cache;
-    public AuthenticationService (
+
+    public AuthenticationService(
       IApplicationSetting applicationSetting, IMemoryCache memoryCache,
       IAuth0Repository auth0Repository, ILogService logService,
       IUserRepository userRepository, IApplicationSetupRepository applicationSetupRepository,
@@ -36,6 +37,51 @@ namespace Core.ExternalServices
       this._instanceRepository = instanceRepository;
       this._meetingAttendeeRepository = meetingAttendeeRepository;
     }
+
+    public (bool condition, string message, AuthRestModel infoResponse) Login (
+      string access_token, string id_token,string expires_in,string instanceId = null)
+    {
+      var userInfo = GetUserInfo (access_token);
+      
+      userInfo.IdToken = id_token;
+      userInfo.AccessToken = access_token;
+      userInfo.TokenExpire = expires_in;
+
+      (bool condition, string message, Person person) existsResult =
+        this._userRepository.GetUserByEmail (userInfo.Email, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+      if (string.IsNullOrEmpty (existsResult.person.Related))
+      {
+        if (string.IsNullOrEmpty (existsResult.person.InstanceId))
+        {
+          if (string.IsNullOrEmpty (instanceId))
+          {
+            instanceId = $"A_{userInfo.Sub.Split ('|')[1]}";
+          }
+        }
+        else
+        {
+          instanceId = existsResult.person.InstanceId;
+        }
+
+      }
+      else
+      {
+        List<(string instanceId, string meetingId)> relatedInstances =
+          existsResult.person.Related.SplitToList (Minutz.Models.StringDeviders.InstanceStringDevider, Minutz.Models.StringDeviders.MeetingStringDevider);
+        instanceId = relatedInstances.FirstOrDefault ().instanceId;
+      }
+
+      Instance instance = this._instanceRepository.GetByUsername (instanceId, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+      userInfo.InstanceId = instance.Username;
+      userInfo.Company = instance.Company;
+      userInfo.Related = existsResult.person.Related;
+      userInfo.Role = existsResult.person.Role;
+      userInfo.FirstName = existsResult.person.FirstName;
+      userInfo.LastName = existsResult.person.LastName;
+      userInfo.Email = existsResult.person.Email;
+      return (true, "Success", userInfo);
+    }
+
 
     public (bool condition, string message, AuthRestModel infoResponse) Login (
       string username, string password, string instanceId = null)
@@ -112,19 +158,23 @@ namespace Core.ExternalServices
     {
       // first check if user is not in the db in the person table;
       (bool condition, string message, Person person) existsResult =
-        this._userRepository.GetUserByEmail (email, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+        this._userRepository.GetUserByEmail (email, this._applicationSetting.Schema,_applicationSetting.CreateConnectionString());
 
       if (!existsResult.condition)
       {
         var instanceId = Guid.NewGuid ().ToString ();
+        
+        // Create the user in Auth0
         (bool condition, string message, AuthRestModel tokenResponse) createNewAuth0Response =
           this._auth0Repository.CreateUser (name, username, email, password, role, $"A_{instanceId}");
+        
         if (!createNewAuth0Response.condition)
         {
           this._logService.Log (Minutz.Models.LogLevel.Error, $"[(bool condition, string message, UserResponseModel tokenResponse) tokenResponse] There was a issue getting the token info for user {email}");
           return (createNewAuth0Response.condition, createNewAuth0Response.message, null);
         }
 
+        // check if there are any references
         if (!string.IsNullOrEmpty (invitationInstanceId) && !string.IsNullOrEmpty (meetingId))
         {
           List<(string instanceId, string meetingId)> relatedInstances = new List<(string instanceId, string meetingId)> ();
@@ -132,14 +182,19 @@ namespace Core.ExternalServices
           string updatedRelatedString = relatedInstances.ToRelatedString ();
           createNewAuth0Response.tokenResponse.Related = updatedRelatedString;
         }
+        
         createNewAuth0Response.tokenResponse.Role = role;
         createNewAuth0Response.tokenResponse.FirstName = name;
         createNewAuth0Response.tokenResponse.Nickname = name;
+        
+        // Default the company name
         if (string.IsNullOrEmpty (invitationInstanceId))
         {
           createNewAuth0Response.tokenResponse.Company = $"{name}'s Company";
           
         }
+        
+        //Create the user in sql in the person table
         var createNewUserResult = this._userRepository.CreateNewUser (createNewAuth0Response.tokenResponse, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
         if (!createNewUserResult.condition)
         {
@@ -147,6 +202,16 @@ namespace Core.ExternalServices
           return (createNewUserResult.condition, createNewUserResult.message, null);
         }
 
+        // Default the company name
+        if (!string.IsNullOrEmpty (invitationInstanceId))
+        {
+          //Create entry into the refernvce instance Availible person table
+          this._meetingAttendeeRepository.Add(new MeetingAttendee(), invitationInstanceId,
+            _applicationSetting.CreateConnectionString(_applicationSetting.Server,_applicationSetting.Catalogue,invitationInstanceId, _applicationSetting.GetInstancePassword(invitationInstanceId)));
+
+        }
+        
+        
         existsResult =
           this._userRepository.GetUserByEmail (email, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
       }
@@ -156,24 +221,48 @@ namespace Core.ExternalServices
         case RoleTypes.User:
           if (!string.IsNullOrEmpty (existsResult.person.InstanceId))
           {
+            //Get the token from auth0 by logging in
             (bool condition, string message, UserResponseModel tokenResponse) tokenResponse =
               this._auth0Repository.CreateToken (username, password);
+            
             if (!tokenResponse.condition)
             {
               this._logService.Log (Minutz.Models.LogLevel.Error, $"[(bool condition, string message, UserResponseModel tokenResponse) tokenResponse] There was a issue getting the token info for user {email}");
               return (tokenResponse.condition, tokenResponse.message, null);
             }
+            
             AuthRestModel authRestResult = new AuthRestModel { };
             if (tokenResponse.condition)
             {
+              //Get users info from auth0
               (bool condition, string message, AuthRestModel infoResponse) infoResponseResult =
                 this._auth0Repository.GetUserInfo (tokenResponse.tokenResponse.access_token);
+              
               if (!infoResponseResult.condition)
               {
                 this._logService.Log (Minutz.Models.LogLevel.Error, $"[(bool condition, string message, AuthRestModel infoResponse) infoResponseResult] There was a issue getting the information info for user {email}");
                 return (tokenResponse.condition, tokenResponse.message, null);
               }
-              Instance instance = this._instanceRepository.GetByUsername (existsResult.person.InstanceId, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+
+              Instance instance;
+              if (!string.IsNullOrEmpty(existsResult.person.Related))
+              {
+                var relatedInstance = existsResult.person.Related.SplitToList(Minutz.Models.StringDeviders.InstanceStringDevider, Minutz.Models.StringDeviders.MeetingStringDevider).First();
+                
+                instance = this._instanceRepository.GetByUsername (
+                  relatedInstance.instanceId,
+                  this._applicationSetting.Schema,
+                  _applicationSetting.CreateConnectionString (
+                    _applicationSetting.Server,
+                    _applicationSetting.Catalogue,
+                    relatedInstance.instanceId,
+                    _applicationSetting.GetInstancePassword(relatedInstance.instanceId)));
+              }
+              else
+              {
+                instance = this._instanceRepository.GetByUsername (existsResult.person.InstanceId, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+              }
+              
               authRestResult = new AuthRestModel
               {
                 Company = instance.Company,

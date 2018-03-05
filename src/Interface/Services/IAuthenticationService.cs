@@ -11,6 +11,9 @@ namespace Interface.Services
     (bool condition, string message, AuthRestModel infoResponse) Login (
       string username, string password, string instanceId);
 
+    (bool condition, string message, AuthRestModel infoResponse) Login(
+      string access_token, string id_token, string expires_in, string instanceId = null);
+
     AuthRestModel GetUserInfo(string token);
 
     AuthRestModel ResetUserInfo(string token);

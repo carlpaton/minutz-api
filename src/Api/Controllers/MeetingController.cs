@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Minutz.Models;
+using Minutz.Models.Entities;
 using Minutz.Models.ViewModels;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -20,16 +21,18 @@ namespace Api.Controllers
     private readonly IMeetingService _meetingService;
     private readonly IInvatationService _invatationService;
     private readonly ILogService _logService;
+    private readonly IAuthenticationService _authenticationService;
     private readonly ILogger _logger;
 
     public MeetingController(IMeetingService meetingService,
       IInvatationService invatationService,
       ILogService logService,
-      ILoggerFactory logger)
+      ILoggerFactory logger, IAuthenticationService authenticationService)
     {
       this._meetingService = meetingService;
       this._invatationService = invatationService;
       this._logService = logService;
+      _authenticationService = authenticationService;
       this._logger = logger.CreateLogger("MeetingController");
     }
 
@@ -82,7 +85,7 @@ namespace Api.Controllers
     }
 
     /// <summary>
-    /// Create a meetingViewModel
+    /// Create a meetingViewModel, id is the acces_token and the instanceId is the related instance that the user selected
     /// </summary>
     /// <returns>The created meetingViewModel object.</returns>
     [Authorize]
@@ -91,12 +94,13 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(MeetingViewModel), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingViewModel))]
-    public IActionResult CreateMeeting(string id)
+    public IActionResult CreateMeeting(string id, string instanceId = "")
     {
-      var claims = User.Claims.ToList();
-      var token = id; //claims.First(i => i.Type == "aud").Value;
+      (bool condition, string message, AuthRestModel infoResponse)  userInfo = 
+        _authenticationService.Login (id, Request.Headers.First(i => i.Key == "Authorization").Value, User.Claims.ToList().First(i=> i.Type == "exp").Value);
+      
       _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - entry point {ID}", 1);
-      // var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+      
       _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - token {ID}", 1);
       var data = new MeetingViewModel
       {
@@ -123,12 +127,15 @@ namespace Api.Controllers
       };
 
       _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - created viewmodel {ID}", 1);
-      var result = _meetingService.CreateMeeting(token, data.ToEntity(),
+      
+      var result = _meetingService.CreateMeeting(
+        userInfo.infoResponse,
+        data.ToEntity(),
         data.MeetingAttendeeCollection,
         data.MeetingAgendaCollection,
         data.MeetingNoteCollection,
         data.MeetingAttachmentCollection,
-        data.MeetingActionCollection);
+        data.MeetingActionCollection, instanceId);
       if (result.Key)
       {
         return new ObjectResult(result.Value);

@@ -12,7 +12,7 @@ namespace Core.LogProvider {
         public Logger (string categoryName) {
             this._categoryName = categoryName;
             this._repository = new LogRepository ();
-            this._appSettings = new ApplicationSetting ();
+            this._appSettings = new ApplicationSetting (new InstanceRepository());
         }
         IDisposable ILogger.BeginScope<TState> (TState state) {
             return new LogDisposable ();
