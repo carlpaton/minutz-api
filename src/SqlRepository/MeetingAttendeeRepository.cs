@@ -108,22 +108,23 @@ namespace SqlRepository {
         string insertSql = $@"insert into [{schema}].[MeetingAttendee](
                                                                  [Id]
                                                                 ,[ReferanceId]
-                                                                ,[Email]
                                                                 ,[PersonIdentity]
+                                                                ,[Email]
                                                                 ,[Role]
                                                                 ) 
                                                          values(
                                                                  @Id
                                                                 ,@ReferenceId
-                                                                ,@Email
                                                                 ,@PersonIdentity
+                                                                ,@Email
                                                                 ,@Role
                                                                 )";
         var instance = dbConnection.Execute (insertSql, new {
           attendee.Id,
-            attendee.ReferenceId,
-            attendee.PersonIdentity,
-            attendee.Role
+          attendee.ReferenceId,
+          attendee.PersonIdentity,
+          attendee.Email,
+          attendee.Role
         });
         return instance == 1;
       }
