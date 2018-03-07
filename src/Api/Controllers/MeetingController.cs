@@ -97,7 +97,10 @@ namespace Api.Controllers
     public IActionResult CreateMeeting(string id, string instanceId = "")
     {
       (bool condition, string message, AuthRestModel infoResponse)  userInfo = 
-        _authenticationService.Login (id, Request.Headers.First(i => i.Key == "Authorization").Value, User.Claims.ToList().First(i=> i.Type == "exp").Value);
+        _authenticationService.Login (
+          id,
+          Request.Headers.First(i => i.Key == "Authorization").Value,
+          User.Claims.ToList().First(i=> i.Type == "exp").Value,"");
       
       _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - entry point {ID}", 1);
       
