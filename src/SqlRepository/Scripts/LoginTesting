@@ -1,0 +1,8 @@
+
+SELECT * FROM [minutz-test].[app].[Person]
+SELECT * FROM app.EventLog
+SELECT * FROM app.Instance
+EXEC [app].[resetAccount]'A_5a8bf517a7572d61b3f476c2','leeroya@gmail.com','A_5a8bf517a7572d61b3f476c2'
+DROP SCHEMA A_5a8bf517a7572d61b3f476c2
+DROP USER A_5a8bf517a7572d61b3f476c2
+DROP LOGIN  A_5a8bf517a7572d61b3f476c2

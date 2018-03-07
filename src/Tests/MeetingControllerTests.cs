@@ -14,7 +14,7 @@ namespace Tests
   {
 
     // [Test]
-    public void Get_GivenEmptyMeetingName_ShouldReturnBadRequest()
+/*    public void Get_GivenEmptyMeetingName_ShouldReturnBadRequest()
     {
       //Arrange
       var meetingService = Substitute.For<IMeetingService>();
@@ -35,7 +35,7 @@ namespace Tests
 
       //Assert
       Assert.IsInstanceOf(typeof(BadRequestObjectResult), result);
-    }
+    }*/
 
     //[Test]
     //public void Get_Given_Should()

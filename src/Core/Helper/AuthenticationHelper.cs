@@ -15,14 +15,19 @@ namespace Core.Helper
     public AuthRestModel UserInfo { get; private set; }
     public Instance Instance { get; private set; }
     public string ConnectionString { get; private set; }
+    
+    
 
     public AuthenticationHelper(string token,
-                                IAuthenticationService authenticationService,
+                                IAuthenticationService _authenticationService,
                                 IInstanceRepository instanceRepository,
                                 IApplicationSetting applicationSetting,
                                 IUserValidationService userValidationService)
     {
-      this.UserInfo = userValidationService.GetUser(authenticationService.GetUserInfo(token).Sub);
+      
+      var userInfo = _authenticationService.GetUserInfo (token);
+      
+      this.UserInfo = userValidationService.GetUser(userInfo.Sub);
 
       if (string.IsNullOrEmpty(this.UserInfo.Related))// this will use the defasult user instance id, this is if the user is a owner
       {

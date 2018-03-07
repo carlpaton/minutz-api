@@ -108,12 +108,14 @@ namespace SqlRepository {
         string insertSql = $@"insert into [{schema}].[MeetingAttendee](
                                                                  [Id]
                                                                 ,[ReferanceId]
+                                                                ,[Email]
                                                                 ,[PersonIdentity]
                                                                 ,[Role]
                                                                 ) 
                                                          values(
                                                                  @Id
                                                                 ,@ReferenceId
+                                                                ,@Email
                                                                 ,@PersonIdentity
                                                                 ,@Role
                                                                 )";

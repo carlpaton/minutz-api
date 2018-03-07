@@ -31,13 +31,13 @@ namespace Interface.Services
       string token);
 
     KeyValuePair<bool, Minutz.Models.ViewModels.MeetingViewModel> CreateMeeting(
-      string token,
+      AuthRestModel token,
       Meeting meeting,
       List<MeetingAttendee> attendees,
       List<MeetingAgenda> agenda,
       List<MeetingNote> notes,
       List<MeetingAttachment> attachements,
-      List<MinutzAction> actions);
+      List<MinutzAction> actions, string instanceId = "");
 
     Minutz.Models.ViewModels.MeetingViewModel UpdateMeeting(
       string token,
