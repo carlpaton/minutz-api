@@ -9,6 +9,7 @@ namespace Minutz.Models.Entities
     public Guid ReferenceId { get; set; }
     public string Email { get; set; }
     public string PersonIdentity { get; set; }
+    public string Picture { get; set; }
     public string Status { get; set; }
     public string Role { get; set; }
   }

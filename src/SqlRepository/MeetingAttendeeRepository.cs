@@ -47,7 +47,11 @@ namespace SqlRepository {
         throw new ArgumentException ("Please provide a valid meeting attendee identifier, schema or connection string.");
       using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
         dbConnection.Open ();
-        var sql = $"select * from [{schema}].[MeetingAttendee] WHERE ReferanceId = '{referenceId.ToString()}'";
+        
+        var sql = $@"select  att.Id, att.ReferanceId, att.PersonIdentity, att.Email,att.Role, p.ProfilePicture  
+                    FROM [{schema}].[MeetingAttendee] att 
+                    INNER JOIN app.Person p on p.Email = att.Email 
+                    WHERE att.ReferanceId = '{referenceId.ToString()}'";
         var data = dbConnection.Query<MeetingAttendee> (sql);
         foreach (var item in data) {
           item.ReferenceId = referenceId;

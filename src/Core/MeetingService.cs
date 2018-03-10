@@ -427,8 +427,9 @@ namespace Core
           Email = user.Email,
           Id = Guid.NewGuid(),
           PersonIdentity = user.Sub,
+          Picture = user.Picture,
           Role = "Meeting Owner",
-          Status = "Pending"
+          Status = "Accepted"
         });
         _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem,
           "CreateMeeting - Service - added owner to attendees ", user);
