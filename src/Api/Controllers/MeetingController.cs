@@ -27,7 +27,8 @@ namespace Api.Controllers
     public MeetingController(IMeetingService meetingService,
       IInvatationService invatationService,
       ILogService logService,
-      ILoggerFactory logger, IAuthenticationService authenticationService)
+      ILoggerFactory logger,
+      IAuthenticationService authenticationService)
     {
       this._meetingService = meetingService;
       this._invatationService = invatationService;

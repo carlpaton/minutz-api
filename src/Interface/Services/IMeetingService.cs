@@ -6,7 +6,7 @@ namespace Interface.Services
 {
   public interface IMeetingService
   {
-    MeetingAgenda CreateMeetingAgendaItem(MeetingAgenda agenda, string token);
+    MeetingAgenda CreateMeetingAgendaItem(MeetingAgenda agenda, AuthRestModel user);
 
     Minutz.Models.ViewModels.MeetingViewModel GetMeeting(
       string token,

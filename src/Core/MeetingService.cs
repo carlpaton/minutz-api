@@ -56,18 +56,20 @@ namespace Core
     }
 
 
-    public MeetingAgenda CreateMeetingAgendaItem(MeetingAgenda agenda, string token)
+    public MeetingAgenda CreateMeetingAgendaItem(MeetingAgenda agenda, AuthRestModel user)
     {
-      if (string.IsNullOrEmpty(token)) throw new ArgumentNullException(nameof(token), "Please provide a user token.");
+      // if (string.IsNullOrEmpty(token)) throw new ArgumentNullException(nameof(token), "Please provide a user token.");
       if (agenda == null) throw new ArgumentNullException(nameof(agenda), "Please provide a agenda model");
       if (string.IsNullOrEmpty(agenda.ReferenceId)) throw new ArgumentNullException(nameof(agenda.ReferenceId), "Please provide a meeting id for the agenda item.");
 
-      var auth = new AuthenticationHelper(token,
+      /*var auth = new AuthenticationHelper(token,
         _authenticationService,
         _instanceRepository,
         _applicationSetting,
-        _userValidationService);
-      var result = _meetingAgendaRepository.Add(agenda, auth.Instance.Username, auth.ConnectionString);
+        _userValidationService);*/
+      var connectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server, _applicationSetting.Catalogue,
+        user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
+      var result = _meetingAgendaRepository.Add(agenda, user.InstanceId, connectionString);
       return result ? agenda : new MeetingAgenda();
     }
 

@@ -13,13 +13,17 @@ namespace Api.Controllers
   public class MeetingAgendaController : Controller
   {
     private readonly IMeetingService _meetingService;
+    private readonly IAuthenticationService _authenticationService;
     private readonly ILogger _logger;
     internal const string _defaultAgendaId = "e38b69b3-8f2a-4979-9323-1819db4331f8";
     
-    public MeetingAgendaController(IMeetingService meetingService,
-                                   ILoggerFactory logger)
+    public MeetingAgendaController(
+      IMeetingService meetingService,
+      ILoggerFactory logger,
+      IAuthenticationService authenticationService)
     {
       this._meetingService = meetingService;
+      _authenticationService = authenticationService;
       this._logger = logger.CreateLogger("MeetingAgendaController");
     }
 
@@ -29,7 +33,8 @@ namespace Api.Controllers
     /// <returns>Collection of MeetingAgenda objects</returns>
      [HttpGet("api/meetingAgendaItems/{referenceId}")]
      [Authorize]
-     public List<MeetingAgenda> GetMeetingAgendaItems(string referenceId)
+     public List<MeetingAgenda> GetMeetingAgendaItems(
+            string referenceId)
      {
       
        var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
@@ -69,9 +74,16 @@ namespace Api.Controllers
        _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "MeetingAgenda - PUT - entry point {ID}", 1);
        var payload = JsonConvert.SerializeObject(agenda);
        _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem," sent data {payload}", payload);
+       
+       (bool condition, string message, AuthRestModel infoResponse)  userInfo = 
+         _authenticationService.Login (
+           Request.Headers.First(i=> i.Key == "access_token").Value,
+           Request.Headers.First(i => i.Key == "Authorization").Value,
+           User.Claims.ToList().First(i=> i.Type == "exp").Value,"");
+       
        var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
        if (agenda.Id == Guid.Parse(_defaultAgendaId)) agenda.Id = Guid.NewGuid();
-       var result = _meetingService.CreateMeetingAgendaItem(agenda, token);
+       var result = _meetingService.CreateMeetingAgendaItem(agenda, userInfo.infoResponse);
        return result;
      }
 
