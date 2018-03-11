@@ -11,9 +11,13 @@ namespace Api.Controllers
   public class MeetingActionController : Controller
   {
     private readonly IMeetingService _meetingService;
-    public MeetingActionController(IMeetingService meetingService)
+    private readonly IAuthenticationService _authenticationService;
+
+    public MeetingActionController(
+      IMeetingService meetingService, IAuthenticationService authenticationService)
     {
       _meetingService = meetingService;
+      _authenticationService = authenticationService;
     }
 
     /// <summary>
@@ -31,8 +35,8 @@ namespace Api.Controllers
        {
          return BadRequest("Please provide a valid referenceId [meeting id]");
        }
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-       var result = _meetingService.GetMinutzActions(referenceId, token);
+       var userInfo = ExtractAuth();
+       var result = _meetingService.GetMinutzActions(referenceId, userInfo.infoResponse);
        return Ok(result);
      }
 
@@ -47,7 +51,7 @@ namespace Api.Controllers
      [HttpGet("api/meeting/{referenceId}/actions", Name = "Get Machine by Id")]
      public MinutzAction Get(string referenceId, string id)
      {
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       var userInfo = ExtractAuth();
        //var result = _meetingService.GetMeeting(token, )
        return new MinutzAction();
      }
@@ -60,7 +64,7 @@ namespace Api.Controllers
      [Authorize]
      public MinutzAction Put([FromBody] MinutzAction action)
      {
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       var userInfo = ExtractAuth();
        return new MinutzAction();
      }
 
@@ -72,7 +76,7 @@ namespace Api.Controllers
      [Authorize]
      public MinutzAction Post([FromBody] MinutzAction action)
      {
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       var userInfo = ExtractAuth();
        return new MinutzAction();
      }
 
@@ -84,8 +88,18 @@ namespace Api.Controllers
      [Authorize]
      public bool Delete(string referenceId, string id)
      {
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       var userInfo = ExtractAuth();
        return true;
      }
+    
+    private (bool condition, string message, AuthRestModel infoResponse) ExtractAuth()
+    {
+      (bool condition, string message, AuthRestModel infoResponse) userInfo =
+        _authenticationService.Login(
+          Request.Headers.First(i => i.Key == "access_token").Value,
+          Request.Headers.First(i => i.Key == "Authorization").Value,
+          User.Claims.ToList().First(i => i.Type == "exp").Value, "");
+      return userInfo;
+    }
   }
 }

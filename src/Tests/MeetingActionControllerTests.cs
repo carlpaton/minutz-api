@@ -15,7 +15,8 @@ namespace Tests
     {
       //Arrange
       var meetingService = Substitute.For<IMeetingService>();
-      var controller = new MeetingActionController(meetingService);
+      var auth = Substitute.For<IAuthenticationService>();
+      var controller = new MeetingActionController(meetingService,auth);
 
       //Act
       var result = controller.Get(string.Empty);

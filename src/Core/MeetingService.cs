@@ -19,8 +19,8 @@ namespace Core
     private readonly IMeetingNoteRepository _meetingNoteRepository;
     private readonly IUserValidationService _userValidationService;
     private readonly IAuthenticationService _authenticationService;
-    private readonly IApplicationSetupRepository _applicationSetupRepository;
-    private readonly IUserRepository _userRepository;
+   // private readonly IApplicationSetupRepository _applicationSetupRepository;
+    // private readonly IUserRepository _userRepository;
     private readonly IApplicationSetting _applicationSetting;
     private readonly IInstanceRepository _instanceRepository;
 
@@ -32,8 +32,8 @@ namespace Core
       IMeetingActionRepository meetingActionRepository,
       IAuthenticationService authenticationService,
       IUserValidationService userValidationService,
-      IApplicationSetupRepository applicationSetupRepository,
-      IUserRepository userRepository,
+      // IApplicationSetupRepository applicationSetupRepository,
+      //IUserRepository userRepository,
       IApplicationSetting applicationSetting,
       IInstanceRepository instanceRepository,
       IMeetingAttachmentRepository meetingAttachmentRepository,
@@ -48,15 +48,16 @@ namespace Core
       _meetingNoteRepository = meetingNoteRepository;
       _userValidationService = userValidationService;
       _authenticationService = authenticationService;
-      _applicationSetupRepository = applicationSetupRepository;
-      _userRepository = userRepository;
+      //_applicationSetupRepository = applicationSetupRepository;
+      //_userRepository = userRepository;
       _applicationSetting = applicationSetting;
       _instanceRepository = instanceRepository;
       this._logger = logger.CreateLogger("MeetingService");
     }
 
 
-    public MeetingAgenda CreateMeetingAgendaItem(MeetingAgenda agenda, AuthRestModel user)
+    public MeetingAgenda CreateMeetingAgendaItem(
+      MeetingAgenda agenda, AuthRestModel user)
     {
       // if (string.IsNullOrEmpty(token)) throw new ArgumentNullException(nameof(token), "Please provide a user token.");
       if (agenda == null) throw new ArgumentNullException(nameof(agenda), "Please provide a agenda model");
@@ -69,31 +70,34 @@ namespace Core
         _userValidationService);*/
       var connectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server, _applicationSetting.Catalogue,
         user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
+      
       var result = _meetingAgendaRepository.Add(agenda, user.InstanceId, connectionString);
       return result ? agenda : new MeetingAgenda();
     }
 
     public List<Minutz.Models.Entities.MeetingAgenda> UpdateMeetingAgendaItems(
-      string meetingId,
-      List<Minutz.Models.Entities.MeetingAgenda> data,
-      string token)
+      string meetingId, List<Minutz.Models.Entities.MeetingAgenda> data, AuthRestModel user)
     {
-      var userInfo = _authenticationService.GetUserInfo(token);
-      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
-      var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
-                                                        _applicationSetting.Schema,
-                                                        _applicationSetting.CreateConnectionString(
-                                                          _applicationSetting.Server,
-                                                          _applicationSetting.Catalogue,
-                                                          _applicationSetting.Username,
-                                                          _applicationSetting.Password));
-      var userConnectionString = GetConnectionString(instance.Password, instance.Username);
+//      var userInfo = _authenticationService.GetUserInfo(token);
+//      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
+//      var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
+//                                                        _applicationSetting.Schema,
+//                                                        _applicationSetting.CreateConnectionString(
+//                                                          _applicationSetting.Server,
+//                                                          _applicationSetting.Catalogue,
+//                                                          _applicationSetting.Username,
+//                                                          _applicationSetting.Password));
+//      var userConnectionString = GetConnectionString(instance.Password, instance.Username);
+      var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+        _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
+          
+      var masterConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+        _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
+      
       if (data.Any())
       {
         var meetingAgendaItems = _meetingAgendaRepository.GetMeetingAgenda(
-          Guid.Parse(data.FirstOrDefault().ReferenceId),
-          instance.Username,
-          userConnectionString);
+          Guid.Parse(data.FirstOrDefault().ReferenceId), user.InstanceId, instanceConnectionString);
         foreach (var updateAgendaItem in data)
         {
           if (updateAgendaItem.Id == Guid.Empty)
@@ -107,86 +111,79 @@ namespace Core
             {
               updateAgendaItem.ReferenceId = meetingId;
             }
-            _meetingAgendaRepository.Update(updateAgendaItem, instance.Username, userConnectionString);
+            _meetingAgendaRepository.Update(updateAgendaItem, user.InstanceId, instanceConnectionString);
           }
           else
           {
-            _meetingAgendaRepository.Add(updateAgendaItem, instance.Username, userConnectionString);
+            _meetingAgendaRepository.Add(updateAgendaItem, user.InstanceId, instanceConnectionString);
           }
         }
         return _meetingAgendaRepository.GetMeetingAgenda(
-          Guid.Parse(data.FirstOrDefault().ReferenceId),
-          instance.Username,
-          userConnectionString);
+          Guid.Parse(data.FirstOrDefault().ReferenceId), user.InstanceId, instanceConnectionString);
       }
       foreach (var agendaitem in data)
       {
-        _meetingAgendaRepository.Add(agendaitem, instance.Username, userConnectionString);
+        _meetingAgendaRepository.Add(agendaitem, user.InstanceId, instanceConnectionString);
       }
       return _meetingAgendaRepository.GetMeetingAgenda(
-        Guid.Parse(data.FirstOrDefault().ReferenceId),
-        instance.Username,
-        userConnectionString);
+        Guid.Parse(data.FirstOrDefault().ReferenceId), user.InstanceId, instanceConnectionString);
     }
 
     public List<Minutz.Models.Entities.MeetingAttendee> UpdateMeetingAttendees(
-      List<Minutz.Models.Entities.MeetingAttendee> data,
-      string token)
+      List<Minutz.Models.Entities.MeetingAttendee> data, AuthRestModel user)
     {
-      var userInfo = _authenticationService.GetUserInfo(token);
-      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
-      var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
-        _applicationSetting.Schema,
-        _applicationSetting.CreateConnectionString(
-          _applicationSetting.Server,
-          _applicationSetting.Catalogue,
-          _applicationSetting.Username,
-          _applicationSetting.Password));
-      var userConnectionString = GetConnectionString(instance.Password, instance.Username);
+//      var userInfo = _authenticationService.GetUserInfo(token);
+//      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
+//      var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
+//        _applicationSetting.Schema,
+//        _applicationSetting.CreateConnectionString(
+//          _applicationSetting.Server,
+//          _applicationSetting.Catalogue,
+//          _applicationSetting.Username,
+//          _applicationSetting.Password));
+      
+      var userConnectionString = _applicationSetting.CreateConnectionString(
+        _applicationSetting.Server, _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
+      
+      var masterConnectionString =  _applicationSetting.CreateConnectionString(
+          _applicationSetting.Server, _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);      
       if (data.Any())
       {
         var attendees = _meetingAttendeeRepository.GetMeetingAttendees(
           data.FirstOrDefault().ReferenceId,
-          instance.Username,
-          userConnectionString);
+          user.InstanceId,userConnectionString, masterConnectionString);
         foreach (var attendee in data)
         {
           var q = attendees.FirstOrDefault(i => i.Id == attendee.Id);
           if (q != null)
           {
-            _meetingAttendeeRepository.Update(attendee, instance.Username, userConnectionString);
+            _meetingAttendeeRepository.Update(attendee, user.InstanceId, userConnectionString);
           }
           else
           {
-            _meetingAttendeeRepository.Add(attendee, instance.Username, userConnectionString);
+            _meetingAttendeeRepository.Add(attendee, user.InstanceId, userConnectionString);
           }
         }
         return _meetingAttendeeRepository.GetMeetingAttendees(
-          data.FirstOrDefault().ReferenceId,
-          instance.Username,
-          userConnectionString);
-        ;
+          data.FirstOrDefault().ReferenceId,user.InstanceId,userConnectionString, masterConnectionString);
       }
       foreach (var newAttendee in data)
       {
-        _meetingAttendeeRepository.Add(newAttendee, instance.Username, userConnectionString);
+        _meetingAttendeeRepository.Add(newAttendee, user.InstanceId, userConnectionString);
       }
       return _meetingAttendeeRepository.GetMeetingAttendees(
-        data.FirstOrDefault().ReferenceId,
-        instance.Username,
-        userConnectionString);
-      ;
+        data.FirstOrDefault().ReferenceId, user.InstanceId,  userConnectionString, masterConnectionString);
     }
 
-    public Instance GetInstance(string token)
-    {
-        return new AuthenticationHelper(
-          token,
-          _authenticationService,
-          _instanceRepository,
-          _applicationSetting,
-          _userValidationService).Instance;
-    }
+//    public Instance GetInstance(string token)
+//    {
+//        return new AuthenticationHelper(
+//          token,
+//          _authenticationService,
+//          _instanceRepository,
+//          _applicationSetting,
+//          _userValidationService).Instance;
+//    }
 
     /// <summary>
     /// Gets the meeting.
@@ -195,11 +192,10 @@ namespace Core
     /// <param name="token">Token.</param>
     /// <param name="id">Identifier.</param>
     public Minutz.Models.ViewModels.MeetingViewModel GetMeeting(
-      string token,
-      string id)
+      AuthRestModel user, string id)
     {
-      var auth = new AuthenticationHelper(token, _authenticationService, _instanceRepository, _applicationSetting,
-        _userValidationService);
+//      var auth = new AuthenticationHelper(token, _authenticationService, _instanceRepository, _applicationSetting,
+//        _userValidationService);
 
       // if (auth.UserInfo.Role == AuthenticationHelper.Guest)
       // {
@@ -222,7 +218,14 @@ namespace Core
       //   if(!meetingIds.Any()) return new Minutz.Models.ViewModels.MeetingViewModel();
         
       // }
-      var meeting = _meetingRepository.Get(Guid.Parse(id), auth.Instance.Username, auth.ConnectionString);
+      
+      var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+        _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
+          
+      var masterConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+        _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
+      
+      var meeting = _meetingRepository.Get(Guid.Parse(id), user.InstanceId, instanceConnectionString);
       var meetingViewModel = new Minutz.Models.ViewModels.MeetingViewModel
       {
         Id = meeting.Id.ToString(),
@@ -242,15 +245,15 @@ namespace Core
         TimeZone = meeting.TimeZone,
         UpdatedDate = DateTime.UtcNow,
         AvailableAttendeeCollection =
-          _meetingAttendeeRepository.GetAvalibleAttendees(auth.Instance.Username, auth.ConnectionString),
+          _meetingAttendeeRepository.GetAvalibleAttendees(user.InstanceId, instanceConnectionString),
         MeetingAgendaCollection =
-          _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, auth.Instance.Username, auth.ConnectionString),
+          _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, user.InstanceId, instanceConnectionString),
         MeetingAttachmentCollection =
-          _meetingAttachmentRepository.GetMeetingAttachments(meeting.Id, auth.Instance.Username, auth.ConnectionString),
+          _meetingAttachmentRepository.GetMeetingAttachments(meeting.Id, user.InstanceId, instanceConnectionString),
         MeetingAttendeeCollection =
-          _meetingAttendeeRepository.GetMeetingAttendees(meeting.Id, auth.Instance.Username, auth.ConnectionString),
+          _meetingAttendeeRepository.GetMeetingAttendees(meeting.Id, user.InstanceId, instanceConnectionString, masterConnectionString),
         MeetingNoteCollection =
-          _meetingNoteRepository.GetMeetingNotes(meeting.Id, auth.Instance.Username, auth.ConnectionString)
+          _meetingNoteRepository.GetMeetingNotes(meeting.Id, user.InstanceId, instanceConnectionString)
       };
       return meetingViewModel;
     }
@@ -260,41 +263,45 @@ namespace Core
     /// </summary>
     /// <returns>The meetings.</returns>
     /// <param name="token">Token.</param>
-    public (bool condition,
-            int statusCode,
-            string message,
-            IEnumerable<Minutz.Models.ViewModels.MeetingViewModel> value) GetMeetings(string token, string referenceKey)
+    public (bool condition, int statusCode, string message, IEnumerable<Minutz.Models.ViewModels.MeetingViewModel> value) GetMeetings(
+        AuthRestModel user, string referenceKey)
     {
       (string key, string reference) reference = (string.Empty, string.Empty);
       if (!string.IsNullOrEmpty(referenceKey))
+      {
         reference = referenceKey.TupleSplit();
+      }
+
       try
       {
-        var auth = new AuthenticationHelper(
-          token,
-          _authenticationService,
-          _instanceRepository,
-          _applicationSetting,
-          _userValidationService);
+//        var auth = new AuthenticationHelper(
+//          token, _authenticationService, _instanceRepository,  _applicationSetting, _userValidationService);
 
-        if (auth.Instance == null)
+        if (user.InstanceId == null)
           return (true, 404, "There are no meetings.", new List<Minutz.Models.ViewModels.MeetingViewModel>());
 
+        var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+          _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
+          
+        var masterConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+          _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
+        
         var result = new List<Minutz.Models.ViewModels.MeetingViewModel>();
-        if (auth.UserInfo.Role == AuthenticationHelper.Guest)
+        if (user.Role == AuthenticationHelper.Guest)
         {
-          if (string.IsNullOrEmpty(auth.UserInfo.Related))
+          if (string.IsNullOrEmpty(user.Related))
           {
             return (true, 200, "Success", new List<Minutz.Models.ViewModels.MeetingViewModel>());
           }
-          var relatedTuple = auth.UserInfo.Related.TupleSplit();
+          var relatedTuple = user.Related.TupleSplit();
           var relatedItems = relatedTuple.value.SplitToList("&", ";");
           var meetingIds = new List<string>();
           foreach (var relatedItem in relatedItems)
           {
             meetingIds.Add(relatedItem.value);
           }
-          var filtered = _meetingRepository.List(auth.Instance.Username, auth.ConnectionString, meetingIds);
+          
+          var filtered = _meetingRepository.List(user.InstanceId, instanceConnectionString, meetingIds);
           foreach (var meeting in filtered)
           {
             var meetingViewModel = new Minutz.Models.ViewModels.MeetingViewModel
@@ -316,22 +323,23 @@ namespace Core
               TimeZone = meeting.TimeZone,
               UpdatedDate = DateTime.UtcNow,
               AvailableAttendeeCollection =
-                _meetingAttendeeRepository.GetAvalibleAttendees(auth.Instance.Username, auth.ConnectionString),
+                _meetingAttendeeRepository.GetAvalibleAttendees(user.InstanceId, instanceConnectionString),
               MeetingAgendaCollection =
-                _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, auth.Instance.Username, auth.ConnectionString),
+                _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, user.InstanceId, instanceConnectionString),
               MeetingAttachmentCollection =
-                _meetingAttachmentRepository.GetMeetingAttachments(meeting.Id, auth.Instance.Username, auth.ConnectionString),
+                _meetingAttachmentRepository.GetMeetingAttachments(meeting.Id, user.InstanceId, instanceConnectionString),
               MeetingAttendeeCollection =
-                _meetingAttendeeRepository.GetMeetingAttendees(meeting.Id, auth.Instance.Username, auth.ConnectionString),
+                _meetingAttendeeRepository.GetMeetingAttendees(meeting.Id, user.InstanceId, instanceConnectionString, masterConnectionString),
               MeetingNoteCollection =
-                _meetingNoteRepository.GetMeetingNotes(meeting.Id, auth.Instance.Username, auth.ConnectionString)
+                _meetingNoteRepository.GetMeetingNotes(meeting.Id, user.InstanceId,  instanceConnectionString)
             };
 
             result.Add(meetingViewModel);
           }
           return (true, 200, "Success", result);
         }
-        var meetings = _meetingRepository.List(auth.Instance.Username, auth.ConnectionString);
+        
+        var meetings = _meetingRepository.List(user.InstanceId, instanceConnectionString);
         foreach (var meeting in meetings)
         {
           var meetingViewModel = new Minutz.Models.ViewModels.MeetingViewModel
@@ -353,15 +361,15 @@ namespace Core
             TimeZone = meeting.TimeZone,
             UpdatedDate = DateTime.UtcNow,
             AvailableAttendeeCollection =
-              _meetingAttendeeRepository.GetAvalibleAttendees(auth.Instance.Username, auth.ConnectionString),
+              _meetingAttendeeRepository.GetAvalibleAttendees(user.InstanceId, instanceConnectionString),
             MeetingAgendaCollection =
-              _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, auth.Instance.Username, auth.ConnectionString),
+              _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, user.InstanceId, instanceConnectionString),
             MeetingAttachmentCollection =
-              _meetingAttachmentRepository.GetMeetingAttachments(meeting.Id, auth.Instance.Username, auth.ConnectionString),
+              _meetingAttachmentRepository.GetMeetingAttachments(meeting.Id, user.InstanceId, instanceConnectionString),
             MeetingAttendeeCollection =
-              _meetingAttendeeRepository.GetMeetingAttendees(meeting.Id, auth.Instance.Username, auth.ConnectionString),
+              _meetingAttendeeRepository.GetMeetingAttendees(meeting.Id, user.InstanceId, instanceConnectionString, masterConnectionString),
             MeetingNoteCollection =
-              _meetingNoteRepository.GetMeetingNotes(meeting.Id, auth.Instance.Username, auth.ConnectionString)
+              _meetingNoteRepository.GetMeetingNotes(meeting.Id, user.InstanceId,  instanceConnectionString)
           };
 
           result.Add(meetingViewModel);
@@ -374,24 +382,8 @@ namespace Core
       }
     }
 
-    /// <summary>
-    /// Creates the meeting.
-    /// </summary>
-    /// <returns>The meeting.</returns>
-    /// <param name="token">Token.</param>
-    /// <param name="meeting">Meeting.</param>
-    /// <param name="attendees">Attendees.</param>
-    /// <param name="agenda">Agenda.</param>
-    /// <param name="notes">Notes.</param>
-    /// <param name="attachements">Attachements.</param>
-    /// <param name="actions">Actions.</param>
     public KeyValuePair<bool, Minutz.Models.ViewModels.MeetingViewModel> CreateMeeting(
-      AuthRestModel user,
-      Meeting meeting,
-      List<MeetingAttendee> attendees,
-      List<MeetingAgenda> agenda,
-      List<MeetingNote> notes,
-      List<MeetingAttachment> attachements,
+      AuthRestModel user, Meeting meeting, List<MeetingAttendee> attendees, List<MeetingAgenda> agenda, List<MeetingNote> notes, List<MeetingAttachment> attachements,
       List<MinutzAction> actions, string instanceId = "")
     {
       if (string.IsNullOrEmpty(instanceId))
@@ -587,23 +579,22 @@ namespace Core
       }
     }
 
-    /// <summary>
-    /// Updates the meeting.
-    /// </summary>
-    /// <returns>The meeting.</returns>
-    /// <param name="token">Token.</param>
-    /// <param name="meetingViewModel">Meeting view model.</param>
     public Minutz.Models.ViewModels.MeetingViewModel UpdateMeeting(
-      string token,
-      Minutz.Models.ViewModels.MeetingViewModel meetingViewModel)
+      AuthRestModel user, Minutz.Models.ViewModels.MeetingViewModel meetingViewModel)
     {
-      var auth = new AuthenticationHelper(token, _authenticationService, _instanceRepository, _applicationSetting,
-        _userValidationService);
-      if (!string.IsNullOrEmpty(auth.UserInfo.InstanceId))
+      // var auth = new AuthenticationHelper(token, _authenticationService, _instanceRepository, _applicationSetting,
+       //  _userValidationService);
+      var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+        _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
+      
+      var masterConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+        _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
+      
+      if (!string.IsNullOrEmpty(user.InstanceId))
       {
         if (string.IsNullOrEmpty(meetingViewModel.MeetingOwnerId))
         {
-          meetingViewModel.MeetingOwnerId = auth.UserInfo.Sub;
+          meetingViewModel.MeetingOwnerId = user.Sub;
         }
         var meetingEntity = new Minutz.Models.Entities.Meeting
         {
@@ -624,17 +615,17 @@ namespace Core
           TimeZone = meetingViewModel.TimeZone,
           UpdatedDate = DateTime.UtcNow
         };
-        var result = _meetingRepository.Update(meetingEntity, auth.Instance.Username, auth.ConnectionString);
+        var result = _meetingRepository.Update(meetingEntity, user.InstanceId, instanceConnectionString);
 
         // Update the agenda items
         foreach (var agendaItem in meetingViewModel.MeetingAgendaCollection)
         {
-          var update = _meetingAgendaRepository.Get(agendaItem.Id, auth.Instance.Username, auth.ConnectionString);
+          var update = _meetingAgendaRepository.Get(agendaItem.Id, user.InstanceId, instanceConnectionString);
           if (update == null || update.Id == Guid.Empty)
           {
             agendaItem.Id = Guid.NewGuid();
             agendaItem.ReferenceId = meetingViewModel.Id.ToString();
-            var saveAgenda = _meetingAgendaRepository.Add(agendaItem, auth.Instance.Username, auth.ConnectionString);
+            var saveAgenda = _meetingAgendaRepository.Add(agendaItem, user.InstanceId, instanceConnectionString);
           }
           else
           {
@@ -642,23 +633,23 @@ namespace Core
             {
               agendaItem.ReferenceId = meetingEntity.Id.ToString();
             }
-            var updateAgenda = _meetingAgendaRepository.Update(agendaItem, auth.Instance.Username, auth.ConnectionString);
+            var updateAgenda = _meetingAgendaRepository.Update(agendaItem, user.InstanceId, instanceConnectionString);
           }
         }
 
         // Update the attendees
         foreach (var attendee in meetingViewModel.MeetingAttendeeCollection)
         {
-          var attendeeResult = _meetingAttendeeRepository.Get(attendee.Id, auth.Instance.Username, auth.ConnectionString);
+          var attendeeResult = _meetingAttendeeRepository.Get(attendee.Id, user.InstanceId, instanceConnectionString);
           if (attendeeResult == null || attendeeResult.Id == Guid.Empty)
           {
             attendee.Id = Guid.NewGuid();
             attendee.ReferenceId = Guid.Parse(meetingViewModel.Id);
-            var savedAttendee = _meetingAttendeeRepository.Add(attendee, auth.Instance.Username, auth.ConnectionString);
+            var savedAttendee = _meetingAttendeeRepository.Add(attendee, user.InstanceId, instanceConnectionString);
           }
           else
           {
-            var savedAttendee = _meetingAttendeeRepository.Update(attendee, auth.Instance.Username, auth.ConnectionString);
+            var savedAttendee = _meetingAttendeeRepository.Update(attendee, user.InstanceId, instanceConnectionString);
           }
         }
 
@@ -666,17 +657,17 @@ namespace Core
         foreach (var attachment in meetingViewModel.MeetingAttachmentCollection)
         {
           var attachmentResult =
-            _meetingAttachmentRepository.Get(Guid.Parse(attachment.Id), auth.Instance.Username, auth.ConnectionString);
+            _meetingAttachmentRepository.Get(Guid.Parse(attachment.Id), user.InstanceId, instanceConnectionString);
           if (attachmentResult == null || Guid.Parse(attachmentResult.Id) == Guid.Empty)
           {
             attachment.Id = Guid.NewGuid().ToString();
             attachment.ReferanceId = meetingViewModel.Id;
-            var savedAttachment = _meetingAttachmentRepository.Add(attachment, auth.Instance.Username, auth.ConnectionString);
+            var savedAttachment = _meetingAttachmentRepository.Add(attachment, user.InstanceId, instanceConnectionString);
           }
           else
           {
             var updateAttachment =
-              _meetingAttachmentRepository.Update(attachment, auth.Instance.Username, auth.ConnectionString);
+              _meetingAttachmentRepository.Update(attachment, user.InstanceId, instanceConnectionString);
           }
         }
 
@@ -684,16 +675,16 @@ namespace Core
         foreach (var note in meetingViewModel.MeetingNoteCollection)
         {
           var savedNote =
-            _meetingAttachmentRepository.Get(Guid.Parse(note.Id), auth.Instance.Username, auth.ConnectionString);
+            _meetingAttachmentRepository.Get(Guid.Parse(note.Id), user.InstanceId, instanceConnectionString);
           if (savedNote == null || Guid.Parse(savedNote.Id) == Guid.Empty)
           {
             note.Id = Guid.NewGuid().ToString();
             note.ReferanceId = meetingViewModel.Id;
-            var noteSaved = _meetingNoteRepository.Add(note, auth.Instance.Username, auth.ConnectionString);
+            var noteSaved = _meetingNoteRepository.Add(note, user.InstanceId, instanceConnectionString);
           }
           else
           {
-            var noteUpdate = _meetingNoteRepository.Update(note, auth.Instance.Username, auth.ConnectionString);
+            var noteUpdate = _meetingNoteRepository.Update(note, user.InstanceId, instanceConnectionString);
           }
         }
 
@@ -701,30 +692,30 @@ namespace Core
         foreach (var action in meetingViewModel.MeetingActionCollection)
         {
           var actionAction =
-            _meetingActionRepository.Get(Guid.Parse(action.Id), auth.Instance.Username, auth.ConnectionString);
+            _meetingActionRepository.Get(Guid.Parse(action.Id), user.InstanceId, instanceConnectionString);
           if (actionAction == null || Guid.Parse(actionAction.Id) == Guid.Empty)
           {
             action.Id = Guid.NewGuid().ToString();
             action.ReferanceId = meetingViewModel.Id;
-            var actionSaved = _meetingActionRepository.Add(action, auth.Instance.Username, auth.ConnectionString);
+            var actionSaved = _meetingActionRepository.Add(action, user.InstanceId, instanceConnectionString);
           }
           else
           {
-            var actionUpdate = _meetingActionRepository.Update(action, auth.Instance.Username, auth.ConnectionString);
+            var actionUpdate = _meetingActionRepository.Update(action, user.InstanceId,instanceConnectionString);
           }
         }
 
         var agendaItems =
-          _meetingAgendaRepository.GetMeetingAgenda(meetingEntity.Id, auth.Instance.Username, auth.ConnectionString);
+          _meetingAgendaRepository.GetMeetingAgenda(meetingEntity.Id, user.InstanceId, instanceConnectionString);
         var availibeAttendees =
-          _meetingAttendeeRepository.GetAvalibleAttendees(auth.Instance.Username, auth.ConnectionString);
+          _meetingAttendeeRepository.GetAvalibleAttendees(user.InstanceId,instanceConnectionString);
         var attendees =
-          _meetingAttendeeRepository.GetMeetingAttendees(meetingEntity.Id, auth.Instance.Username, auth.ConnectionString);
+          _meetingAttendeeRepository.GetMeetingAttendees(meetingEntity.Id, user.InstanceId, instanceConnectionString, masterConnectionString);
         var attachments =
-          _meetingAttachmentRepository.GetMeetingAttachments(meetingEntity.Id, auth.Instance.Username, auth.ConnectionString);
-        var notes = _meetingNoteRepository.GetMeetingNotes(meetingEntity.Id, auth.Instance.Username, auth.ConnectionString);
+          _meetingAttachmentRepository.GetMeetingAttachments(meetingEntity.Id, user.InstanceId, instanceConnectionString);
+        var notes = _meetingNoteRepository.GetMeetingNotes(meetingEntity.Id, user.InstanceId, instanceConnectionString);
         var actions =
-          _meetingActionRepository.GetMeetingActions(meetingEntity.Id, auth.Instance.Username, auth.ConnectionString);
+          _meetingActionRepository.GetMeetingActions(meetingEntity.Id, user.InstanceId, instanceConnectionString);
 
         // Get the changes from the database
         meetingViewModel.AvailableAttendeeCollection = availibeAttendees;
@@ -737,48 +728,46 @@ namespace Core
       return meetingViewModel;
     }
 
-    /// <summary>
-    /// Deletes the meeting.
-    /// </summary>
-    /// <returns>The meeting.</returns>
-    /// <param name="token">Token.</param>
-    /// <param name="meetingId">Meeting identifier.</param>
-    public KeyValuePair<bool, string> DeleteMeeting(string token, Guid meetingId)
+    public KeyValuePair<bool, string> DeleteMeeting(
+      AuthRestModel user, Guid meetingId)
     {
-      var auth = new AuthenticationHelper(token, _authenticationService, _instanceRepository, _applicationSetting,
-        _userValidationService);
+      var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+        _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
+      
+      var masterConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+        _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
 
-      var meetingResult = _meetingRepository.Delete(meetingId, auth.Instance.Username, auth.ConnectionString);
+      var meetingResult = _meetingRepository.Delete(meetingId, user.InstanceId, instanceConnectionString);
       if (!meetingResult)
       {
         return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel.");
       }
 
-      if (_meetingAgendaRepository.GetMeetingAgenda(meetingId, auth.Instance.Username, auth.ConnectionString).Any())
+      if (_meetingAgendaRepository.GetMeetingAgenda(meetingId, user.InstanceId, instanceConnectionString).Any())
       {
         var meetingAgenda =
-          _meetingAgendaRepository.DeleteMeetingAgenda(meetingId, auth.Instance.Username, auth.ConnectionString);
+          _meetingAgendaRepository.DeleteMeetingAgenda(meetingId, user.InstanceId, instanceConnectionString);
         if (!meetingAgenda)
         {
           return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel agenda items.");
         }
       }
 
-      if (_meetingAttendeeRepository.GetMeetingAttendees(meetingId, auth.Instance.Username, auth.ConnectionString).Any())
+      if (_meetingAttendeeRepository.GetMeetingAttendees(meetingId, user.InstanceId, instanceConnectionString, masterConnectionString).Any())
       {
         var meetingAttendee =
-          _meetingAttendeeRepository.DeleteMeetingAttendees(meetingId, auth.Instance.Username, auth.ConnectionString);
+          _meetingAttendeeRepository.DeleteMeetingAttendees(meetingId, user.InstanceId, instanceConnectionString);
         if (!meetingAttendee)
         {
           return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel agenda attendee's.");
         }
       }
 
-      if (_meetingAttachmentRepository.GetMeetingAttachments(meetingId, auth.Instance.Username, auth.ConnectionString)
+      if (_meetingAttachmentRepository.GetMeetingAttachments(meetingId, user.InstanceId, instanceConnectionString)
         .Any())
       {
         var meetingAttachments =
-          _meetingAttachmentRepository.DeleteMeetingAcchments(meetingId, auth.Instance.Username, auth.ConnectionString);
+          _meetingAttachmentRepository.DeleteMeetingAcchments(meetingId, user.InstanceId, instanceConnectionString);
         if (!meetingAttachments)
         {
           return new KeyValuePair<bool, string>(false,
@@ -786,20 +775,20 @@ namespace Core
         }
       }
 
-      if (_meetingNoteRepository.GetMeetingNotes(meetingId, auth.Instance.Username, auth.ConnectionString).Any())
+      if (_meetingNoteRepository.GetMeetingNotes(meetingId, user.InstanceId, instanceConnectionString).Any())
       {
         var notesResult =
-          _meetingNoteRepository.DeleteMeetingNotes(meetingId, auth.Instance.Username, auth.ConnectionString);
+          _meetingNoteRepository.DeleteMeetingNotes(meetingId, user.InstanceId, instanceConnectionString);
         if (!notesResult)
         {
           return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel agenda notes.");
         }
       }
 
-      if (_meetingActionRepository.GetMeetingActions(meetingId, auth.Instance.Username, auth.ConnectionString).Any())
+      if (_meetingActionRepository.GetMeetingActions(meetingId, user.InstanceId, instanceConnectionString).Any())
       {
         var actionResult =
-          _meetingActionRepository.DeleteMeetingActions(meetingId, auth.Instance.Username, auth.ConnectionString);
+          _meetingActionRepository.DeleteMeetingActions(meetingId, user.InstanceId, instanceConnectionString);
         if (!actionResult)
         {
           return new KeyValuePair<bool, string>(false, "There was a issue removing the meetingViewModel agenda actions.");
@@ -809,51 +798,64 @@ namespace Core
       return new KeyValuePair<bool, string>(true, "Successful.");
     }
 
-    public MeetingAttendee GetAttendee(string token, Guid attendeeId, Guid meetingId)
+    public MeetingAttendee GetAttendee(
+      AuthRestModel user, Guid attendeeId, Guid meetingId)
     {
-      var userInfo = _authenticationService.GetUserInfo(token);
-      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
-      var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
-        _applicationSetting.Schema,
-        _applicationSetting.CreateConnectionString(
-          _applicationSetting.Server,
-          _applicationSetting.Catalogue,
-          _applicationSetting.Username,
-          _applicationSetting.Password));
-      var userConnectionString = GetConnectionString(instance.Password, instance.Username);
-      var data = _meetingAttendeeRepository.GetMeetingAttendees(meetingId, instance.Username, userConnectionString)
+      var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+        _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
+      
+      var masterConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+        _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
+      
+//      var userInfo = _authenticationService.GetUserInfo(token);
+//      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
+//      var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
+//        _applicationSetting.Schema,
+//        _applicationSetting.CreateConnectionString(
+//          _applicationSetting.Server,
+//          _applicationSetting.Catalogue,
+//          _applicationSetting.Username,
+//          _applicationSetting.Password));
+//      var userConnectionString = GetConnectionString(instance.Password, instance.Username);
+      var data = _meetingAttendeeRepository.GetMeetingAttendees(meetingId, user.InstanceId, instanceConnectionString, masterConnectionString)
         .FirstOrDefault(i => i.Id == attendeeId);
       return data;
     }
 
-    public IEnumerable<MinutzAction> GetMinutzActions(string referenceId,
-      string token)
+    public IEnumerable<MinutzAction> GetMinutzActions(
+      string referenceId, AuthRestModel user)
     {
       if (string.IsNullOrEmpty(referenceId))
       {
         throw new ArgumentNullException(nameof(referenceId), "Please provide a valid reference id.");
       }
 
-      if (string.IsNullOrEmpty(token))
-      {
-        throw new ArgumentNullException(nameof(token), "Please provide a valid user token unique identifier.");
-      }
+//      if (string.IsNullOrEmpty(token))
+//      {
+//        throw new ArgumentNullException(nameof(token), "Please provide a valid user token unique identifier.");
+//      }
 
-      var userInfo = _authenticationService.GetUserInfo(token);
-      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
-      var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
-        _applicationSetting.Schema,
-        _applicationSetting.CreateConnectionString(
-          _applicationSetting.Server,
-          _applicationSetting.Catalogue,
-          _applicationSetting.Username,
-          _applicationSetting.Password));
-      var userConnectionString = GetConnectionString(instance.Password, instance.Username);
+//      var userInfo = _authenticationService.GetUserInfo(token);
+//      var applicationUserProfile = _userValidationService.GetUser(userInfo.Sub);
+//      var instance = _instanceRepository.GetByUsername(applicationUserProfile.InstanceId,
+//        _applicationSetting.Schema,
+//        _applicationSetting.CreateConnectionString(
+//          _applicationSetting.Server,
+//          _applicationSetting.Catalogue,
+//          _applicationSetting.Username,
+//          _applicationSetting.Password));
+//      var userConnectionString = GetConnectionString(instance.Password, instance.Username);
+      
+      var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+        _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
+          
+      var masterConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+        _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
 
-      if (referenceId != applicationUserProfile.InstanceId)
+      if (referenceId != user.InstanceId)
       {
         var actions =
-          _meetingActionRepository.GetMeetingActions(Guid.Parse(referenceId), instance.Username, userConnectionString);
+          _meetingActionRepository.GetMeetingActions(Guid.Parse(referenceId), user.InstanceId, instanceConnectionString);
         return actions;
       }
 
@@ -865,27 +867,27 @@ namespace Core
     }
 
     public bool InviteUser(
-      string token,
-      MeetingAttendee attendee,
-      string referenceMeetingId,
-      string inviteEmail)
+      AuthRestModel user, MeetingAttendee attendee, string referenceMeetingId, string inviteEmail)
     {
-      var auth = new AuthenticationHelper(token, _authenticationService, _instanceRepository, _applicationSetting,
-        _userValidationService);
-      string defaultConnectionString = _applicationSetting.CreateConnectionString();
+      var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+        _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
+      
+      var masterConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+        _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
+      
       return _meetingAttendeeRepository.AddInvitee(
-        attendee,
-        auth.Instance.Username,
-        auth.ConnectionString,
-        defaultConnectionString,
-        _applicationSetting.Schema,
-        referenceMeetingId,
-        inviteEmail);
+        attendee, user.InstanceId, instanceConnectionString, masterConnectionString,  _applicationSetting.Schema, referenceMeetingId, inviteEmail);
     }
 
-    public KeyValuePair<bool, string> SendMinutes(string token, Guid meetingId)
+    public KeyValuePair<bool, string> SendMinutes(AuthRestModel user, Guid meetingId)
     {
-      var meeting = this.GetMeeting(token, meetingId.ToString());
+      var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+        _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
+      
+      var masterConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+        _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
+      
+      var meeting = this.GetMeeting(user, meetingId.ToString());
       foreach (var attendee in meeting.MeetingAttendeeCollection)
       {
       }
@@ -893,11 +895,15 @@ namespace Core
     }
 
     public KeyValuePair<bool, string> SendInvatations(
-      string token,
-      Guid meetingId,
-      IInvatationService invatationService)
+      AuthRestModel user, Guid meetingId, IInvatationService invatationService)
     {
-      var meeting = this.GetMeeting(token, meetingId.ToString());
+      var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+        _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
+      
+      var masterConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+        _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
+      
+      var meeting = this.GetMeeting(user, meetingId.ToString());
       foreach (var attendee in meeting.MeetingAttendeeCollection)
       {
         var invatation = invatationService.SendMeetingInvatation(attendee, meeting,"instanceId");
@@ -905,7 +911,8 @@ namespace Core
       return new KeyValuePair<bool, string>(true, "successful");
     }
 
-    public IEnumerable<KeyValuePair<string, string>> ExtractQueries(string returnUri)
+    public IEnumerable<KeyValuePair<string, string>> ExtractQueries(
+      string returnUri)
     {
       var queries = new List<KeyValuePair<string, string>>();
       var queryCollection = returnUri.Split('?');
@@ -918,15 +925,6 @@ namespace Core
         }
       }
       return queries;
-    }
-
-    internal string GetConnectionString(string password, string username)
-    {
-      return _applicationSetting.CreateConnectionString(
-        _applicationSetting.Server,
-        _applicationSetting.Catalogue,
-        username,
-        password);
     }
   }
 }

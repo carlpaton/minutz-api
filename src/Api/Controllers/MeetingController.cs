@@ -57,8 +57,8 @@ namespace Api.Controllers
 
       _logger.LogInformation(Core.LogProvider.LoggingEvents.ListItems, "GetMeetings {ID}", 1);
       this._logService.Log(Minutz.Models.LogLevel.Info, "GetMeetings called.");
-      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      var meetingsResult = this._meetingService.GetMeetings(token, reference);
+      var userInfo = ExtractAuth();
+      var meetingsResult = this._meetingService.GetMeetings(userInfo.infoResponse, reference);
       if (meetingsResult.condition == true && meetingsResult.statusCode == 200)
         return Ok(meetingsResult.value);
       if (meetingsResult.condition == true && meetingsResult.statusCode == 404)
@@ -81,8 +81,8 @@ namespace Api.Controllers
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Minutz.Models.ViewModels.MeetingViewModel))]
     public IActionResult GetMeeting(string id, string related)
     {
-      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      return Ok(this._meetingService.GetMeeting(token, id));
+      var userInfo = ExtractAuth();
+      return Ok(this._meetingService.GetMeeting(userInfo.infoResponse, id));
     }
 
     /// <summary>
@@ -97,11 +97,7 @@ namespace Api.Controllers
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingViewModel))]
     public IActionResult CreateMeeting(string id, string instanceId = "")
     {
-      (bool condition, string message, AuthRestModel infoResponse)  userInfo = 
-        _authenticationService.Login (
-          id,
-          Request.Headers.First(i => i.Key == "Authorization").Value,
-          User.Claims.ToList().First(i=> i.Type == "exp").Value,"");
+      var userInfo = ExtractAuth();
       
       _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - entry point {ID}", 1);
       
@@ -172,9 +168,13 @@ namespace Api.Controllers
           agenda.Id = Guid.NewGuid();
         }
       }
+      
+      var userInfo = ExtractAuth();
+      
+      _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - entry point {ID}", 1);
 
-      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      var result = _meetingService.UpdateMeeting(token, meeting);
+      // var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+      var result = _meetingService.UpdateMeeting(userInfo.infoResponse, meeting);
       return new ObjectResult(result);
     }
 
@@ -193,8 +193,8 @@ namespace Api.Controllers
     {
       if (string.IsNullOrEmpty(id))
         return BadRequest("Please provide a valid id");
-      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      var result = _meetingService.DeleteMeeting(token, Guid.Parse(id));
+      var userInfo = ExtractAuth();
+      var result = _meetingService.DeleteMeeting(userInfo.infoResponse, Guid.Parse(id));
       if (result.Key)
         return Ok(result.Value);
       return BadRequest(result.Value);
@@ -210,8 +210,8 @@ namespace Api.Controllers
     {
       if (string.IsNullOrEmpty(meetingId))
         return BadRequest("Please provide a valid id");
-      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      var meeting = _meetingService.GetMeeting(token, meetingId);
+      var userInfo = ExtractAuth();
+      var meeting = _meetingService.GetMeeting(userInfo.infoResponse, meetingId);
       foreach (var attendee in meeting.MeetingAttendeeCollection)
       {
         var result = _invatationService.SendMeetingInvatation(attendee, meeting, "instanceId");
@@ -242,6 +242,16 @@ namespace Api.Controllers
       // Don't rely on or trust the FileName property without validation.
 
       return Ok(new { count = files.Count, size, filePath });
+    }
+    
+    private (bool condition, string message, AuthRestModel infoResponse) ExtractAuth()
+    {
+      (bool condition, string message, AuthRestModel infoResponse) userInfo =
+        _authenticationService.Login(
+          Request.Headers.First(i => i.Key == "access_token").Value,
+          Request.Headers.First(i => i.Key == "Authorization").Value,
+          User.Claims.ToList().First(i => i.Type == "exp").Value, "");
+      return userInfo;
     }
   }
 }

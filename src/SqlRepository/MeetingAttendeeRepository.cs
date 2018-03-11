@@ -42,20 +42,32 @@ namespace SqlRepository {
     /// <param name="schema">Schema.</param>
     /// <param name="connectionString">Connection string.</param>
     public List<MeetingAttendee> GetMeetingAttendees (
-      Guid referenceId, string schema, string connectionString) {
+      Guid referenceId, string schema, string connectionString, string masterConnectionString) {
       if (referenceId == Guid.NewGuid () || string.IsNullOrEmpty (schema) || string.IsNullOrEmpty (connectionString))
         throw new ArgumentException ("Please provide a valid meeting attendee identifier, schema or connection string.");
+      var people = new List<Person>();
+      using (IDbConnection persondbConnection = new SqlConnection(masterConnectionString))
+      {
+        persondbConnection.Open ();
+        var personSql = $"SELECT * FROM [app].[Person] ";
+        people = persondbConnection.Query<Person> (personSql).ToList();
+      }
+
       using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
         dbConnection.Open ();
         
-        var sql = $@"select  att.Id, att.ReferanceId, att.PersonIdentity, att.Email,att.Role, p.ProfilePicture  
-                    FROM [{schema}].[MeetingAttendee] att 
-                    INNER JOIN app.Person p on p.Email = att.Email 
+        var sql = $@"select  att.Id, att.ReferanceId, att.PersonIdentity, att.Email,att.Role 
+                    FROM [{schema}].[MeetingAttendee] att  
                     WHERE att.ReferanceId = '{referenceId.ToString()}'";
         var data = dbConnection.Query<MeetingAttendee> (sql);
         foreach (var item in data) {
           item.ReferenceId = referenceId;
-
+          var personDetail = people.FirstOrDefault(i => i.Email == item.Email);
+          if (personDetail != null)
+          {
+            item.Picture = personDetail.ProfilePicture;
+            item.Name = $"{personDetail.FirstName} {personDetail.LastName}";
+          }
         }
         return data.ToList ();
       }
