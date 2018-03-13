@@ -11,7 +11,7 @@ namespace Interface.Repositories {
       Guid referenceId, string schema, string connectionString, string masterConnectionString);
     
     List<MeetingAttendee> GetAvalibleAttendees (
-      string schema, string connectionString);
+      string schema, string connectionString, string masterConnectionString);
     
     IEnumerable<MeetingAttendee> List (
       string schema, string connectionString);

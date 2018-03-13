@@ -79,12 +79,49 @@ namespace SqlRepository {
     /// <returns>The avalible attendees.</returns>
     /// <param name="schema">Schema.</param>
     /// <param name="connectionString">Connection string.</param>
+    /// <param name="masterConnectionString"></param>
     public List<MeetingAttendee> GetAvalibleAttendees (
-      string schema, string connectionString) {
+      string schema, string connectionString, string masterConnectionString) {
+      var people = new List<Person>();
+      using (IDbConnection masterdbConnection = new SqlConnection(masterConnectionString))
+      {
+        masterdbConnection.Open ();
+        var personSql = $"select * from [app].[Person]";
+        people = masterdbConnection.Query<Person> (personSql).ToList();
+      }
+
       using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
         dbConnection.Open ();
         var sql = $"select * from [{schema}].[AvailibleAttendee]";
         var data = dbConnection.Query<MeetingAttendee> (sql);
+        foreach (MeetingAttendee meetingAttendee in data)
+        {
+          var query = string.Empty;
+          if (meetingAttendee.Email == null) query = meetingAttendee.PersonIdentity;
+          if (meetingAttendee.Email != null) query = meetingAttendee.Email;
+          var person = people.FirstOrDefault(i => i.Email == query);
+          if (person != null)
+          {
+            if (string.IsNullOrEmpty(person.FullName))
+            {
+              meetingAttendee.Name = person.FirstName;
+            }
+            else
+            {
+              meetingAttendee.Name = person.FullName;
+            }
+            meetingAttendee.Picture = person.ProfilePicture;
+            meetingAttendee.PersonIdentity = person.Identityid;
+            meetingAttendee.Role = person.Role;
+          }
+          else
+          {
+            meetingAttendee.Name = query.Split('@')[0];
+            meetingAttendee.Picture = $"{Environment.GetEnvironmentVariable("UI_BASE_URL")}/assets/images/avatar-empty.png";
+            meetingAttendee.PersonIdentity = meetingAttendee.PersonIdentity;
+            meetingAttendee.Role = meetingAttendee.Role;
+          }
+        }
         return data.ToList ();
       }
     }
@@ -159,6 +196,7 @@ namespace SqlRepository {
                                                                  [Id]
                                                                 ,[ReferanceId]
                                                                 ,[PersonIdentity]
+                                                                ,[Email]
                                                                 ,[Status]
                                                                 ,[Role]
                                                                 ) 
@@ -166,6 +204,7 @@ namespace SqlRepository {
                                                                  @Id
                                                                 ,@ReferenceId
                                                                 ,@PersonIdentity
+                                                                ,@Email
                                                                 ,@Status
                                                                 ,@Role
                                                                 )";
@@ -173,6 +212,7 @@ namespace SqlRepository {
           attendee.Id,
             attendee.ReferenceId,
             attendee.PersonIdentity,
+            attendee.Email,
             attendee.Status,
             attendee.Role
         });

@@ -158,7 +158,8 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(MeetingViewModel), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingViewModel))]
-    public IActionResult UpdateMeeting([FromBody] MeetingViewModel meeting)
+    public IActionResult UpdateMeeting(
+      [FromBody] MeetingViewModel meeting)
     {
       if (meeting == null)
       {

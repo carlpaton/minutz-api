@@ -17,9 +17,8 @@ namespace Notifications
       this._notify = notify;
     }
 
-    public bool SendMeetingInvatation(MeetingAttendee attendee,
-                                      Minutz.Models.ViewModels.MeetingViewModel meeting,
-                                      string instanceId)
+    public bool SendMeetingInvatation(
+      MeetingAttendee attendee, Minutz.Models.ViewModels.MeetingViewModel meeting, string instanceId)
     {
       var to = new EmailAddress(attendee.Email, attendee.Name);
       var result = new SendGridClient(_notify.NotifyKey)
@@ -38,13 +37,8 @@ namespace Notifications
       return false;
     }
 
-    internal SendGridMessage CreateInvitationMessage(EmailAddress to,
-                                                     string subject,
-                                                      string location,
-                                                     string meetingId,
-                                                     string meetingName,
-                                                     List<MeetingAgenda> agenda,
-                                                     string instanceId)
+    internal SendGridMessage CreateInvitationMessage(
+      EmailAddress to, string subject, string location, string meetingId, string meetingName, List<MeetingAgenda> agenda, string instanceId)
     {
       var message = MailHelper.CreateSingleEmail(CreateFromUser(),
                                                   to,
@@ -62,11 +56,8 @@ namespace Notifications
                                _notify.NotifyUser);
     }
 
-    internal string createInvitationHtmlMessage(string attendeeName,
-                                                string meetingId,
-                                                string meetingName,
-                                                List<MeetingAgenda> agenda,
-                                                string instanceId)
+    internal string createInvitationHtmlMessage(
+      string attendeeName, string meetingId, string meetingName, List<MeetingAgenda> agenda, string instanceId)
     {
       var message = new StringBuilder();
       message.AppendLine($"<div><h2>Welcome {attendeeName},</h2></div>");
@@ -81,10 +72,9 @@ namespace Notifications
       message.AppendLine($"<div></div>");
       return message.ToString();
     }
-    internal string createInvitationTextMessage(string attendeeName,
-                                                string meetingId,
-                                                string meetingName,
-                                                List<MeetingAgenda> agenda)
+    
+    internal string createInvitationTextMessage(
+      string attendeeName, string meetingId, string meetingName, List<MeetingAgenda> agenda)
     {
       return "and easy to do anywhere, even with C#";
     }

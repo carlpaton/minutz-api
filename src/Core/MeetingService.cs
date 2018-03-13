@@ -245,7 +245,7 @@ namespace Core
         TimeZone = meeting.TimeZone,
         UpdatedDate = DateTime.UtcNow,
         AvailableAttendeeCollection =
-          _meetingAttendeeRepository.GetAvalibleAttendees(user.InstanceId, instanceConnectionString),
+          _meetingAttendeeRepository.GetAvalibleAttendees(user.InstanceId, instanceConnectionString,masterConnectionString),
         MeetingAgendaCollection =
           _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, user.InstanceId, instanceConnectionString),
         MeetingAttachmentCollection =
@@ -323,7 +323,7 @@ namespace Core
               TimeZone = meeting.TimeZone,
               UpdatedDate = DateTime.UtcNow,
               AvailableAttendeeCollection =
-                _meetingAttendeeRepository.GetAvalibleAttendees(user.InstanceId, instanceConnectionString),
+                _meetingAttendeeRepository.GetAvalibleAttendees(user.InstanceId, instanceConnectionString,masterConnectionString),
               MeetingAgendaCollection =
                 _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, user.InstanceId, instanceConnectionString),
               MeetingAttachmentCollection =
@@ -361,7 +361,7 @@ namespace Core
             TimeZone = meeting.TimeZone,
             UpdatedDate = DateTime.UtcNow,
             AvailableAttendeeCollection =
-              _meetingAttendeeRepository.GetAvalibleAttendees(user.InstanceId, instanceConnectionString),
+              _meetingAttendeeRepository.GetAvalibleAttendees(user.InstanceId, instanceConnectionString,masterConnectionString),
             MeetingAgendaCollection =
               _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, user.InstanceId, instanceConnectionString),
             MeetingAttachmentCollection =
@@ -411,9 +411,11 @@ namespace Core
         meeting.Name = " demo";
         meeting.MeetingOwnerId = user.Sub;
         this._logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - Service - auth ", user);
+        var masterConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+          _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
         var availibleAttendees =
           _meetingAttendeeRepository.GetAvalibleAttendees(instanceId, _applicationSetting.CreateConnectionString(
-            _applicationSetting.Server,_applicationSetting.Catalogue,instanceId,_applicationSetting.GetInstancePassword(instanceId)));
+            _applicationSetting.Server,_applicationSetting.Catalogue,instanceId,_applicationSetting.GetInstancePassword(instanceId)),masterConnectionString);
 
         attendees.Add(new MeetingAttendee
         {
@@ -708,7 +710,7 @@ namespace Core
         var agendaItems =
           _meetingAgendaRepository.GetMeetingAgenda(meetingEntity.Id, user.InstanceId, instanceConnectionString);
         var availibeAttendees =
-          _meetingAttendeeRepository.GetAvalibleAttendees(user.InstanceId,instanceConnectionString);
+          _meetingAttendeeRepository.GetAvalibleAttendees(user.InstanceId,instanceConnectionString,masterConnectionString);
         var attendees =
           _meetingAttendeeRepository.GetMeetingAttendees(meetingEntity.Id, user.InstanceId, instanceConnectionString, masterConnectionString);
         var attachments =

@@ -284,6 +284,7 @@ namespace Core.ExternalServices
           }
           (bool condition, string message, UserResponseModel tokenResponse) newUserTokenResponse =
             this._auth0Repository.CreateToken (username, password);
+          
           if (!newUserTokenResponse.condition)
           {
             this._logService.Log (Minutz.Models.LogLevel.Error, $"[(bool condition, string message, UserResponseModel tokenResponse) newUserTokenResponse] There was a issue getting the token for user {email}");
@@ -291,6 +292,7 @@ namespace Core.ExternalServices
           }
           (bool condition, string message, AuthRestModel infoResponse) newInfoResponseResult =
             this._auth0Repository.GetUserInfo (newUserTokenResponse.tokenResponse.access_token);
+          
           if (!newInfoResponseResult.condition)
           {
             this._logService.Log (Minutz.Models.LogLevel.Error, $"[(bool condition, string message, AuthRestModel infoResponse) newInfoResponseResult] There was a issue getting the token info for user {email}");
@@ -306,6 +308,7 @@ namespace Core.ExternalServices
           // create the tables as the user is trial user;
           bool tablesCreateResult = this._applicationSetupRepository.CreateSchemaTables (
             _applicationSetting.Schema, schemaCreateResult, _applicationSetting.CreateConnectionString ());
+          
           if (!tablesCreateResult)
           {
             this._logService.Log (Minutz.Models.LogLevel.Error, $"[(bool condition, string message, AuthRestModel infoResponse) newInfoResponseResult] There was a issue creating the tables for user {email}");
@@ -358,16 +361,15 @@ namespace Core.ExternalServices
           };
           return (tablesCreateResult, "Success", createAuthRestResult);
         case RoleTypes.Guest:
-          (bool condition, string message, UserResponseModel tokenResponse) guestTokenResponse =
-            this._auth0Repository.CreateToken (username, password);
+          this._logService.Log (Minutz.Models.LogLevel.Error, $"Starting Guest signup {existsResult.person.Email}");
+          (bool condition, string message, UserResponseModel tokenResponse) guestTokenResponse = this._auth0Repository.CreateToken (username, password);
           if (!guestTokenResponse.condition)
           {
             this._logService.Log (Minutz.Models.LogLevel.Error, $"[(bool condition, string message, UserResponseModel tokenResponse) guestTokenResponse] There was a issue getting the token info for user {email}");
             return (guestTokenResponse.condition, guestTokenResponse.message, null);
           }
-
-          (bool condition, string message, AuthRestModel infoResponse) guestinfoResponseResult =
-            this._auth0Repository.GetUserInfo (guestTokenResponse.tokenResponse.access_token);
+          this._logService.Log (Minutz.Models.LogLevel.Error, $"getting Guest info from auth0 {existsResult.person.Email}");
+          (bool condition, string message, AuthRestModel infoResponse) guestinfoResponseResult = this._auth0Repository.GetUserInfo (guestTokenResponse.tokenResponse.access_token);
 
           if (!guestinfoResponseResult.condition)
           {
@@ -387,8 +389,8 @@ namespace Core.ExternalServices
             return (false, "For a guest a invitation is required", null);
           }
 
-          Instance guestInstance =
-            this._instanceRepository.GetByUsername (invitationInstanceId, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+          this._logService.Log (Minutz.Models.LogLevel.Error, $"getting Guest instance {existsResult.person.Email}");
+          Instance guestInstance = this._instanceRepository.GetByUsername (invitationInstanceId, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
 
           if (!string.IsNullOrEmpty (existsResult.person.Related))
           {
@@ -413,6 +415,11 @@ namespace Core.ExternalServices
             relatedInstances.Add ((invitationInstanceId, meetingId));
             string updatedRelatedString = relatedInstances.ToRelatedString ();
             existsResult.person.Related = updatedRelatedString;
+            existsResult.person.Active = true;
+            existsResult.person.ProfilePicture = guestinfoResponseResult.infoResponse.Picture;
+            existsResult.person.Role = RoleTypes.Guest;
+            
+            this._logService.Log (Minutz.Models.LogLevel.Error, $"updating Guest info {existsResult.person.Email}");
             (bool condition, string message) updatedPerson = this._userRepository.UpdatePerson (this._applicationSetting.CreateConnectionString (), this._applicationSetting.Schema, existsResult.person);
             if (!updatedPerson.condition)
             {
@@ -420,7 +427,7 @@ namespace Core.ExternalServices
               return (false, "There was a problem updating the person information for a new invatation", null);
             }
           }
-
+          this._logService.Log (Minutz.Models.LogLevel.Error, $"update Guest invite status {existsResult.person.Email}");
           (bool condition, string message) meetingResult = this._meetingAttendeeRepository.UpdateInviteeStatus (
             existsResult.person.Email, existsResult.person.Identityid, "Accepted", invitationInstanceId, this._applicationSetting.CreateConnectionString (
               this._applicationSetting.Server, this._applicationSetting.Catalogue, guestInstance.Username, guestInstance.Password));
