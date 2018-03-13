@@ -48,7 +48,8 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(List<Minutz.Models.ViewModels.MeetingViewModel>), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(List<Minutz.Models.ViewModels.MeetingViewModel>))]
-    public IActionResult GetMeetings(string reference)
+    public IActionResult GetMeetings(
+    string reference)
     {
       if (!string.IsNullOrEmpty(reference))
       {
@@ -79,7 +80,8 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(Minutz.Models.ViewModels.MeetingViewModel), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Minutz.Models.ViewModels.MeetingViewModel))]
-    public IActionResult GetMeeting(string id, string related)
+    public IActionResult GetMeeting(
+      string id, string related)
     {
       var userInfo = ExtractAuth();
       return Ok(this._meetingService.GetMeeting(userInfo.infoResponse, id));
@@ -95,7 +97,8 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(MeetingViewModel), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingViewModel))]
-    public IActionResult CreateMeeting(string id, string instanceId = "")
+    public IActionResult CreateMeeting(
+      string id, string instanceId = "")
     {
       var userInfo = ExtractAuth();
       
@@ -111,7 +114,7 @@ namespace Api.Controllers
         IsFormal = false,
         IsLocked = false,
         IsPrivate = true,
-        Time = "12",
+        Time = $"{DateTime.UtcNow.Hour.ToString()}:00",
         TimeZoneOffSet = 2,
         IsReacurance = false,
         Location = "Durban",
@@ -219,6 +222,7 @@ namespace Api.Controllers
       return Ok();
     }
 
+    [Authorize]
     [HttpPost("api/UploadMeetingFiles")]
     public async Task<IActionResult> Post(List<IFormFile> files)
     {
@@ -227,7 +231,7 @@ namespace Api.Controllers
       // full path to file in temp location
       var filePath = Path.GetTempFileName();
 
-      foreach (var formFile in files)
+      foreach (var formFile in Request.Form.Files)
       {
         if (formFile.Length > 0)
         {
@@ -242,7 +246,7 @@ namespace Api.Controllers
       // Don't rely on or trust the FileName property without validation.
 
       return Ok(new { count = files.Count, size, filePath });
-    }
+      }
     
     private (bool condition, string message, AuthRestModel infoResponse) ExtractAuth()
     {
