@@ -1,8 +1,8 @@
 FROM microsoft/aspnetcore-build:2 AS build-env
 ARG UPDATE_DLL
 WORKDIR /app
-COPY src/minutz.sln .
-RUN dotnet restore
+# COPY src/minutz.sln .
+# RUN dotnet restore
 
 COPY . .
 RUN dotnet publish src/minutz.sln -c pipelines -o out 
