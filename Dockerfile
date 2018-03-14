@@ -1,10 +1,10 @@
 FROM microsoft/aspnetcore-build:2 AS build-env
 ARG UPDATE_DLL
 WORKDIR /app
-COPY src/minutz.sln ./
+COPY src/minutz.sln .
 RUN dotnet restore
 
-COPY . ./
+COPY . .
 RUN dotnet publish src/minutz.sln -c pipelines -o out 
 # --version-suffix UPDATE_DLL
 FROM microsoft/aspnetcore:2
