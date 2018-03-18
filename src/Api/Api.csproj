@@ -38,6 +38,8 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="DDay.iCal" Version="2.0.0" />
+    <PackageReference Include="Ical.Net" Version="4.0.6" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="2.0.1" />
@@ -58,14 +60,12 @@
     <ProjectReference Include="..\Interface\Interface.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
     <ProjectReference Include="..\Notifications\Notifications.csproj" />
+    <ProjectReference Include="..\Reports\Reports.csproj" />
     <ProjectReference Include="..\SqlRepository\SqlRepository.csproj" />
     <ProjectReference Include="..\AuthenticationRepository\AuthenticationRepository.csproj" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Controllers\HomeController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="version.json" />

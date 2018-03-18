@@ -68,6 +68,14 @@ namespace Api.Controllers
       return StatusCode(meetingsResult.statusCode, meetingsResult.message);
     }
 
+    [Authorize]
+    [HttpGet("api/meeting/{id}/preview", Name = "Get a meeting for a user by id")]
+    public IActionResult GetPreview(string id)
+    {
+      var userInfo = ExtractAuth();
+      this._meetingService.GetMeeting(userInfo.infoResponse, id);
+      return Ok();
+    }
 
     /// <summary>
     /// Get the meetingViewModel object based on identifier.

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text;
-using AuthenticationRepository;
+﻿using AuthenticationRepository;
 using Core;
 using Core.ExternalServices;
 using Core.LogProvider;
@@ -11,11 +9,9 @@ using Interface.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Azure.KeyVault.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using Notifications;
 using SqlRepository;
 using Swashbuckle.AspNetCore.Swagger;
@@ -91,6 +87,8 @@ namespace Minutz.Api
 
       services.AddMemoryCache();
       services.AddMvc();
+      
+      
       var version = Configuration.GetSection("Version").Value;
       services.AddSwaggerGen(c =>
       {
@@ -139,7 +137,13 @@ namespace Minutz.Api
         c.SwaggerEndpoint("/swagger/v1/swagger.json", version);
       });
       app.UseCors("AllowAllOrigins");
-      app.UseMvc();
+      app.UseStaticFiles();
+      app.UseMvc(routes =>
+      {
+        routes.MapRoute(
+          name: "default",
+          template: "{controller=Home}/{action=Index}/{id?}");
+      });
     }
   }
 }
