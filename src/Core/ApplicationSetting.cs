@@ -28,6 +28,10 @@ namespace Core
     
     public string ReportUrl => Environment.GetEnvironmentVariable("ReportUrl");
 
+    public string ReportUsername => Environment.GetEnvironmentVariable("ReportUsername");
+    
+    public string ReportPassword => Environment.GetEnvironmentVariable("ReportPassword");
+
     public string GetReportTemplateKey()
     {
       return Environment.GetEnvironmentVariable("ReportMinutesKey");

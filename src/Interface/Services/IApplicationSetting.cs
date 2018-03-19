@@ -15,6 +15,10 @@
         string Authority { get; }
         
         string ReportUrl { get; }
+        
+        string ReportUsername { get; }
+    
+        string ReportPassword { get; }
 
         string GetReportTemplateKey();
         

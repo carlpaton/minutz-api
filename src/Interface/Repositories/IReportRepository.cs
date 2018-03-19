@@ -2,7 +2,7 @@
 {
     public interface IReportRepository
     {
-        byte[] CreateMinutesReport
+        (bool condition, string message, byte[] file) CreateMinutesReport
         (dynamic meeting);
     }
 }

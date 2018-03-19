@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using Interface.Repositories;
 using Interface.Services;
-using Minutz.Models.Entities;
-using Minutz.Models.ViewModels;
 using Newtonsoft.Json;
 
 namespace Reports
@@ -22,35 +19,32 @@ namespace Reports
       _httpService = httpService;
     }
 
-    public byte[] CreateMinutesReport(
-      dynamic meeting)
+    public (bool condition, string message, byte[] file) CreateMinutesReport
+      (dynamic meeting)
     {
       var payload = new
       {
-        template = new { shortid = "SJKYFyoYM"},
+        template = new { shortid = _applicationSetting.GetReportTemplateKey()},
         data = meeting
       };
       
-      var token = createAuthHeader();
+      var token = CreateAuthHeader();
       var body = MinutesRequestBody(payload);
-      var result = _httpService.Post(_applicationSetting.ReportUrl,body ,token);
-      return null;
+      var result = _httpService.PostReport(_applicationSetting.ReportUrl,body ,token);
+       return (result.condition,result.message, result.result);
     }
 
-    internal string createAuthHeader()
+    private string CreateAuthHeader()
     {
-      var username = "leeroya@gmail.com";
-      var password = "@nathan01";
+      var username = _applicationSetting.ReportUsername;
+      var password = _applicationSetting.ReportPassword;
       var hash = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(string.Format("{0}:{1}", username, password)));
       return $"Basic {hash}";
     }
 
-    internal StringContent MinutesRequestBody(dynamic model)
+    private static StringContent MinutesRequestBody(dynamic model)
     {
       return new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
     }
-
-    // minutes id :SJKYFyoYM
-    // https://minutz.jsreportonline.net/api/report
   }
 }
