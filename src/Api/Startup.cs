@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Notifications;
+using Reports;
 using SqlRepository;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -47,7 +48,7 @@ namespace Minutz.Api
     public void ConfigureServices(IServiceCollection services)
     {
 
-      
+      services.AddTransient<IHttpService, HttpService>();
       services.AddTransient<IValidationService, ValidationService>();
       services.AddTransient<IUserRepository, UserRepository>();
       services.AddTransient<IApplicationSetupRepository, ApplicationSetupRepository>();
@@ -70,6 +71,7 @@ namespace Minutz.Api
       services.AddTransient<ILogService, LogService>();
 
       services.AddTransient< IAuth0Repository,Auth0Repository>();
+      services.AddTransient<IReportRepository,JsReportRepository>();
 
       //Features
       services.AddTransient<IUserValidationService, UserValidationService>();
@@ -84,6 +86,7 @@ namespace Minutz.Api
       services.AddTransient<INotificationTypeService, NotificationTypeService>();
       services.AddTransient<ISubscriptionService, SubscriptionService>();
       services.AddTransient<IInstanceService, InstanceService>();
+      services.AddTransient<IReportService,JsReportService>();
 
       services.AddMemoryCache();
       services.AddMvc();
