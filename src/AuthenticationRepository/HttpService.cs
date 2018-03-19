@@ -1,5 +1,6 @@
 using Interface.Services;
 using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace AuthenticationRepository
 {
@@ -31,6 +32,16 @@ namespace AuthenticationRepository
         {
             var httpClient = new HttpClient ();
             httpClient.DefaultRequestHeaders.Add ("Authorization", token);
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var result = httpClient.PostAsync (endpoint, body).Result;
+            return (result.IsSuccessStatusCode, result.Content.ReadAsStringAsync ().Result);
+        }
+        
+        public (bool condition, string result) Post (
+            string endpoint, StringContent body, string header, string value)
+        {
+            var httpClient = new HttpClient ();
+            httpClient.DefaultRequestHeaders.Add (header, value);
             var result = httpClient.PostAsync (endpoint, body).Result;
             return (result.IsSuccessStatusCode, result.Content.ReadAsStringAsync ().Result);
         }

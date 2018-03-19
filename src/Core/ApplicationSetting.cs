@@ -30,7 +30,7 @@ namespace Core
 
     public string GetReportTemplateKey()
     {
-      return Environment.GetEnvironmentVariable("ReportUrl");
+      return Environment.GetEnvironmentVariable("ReportMinutesKey");
     }
 
     public string CreateConnectionString(

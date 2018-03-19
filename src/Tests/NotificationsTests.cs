@@ -1,11 +1,16 @@
 using System;
+using System.Collections.Generic;
+using AuthenticationRepository;
+using Core;
 using Notifications;
 using NUnit.Framework;
 using Minutz.Models.Entities;
+using Reports;
+using SqlRepository;
 
 namespace Tests
 {
-  public class NotificationsTests
+  public class NotificationsTests: TestBase
   {
     //[Test]
     public void Notify_Given_EmptyApiKeyEnvironmentSetting_Should_ThrowException()
@@ -61,6 +66,28 @@ namespace Tests
       var not = new StartupService(notify);
       var q = not.SendInvitationMessage(attendee, meeting);
       Assert.True(true);
+    }
+
+    [Test]
+    public void TestReport()
+    {
+      var appsetting = new ApplicationSetting(new InstanceRepository());
+      var reportRepo = new JsReportRepository(appsetting,new HttpService());
+      var agenditems = new List<dynamic>(){new {agendaHeading = "Some cool meeting idea",agendaText = "Some other information"}};
+      var attendees = new List<dynamic>() {new {name = "Lee-Roy", role = "meeting owner"}};
+      var notes = new List<dynamic>() {new {noteText = "Somethning to note"}};
+      reportRepo.CreateMinutesReport(new 
+        {
+          name = "Some cool meeting",
+          date = DateTime.Now,
+          location = "durban",
+          time = DateTime.UtcNow,
+          purpose = "our purpose",
+          outcome = "some outcome",
+          agenda = agenditems,
+          attendees = attendees,
+          notes = notes
+        });
     }
   }
 }

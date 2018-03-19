@@ -12,6 +12,6 @@ namespace Minutz.Models.ViewModels
     public string outcome { get; set; }
     public List<JsReportMinutesAgenda> agenda { get; set; }
     public List<JsReportAttendee> attendees { get; set; }
-    public List<JsReportAttendee> notes { get; set; }
+    public List<JsReportNote> notes { get; set; }
   }
 }
