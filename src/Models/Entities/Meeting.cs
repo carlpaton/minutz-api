@@ -10,6 +10,7 @@ namespace Minutz.Models.Entities
     public DateTime UpdatedDate { get; set; }
     public string Time { get; set; }
     public int Duration { get; set; }
+    public string Location { get; set; }
     public bool IsReacurance { get; set; }
     public bool IsPrivate { get; set; }
     public string ReacuranceType { get; set; }
