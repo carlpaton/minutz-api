@@ -69,7 +69,7 @@ namespace Api.Controllers
     }
 
     [Authorize]
-    [HttpGet("api/meeting/{id}/preview", Name = "Get a meeting for a user by id")]
+    [HttpGet("api/meetingpreview/{id}", Name = "Get a meeting for a user by id")]
     public IActionResult GetPreview(string id)
     {
       var userInfo = ExtractAuth();
