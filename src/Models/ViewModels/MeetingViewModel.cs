@@ -16,6 +16,7 @@ namespace Minutz.Models.ViewModels
     public int ReacuranceType { get; set; }
     public bool IsLocked { get; set; }
     public bool IsFormal { get; set; }
+    public string Status { get; set; }
     public string Location {get;set;}
     public string TimeZone { get; set; }
     public int TimeZoneOffSet{ get; set;}

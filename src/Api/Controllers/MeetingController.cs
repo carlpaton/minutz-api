@@ -68,14 +68,7 @@ namespace Api.Controllers
       return StatusCode(meetingsResult.statusCode, meetingsResult.message);
     }
 
-    [Authorize]
-    [HttpGet("api/meetingpreview/{id}", Name = "Get a meeting for a user by id")]
-    public IActionResult GetPreview(string id)
-    {
-      var userInfo = ExtractAuth();
-      this._meetingService.GetMeeting(userInfo.infoResponse, id);
-      return Ok();
-    }
+
 
     /// <summary>
     /// Get the meetingViewModel object based on identifier.
@@ -88,11 +81,12 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(Minutz.Models.ViewModels.MeetingViewModel), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Minutz.Models.ViewModels.MeetingViewModel))]
-    public IActionResult GetMeeting(
-      string id, string related)
+    public IActionResult GetMeeting
+      (string id, string related)
     {
       var userInfo = ExtractAuth();
-      return Ok(this._meetingService.GetMeeting(userInfo.infoResponse, id));
+      var meeting = this._meetingService.GetMeeting(userInfo.infoResponse, id);
+      return Ok(new { status = 200, data = meeting });
     }
 
     /// <summary>
@@ -105,8 +99,8 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(MeetingViewModel), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingViewModel))]
-    public IActionResult CreateMeeting(
-      string id, string instanceId = "")
+    public IActionResult CreateMeeting
+      (string id, string instanceId = "")
     {
       var userInfo = ExtractAuth();
       
@@ -166,8 +160,8 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(MeetingViewModel), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingViewModel))]
-    public IActionResult UpdateMeeting(
-      [FromBody] MeetingViewModel meeting)
+    public IActionResult UpdateMeeting
+      ([FromBody] MeetingViewModel meeting)
     {
       if (meeting == null)
       {
@@ -201,7 +195,8 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(string), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(string))]
-    public IActionResult DeleteMeeting(string id)
+    public IActionResult DeleteMeeting
+      (string id)
     {
       if (string.IsNullOrEmpty(id))
         return BadRequest("Please provide a valid id");

@@ -40,6 +40,16 @@ namespace Api.Controllers
        return BadRequest(result.Value);
      }
     
+    [Authorize]
+    [HttpGet("api/meetingminutes/{meetingId}/preview")]
+    public IActionResult GetPreview(string meetingId)
+    {
+      var userInfo = ExtractAuth();
+      this._meetingService.GetMeeting(userInfo.infoResponse, meetingId);
+      return Ok();
+    }
+    
+    
     private (bool condition, string message, AuthRestModel infoResponse) ExtractAuth()
     {
       (bool condition, string message, AuthRestModel infoResponse) userInfo =

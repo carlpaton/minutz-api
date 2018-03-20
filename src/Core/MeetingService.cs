@@ -191,34 +191,9 @@ namespace Core
     /// <returns>The meeting.</returns>
     /// <param name="token">Token.</param>
     /// <param name="id">Identifier.</param>
-    public Minutz.Models.ViewModels.MeetingViewModel GetMeeting(
-      AuthRestModel user, string id)
+    public Minutz.Models.ViewModels.MeetingViewModel GetMeeting
+      (AuthRestModel user, string id)
     {
-//      var auth = new AuthenticationHelper(token, _authenticationService, _instanceRepository, _applicationSetting,
-//        _userValidationService);
-
-      // if (auth.UserInfo.Role == AuthenticationHelper.Guest)
-      // {
-      //   if (string.IsNullOrEmpty(auth.UserInfo.Related))
-      //   {
-      //     return new Minutz.Models.ViewModels.MeetingViewModel();
-      //   }
-      //   var relatedTuple = auth.UserInfo.Related.TupleSplit();
-      //   var relatedItems = relatedTuple.value.SplitToList("&", ";");
-      //   var meetingIds = new List<string>();
-      //   var instanceId = string.Empty;
-      //   foreach(var relatedItem in relatedItems)
-      //   {
-      //     if(relatedItem.value == id)
-      //     {
-      //       instanceId = relatedItem.key;
-      //       meetingIds.Add(relatedItem.value);
-      //     }
-      //   }
-      //   if(!meetingIds.Any()) return new Minutz.Models.ViewModels.MeetingViewModel();
-        
-      // }
-      
       var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
         _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
           
@@ -238,6 +213,7 @@ namespace Core
         IsReacurance = meeting.IsReacurance,
         MeetingOwnerId = meeting.MeetingOwnerId,
         Outcome = meeting.Outcome,
+        Status = meeting.Status,
         Purpose = meeting.Purpose,
         ReacuranceType = int.Parse(meeting.ReacuranceType),
         Tag = meeting.Tag.Split(',').ToList(),
@@ -263,8 +239,8 @@ namespace Core
     /// </summary>
     /// <returns>The meetings.</returns>
     /// <param name="token">Token.</param>
-    public (bool condition, int statusCode, string message, IEnumerable<Minutz.Models.ViewModels.MeetingViewModel> value) GetMeetings(
-        AuthRestModel user, string referenceKey)
+    public (bool condition, int statusCode, string message, IEnumerable<Minutz.Models.ViewModels.MeetingViewModel> value) GetMeetings
+      (AuthRestModel user, string referenceKey)
     {
       (string key, string reference) reference = (string.Empty, string.Empty);
       if (!string.IsNullOrEmpty(referenceKey))
@@ -274,9 +250,6 @@ namespace Core
 
       try
       {
-//        var auth = new AuthenticationHelper(
-//          token, _authenticationService, _instanceRepository,  _applicationSetting, _userValidationService);
-
         if (user.InstanceId == null)
           return (true, 404, "There are no meetings.", new List<Minutz.Models.ViewModels.MeetingViewModel>());
 
@@ -317,6 +290,7 @@ namespace Core
               MeetingOwnerId = meeting.MeetingOwnerId,
               Outcome = meeting.Outcome,
               Purpose = meeting.Purpose,
+              Status = meeting.Status,
               ReacuranceType = int.Parse(meeting.ReacuranceType),
               Tag = meeting.Tag.Split(',').ToList(),
               Time = meeting.Time,
@@ -355,6 +329,7 @@ namespace Core
             MeetingOwnerId = meeting.MeetingOwnerId,
             Outcome = meeting.Outcome,
             Purpose = meeting.Purpose,
+            Status = meeting.Status,
             ReacuranceType = int.Parse(meeting.ReacuranceType),
             Tag = meeting.Tag.Split(',').ToList(),
             Time = meeting.Time,
@@ -382,8 +357,8 @@ namespace Core
       }
     }
 
-    public KeyValuePair<bool, Minutz.Models.ViewModels.MeetingViewModel> CreateMeeting(
-      AuthRestModel user, Meeting meeting, List<MeetingAttendee> attendees, List<MeetingAgenda> agenda, List<MeetingNote> notes, List<MeetingAttachment> attachements,
+    public KeyValuePair<bool, Minutz.Models.ViewModels.MeetingViewModel> CreateMeeting
+    (AuthRestModel user, Meeting meeting, List<MeetingAttendee> attendees, List<MeetingAgenda> agenda, List<MeetingNote> notes, List<MeetingAttachment> attachements,
       List<MinutzAction> actions, string instanceId = "")
     {
       if (string.IsNullOrEmpty(instanceId))
@@ -402,20 +377,25 @@ namespace Core
 
       this._logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - Service - entry point {ID}", 1);
       
-      
-      //var auth = new AuthenticationHelper(token, _authenticationService, _instanceRepository, _applicationSetting, _userValidationService);
-      
       if (!string.IsNullOrEmpty(user.InstanceId))
       {
         this._logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - Service - auth ", user);
+        
         meeting.Name = " demo";
         meeting.MeetingOwnerId = user.Sub;
+        if (string.IsNullOrEmpty(meeting.Status))
+        {
+          meeting.Status = "create";
+        }
+
         this._logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - Service - auth ", user);
-        var masterConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
-          _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
+        
+        var masterConnectionString = _applicationSetting.CreateConnectionString
+          (_applicationSetting.Server, _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
+        
         var availibleAttendees =
-          _meetingAttendeeRepository.GetAvalibleAttendees(instanceId, _applicationSetting.CreateConnectionString(
-            _applicationSetting.Server,_applicationSetting.Catalogue,instanceId,_applicationSetting.GetInstancePassword(instanceId)),masterConnectionString);
+          _meetingAttendeeRepository.GetAvalibleAttendees(instanceId, _applicationSetting.CreateConnectionString
+            (_applicationSetting.Server,_applicationSetting.Catalogue,instanceId,_applicationSetting.GetInstancePassword(instanceId)),masterConnectionString);
 
         attendees.Add(new MeetingAttendee
         {
@@ -432,8 +412,10 @@ namespace Core
         _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - Service - auth ",
           _applicationSetting.CreateConnectionString());
         
-        var saveMeeting = _meetingRepository.Add(meeting, instanceId,  _applicationSetting.CreateConnectionString(
-          _applicationSetting.Server,_applicationSetting.Catalogue,instanceId,_applicationSetting.GetInstancePassword(instanceId)));
+        var saveMeeting = _meetingRepository.Add
+        (meeting, instanceId,  _applicationSetting.CreateConnectionString
+          (_applicationSetting.Server,_applicationSetting.Catalogue,instanceId,_applicationSetting.GetInstancePassword(instanceId)));
+        
         if (saveMeeting)
         {
           foreach (var agendaItem in agenda)
@@ -535,6 +517,7 @@ namespace Core
             IsPrivate = meeting.IsPrivate,
             IsReacurance = meeting.IsReacurance,
             MeetingNoteCollection = notes,
+            Status = meeting.Status,
             MeetingOwnerId = meeting.MeetingOwnerId,
             Outcome = meeting.Outcome,
             Purpose = meeting.Purpose,
@@ -566,6 +549,7 @@ namespace Core
           IsLocked = meeting.IsLocked,
           IsPrivate = meeting.IsPrivate,
           IsReacurance = meeting.IsReacurance,
+          Status = meeting.Status,
           MeetingNoteCollection = notes,
           MeetingOwnerId = meeting.MeetingOwnerId,
           Outcome = meeting.Outcome,
@@ -581,8 +565,8 @@ namespace Core
       }
     }
 
-    public Minutz.Models.ViewModels.MeetingViewModel UpdateMeeting(
-      AuthRestModel user, Minutz.Models.ViewModels.MeetingViewModel meetingViewModel)
+    public Minutz.Models.ViewModels.MeetingViewModel UpdateMeeting
+      (AuthRestModel user, Minutz.Models.ViewModels.MeetingViewModel meetingViewModel)
     {
       // var auth = new AuthenticationHelper(token, _authenticationService, _instanceRepository, _applicationSetting,
        //  _userValidationService);
