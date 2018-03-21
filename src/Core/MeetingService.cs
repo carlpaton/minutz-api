@@ -591,6 +591,7 @@ namespace Core
           IsFormal = meetingViewModel.IsFormal,
           IsLocked = meetingViewModel.IsLocked,
           IsPrivate = meetingViewModel.IsPrivate,
+          Location = meetingViewModel.Location,
           IsReacurance = meetingViewModel.IsReacurance,
           MeetingOwnerId = meetingViewModel.MeetingOwnerId,
           Outcome = meetingViewModel.Outcome,
