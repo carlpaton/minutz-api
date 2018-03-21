@@ -173,7 +173,7 @@ namespace Core
           _meetingNoteRepository.GetMeetingNotes(meeting.Id, user.InstanceId, instanceConnectionString),
         MeetingActionCollection = 
           _meetingActionRepository.GetMeetingActions(meeting.Id, user.InstanceId, instanceConnectionString),
-        MeetingdDecisions =
+        MeetingDecisionCollection =
           _decisionRepository.GetMeetingDecisions(meeting.Id, user.InstanceId, instanceConnectionString)
       };
       return meetingViewModel;
@@ -561,7 +561,7 @@ namespace Core
         }
 
         // Update the descisions
-        foreach (var decisionItem in meetingViewModel.MeetingdDecisions)
+        foreach (var decisionItem in meetingViewModel.MeetingDecisionCollection)
         {
           var update = _decisionRepository.Get(decisionItem.Id, user.InstanceId, instanceConnectionString);
           if (update == null || update.Id == Guid.Empty)

@@ -63,7 +63,7 @@ namespace Api.Extensions
         MeetingAttachmentCollection = new List<MeetingAttachment>(),
         MeetingAttendeeCollection = new List<MeetingAttendee>(),
         MeetingNoteCollection = new List<MeetingNote>(),
-        MeetingdDecisions = new List<MinutzDecision>()
+        MeetingDecisionCollection = new List<MinutzDecision>()
       };
       return result;
     }
@@ -124,9 +124,9 @@ namespace Api.Extensions
         viewModel.MeetingNoteCollection = new List<Minutz.Models.Entities.MeetingNote>();
       }
 
-      if (viewModel.MeetingdDecisions == null)
+      if (viewModel.MeetingDecisionCollection == null)
       {
-        viewModel.MeetingdDecisions = new List<MinutzDecision>();
+        viewModel.MeetingDecisionCollection = new List<MinutzDecision>();
       }
 
       var result = new Minutz.Models.Entities.Meeting
@@ -266,13 +266,13 @@ namespace Api.Extensions
         }
       }
 
-      if (meetingViewModel.MeetingdDecisions == null)
+      if (meetingViewModel.MeetingDecisionCollection == null)
       {
-        meetingViewModel.MeetingdDecisions = new List<Minutz.Models.Entities.MinutzDecision>();
+        meetingViewModel.MeetingDecisionCollection = new List<Minutz.Models.Entities.MinutzDecision>();
       }
       else
       {
-        meetingViewModel.MeetingdDecisions = descisions;
+        meetingViewModel.MeetingDecisionCollection = descisions;
       }
     }
   }
