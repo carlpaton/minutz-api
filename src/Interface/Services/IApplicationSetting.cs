@@ -1,17 +1,32 @@
 ﻿namespace Interface.Services
 {
-  public interface IApplicationSetting
-  {
-    string Catalogue { get;  }
-    string Schema { get; }
-    string Username { get; }
-    string Password { get; }
-    string Server { get; }
-    string Authority { get; }
-    string CreateConnectionString(string server,
-                                  string catalogue,
-                                  string username,
-                                  string password);
-    string CreateConnectionString ();
-  }
+    public interface IApplicationSetting
+    {
+        string Catalogue { get; }
+        
+        string Schema { get; }
+        
+        string Username { get; }
+        
+        string Password { get; }
+        
+        string Server { get; }
+        
+        string Authority { get; }
+        
+        string ReportUrl { get; }
+        
+        string ReportUsername { get; }
+    
+        string ReportPassword { get; }
+
+        string GetReportTemplateKey();
+        
+        string CreateConnectionString(
+            string server,string catalogue, string username,string password);
+
+        string CreateConnectionString();
+
+        string GetInstancePassword(string instance);
+    }
 }

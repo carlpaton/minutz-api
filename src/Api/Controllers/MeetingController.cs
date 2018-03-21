@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Minutz.Models;
+using Minutz.Models.Entities;
 using Minutz.Models.ViewModels;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -20,16 +21,19 @@ namespace Api.Controllers
     private readonly IMeetingService _meetingService;
     private readonly IInvatationService _invatationService;
     private readonly ILogService _logService;
+    private readonly IAuthenticationService _authenticationService;
     private readonly ILogger _logger;
 
     public MeetingController(IMeetingService meetingService,
       IInvatationService invatationService,
       ILogService logService,
-      ILoggerFactory logger)
+      ILoggerFactory logger,
+      IAuthenticationService authenticationService)
     {
       this._meetingService = meetingService;
       this._invatationService = invatationService;
       this._logService = logService;
+      _authenticationService = authenticationService;
       this._logger = logger.CreateLogger("MeetingController");
     }
 
@@ -44,7 +48,8 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(List<Minutz.Models.ViewModels.MeetingViewModel>), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(List<Minutz.Models.ViewModels.MeetingViewModel>))]
-    public IActionResult GetMeetings(string reference)
+    public IActionResult GetMeetings(
+    string reference)
     {
       if (!string.IsNullOrEmpty(reference))
       {
@@ -53,8 +58,8 @@ namespace Api.Controllers
 
       _logger.LogInformation(Core.LogProvider.LoggingEvents.ListItems, "GetMeetings {ID}", 1);
       this._logService.Log(Minutz.Models.LogLevel.Info, "GetMeetings called.");
-      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      var meetingsResult = this._meetingService.GetMeetings(token, reference);
+      var userInfo = ExtractAuth();
+      var meetingsResult = this._meetingService.GetMeetings(userInfo.infoResponse, reference);
       if (meetingsResult.condition == true && meetingsResult.statusCode == 200)
         return Ok(meetingsResult.value);
       if (meetingsResult.condition == true && meetingsResult.statusCode == 404)
@@ -62,6 +67,7 @@ namespace Api.Controllers
       _logger.LogInformation("Get all meetings called.");
       return StatusCode(meetingsResult.statusCode, meetingsResult.message);
     }
+
 
 
     /// <summary>
@@ -75,14 +81,16 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(Minutz.Models.ViewModels.MeetingViewModel), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Minutz.Models.ViewModels.MeetingViewModel))]
-    public IActionResult GetMeeting(string id, string related)
+    public IActionResult GetMeeting
+      (string id, string related)
     {
-      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      return Ok(this._meetingService.GetMeeting(token, id));
+      var userInfo = ExtractAuth();
+      var meeting = this._meetingService.GetMeeting(userInfo.infoResponse, id);
+      return Ok(new { status = 200, data = meeting });
     }
 
     /// <summary>
-    /// Create a meetingViewModel
+    /// Create a meetingViewModel, id is the acces_token and the instanceId is the related instance that the user selected
     /// </summary>
     /// <returns>The created meetingViewModel object.</returns>
     [Authorize]
@@ -91,10 +99,13 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(MeetingViewModel), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingViewModel))]
-    public IActionResult CreateMeeting()
+    public IActionResult CreateMeeting
+      (string id, string instanceId = "")
     {
+      var userInfo = ExtractAuth();
+      
       _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - entry point {ID}", 1);
-      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+      
       _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - token {ID}", 1);
       var data = new MeetingViewModel
       {
@@ -105,7 +116,7 @@ namespace Api.Controllers
         IsFormal = false,
         IsLocked = false,
         IsPrivate = true,
-        Time = "12",
+        Time = $"{DateTime.UtcNow.Hour.ToString()}:00",
         TimeZoneOffSet = 2,
         IsReacurance = false,
         Location = "Durban",
@@ -114,6 +125,7 @@ namespace Api.Controllers
         MeetingAttachmentCollection = new List<Minutz.Models.Entities.MeetingAttachment>(),
         MeetingAttendeeCollection = new List<Minutz.Models.Entities.MeetingAttendee>(),
         MeetingNoteCollection = new List<Minutz.Models.Entities.MeetingNote>(),
+        MeetingdDecisions = new List<MinutzDecision>(),
         Outcome = string.Empty,
         Purpose = string.Empty,
         ReacuranceType = 0,
@@ -121,12 +133,15 @@ namespace Api.Controllers
       };
 
       _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - created viewmodel {ID}", 1);
-      var result = _meetingService.CreateMeeting(token, data.ToEntity(),
+      
+      var result = _meetingService.CreateMeeting(
+        userInfo.infoResponse,
+        data.ToEntity(),
         data.MeetingAttendeeCollection,
         data.MeetingAgendaCollection,
         data.MeetingNoteCollection,
         data.MeetingAttachmentCollection,
-        data.MeetingActionCollection);
+        data.MeetingActionCollection, instanceId);
       if (result.Key)
       {
         return new ObjectResult(result.Value);
@@ -146,7 +161,8 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(MeetingViewModel), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingViewModel))]
-    public IActionResult UpdateMeeting([FromBody] MeetingViewModel meeting)
+    public IActionResult UpdateMeeting
+      ([FromBody] MeetingViewModel meeting)
     {
       if (meeting == null)
       {
@@ -159,9 +175,13 @@ namespace Api.Controllers
           agenda.Id = Guid.NewGuid();
         }
       }
+      
+      var userInfo = ExtractAuth();
+      
+      _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - entry point {ID}", 1);
 
-      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      var result = _meetingService.UpdateMeeting(token, meeting);
+      // var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+      var result = _meetingService.UpdateMeeting(userInfo.infoResponse, meeting);
       return new ObjectResult(result);
     }
 
@@ -176,12 +196,13 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(string), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(string))]
-    public IActionResult DeleteMeeting(string id)
+    public IActionResult DeleteMeeting
+      (string id)
     {
       if (string.IsNullOrEmpty(id))
         return BadRequest("Please provide a valid id");
-      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      var result = _meetingService.DeleteMeeting(token, Guid.Parse(id));
+      var userInfo = ExtractAuth();
+      var result = _meetingService.DeleteMeeting(userInfo.infoResponse, Guid.Parse(id));
       if (result.Key)
         return Ok(result.Value);
       return BadRequest(result.Value);
@@ -197,8 +218,8 @@ namespace Api.Controllers
     {
       if (string.IsNullOrEmpty(meetingId))
         return BadRequest("Please provide a valid id");
-      var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-      var meeting = _meetingService.GetMeeting(token, meetingId);
+      var userInfo = ExtractAuth();
+      var meeting = _meetingService.GetMeeting(userInfo.infoResponse, meetingId);
       foreach (var attendee in meeting.MeetingAttendeeCollection)
       {
         var result = _invatationService.SendMeetingInvatation(attendee, meeting, "instanceId");
@@ -206,6 +227,7 @@ namespace Api.Controllers
       return Ok();
     }
 
+    [Authorize]
     [HttpPost("api/UploadMeetingFiles")]
     public async Task<IActionResult> Post(List<IFormFile> files)
     {
@@ -214,7 +236,7 @@ namespace Api.Controllers
       // full path to file in temp location
       var filePath = Path.GetTempFileName();
 
-      foreach (var formFile in files)
+      foreach (var formFile in Request.Form.Files)
       {
         if (formFile.Length > 0)
         {
@@ -229,6 +251,16 @@ namespace Api.Controllers
       // Don't rely on or trust the FileName property without validation.
 
       return Ok(new { count = files.Count, size, filePath });
+      }
+    
+    private (bool condition, string message, AuthRestModel infoResponse) ExtractAuth()
+    {
+      (bool condition, string message, AuthRestModel infoResponse) userInfo =
+        _authenticationService.Login(
+          Request.Headers.First(i => i.Key == "access_token").Value,
+          Request.Headers.First(i => i.Key == "Authorization").Value,
+          User.Claims.ToList().First(i => i.Type == "exp").Value, "");
+      return userInfo;
     }
   }
 }

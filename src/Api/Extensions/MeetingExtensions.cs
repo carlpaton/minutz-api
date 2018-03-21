@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Minutz.Models.Entities;
 
 namespace Api.Extensions
 {
@@ -50,17 +51,19 @@ namespace Api.Extensions
         Name = model.Name,
         Outcome = model.Outcome,
         Purpose = model.Purpose,
+        Status = model.Status,
         ReacuranceType = int.Parse( model.ReacuranceType),
         //Tag =  model.Tag,
         Time = model.Time,
         TimeZone = model.TimeZone,
         UpdatedDate = model.UpdatedDate,
-        AvailableAttendeeCollection = new List<Minutz.Models.Entities.MeetingAttendee>(),
-        MeetingActionCollection = new List<Minutz.Models.Entities.MinutzAction>(),
-        MeetingAgendaCollection = new List<Minutz.Models.Entities.MeetingAgenda>(),
-        MeetingAttachmentCollection = new List<Minutz.Models.Entities.MeetingAttachment>(),
-        MeetingAttendeeCollection = new List<Minutz.Models.Entities.MeetingAttendee>(),
-        MeetingNoteCollection = new List<Minutz.Models.Entities.MeetingNote>()
+        AvailableAttendeeCollection = new List<MeetingAttendee>(),
+        MeetingActionCollection = new List<MinutzAction>(),
+        MeetingAgendaCollection = new List<MeetingAgenda>(),
+        MeetingAttachmentCollection = new List<MeetingAttachment>(),
+        MeetingAttendeeCollection = new List<MeetingAttendee>(),
+        MeetingNoteCollection = new List<MeetingNote>(),
+        MeetingdDecisions = new List<MinutzDecision>()
       };
       return result;
     }
@@ -120,6 +123,12 @@ namespace Api.Extensions
       {
         viewModel.MeetingNoteCollection = new List<Minutz.Models.Entities.MeetingNote>();
       }
+
+      if (viewModel.MeetingdDecisions == null)
+      {
+        viewModel.MeetingdDecisions = new List<MinutzDecision>();
+      }
+
       var result = new Minutz.Models.Entities.Meeting
       {
         Id = meetingId,
@@ -129,6 +138,7 @@ namespace Api.Extensions
         IsFormal = viewModel.IsFormal,
         IsLocked = viewModel.IsLocked,
         IsPrivate = viewModel.IsPrivate,
+        Status = viewModel.Status,
         IsReacurance = viewModel.IsReacurance,
         MeetingOwnerId = viewModel.MeetingOwnerId,
         Outcome = viewModel.Outcome,
@@ -155,6 +165,7 @@ namespace Api.Extensions
         IsPrivate = entity.IsPrivate,
         IsReacurance = entity.IsReacurance,
         MeetingOwnerId = entity.MeetingOwnerId,
+        Status = entity.Status,
         Outcome = entity.Outcome,
         Purpose = entity.Purpose,
         ReacuranceType = int.Parse( entity.ReacuranceType),
@@ -167,11 +178,8 @@ namespace Api.Extensions
       return result;
     }
 
-    public static Minutz.Models.ViewModels.MeetingViewModel ToViewModel(this Minutz.Models.Entities.Meeting entity,
-                                                                        List<Minutz.Models.Entities.MeetingAgenda> agendaItems,
-                                                                        List<Minutz.Models.Entities.MeetingAttendee> attendees = null,
-                                                                        List<Minutz.Models.Entities.MeetingNote> notes = null,
-                                                                        List<Minutz.Models.Entities.MeetingAttachment> attachments = null)
+    public static Minutz.Models.ViewModels.MeetingViewModel ToViewModel
+      (this Meeting entity, List<MeetingAgenda> agendaItems, List<MeetingAttendee> attendees = null, List<MeetingNote> notes = null, List<MeetingAttachment> attachments = null, List<MinutzDecision> descisions = null)
     {
       var result = new Minutz.Models.ViewModels.MeetingViewModel
       {
@@ -186,40 +194,86 @@ namespace Api.Extensions
         MeetingOwnerId = entity.MeetingOwnerId,
         Outcome = entity.Outcome,
         Purpose = entity.Purpose,
+        Status = entity.Status,
         ReacuranceType = int.Parse( entity.ReacuranceType),
         Tag = entity.Tag.Split(',').ToList(),
         Time = entity.Time,
         TimeZone = entity.TimeZone,
         UpdatedDate = DateTime.UtcNow
       };
-      _defaultValues(result, agendaItems, attendees, notes, attachments);
+      _defaultValues(result, agendaItems, attendees, notes, attachments, descisions);
       return result;
     }
 
-    internal static void _defaultValues(Minutz.Models.ViewModels.MeetingViewModel meetingViewModel,
-                                        List<Minutz.Models.Entities.MeetingAgenda> agendaItems = null,
-                                        List<Minutz.Models.Entities.MeetingAttendee> attendees = null,
-                                        List<Minutz.Models.Entities.MeetingNote> notes = null,
-                                        List<Minutz.Models.Entities.MeetingAttachment> attachments = null)
+    internal static void _defaultValues
+      (Minutz.Models.ViewModels.MeetingViewModel meetingViewModel, List<MeetingAgenda> agendaItems = null, List<MeetingAttendee> attendees = null, List<MeetingNote> notes = null, List<MeetingAttachment> attachments = null, List<MinutzDecision> descisions = null)
     {
       if (Guid.Parse(meetingViewModel.Id) == Guid.Empty)
       {
         meetingViewModel.Id = Guid.NewGuid().ToString();
       }
+
       if (meetingViewModel.MeetingAgendaCollection == null)
+      {
         meetingViewModel.MeetingAgendaCollection = new List<Minutz.Models.Entities.MeetingAgenda>();
+      }
+      else
+      {
+        if (agendaItems != null)
+        {
+          meetingViewModel.MeetingAgendaCollection = agendaItems;
+        }
+      }
 
       if (meetingViewModel.MeetingAttendeeCollection == null)
+      {
         meetingViewModel.MeetingAttendeeCollection = new List<Minutz.Models.Entities.MeetingAttendee>();
+      }
+      else
+      {
+        if (attendees != null)
+        {
+          meetingViewModel.MeetingAttendeeCollection = attendees;
+        }
+      }
 
       if (meetingViewModel.AvailableAttendeeCollection == null)
+      {
         meetingViewModel.AvailableAttendeeCollection = new List<Minutz.Models.Entities.MeetingAttendee>();
+      }
 
       if (meetingViewModel.MeetingNoteCollection == null)
+      {
         meetingViewModel.MeetingNoteCollection = new List<Minutz.Models.Entities.MeetingNote>();
+      }
+      else
+      {
+        if (notes != null)
+        {
+          meetingViewModel.MeetingNoteCollection = notes;
+        }
+      }
 
       if (meetingViewModel.MeetingAttachmentCollection == null)
+      {
         meetingViewModel.MeetingAttachmentCollection = new List<Minutz.Models.Entities.MeetingAttachment>();
+      }
+      else
+      {
+        if(attachments != null)
+        {
+          meetingViewModel.MeetingAttachmentCollection = attachments;
+        }
+      }
+
+      if (meetingViewModel.MeetingdDecisions == null)
+      {
+        meetingViewModel.MeetingdDecisions = new List<Minutz.Models.Entities.MinutzDecision>();
+      }
+      else
+      {
+        meetingViewModel.MeetingdDecisions = descisions;
+      }
     }
   }
 }

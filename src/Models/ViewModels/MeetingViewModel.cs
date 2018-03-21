@@ -16,6 +16,7 @@ namespace Minutz.Models.ViewModels
     public int ReacuranceType { get; set; }
     public bool IsLocked { get; set; }
     public bool IsFormal { get; set; }
+    public string Status { get; set; }
     public string Location {get;set;}
     public string TimeZone { get; set; }
     public int TimeZoneOffSet{ get; set;}
@@ -30,6 +31,7 @@ namespace Minutz.Models.ViewModels
     public List<Entities.MeetingAttendee> AvailableAttendeeCollection { get; set; }
     public List<Entities.MeetingNote> MeetingNoteCollection { get; set; }
     public List<Entities.MinutzAction> MeetingActionCollection { get; set; }
+    public List<Entities.MinutzDecision> MeetingdDecisions { get; set; }
 
     public string ResultMessage { get; set; }
   }

@@ -15,7 +15,7 @@ pipelines:
         caches:
           - dotnetcore
         script:
-          - export IMAGE_COMPLETE_NAME=tzatziki/minutz-api:3.0.2.102-V1.$BITBUCKET_BUILD_NUMBER
+          - export IMAGE_COMPLETE_NAME=tzatziki/minutz-api:3.2.39.$BITBUCKET_BUILD_NUMBER
           - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
           - docker build -t $IMAGE_COMPLETE_NAME .
           - docker push $IMAGE_COMPLETE_NAME

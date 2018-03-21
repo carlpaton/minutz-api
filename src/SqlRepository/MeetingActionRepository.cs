@@ -11,7 +11,8 @@ namespace SqlRepository
 {
   public class MeetingActionRepository : IMeetingActionRepository
   {
-    public List<MinutzAction> GetMeetingActions(Guid referenceId, string schema, string connectionString)
+    public List<MinutzAction> GetMeetingActions
+      (Guid referenceId, string schema, string connectionString)
     {
       if (referenceId == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
         throw new ArgumentException("Please provide a valid meeting identifier, schema or connection string.");
@@ -24,7 +25,8 @@ namespace SqlRepository
       }
     }
 
-    public MinutzAction Get(Guid id, string schema, string connectionString)
+    public MinutzAction Get
+      (Guid id, string schema, string connectionString)
     {
       if (id == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
         throw new ArgumentException("Please provide a valid meeting identifier, schema or connection string.");
@@ -37,7 +39,8 @@ namespace SqlRepository
       }
     }
 
-    public IEnumerable<MinutzAction> List(string schema, string connectionString)
+    public IEnumerable<MinutzAction> List
+      (string schema, string connectionString)
     {
       if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(schema))
         throw new ArgumentException("Please provide a valid schema or connection string.");
@@ -50,7 +53,8 @@ namespace SqlRepository
       }
     }
 
-    public bool Add(MinutzAction action, string schema, string connectionString)
+    public bool Add
+      (MinutzAction action, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
@@ -83,7 +87,8 @@ namespace SqlRepository
       }
     }
 
-    public bool Update(MinutzAction action, string schema, string connectionString)
+    public bool Update
+      (MinutzAction action, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
@@ -104,7 +109,9 @@ namespace SqlRepository
         return instance == 1;
       }
     }
-    public bool DeleteMeetingActions(Guid referenceId, string schema, string connectionString)
+    
+    public bool DeleteMeetingActions
+      (Guid referenceId, string schema, string connectionString)
     {
       if (referenceId == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
         throw new ArgumentException("Please provide a valid meeting attendee identifier, schema or connection string.");
@@ -116,7 +123,9 @@ namespace SqlRepository
         return instance == 1;
       }
     }
-    public bool Delete(Guid id, string schema, string connectionString)
+    
+    public bool Delete
+      (Guid id, string schema, string connectionString)
     {
       if (id == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
         throw new ArgumentException("Please provide a valid meeting attendee identifier, schema or connection string.");

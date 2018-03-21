@@ -15,6 +15,7 @@ namespace Api.Models
     public bool IsPrivate { get; set; }
     public string ReacuranceType { get; set; }
     public bool IsLocked { get; set; }
+    public string Status { get; set; }
     public bool IsFormal { get; set; }
     public string TimeZone { get; set; }
     public string Tag { get; set; }

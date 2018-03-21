@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text;
-using AuthenticationRepository;
+﻿using AuthenticationRepository;
 using Core;
 using Core.ExternalServices;
 using Core.LogProvider;
@@ -11,12 +9,11 @@ using Interface.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Azure.KeyVault.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using Notifications;
+using Reports;
 using SqlRepository;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -51,7 +48,7 @@ namespace Minutz.Api
     public void ConfigureServices(IServiceCollection services)
     {
 
-      
+      services.AddTransient<IHttpService, HttpService>();
       services.AddTransient<IValidationService, ValidationService>();
       services.AddTransient<IUserRepository, UserRepository>();
       services.AddTransient<IApplicationSetupRepository, ApplicationSetupRepository>();
@@ -67,6 +64,7 @@ namespace Minutz.Api
       services.AddTransient<INotificationRoleRepository, NotificationRoleRepository>();
       services.AddTransient<INotificationTypeRepository, NotificationTypeRepository>();
       services.AddTransient<ISubscriptionRepository, SubscriptionRepository>();
+      services.AddTransient<IDecisionRepository, MeetingDecisionRepository>();
 
       //Services
       services.AddTransient<IApplicationSetting, ApplicationSetting>();
@@ -74,6 +72,7 @@ namespace Minutz.Api
       services.AddTransient<ILogService, LogService>();
 
       services.AddTransient< IAuth0Repository,Auth0Repository>();
+      services.AddTransient<IReportRepository,JsReportRepository>();
 
       //Features
       services.AddTransient<IUserValidationService, UserValidationService>();
@@ -88,9 +87,12 @@ namespace Minutz.Api
       services.AddTransient<INotificationTypeService, NotificationTypeService>();
       services.AddTransient<ISubscriptionService, SubscriptionService>();
       services.AddTransient<IInstanceService, InstanceService>();
+      services.AddTransient<IReportService,JsReportService>();
 
       services.AddMemoryCache();
       services.AddMvc();
+      
+      
       var version = Configuration.GetSection("Version").Value;
       services.AddSwaggerGen(c =>
       {
@@ -116,18 +118,7 @@ namespace Minutz.Api
       {
         options.SaveToken = true;
         options.Authority = $"https://{this._domain}/";
-        options.Audience = $"https://localhost:4200";
-        //options.Audience = $"https://{this._domain}/api/v2/";
-//        options.TokenValidationParameters = new TokenValidationParameters
-//        {
-//          ValidateIssuer = true,
-//          ValidateAudience = true,
-//          ValidateLifetime = true,
-//          ValidateIssuerSigningKey = true,
-//          ValidIssuer = $"https://{this._domain}/",
-//          ValidAudience = $"https://{this._domain}/",
-//          IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this._clientSecret))
-//        };
+        options.Audience = _clientId;
       });
     }
 
@@ -150,7 +141,13 @@ namespace Minutz.Api
         c.SwaggerEndpoint("/swagger/v1/swagger.json", version);
       });
       app.UseCors("AllowAllOrigins");
-      app.UseMvc();
+      app.UseStaticFiles();
+      app.UseMvc(routes =>
+      {
+        routes.MapRoute(
+          name: "default",
+          template: "{controller=Home}/{action=Index}/{id?}");
+      });
     }
   }
 }

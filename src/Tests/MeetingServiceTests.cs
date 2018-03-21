@@ -1,6 +1,7 @@
 ﻿using System;
 using Api.Controllers;
 using Core;
+using Core.LogProvider;
 using Interface.Services;
 using Microsoft.AspNetCore.Mvc;
 using Notifications;
@@ -10,6 +11,7 @@ using NSubstitute;
 using NUnit.Framework.Internal;
 using Interface.Repositories;
 using Microsoft.Extensions.Logging;
+using SqlRepository;
 
 namespace Tests
 {
@@ -32,25 +34,16 @@ namespace Tests
       var instanceRepository = Substitute.For<IInstanceRepository>();
       var meetingAttachmentRepository = Substitute.For<IMeetingAttachmentRepository>();
       var meetingNoteRepository = Substitute.For<IMeetingNoteRepository>();
-      var loggerFactory = Substitute.For<ILoggerFactory>();
+      var logService = Substitute.For<ILogService>();
+      var decisionRepository = Substitute.For<IDecisionRepository>();
       var meetingService =
         new MeetingService(
-        meetingRepository,
-        meetingAgendaRepository,
-        meetingAttendeeRepository,
-        meetingActionRepository,
-        authenticationService,
-        userValidationService,
-        applicationSetupRepository,
-        userRepository,
-        applicationSetting,
-        instanceRepository,
-        meetingAttachmentRepository,
-        meetingNoteRepository, loggerFactory);
+          meetingRepository,meetingAgendaRepository, meetingAttendeeRepository,
+          meetingActionRepository,applicationSetting,meetingAttachmentRepository,meetingNoteRepository,decisionRepository, logService);
       //Act
 
       //Assert
-      Assert.Throws<ArgumentNullException>(() => meetingService.GetMinutzActions(string.Empty, string.Empty));
+      Assert.Throws<ArgumentNullException>(() => meetingService.GetMinutzActions(string.Empty, new AuthRestModel()));
     }
 
     [Test]
@@ -67,27 +60,18 @@ namespace Tests
       var userRepository = Substitute.For<IUserRepository>();
       var applicationSetting = Substitute.For<IApplicationSetting>();
       var instanceRepository = Substitute.For<IInstanceRepository>();
-      var meetingattachmentRepository = Substitute.For<IMeetingAttachmentRepository>();
+      var meetingAttachmentRepository = Substitute.For<IMeetingAttachmentRepository>();
       var meetingNoteRepository = Substitute.For<IMeetingNoteRepository>();
-      var loggerFactory = Substitute.For<ILoggerFactory>();
+      var logService = Substitute.For<ILogService>();
+      var decisionRepository = Substitute.For<IDecisionRepository>();
       var meetingService =
         new MeetingService(
-          meetingRepository,
-          meetingAgendaRepository,
-          meetingAttendeeRepository,
-          meetingActionRepository,
-          authenticationService,
-          userValidationService,
-          applicationSetupRepository,
-          userRepository,
-          applicationSetting,
-          instanceRepository,
-          meetingattachmentRepository,
-          meetingNoteRepository, loggerFactory);
+          meetingRepository,meetingAgendaRepository, meetingAttendeeRepository,
+          meetingActionRepository,applicationSetting,meetingAttachmentRepository,meetingNoteRepository,decisionRepository, logService);
       //Act
 
       //Assert
-      Assert.Throws<ArgumentNullException>(() => meetingService.GetMinutzActions("referenceId", string.Empty));
+      Assert.Throws<ArgumentNullException>(() => meetingService.GetMinutzActions("referenceId", new AuthRestModel()));
     }
 
     [Test]
@@ -104,26 +88,17 @@ namespace Tests
       var userRepository = Substitute.For<IUserRepository>();
       var applicationSetting = Substitute.For<IApplicationSetting>();
       var instanceRepository = Substitute.For<IInstanceRepository>();
-      var meetingattachmentRepository = Substitute.For<IMeetingAttachmentRepository>();
+      var meetingAttachmentRepository = Substitute.For<IMeetingAttachmentRepository>();
       var meetingNoteRepository = Substitute.For<IMeetingNoteRepository>();
-      var loggerFactory = Substitute.For<ILoggerFactory>();
+      var logService = Substitute.For<ILogService>();
+      var decisionRepository = Substitute.For<IDecisionRepository>();
       var meetingService =
         new MeetingService(
-          meetingRepository,
-          meetingAgendaRepository,
-          meetingAttendeeRepository,
-          meetingActionRepository,
-          authenticationService,
-          userValidationService,
-          applicationSetupRepository,
-          userRepository,
-          applicationSetting,
-          instanceRepository,
-          meetingattachmentRepository,
-          meetingNoteRepository, loggerFactory);
+          meetingRepository,meetingAgendaRepository, meetingAttendeeRepository,
+          meetingActionRepository,applicationSetting,meetingAttachmentRepository,meetingNoteRepository,decisionRepository, logService);
       //  //Act
       Assert.Throws<ArgumentNullException>(() =>
-        meetingService.CreateMeetingAgendaItem(new MeetingAgenda(), string.Empty));
+        meetingService.CreateMeetingAgendaItem(new MeetingAgenda(), new AuthRestModel()));
       //  //Assert
     }
     
@@ -141,26 +116,17 @@ namespace Tests
       var userRepository = Substitute.For<IUserRepository>();
       var applicationSetting = Substitute.For<IApplicationSetting>();
       var instanceRepository = Substitute.For<IInstanceRepository>();
-      var meetingattachmentRepository = Substitute.For<IMeetingAttachmentRepository>();
+      var meetingAttachmentRepository = Substitute.For<IMeetingAttachmentRepository>();
       var meetingNoteRepository = Substitute.For<IMeetingNoteRepository>();
-      var loggerFactory = Substitute.For<ILoggerFactory>();
+      var logService = Substitute.For<ILogService>();
+      var decisionRepository = Substitute.For<IDecisionRepository>();
       var meetingService =
         new MeetingService(
-          meetingRepository,
-          meetingAgendaRepository,
-          meetingAttendeeRepository,
-          meetingActionRepository,
-          authenticationService,
-          userValidationService,
-          applicationSetupRepository,
-          userRepository,
-          applicationSetting,
-          instanceRepository,
-          meetingattachmentRepository,
-          meetingNoteRepository, loggerFactory);
+          meetingRepository,meetingAgendaRepository, meetingAttendeeRepository,
+          meetingActionRepository,applicationSetting,meetingAttachmentRepository,meetingNoteRepository,decisionRepository, logService);
       //  //Act
       Assert.Throws<ArgumentNullException>(() =>
-        meetingService.CreateMeetingAgendaItem(null, "token"));
+        meetingService.CreateMeetingAgendaItem(null, new AuthRestModel()));
       //  //Assert
     }
     
@@ -178,26 +144,17 @@ namespace Tests
       var userRepository = Substitute.For<IUserRepository>();
       var applicationSetting = Substitute.For<IApplicationSetting>();
       var instanceRepository = Substitute.For<IInstanceRepository>();
-      var meetingattachmentRepository = Substitute.For<IMeetingAttachmentRepository>();
+      var meetingAttachmentRepository = Substitute.For<IMeetingAttachmentRepository>();
       var meetingNoteRepository = Substitute.For<IMeetingNoteRepository>();
-      var loggerFactory = Substitute.For<ILoggerFactory>();
+      var logService = Substitute.For<ILogService>();
+      var decisionRepository = Substitute.For<IDecisionRepository>();
       var meetingService =
         new MeetingService(
-          meetingRepository,
-          meetingAgendaRepository,
-          meetingAttendeeRepository,
-          meetingActionRepository,
-          authenticationService,
-          userValidationService,
-          applicationSetupRepository,
-          userRepository,
-          applicationSetting,
-          instanceRepository,
-          meetingattachmentRepository,
-          meetingNoteRepository, loggerFactory);
+          meetingRepository,meetingAgendaRepository, meetingAttendeeRepository,
+          meetingActionRepository,applicationSetting,meetingAttachmentRepository,meetingNoteRepository,decisionRepository, logService);
       //  //Act
       Assert.Throws<ArgumentNullException>(() =>
-        meetingService.CreateMeetingAgendaItem(new MeetingAgenda(), "token"));
+        meetingService.CreateMeetingAgendaItem(new MeetingAgenda(), new AuthRestModel()));
       //  //Assert
     }
     

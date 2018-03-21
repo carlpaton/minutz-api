@@ -15,10 +15,14 @@ namespace Api.Controllers
   {
     private readonly IMeetingService _meetingService;
     private readonly IInvatationService _invationService;
-    public MeetingAttendeeController(IMeetingService meetingService, IInvatationService invatationService)
+    private readonly IAuthenticationService _authenticationService;
+
+    public MeetingAttendeeController(
+      IMeetingService meetingService, IInvatationService invatationService, IAuthenticationService authenticationService)
     {
       _meetingService = meetingService;
       _invationService = invatationService;
+      _authenticationService = authenticationService;
     }
 
     /// <summary>
@@ -29,7 +33,7 @@ namespace Api.Controllers
      [Authorize]
      public List<MeetingAttendee> Get(string referenceId)
      {
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       var userInfo = ExtractAuth();
        return new List<MeetingAttendee>();
      }
 
@@ -42,8 +46,8 @@ namespace Api.Controllers
      [Authorize]
      public MeetingAttendee GetMeetingAttendee(string referenceId, string id)
      {
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-       var result = _meetingService.GetAttendee(token, Guid.Parse(referenceId), Guid.Parse(id));
+       var userInfo = ExtractAuth();
+       var result = _meetingService.GetAttendee(userInfo.infoResponse, Guid.Parse(referenceId), Guid.Parse(id));
        return result;
      }
 
@@ -51,8 +55,8 @@ namespace Api.Controllers
      [Authorize]
      public List<MeetingAttendee> UpdateMeetingAttendees(List<MeetingAttendee> attendees)
      {
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-       var result = _meetingService.UpdateMeetingAttendees(attendees, token);
+       var userInfo = ExtractAuth();
+       var result = _meetingService.UpdateMeetingAttendees(attendees, userInfo.infoResponse);
        return result;
      }
 
@@ -93,16 +97,16 @@ namespace Api.Controllers
        {
          return BadRequest("Please provide a valid meetingId");
        }
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-       var meeting = _meetingService.GetMeeting(token, invitee.ReferenceId.ToString());
-       var instance = _meetingService.GetInstance(token);
+       var userInfo = ExtractAuth();
+       var meeting = _meetingService.GetMeeting(userInfo.infoResponse, invitee.ReferenceId.ToString());
+       //var instance = _meetingService.GetInstance(token);
        invitee.PersonIdentity = invitee.Email;
        invitee.Role = "invited";
        invitee.Status = "invited";
-       var result = _invationService.SendMeetingInvatation(invitee, meeting,instance.Username);
+       var result = _invationService.SendMeetingInvatation(invitee, meeting,userInfo.infoResponse.InstanceId);
        if (result)
        {
-         var savedUser = _meetingService.InviteUser(token, invitee,meeting.Id,invitee.Email);
+         var savedUser = _meetingService.InviteUser(userInfo.infoResponse, invitee,meeting.Id,invitee.Email);
          if (savedUser)
          {
            return new ObjectResult(invitee);
@@ -121,7 +125,7 @@ namespace Api.Controllers
      [Authorize]
      public MeetingAttendee Post([FromBody] MeetingAttendee attendee)
      {
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       var userInfo = ExtractAuth();
        return attendee;
      }
 
@@ -129,7 +133,7 @@ namespace Api.Controllers
      [Authorize]
      public MeetingAttendee Put([FromBody] MeetingAttendee attendee)
      {
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       var userInfo = ExtractAuth();
        return attendee;
      }
 
@@ -137,8 +141,18 @@ namespace Api.Controllers
      [Authorize]
      public bool Delete(string referenceId, string id)
      {
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       var userInfo = ExtractAuth();
        return true;
      }
+    
+    private (bool condition, string message, AuthRestModel infoResponse) ExtractAuth()
+    {
+      (bool condition, string message, AuthRestModel infoResponse) userInfo =
+        _authenticationService.Login(
+          Request.Headers.First(i => i.Key == "access_token").Value,
+          Request.Headers.First(i => i.Key == "Authorization").Value,
+          User.Claims.ToList().First(i => i.Type == "exp").Value, "");
+      return userInfo;
+    }
   }
 }

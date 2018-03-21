@@ -3,6 +3,7 @@ using System.Linq;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Minutz.Models.Entities;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 //using Swashbuckle.AspNetCore.SwaggerGen;
@@ -13,10 +14,13 @@ namespace Api.Controllers
   public class MinutesController : Controller
   {
     private readonly IMeetingService _meetingService;
+    private readonly IAuthenticationService _authenticationService;
 
-    public MinutesController(IMeetingService meetingService)
+    public MinutesController(
+      IMeetingService meetingService, IAuthenticationService authenticationService)
     {
       _meetingService = meetingService;
+      _authenticationService = authenticationService;
     }
 
      [HttpPost("api/meetingminutes/{referenceId}")]
@@ -29,11 +33,31 @@ namespace Api.Controllers
      {
        if (string.IsNullOrEmpty(referenceId))
          return BadRequest("Please provide a valid id");
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-       var result = _meetingService.SendMinutes(token, Guid.Parse(referenceId));
+       var userInfo = ExtractAuth();
+       var result = _meetingService.SendMinutes(userInfo.infoResponse, Guid.Parse(referenceId));
        if (result.Key)
          return Ok(result.Value);
        return BadRequest(result.Value);
      }
+    
+    [Authorize]
+    [HttpGet("api/meetingminutes/{meetingId}/preview")]
+    public IActionResult GetPreview(string meetingId)
+    {
+      var userInfo = ExtractAuth();
+      this._meetingService.GetMeeting(userInfo.infoResponse, meetingId);
+      return Ok();
+    }
+    
+    
+    private (bool condition, string message, AuthRestModel infoResponse) ExtractAuth()
+    {
+      (bool condition, string message, AuthRestModel infoResponse) userInfo =
+        _authenticationService.Login(
+          Request.Headers.First(i => i.Key == "access_token").Value,
+          Request.Headers.First(i => i.Key == "Authorization").Value,
+          User.Claims.ToList().First(i => i.Type == "exp").Value, "");
+      return userInfo;
+    }
   }
 }

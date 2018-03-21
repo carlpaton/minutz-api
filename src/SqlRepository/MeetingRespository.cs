@@ -18,7 +18,8 @@ namespace SqlRepository
     /// <param name="id">Identifier.</param>
     /// <param name="schema">Schema.</param>
     /// <param name="connectionString">Connection string.</param>
-    public Meeting Get(Guid id, string schema, string connectionString)
+    public Meeting Get
+      (Guid id, string schema, string connectionString)
     {
       if (id == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
         throw new ArgumentException("Please provide a valid meeting identifier, schema or connection string.");
@@ -37,7 +38,8 @@ namespace SqlRepository
     /// <returns>The list.</returns>
     /// <param name="schema">Schema.</param>
     /// <param name="connectionString">Connection string.</param>
-    public List<Meeting> List(string schema, string connectionString)
+    public List<Meeting> List
+      (string schema, string connectionString)
     {
       if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(schema))
         throw new ArgumentException("Please provide a valid schema or connection string.");
@@ -50,7 +52,8 @@ namespace SqlRepository
       }
     }
 
-    public List<Meeting> List(string schema, string connectionString, List<string> meetingIds)
+    public List<Meeting> List
+      (string schema, string connectionString, List<string> meetingIds)
     {
       if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(schema))
         throw new ArgumentException("Please provide a valid schema or connection string.");
@@ -79,7 +82,8 @@ namespace SqlRepository
     /// <param name="action">Action.</param>
     /// <param name="schema">Schema.</param>
     /// <param name="connectionString">Connection string.</param>
-    public bool Add(Meeting action, string schema, string connectionString)
+    public bool Add
+      (Meeting action, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
@@ -95,6 +99,7 @@ namespace SqlRepository
                                                                 ,[IsPrivate]
                                                                 ,[ReacuranceType]
                                                                 ,[IsLocked]
+                                                                ,[Status]
                                                                 ,[IsFormal]
                                                                 ,[TimeZone]
                                                                 ,[Tag]
@@ -113,6 +118,7 @@ namespace SqlRepository
                                                                 ,@IsPrivate
                                                                 ,@ReacuranceType
                                                                 ,@IsLocked
+                                                                ,@Status
                                                                 ,@IsFormal
                                                                 ,@TimeZone
                                                                 ,@Tag
@@ -134,6 +140,7 @@ namespace SqlRepository
             action.IsPrivate,
             action.ReacuranceType,
             action.IsLocked,
+            action.Status,
             action.IsFormal,
             action.TimeZone,
             action.Tag,
@@ -158,7 +165,8 @@ namespace SqlRepository
     /// <param name="meeting">Meeting.</param>
     /// <param name="schema">Schema.</param>
     /// <param name="connectionString">Connection string.</param>
-    public bool Update(Meeting meeting, string schema, string connectionString)
+    public bool Update
+      (Meeting meeting, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
@@ -172,7 +180,8 @@ namespace SqlRepository
                                  IsReacurance = @IsReacurance, 
                                  IsPrivate = @IsPrivate,
                                  ReacuranceType = @ReacuranceType, 
-                                 IsLocked = @IsLocked, 
+                                 IsLocked = @IsLocked,
+                                 Status = @Status,
                                  IsFormal = @IsFormal,
                                  TimeZone = @TimeZone,
                                  Tag = @Tag,
@@ -191,6 +200,7 @@ namespace SqlRepository
           meeting.IsPrivate,
           meeting.ReacuranceType,
           meeting.IsLocked,
+          meeting.Status,
           meeting.IsFormal,
           meeting.TimeZone,
           meeting.Tag,
@@ -210,7 +220,8 @@ namespace SqlRepository
     /// <param name="id">Identifier.</param>
     /// <param name="schema">Schema.</param>
     /// <param name="connectionString">Connection string.</param>
-    public bool Delete(Guid id, string schema, string connectionString)
+    public bool Delete
+      (Guid id, string schema, string connectionString)
     {
       if (id == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
         throw new ArgumentException("Please provide a valid meeting attendee identifier, schema or connection string.");
