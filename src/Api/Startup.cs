@@ -64,6 +64,7 @@ namespace Minutz.Api
       services.AddTransient<INotificationRoleRepository, NotificationRoleRepository>();
       services.AddTransient<INotificationTypeRepository, NotificationTypeRepository>();
       services.AddTransient<ISubscriptionRepository, SubscriptionRepository>();
+      services.AddTransient<IDecisionRepository, MeetingDecisionRepository>();
 
       //Services
       services.AddTransient<IApplicationSetting, ApplicationSetting>();

@@ -125,6 +125,7 @@ namespace Api.Controllers
         MeetingAttachmentCollection = new List<Minutz.Models.Entities.MeetingAttachment>(),
         MeetingAttendeeCollection = new List<Minutz.Models.Entities.MeetingAttendee>(),
         MeetingNoteCollection = new List<Minutz.Models.Entities.MeetingNote>(),
+        MeetingdDecisions = new List<MinutzDecision>(),
         Outcome = string.Empty,
         Purpose = string.Empty,
         ReacuranceType = 0,

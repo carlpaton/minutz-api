@@ -31,6 +31,7 @@ namespace Minutz.Models.ViewModels
     public List<Entities.MeetingAttendee> AvailableAttendeeCollection { get; set; }
     public List<Entities.MeetingNote> MeetingNoteCollection { get; set; }
     public List<Entities.MinutzAction> MeetingActionCollection { get; set; }
+    public List<Entities.MinutzDecision> MeetingdDecisions { get; set; }
 
     public string ResultMessage { get; set; }
   }
