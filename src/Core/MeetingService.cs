@@ -154,6 +154,7 @@ namespace Core
         IsReacurance = meeting.IsReacurance,
         MeetingOwnerId = meeting.MeetingOwnerId,
         Outcome = meeting.Outcome,
+        Location = meeting.Location,
         Status = meeting.Status,
         Purpose = meeting.Purpose,
         ReacuranceType = int.Parse(meeting.ReacuranceType),
