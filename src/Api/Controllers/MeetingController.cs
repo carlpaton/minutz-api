@@ -178,7 +178,7 @@ namespace Api.Controllers
       
       var userInfo = ExtractAuth();
       
-      _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - entry point {ID}", 1);
+      _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "UpdateMeeting - entry point {ID}", 1);
 
       var result = _meetingService.UpdateMeeting(userInfo.infoResponse, meeting);
       return new ObjectResult(result);
