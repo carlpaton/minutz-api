@@ -12,5 +12,7 @@ namespace Minutz.Models.Entities
     public string Picture { get; set; }
     public string Status { get; set; }
     public string Role { get; set; }
+    public string Company { get; set; }
+    public string Department { get; set; }
   }
 }

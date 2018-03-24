@@ -20,8 +20,8 @@ namespace SqlRepository
       this._logService = logService;
     }
 
-    public (bool condition, string message, Person person) GetUserByEmail (
-      string email, string schema, string connectionString)
+    public (bool condition, string message, Person person) GetUserByEmail
+      (string email, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {
@@ -31,8 +31,8 @@ namespace SqlRepository
       }
     }
 
-    public bool CheckIfNewUser ((string key, string reference) reference,
-      string authUserId, string schema, string connectionString)
+    public bool CheckIfNewUser
+      ((string key, string reference) reference, string authUserId, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {
@@ -43,8 +43,8 @@ namespace SqlRepository
       }
     }
 
-    public (bool condition, string message) CreateNewUser (
-      AuthRestModel authUser, string schema, string connectionString)
+    public (bool condition, string message) CreateNewUser
+      (AuthRestModel authUser, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {
@@ -93,14 +93,8 @@ namespace SqlRepository
       }
     }
 
-    /// <summary>
-    /// To be depricated
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="reference"></param>
-    /// <returns></returns>
-    public string CreateNewUser ((string key, string reference) relationship,
-      AuthRestModel authUser, string schema, string connectionString)
+    public string CreateNewUser
+      ((string key, string reference) relationship, AuthRestModel authUser, string schema, string connectionString)
     {
       //check if key == guest then write - guest and use the instanceid update availibleattendees, 
       if (!string.IsNullOrEmpty (relationship.key))
@@ -157,8 +151,8 @@ namespace SqlRepository
       }
     }
 
-    public AuthRestModel GetUser (
-      string authUserId, string schema, string connectionString)
+    public AuthRestModel GetUser
+      (string authUserId, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {
@@ -187,15 +181,8 @@ namespace SqlRepository
       }
     }
 
-    /// <summary>
-    /// Creates the new schema and returns the schema that can be used
-    /// </summary>
-    /// <param name="authUser"></param>
-    /// <param name="schema"></param>
-    /// <param name="connectionString"></param>
-    /// <returns>Schema value</returns>
-    public string CreateNewSchema (
-      AuthRestModel authUser, string connectionString, string masterConnectionString)
+    public string CreateNewSchema
+      (AuthRestModel authUser, string connectionString, string masterConnectionString)
     {
       var id = authUser.Sub.Split ('|') [1];
       var username = $"A_{id}";
@@ -209,8 +196,8 @@ namespace SqlRepository
       return username;
     }
 
-    public (bool condition, string message) UpdatePerson (
-      string connectionString, string schema, Person person)
+    public (bool condition, string message) UpdatePerson
+      (string connectionString, string schema, Person person)
     {
       try
       {

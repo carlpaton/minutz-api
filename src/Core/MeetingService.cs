@@ -114,7 +114,7 @@ namespace Core
           var q = attendees.FirstOrDefault(i => i.Id == attendee.Id);
           if (q != null)
           {
-            _meetingAttendeeRepository.Update(attendee, user.InstanceId, userConnectionString);
+            _meetingAttendeeRepository.Update(attendee, user.InstanceId, userConnectionString, masterConnectionString);
           }
           else
           {
@@ -655,7 +655,7 @@ namespace Core
           }
           else
           {
-            _meetingAttendeeRepository.Update(attendee, user.InstanceId, instanceConnectionString);
+            _meetingAttendeeRepository.Update(attendee, user.InstanceId, instanceConnectionString, masterConnectionString);
           }
         }
 

@@ -35,14 +35,17 @@ namespace SqlRepository {
     {
       if (referenceId == Guid.NewGuid () || string.IsNullOrEmpty (schema) || string.IsNullOrEmpty (connectionString))
         throw new ArgumentException ("Please provide a valid meeting attendee identifier, schema or connection string.");
+      
       var people = new List<Person>();
+      var instance = new Instance();
+      
       using (IDbConnection persondbConnection = new SqlConnection(masterConnectionString))
       {
         persondbConnection.Open ();
         var personSql = $"SELECT * FROM [app].[Person] ";
         people = persondbConnection.Query<Person> (personSql).ToList();
       }
-
+      
       using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {
         dbConnection.Open ();
@@ -71,6 +74,16 @@ namespace SqlRepository {
             {
               item.Name = $"{personDetail.FirstName} {personDetail.LastName}";
             }
+            if (!string.IsNullOrEmpty(personDetail.Company))
+            {
+              item.Company = personDetail.Company;
+            }
+            
+            if (!string.IsNullOrEmpty(personDetail.Department))
+            {
+              item.Department = personDetail.Department;
+            }
+
           }
           else
           {
@@ -124,7 +137,17 @@ namespace SqlRepository {
             meetingAttendee.Picture = string.IsNullOrEmpty(person.ProfilePicture)
               ? $"assets/images/avatar-empty.png"
               : person.ProfilePicture;
+
+            if (!string.IsNullOrEmpty(person.Company))
+            {
+              meetingAttendee.Company = person.Company;
+            }
             
+            if (!string.IsNullOrEmpty(person.Department))
+            {
+              meetingAttendee.Department = person.Department;
+            }
+
             result.Add(meetingAttendee);
           }
           else
@@ -288,19 +311,41 @@ namespace SqlRepository {
     }
 
     public bool Update
-      (MeetingAttendee attendee, string schema, string connectionString) 
+      (MeetingAttendee attendee, string schema, string connectionString, string masterConnectionString) 
     {
-      using (IDbConnection dbConnection = new SqlConnection (connectionString))
+      try
       {
-        dbConnection.Open ();
-        string updateQuery = $@"UPDATE [{schema}].[MeetingAttendee] 
+        bool result;
+        using (IDbConnection dbConnection = new SqlConnection (connectionString))
+        {
+          dbConnection.Open ();
+          string updateQuery = $@"UPDATE [{schema}].[MeetingAttendee] 
                              SET Referanceid = '{attendee.ReferenceId.ToString()}', 
                                  PersonIdentity = '{attendee.PersonIdentity}', 
                                  Role = '{attendee.Role}',
                                  Status = '{attendee.Status}'
                              WHERE Id = '{attendee.Id}' ";
-        var instance = dbConnection.Execute (updateQuery);
-        return instance == 1;
+          var instance = dbConnection.Execute (updateQuery);
+          result  = (instance == 1);
+        }
+        
+        using (IDbConnection dbConnection = new SqlConnection (masterConnectionString))
+        {
+          if (attendee.Company == null) attendee.Company = string.Empty;
+          if (attendee.Department == null) attendee.Department = string.Empty;
+          dbConnection.Open ();
+          string personUpdateQuery = $@"UPDATE [app].[Person] 
+                             SET Company = '{attendee.Company}', 
+                                 Department = '{attendee.Department}'
+                             WHERE Email = '{attendee.Email}' ";
+          var instance = dbConnection.Execute (personUpdateQuery);
+          result = (instance == 1);
+        }
+        return result;
+      }
+      catch (Exception e)
+      {
+        return false;
       }
     }
 

@@ -35,10 +35,13 @@ namespace Interface.Repositories {
     (bool condition, string message) UpdateInviteeStatus (
       string personIdentity, string newPersonIdentity, string status, string schema, string connectionString);
     
-    bool Update (MeetingAttendee action, string schema, string connectionString);
+    bool Update
+      (MeetingAttendee action, string schema, string connectionString, string masterConnectionString);
     
-    bool DeleteMeetingAttendees (Guid referanceId, string schema, string connectionString);
+    bool DeleteMeetingAttendees
+      (Guid referanceId, string schema, string connectionString);
     
-    bool Delete (Guid id, string schema, string connectionString);
+    bool Delete
+      (Guid id, string schema, string connectionString);
   }
 }
