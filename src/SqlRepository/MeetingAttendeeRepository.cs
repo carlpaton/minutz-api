@@ -57,8 +57,30 @@ namespace SqlRepository {
           var personDetail = people.FirstOrDefault(i => i.Email == item.Email);
           if (personDetail != null)
           {
+            item.Picture = string.IsNullOrEmpty(personDetail.ProfilePicture)
+              ? $"assets/images/avatar-empty.png"
+              : personDetail.ProfilePicture;
             item.Picture = personDetail.ProfilePicture;
-            item.Name = $"{personDetail.FirstName} {personDetail.LastName}";
+            if (string.IsNullOrEmpty(personDetail.FirstName))
+            {
+              item.Name = string.IsNullOrEmpty(personDetail.FullName) 
+                ? personDetail.Email.Split('@')[0] 
+                : personDetail.FullName;
+            }
+            else
+            {
+              item.Name = $"{personDetail.FirstName} {personDetail.LastName}";
+            }
+          }
+          else
+          {
+            if (string.IsNullOrEmpty(item.Name))
+            {
+              item.Name = string.IsNullOrEmpty(item.Email) 
+                ? item.PersonIdentity.Split('@')[0] 
+                : item.Email.Split('@')[0];
+            }
+            item.Picture = "assets/images/avatar-empty.png";
           }
         }
         return data.ToList ();
@@ -100,7 +122,7 @@ namespace SqlRepository {
               : meetingAttendee.Email;
 
             meetingAttendee.Picture = string.IsNullOrEmpty(person.ProfilePicture)
-              ? $"{Environment.GetEnvironmentVariable("UI_BASE_URL")}/assets/images/avatar-empty.png"
+              ? $"assets/images/avatar-empty.png"
               : person.ProfilePicture;
             
             result.Add(meetingAttendee);
