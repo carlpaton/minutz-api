@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Core.Helper;
 using Interface.Repositories;
 using Interface.Services;
@@ -18,6 +19,7 @@ namespace Core
     private readonly IMeetingAttachmentRepository _meetingAttachmentRepository;
     private readonly IMeetingNoteRepository _meetingNoteRepository;
     private readonly ILogService _logService;
+    private readonly IReportRepository _reportRepository;
     private readonly IApplicationSetting _applicationSetting;
     private readonly IDecisionRepository _decisionRepository;
 
@@ -26,7 +28,7 @@ namespace Core
       IMeetingAttendeeRepository meetingAttendeeRepository,IMeetingActionRepository meetingActionRepository,
       IApplicationSetting applicationSetting,IMeetingAttachmentRepository meetingAttachmentRepository,
       IMeetingNoteRepository meetingNoteRepository,IDecisionRepository decisionRepository,
-      ILogService logService)
+      ILogService logService, IReportRepository reportRepository)
     {
       _meetingRepository = meetingRepository;
       _meetingAgendaRepository = meetingAgendaRepository;
@@ -35,6 +37,7 @@ namespace Core
       _meetingAttachmentRepository = meetingAttachmentRepository;
       _meetingNoteRepository = meetingNoteRepository;
       _logService = logService;
+      _reportRepository = reportRepository;
       _applicationSetting = applicationSetting;
       _decisionRepository = decisionRepository;
     }
@@ -874,6 +877,31 @@ namespace Core
       return new KeyValuePair<bool, string>(true, "");
     }
 
+    public KeyValuePair<bool, byte[]> GetMinutesPreview
+      (AuthRestModel user, Guid meetingId)
+    {
+      var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+        _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
+      
+      var masterConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+        _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
+      
+      var meeting =
+        _meetingRepository.Get(meetingId, user.InstanceId, instanceConnectionString);
+      var agendaItems =
+        _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, user.InstanceId, instanceConnectionString);
+      var notes =
+        _meetingNoteRepository.GetMeetingNotes(meeting.Id, user.InstanceId, instanceConnectionString);
+      var attendees =
+        _meetingAttendeeRepository.GetMeetingAttendees
+          (meeting.Id, user.InstanceId, instanceConnectionString, masterConnectionString);
+      
+      (bool condition, string message, byte[] file) report = _reportRepository.CreateMinutesReport
+        (CreateReportRequestPayload(meeting,agendaItems,attendees,notes));
+      
+      return new KeyValuePair<bool, byte[]>(report.condition,report.file);
+    }
+
     public KeyValuePair<bool, string> SendInvatations
       (AuthRestModel user, Guid meetingId, IInvatationService invatationService)
     {
@@ -905,6 +933,41 @@ namespace Core
         }
       }
       return queries;
+    }
+
+    private dynamic CreateReportRequestPayload
+      (Meeting meeting, List<MeetingAgenda> agendaItems, List<MeetingAttendee> attendeeCollection, List<MeetingNote> noteCollection )
+    {
+      var agenditems = new List<dynamic>();
+      var attendees = new List<dynamic>();
+      var notes = new List<dynamic>();
+      
+      foreach (var agendaItem in agendaItems)
+      {
+        agenditems.Add(new { agendaHeading = agendaItem.AgendaHeading ,agendaText = agendaItem.AgendaText });
+      }
+
+      foreach (var attendee in attendeeCollection)
+      {
+        attendees.Add(new {name = attendee.Name , role = attendee.Role });
+      }
+      
+      foreach (var note in noteCollection)
+      {
+        attendees.Add(new {noteText = note.NoteText });
+      }
+      return new 
+      {
+        name = meeting.Name,
+        date = meeting.Date,
+        location =  meeting.Location,
+        time = meeting.Time,
+        purpose = meeting.Purpose,
+        outcome = meeting.Outcome,
+        agenda = agenditems,
+        attendees = attendees,
+        notes = notes
+      };
     }
   }
 }

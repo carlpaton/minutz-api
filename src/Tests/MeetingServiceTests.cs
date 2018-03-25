@@ -36,10 +36,11 @@ namespace Tests
       var meetingNoteRepository = Substitute.For<IMeetingNoteRepository>();
       var logService = Substitute.For<ILogService>();
       var decisionRepository = Substitute.For<IDecisionRepository>();
+      var report = Substitute.For<IReportRepository>();
       var meetingService =
         new MeetingService(
           meetingRepository,meetingAgendaRepository, meetingAttendeeRepository,
-          meetingActionRepository,applicationSetting,meetingAttachmentRepository,meetingNoteRepository,decisionRepository, logService);
+          meetingActionRepository,applicationSetting,meetingAttachmentRepository,meetingNoteRepository,decisionRepository, logService, report);
       //Act
 
       //Assert
@@ -64,10 +65,11 @@ namespace Tests
       var meetingNoteRepository = Substitute.For<IMeetingNoteRepository>();
       var logService = Substitute.For<ILogService>();
       var decisionRepository = Substitute.For<IDecisionRepository>();
+      var report = Substitute.For<IReportRepository>();
       var meetingService =
         new MeetingService(
           meetingRepository,meetingAgendaRepository, meetingAttendeeRepository,
-          meetingActionRepository,applicationSetting,meetingAttachmentRepository,meetingNoteRepository,decisionRepository, logService);
+          meetingActionRepository,applicationSetting,meetingAttachmentRepository,meetingNoteRepository,decisionRepository, logService, report);
       //Act
 
       //Assert
@@ -92,10 +94,11 @@ namespace Tests
       var meetingNoteRepository = Substitute.For<IMeetingNoteRepository>();
       var logService = Substitute.For<ILogService>();
       var decisionRepository = Substitute.For<IDecisionRepository>();
+      var report = Substitute.For<IReportRepository>();
       var meetingService =
         new MeetingService(
           meetingRepository,meetingAgendaRepository, meetingAttendeeRepository,
-          meetingActionRepository,applicationSetting,meetingAttachmentRepository,meetingNoteRepository,decisionRepository, logService);
+          meetingActionRepository,applicationSetting,meetingAttachmentRepository,meetingNoteRepository,decisionRepository, logService, report);
       //  //Act
       Assert.Throws<ArgumentNullException>(() =>
         meetingService.CreateMeetingAgendaItem(new MeetingAgenda(), new AuthRestModel()));
@@ -120,10 +123,11 @@ namespace Tests
       var meetingNoteRepository = Substitute.For<IMeetingNoteRepository>();
       var logService = Substitute.For<ILogService>();
       var decisionRepository = Substitute.For<IDecisionRepository>();
+      var report = Substitute.For<IReportRepository>();
       var meetingService =
         new MeetingService(
           meetingRepository,meetingAgendaRepository, meetingAttendeeRepository,
-          meetingActionRepository,applicationSetting,meetingAttachmentRepository,meetingNoteRepository,decisionRepository, logService);
+          meetingActionRepository,applicationSetting,meetingAttachmentRepository,meetingNoteRepository,decisionRepository, logService, report);
       //  //Act
       Assert.Throws<ArgumentNullException>(() =>
         meetingService.CreateMeetingAgendaItem(null, new AuthRestModel()));
@@ -148,10 +152,11 @@ namespace Tests
       var meetingNoteRepository = Substitute.For<IMeetingNoteRepository>();
       var logService = Substitute.For<ILogService>();
       var decisionRepository = Substitute.For<IDecisionRepository>();
+      var report = Substitute.For<IReportRepository>();
       var meetingService =
         new MeetingService(
           meetingRepository,meetingAgendaRepository, meetingAttendeeRepository,
-          meetingActionRepository,applicationSetting,meetingAttachmentRepository,meetingNoteRepository,decisionRepository, logService);
+          meetingActionRepository,applicationSetting,meetingAttachmentRepository,meetingNoteRepository,decisionRepository, logService, report);
       //  //Act
       Assert.Throws<ArgumentNullException>(() =>
         meetingService.CreateMeetingAgendaItem(new MeetingAgenda(), new AuthRestModel()));

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -45,8 +46,10 @@ namespace Api.Controllers
     public IActionResult GetPreview(string meetingId)
     {
       var userInfo = ExtractAuth();
-      this._meetingService.GetMeeting(userInfo.infoResponse, meetingId);
-      return Ok();
+      var fileResult = _meetingService.GetMinutesPreview(userInfo.infoResponse, Guid.Parse(meetingId));
+      if (!fileResult.Key) return StatusCode(500);
+      var response = File(fileResult.Value, "application/pdf");
+      return response;
     }
     
     
