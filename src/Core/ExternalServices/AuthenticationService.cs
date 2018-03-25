@@ -71,6 +71,23 @@ namespace Core.ExternalServices
         instanceId = relatedInstances.FirstOrDefault ().instanceId;
       }
 
+      if (string.IsNullOrEmpty(existsResult.person.FullName))
+      {
+        if (string.IsNullOrEmpty(existsResult.person.FirstName))
+        {
+          var emailSplit = existsResult.person.Email.Split('@');
+          existsResult.person.FullName = emailSplit[0];
+          try
+          {
+            _userRepository.UpdatePerson( _applicationSetting.CreateConnectionString(),this._applicationSetting.Schema, existsResult.person);
+          }
+          catch (Exception e)
+          {
+            _logService.Log(LogLevel.Exception, e.Message);
+          }  
+        }
+      }
+
       Instance instance = this._instanceRepository.GetByUsername (instanceId, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
       userInfo.InstanceId = instance.Username;
       userInfo.Company = instance.Company;

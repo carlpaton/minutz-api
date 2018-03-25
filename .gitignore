@@ -210,3 +210,5 @@ FakesAssemblies/
 data/
 /src/.vs/minutz.sqlite
 /src/.vs/minutz/v15/sqlite3/storage.ide
+src/.DS_Store
+src/Api/.DS_Store

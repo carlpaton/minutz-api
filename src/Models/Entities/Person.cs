@@ -13,5 +13,7 @@
     public string InstanceId { get; set; }
     public bool Active { get; set; }
     public string Related { get; set; }
+    public string Company { get; set; }
+    public string Department { get; set; }
   }
 }

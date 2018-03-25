@@ -125,7 +125,7 @@ namespace Api.Controllers
         MeetingAttachmentCollection = new List<Minutz.Models.Entities.MeetingAttachment>(),
         MeetingAttendeeCollection = new List<Minutz.Models.Entities.MeetingAttendee>(),
         MeetingNoteCollection = new List<Minutz.Models.Entities.MeetingNote>(),
-        MeetingdDecisions = new List<MinutzDecision>(),
+        MeetingDecisionCollection = new List<MinutzDecision>(),
         Outcome = string.Empty,
         Purpose = string.Empty,
         ReacuranceType = 0,
@@ -178,9 +178,8 @@ namespace Api.Controllers
       
       var userInfo = ExtractAuth();
       
-      _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - entry point {ID}", 1);
+      _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "UpdateMeeting - entry point {ID}", 1);
 
-      // var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
       var result = _meetingService.UpdateMeeting(userInfo.infoResponse, meeting);
       return new ObjectResult(result);
     }

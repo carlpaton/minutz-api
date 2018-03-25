@@ -15,18 +15,14 @@ namespace SqlRepository {
     public MeetingAttendeeRepository (ILogService logService) {
       this._logService = logService;
     }
-    /// <summary>
-    /// Get the specified id, schema and connectionString.
-    /// </summary>
-    /// <returns>The get.</returns>
-    /// <param name="id">Identifier.</param>
-    /// <param name="schema">Schema.</param>
-    /// <param name="connectionString">Connection string.</param>
-    public MeetingAttendee Get (
-      Guid id, string schema, string connectionString) {
+
+    public MeetingAttendee Get
+      (Guid id, string schema, string connectionString)
+    {
       if (id == Guid.NewGuid () || string.IsNullOrEmpty (schema) || string.IsNullOrEmpty (connectionString))
         throw new ArgumentException ("Please provide a valid meeting attendee identifier, schema or connection string.");
-      using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
+      using (IDbConnection dbConnection = new SqlConnection (connectionString))
+      {
         dbConnection.Open ();
         var sql = $"select * from [{schema}].[MeetingAttendee] WHERE Id = '{id.ToString()}'";
         var data = dbConnection.Query<MeetingAttendee> (sql).FirstOrDefault ();
@@ -34,54 +30,79 @@ namespace SqlRepository {
       }
     }
 
-    /// <summary>
-    /// Gets the meeting attendees.
-    /// </summary>
-    /// <returns>The meeting attendees.</returns>
-    /// <param name="referenceId">Reference identifier.</param>
-    /// <param name="schema">Schema.</param>
-    /// <param name="connectionString">Connection string.</param>
-    public List<MeetingAttendee> GetMeetingAttendees (
-      Guid referenceId, string schema, string connectionString, string masterConnectionString) {
+    public List<MeetingAttendee> GetMeetingAttendees
+      (Guid referenceId, string schema, string connectionString, string masterConnectionString)
+    {
       if (referenceId == Guid.NewGuid () || string.IsNullOrEmpty (schema) || string.IsNullOrEmpty (connectionString))
         throw new ArgumentException ("Please provide a valid meeting attendee identifier, schema or connection string.");
+      
       var people = new List<Person>();
+      var instance = new Instance();
+      
       using (IDbConnection persondbConnection = new SqlConnection(masterConnectionString))
       {
         persondbConnection.Open ();
         var personSql = $"SELECT * FROM [app].[Person] ";
         people = persondbConnection.Query<Person> (personSql).ToList();
       }
-
-      using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
+      
+      using (IDbConnection dbConnection = new SqlConnection (connectionString))
+      {
         dbConnection.Open ();
         
-        var sql = $@"select  att.Id, att.ReferanceId, att.PersonIdentity, att.Email,att.Role 
+        var sql = $@"select  att.Id, att.ReferanceId, att.PersonIdentity, att.Email, att.Role, att.Status
                     FROM [{schema}].[MeetingAttendee] att  
                     WHERE att.ReferanceId = '{referenceId.ToString()}'";
         var data = dbConnection.Query<MeetingAttendee> (sql);
-        foreach (var item in data) {
+        foreach (var item in data)
+        {
           item.ReferenceId = referenceId;
           var personDetail = people.FirstOrDefault(i => i.Email == item.Email);
           if (personDetail != null)
           {
+            item.Picture = string.IsNullOrEmpty(personDetail.ProfilePicture)
+              ? $"assets/images/avatar-empty.png"
+              : personDetail.ProfilePicture;
             item.Picture = personDetail.ProfilePicture;
-            item.Name = $"{personDetail.FirstName} {personDetail.LastName}";
+            if (string.IsNullOrEmpty(personDetail.FirstName))
+            {
+              item.Name = string.IsNullOrEmpty(personDetail.FullName) 
+                ? personDetail.Email.Split('@')[0] 
+                : personDetail.FullName;
+            }
+            else
+            {
+              item.Name = $"{personDetail.FirstName} {personDetail.LastName}";
+            }
+            if (!string.IsNullOrEmpty(personDetail.Company))
+            {
+              item.Company = personDetail.Company;
+            }
+            
+            if (!string.IsNullOrEmpty(personDetail.Department))
+            {
+              item.Department = personDetail.Department;
+            }
+
+          }
+          else
+          {
+            if (string.IsNullOrEmpty(item.Name))
+            {
+              item.Name = string.IsNullOrEmpty(item.Email) 
+                ? item.PersonIdentity.Split('@')[0] 
+                : item.Email.Split('@')[0];
+            }
+            item.Picture = "assets/images/avatar-empty.png";
           }
         }
         return data.ToList ();
       }
     }
 
-    /// <summary>
-    /// Gets the avalible attendees.
-    /// </summary>
-    /// <returns>The avalible attendees.</returns>
-    /// <param name="schema">Schema.</param>
-    /// <param name="connectionString">Connection string.</param>
-    /// <param name="masterConnectionString"></param>
-    public List<MeetingAttendee> GetAvalibleAttendees (
-      string schema, string connectionString, string masterConnectionString) {
+    public List<MeetingAttendee> GetAvalibleAttendees
+      (string schema, string connectionString, string masterConnectionString)
+    {
       var people = new List<Person>();
       using (IDbConnection masterdbConnection = new SqlConnection(masterConnectionString))
       {
@@ -90,50 +111,60 @@ namespace SqlRepository {
         people = masterdbConnection.Query<Person> (personSql).ToList();
       }
 
-      using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
+      using (IDbConnection dbConnection = new SqlConnection (connectionString))
+      {
         dbConnection.Open ();
         var sql = $"select * from [{schema}].[AvailibleAttendee]";
-        var data = dbConnection.Query<MeetingAttendee> (sql);
+        var data = dbConnection.Query<MeetingAttendee> (sql).ToList();
+        var result = new List<MeetingAttendee>();
         foreach (MeetingAttendee meetingAttendee in data)
         {
           var query = string.Empty;
           if (meetingAttendee.Email == null) query = meetingAttendee.PersonIdentity;
           if (meetingAttendee.Email != null) query = meetingAttendee.Email;
-          var person = people.FirstOrDefault(i => i.Email == query);
-          if (person != null)
+          
+          if (people.Any(i => i.Email == query))
           {
-            if (string.IsNullOrEmpty(person.FullName))
+            var person = people.First(i => i.Email == query);
+            meetingAttendee.Name = string.IsNullOrEmpty(person.FullName) 
+              ? person.Email.Split('@')[0].Replace(".", " ")
+              : person.FullName;
+            
+            meetingAttendee.Email = string.IsNullOrEmpty(meetingAttendee.Email)
+              ? meetingAttendee.PersonIdentity
+              : meetingAttendee.Email;
+
+            meetingAttendee.Picture = string.IsNullOrEmpty(person.ProfilePicture)
+              ? $"assets/images/avatar-empty.png"
+              : person.ProfilePicture;
+
+            if (!string.IsNullOrEmpty(person.Company))
             {
-              meetingAttendee.Name = person.FirstName;
+              meetingAttendee.Company = person.Company;
             }
-            else
+            
+            if (!string.IsNullOrEmpty(person.Department))
             {
-              meetingAttendee.Name = person.FullName;
+              meetingAttendee.Department = person.Department;
             }
-            meetingAttendee.Picture = person.ProfilePicture;
-            meetingAttendee.PersonIdentity = person.Identityid;
-            meetingAttendee.Role = person.Role;
+
+            result.Add(meetingAttendee);
           }
           else
           {
-            meetingAttendee.Name = query.Split('@')[0];
-            meetingAttendee.Picture = $"{Environment.GetEnvironmentVariable("UI_BASE_URL")}/assets/images/avatar-empty.png";
-            meetingAttendee.PersonIdentity = meetingAttendee.PersonIdentity;
-            meetingAttendee.Role = meetingAttendee.Role;
+            meetingAttendee.Name = meetingAttendee.PersonIdentity.Split('@')[0];
+            meetingAttendee.Picture =
+              $"{Environment.GetEnvironmentVariable("UI_BASE_URL")}/assets/images/avatar-empty.png";
+            meetingAttendee.Email = meetingAttendee.PersonIdentity;
           }
         }
         return data.ToList ();
       }
     }
 
-    /// <summary>
-    /// List the specified schema and connectionString.
-    /// </summary>
-    /// <returns>The list.</returns>
-    /// <param name="schema">Schema.</param>
-    /// <param name="connectionString">Connection string.</param>
-    public IEnumerable<MeetingAttendee> List (
-      string schema, string connectionString) {
+    public IEnumerable<MeetingAttendee> List
+      (string schema, string connectionString)
+    {
       if (string.IsNullOrEmpty (connectionString) || string.IsNullOrEmpty (schema))
         throw new ArgumentException ("Please provide a valid schema or connection string.");
       using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
@@ -144,15 +175,9 @@ namespace SqlRepository {
       }
     }
 
-    /// <summary>
-    /// Add the specified action, schema and connectionString.
-    /// </summary>
-    /// <returns>The add.</returns>
-    /// <param name="attendee">Action.</param>
-    /// <param name="schema">Schema.</param>
-    /// <param name="connectionString">Connection string.</param>
-    public bool Add (
-      MeetingAttendee attendee, string schema, string connectionString) {
+    public bool Add
+      (MeetingAttendee attendee, string schema, string connectionString) 
+    {
       using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
         if (attendee.Id != Guid.Empty) {
           attendee.Id = Guid.NewGuid ();
@@ -164,6 +189,7 @@ namespace SqlRepository {
                                                                 ,[PersonIdentity]
                                                                 ,[Email]
                                                                 ,[Role]
+                                                                ,[Status]
                                                                 ) 
                                                          values(
                                                                  @Id
@@ -171,21 +197,61 @@ namespace SqlRepository {
                                                                 ,@PersonIdentity
                                                                 ,@Email
                                                                 ,@Role
+                                                                ,@Status
                                                                 )";
         var instance = dbConnection.Execute (insertSql, new {
           attendee.Id,
           attendee.ReferenceId,
           attendee.PersonIdentity,
           attendee.Email,
-          attendee.Role
+          attendee.Role,
+          attendee.Status
         });
         return instance == 1;
       }
     }
 
-    public bool AddInvitee (
-      MeetingAttendee attendee, string schema, string connectionString, string defaultConnectionString,
-      string defaultSchema, string referenceMeetingId, string inviteEmail) {
+    public bool AddAvailibleAttendee 
+      (MeetingAttendee attendee, string schema, string connectionString) 
+    {
+      using (IDbConnection dbConnection = new SqlConnection (connectionString)) 
+      {
+        if (attendee.Id != Guid.Empty)
+        {
+          attendee.Id = Guid.NewGuid ();
+        }
+        dbConnection.Open ();
+        string insertSql = $@"insert into [{schema}].[AvailibleAttendee](
+                                                                 [Id]
+                                                                ,[ReferanceId]
+                                                                ,[PersonIdentity]
+                                                                ,[Email]
+                                                                ,[Status]
+                                                                ,[Role]
+                                                                ) 
+                                                         values(
+                                                                 @Id
+                                                                ,@ReferenceId
+                                                                ,@PersonIdentity
+                                                                ,@Email
+                                                                ,@Status
+                                                                ,@Role
+                                                                )";
+        var instance = dbConnection.Execute (insertSql, new {
+          attendee.Id,
+          attendee.ReferenceId,
+          attendee.PersonIdentity,
+          attendee.Email,
+          attendee.Status,
+          attendee.Role
+        });
+        return instance == 1;
+      }
+    }
+  
+    public bool AddInvitee
+      (MeetingAttendee attendee, string schema, string connectionString, string defaultConnectionString, string defaultSchema, string referenceMeetingId, string inviteEmail)
+    {
       using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
         string reference = $"invite|{schema}&{referenceMeetingId}";
         if (attendee.Id != Guid.Empty) {
@@ -210,18 +276,19 @@ namespace SqlRepository {
                                                                 )";
         var instance = dbConnection.Execute (insertSql, new {
           attendee.Id,
-            attendee.ReferenceId,
-            attendee.PersonIdentity,
-            attendee.Email,
-            attendee.Status,
-            attendee.Role
+          attendee.ReferenceId,
+          attendee.PersonIdentity,
+          inviteEmail,
+          attendee.Status,
+          attendee.Role
         });
         return instance == 1;
       }
     }
 
-    public (bool condition, string message) UpdateInviteeStatus (
-      string personIdentity, string newPersonIdentity, string status, string schema, string connectionString) {
+    public (bool condition, string message) UpdateInviteeStatus 
+      (string personIdentity, string newPersonIdentity, string status, string schema, string connectionString)
+    {
       using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
         dbConnection.Open ();
         string availibleAttendeeSql = $@"UPDATE [{schema}].[AvailibleAttendee] SET 
@@ -243,38 +310,52 @@ namespace SqlRepository {
       }
     }
 
-    /// <summary>
-    /// Update the specified action, schema and connectionString.
-    /// </summary>
-    /// <returns>The update.</returns>
-    /// <param name="attendee">Action.</param>
-    /// <param name="schema">Schema.</param>
-    /// <param name="connectionString">Connection string.</param>
-    public bool Update (
-      MeetingAttendee attendee, string schema, string connectionString) {
-      using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
-        dbConnection.Open ();
-        string updateQuery = $@"UPDATE [{schema}].[MeetingAttendee] 
+    public bool Update
+      (MeetingAttendee attendee, string schema, string connectionString, string masterConnectionString) 
+    {
+      try
+      {
+        bool result;
+        using (IDbConnection dbConnection = new SqlConnection (connectionString))
+        {
+          dbConnection.Open ();
+          string updateQuery = $@"UPDATE [{schema}].[MeetingAttendee] 
                              SET Referanceid = '{attendee.ReferenceId.ToString()}', 
                                  PersonIdentity = '{attendee.PersonIdentity}', 
-                                 Role = '{attendee.Role}'
+                                 Role = '{attendee.Role}',
+                                 Status = '{attendee.Status}'
                              WHERE Id = '{attendee.Id}' ";
-        var instance = dbConnection.Execute (updateQuery);
-        return instance == 1;
+          var instance = dbConnection.Execute (updateQuery);
+          result  = (instance == 1);
+        }
+        
+        using (IDbConnection dbConnection = new SqlConnection (masterConnectionString))
+        {
+          if (attendee.Company == null) attendee.Company = string.Empty;
+          if (attendee.Department == null) attendee.Department = string.Empty;
+          dbConnection.Open ();
+          string personUpdateQuery = $@"UPDATE [app].[Person] 
+                             SET Company = '{attendee.Company}', 
+                                 Department = '{attendee.Department}'
+                             WHERE Email = '{attendee.Email}' ";
+          var instance = dbConnection.Execute (personUpdateQuery);
+          result = (instance == 1);
+        }
+        return result;
+      }
+      catch (Exception e)
+      {
+        return false;
       }
     }
 
-    /// <summary>
-    /// Deletes the meeting attendees.
-    /// </summary>
-    /// <returns><c>true</c>, if meeting attendees was deleted, <c>false</c> otherwise.</returns>
-    /// <param name="referanceId">Referance identifier.</param>
-    /// <param name="schema">Schema.</param>
-    /// <param name="connectionString">Connection string.</param>
-    public bool DeleteMeetingAttendees (Guid referanceId, string schema, string connectionString) {
+    public bool DeleteMeetingAttendees
+      (Guid referanceId, string schema, string connectionString)
+    {
       if (referanceId == Guid.NewGuid () || string.IsNullOrEmpty (schema) || string.IsNullOrEmpty (connectionString))
         throw new ArgumentException ("Please provide a valid meeting attendee identifier, schema or connection string.");
-      using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
+      using (IDbConnection dbConnection = new SqlConnection (connectionString))
+      {
         dbConnection.Open ();
         var sql = $"delete from [{schema}].[MeetingAttendee] WHERE ReferanceId = '{referanceId.ToString()}'";
         var instance = dbConnection.Execute (sql);
@@ -282,17 +363,13 @@ namespace SqlRepository {
       }
     }
 
-    /// <summary>
-    /// Delete the specified id, schema and connectionString.
-    /// </summary>
-    /// <returns>The delete.</returns>
-    /// <param name="id">Identifier.</param>
-    /// <param name="schema">Schema.</param>
-    /// <param name="connectionString">Connection string.</param>
-    public bool Delete (Guid id, string schema, string connectionString) {
+    public bool Delete
+      (Guid id, string schema, string connectionString)
+    {
       if (id == Guid.NewGuid () || string.IsNullOrEmpty (schema) || string.IsNullOrEmpty (connectionString))
         throw new ArgumentException ("Please provide a valid meeting attendee identifier, schema or connection string.");
-      using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
+      using (IDbConnection dbConnection = new SqlConnection (connectionString))
+      {
         dbConnection.Open ();
         var sql = $"delete from [{schema}].[MeetingAttendee] WHERE Id = '{id.ToString()}'";
         var instance = dbConnection.Execute (sql);

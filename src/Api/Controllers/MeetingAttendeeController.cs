@@ -101,8 +101,9 @@ namespace Api.Controllers
        var meeting = _meetingService.GetMeeting(userInfo.infoResponse, invitee.ReferenceId.ToString());
        //var instance = _meetingService.GetInstance(token);
        invitee.PersonIdentity = invitee.Email;
-       invitee.Role = "invited";
-       invitee.Status = "invited";
+       
+       invitee.Role = "Invited";
+       invitee.Status = "Invited";
        var result = _invationService.SendMeetingInvatation(invitee, meeting,userInfo.infoResponse.InstanceId);
        if (result)
        {

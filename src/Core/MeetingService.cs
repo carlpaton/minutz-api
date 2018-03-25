@@ -114,7 +114,7 @@ namespace Core
           var q = attendees.FirstOrDefault(i => i.Id == attendee.Id);
           if (q != null)
           {
-            _meetingAttendeeRepository.Update(attendee, user.InstanceId, userConnectionString);
+            _meetingAttendeeRepository.Update(attendee, user.InstanceId, userConnectionString, masterConnectionString);
           }
           else
           {
@@ -142,6 +142,23 @@ namespace Core
         _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
       
       var meeting = _meetingRepository.Get(Guid.Parse(id), user.InstanceId, instanceConnectionString);
+      var availibleAttendees = _meetingAttendeeRepository.GetAvalibleAttendees(user.InstanceId, instanceConnectionString, masterConnectionString);
+      if (availibleAttendees.All(i => i.Email != user.Email))
+      {
+        var userAttendee = new MeetingAttendee
+        {
+          Id = Guid.NewGuid(),
+          Email = user.Email,
+          Name = user.Name,PersonIdentity = user.Sub,
+          Picture = user.Picture,
+          ReferenceId = meeting.Id,
+          Role = user.Role,
+          Status = "availible"
+        };
+        _meetingAttendeeRepository.AddAvailibleAttendee(userAttendee, user.InstanceId, instanceConnectionString);
+        availibleAttendees = _meetingAttendeeRepository.GetAvalibleAttendees(user.InstanceId, instanceConnectionString, masterConnectionString);
+      }
+      
       var meetingViewModel = new Minutz.Models.ViewModels.MeetingViewModel
       {
         Id = meeting.Id.ToString(),
@@ -154,6 +171,7 @@ namespace Core
         IsReacurance = meeting.IsReacurance,
         MeetingOwnerId = meeting.MeetingOwnerId,
         Outcome = meeting.Outcome,
+        Location = meeting.Location,
         Status = meeting.Status,
         Purpose = meeting.Purpose,
         ReacuranceType = int.Parse(meeting.ReacuranceType),
@@ -161,8 +179,7 @@ namespace Core
         Time = meeting.Time,
         TimeZone = meeting.TimeZone,
         UpdatedDate = DateTime.UtcNow,
-        AvailableAttendeeCollection =
-          _meetingAttendeeRepository.GetAvalibleAttendees(user.InstanceId, instanceConnectionString,masterConnectionString),
+        AvailableAttendeeCollection = availibleAttendees,
         MeetingAgendaCollection =
           _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, user.InstanceId, instanceConnectionString),
         MeetingAttachmentCollection =
@@ -173,9 +190,11 @@ namespace Core
           _meetingNoteRepository.GetMeetingNotes(meeting.Id, user.InstanceId, instanceConnectionString),
         MeetingActionCollection = 
           _meetingActionRepository.GetMeetingActions(meeting.Id, user.InstanceId, instanceConnectionString),
-        MeetingdDecisions =
+        MeetingDecisionCollection =
           _decisionRepository.GetMeetingDecisions(meeting.Id, user.InstanceId, instanceConnectionString)
       };
+      
+
       return meetingViewModel;
     }
 
@@ -248,6 +267,18 @@ namespace Core
                 _meetingNoteRepository.GetMeetingNotes(meeting.Id, user.InstanceId,  instanceConnectionString)
             };
 
+            if (meetingViewModel.AvailableAttendeeCollection.All(i => i.Email != user.Email))
+            {
+              meetingViewModel.AvailableAttendeeCollection.Add(new MeetingAttendee
+              {
+                Email = user.Email,
+                Name = user.Name,PersonIdentity = user.Sub,
+                Picture = user.Picture,
+                ReferenceId = Guid.Parse(meetingViewModel.Id),
+                Role = user.Role,
+                Status = "Availible"
+              });
+            }
             result.Add(meetingViewModel);
           }
           return (true, 200, "Success", result);
@@ -333,10 +364,27 @@ namespace Core
         var masterConnectionString = _applicationSetting.CreateConnectionString
           (_applicationSetting.Server, _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
         
-        var availibleAttendees =
-          _meetingAttendeeRepository.GetAvalibleAttendees(instanceId, _applicationSetting.CreateConnectionString
-            (_applicationSetting.Server,_applicationSetting.Catalogue,instanceId,_applicationSetting.GetInstancePassword(instanceId)),masterConnectionString);
+        var instanceConnectionString = _applicationSetting.CreateConnectionString
+        (_applicationSetting.Server, _applicationSetting.Catalogue, instanceId,
+          _applicationSetting.GetInstancePassword(instanceId));
+        
+        var availibleAttendees = _meetingAttendeeRepository.GetAvalibleAttendees(instanceId, instanceConnectionString,masterConnectionString);
 
+        if (availibleAttendees.All(i => i.Email != user.Email))
+        {
+          var userAttendee = new MeetingAttendee
+          {
+            Email = user.Email,
+            Name = user.Name,PersonIdentity = user.Sub,
+            Picture = user.Picture,
+            ReferenceId = meeting.Id,
+            Role = user.Role,
+            Status = "availible"
+          };
+          _meetingAttendeeRepository.AddAvailibleAttendee(userAttendee, user.InstanceId, instanceConnectionString);
+          availibleAttendees = _meetingAttendeeRepository.GetAvalibleAttendees(user.InstanceId, instanceConnectionString, masterConnectionString);
+        }
+        
         attendees.Add(new MeetingAttendee
         {
           Name = user.Name,
@@ -347,6 +395,8 @@ namespace Core
           Role = "Meeting Owner",
           Status = "Accepted"
         });
+        
+        
         _logService.Log(LogLevel.Info, "CreateMeeting - Service - added owner to attendees ");
         _logService.Log(LogLevel.Info, "CreateMeeting - Service - auth ");
         
@@ -466,6 +516,19 @@ namespace Core
             TimeZone = meeting.TimeZone,
             UpdatedDate = DateTime.UtcNow
           };
+          if (result.AvailableAttendeeCollection.All(i => i.Email != user.Email))
+          {
+            result.AvailableAttendeeCollection.Add(new MeetingAttendee
+            {
+              Email = user.Email,
+              Name = user.Name,PersonIdentity = user.Sub,
+              Picture = user.Picture,
+              ReferenceId = Guid.Parse(result.Id),
+              Role = user.Role,
+              Status = "Availible"
+            });
+          }
+          
           return new KeyValuePair<bool, Minutz.Models.ViewModels.MeetingViewModel>(true, result);
         }
         return new KeyValuePair<bool, Minutz.Models.ViewModels.MeetingViewModel>(false,
@@ -561,7 +624,7 @@ namespace Core
         }
 
         // Update the descisions
-        foreach (var decisionItem in meetingViewModel.MeetingdDecisions)
+        foreach (var decisionItem in meetingViewModel.MeetingDecisionCollection)
         {
           var update = _decisionRepository.Get(decisionItem.Id, user.InstanceId, instanceConnectionString);
           if (update == null || update.Id == Guid.Empty)
@@ -592,7 +655,7 @@ namespace Core
           }
           else
           {
-            _meetingAttendeeRepository.Update(attendee, user.InstanceId, instanceConnectionString);
+            _meetingAttendeeRepository.Update(attendee, user.InstanceId, instanceConnectionString, masterConnectionString);
           }
         }
 
@@ -791,8 +854,8 @@ namespace Core
       var masterConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
         _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
       
-      return _meetingAttendeeRepository.AddInvitee(
-        attendee, user.InstanceId, instanceConnectionString, masterConnectionString,  _applicationSetting.Schema, referenceMeetingId, inviteEmail);
+      return _meetingAttendeeRepository.AddInvitee
+        (attendee, user.InstanceId, instanceConnectionString, masterConnectionString,  _applicationSetting.Schema, referenceMeetingId, inviteEmail);
     }
 
     public KeyValuePair<bool, string> SendMinutes
