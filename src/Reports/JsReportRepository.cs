@@ -30,7 +30,7 @@ namespace Reports
       
       var token = CreateAuthHeader();
       var body = MinutesRequestBody(payload);
-      var result = _httpService.PostReport(_applicationSetting.ReportUrl,body ,token);
+      (bool condition,string message ,byte[] result) result = _httpService.PostReport(_applicationSetting.ReportUrl,body ,token);
        return (result.condition,result.message, result.result);
     }
 
