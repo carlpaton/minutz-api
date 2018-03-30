@@ -1,9 +1,12 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.FileProviders;
 using Minutz.Models.Entities;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -16,12 +19,14 @@ namespace Api.Controllers
   {
     private readonly IMeetingService _meetingService;
     private readonly IAuthenticationService _authenticationService;
+    //private readonly IFileProvider _fileProvider;
 
     public MinutesController(
-      IMeetingService meetingService, IAuthenticationService authenticationService)
+      IMeetingService meetingService, IAuthenticationService authenticationService)//, IFileProvider fileProvider)
     {
       _meetingService = meetingService;
       _authenticationService = authenticationService;
+      //_fileProvider = fileProvider;
     }
 
      [HttpPost("api/meetingminutes/{referenceId}")]
@@ -48,8 +53,24 @@ namespace Api.Controllers
       var userInfo = ExtractAuth();
       var fileResult = _meetingService.GetMinutesPreview(userInfo.infoResponse, Guid.Parse(meetingId));
       if (!fileResult.Key) return StatusCode(500);
-      var response = File(fileResult.Value, "application/pdf");
-      return response;
+      // var directoryContents = _fileProvider.GetDirectoryContents("");
+//      var path = Directory.GetCurrentDirectory();
+//      if (directoryContents.Any(i => i.Name == "test.pdf"))
+//      {
+//        // delete then recreate
+//      }
+//      else
+//      {
+//        
+//        using (var fs = new FileStream($"{path}/test.pdf", FileMode.Create, FileAccess.Write))
+//        {
+//          fs.Write(fileResult.Value, 0, fileResult.Value.Length);
+//        }
+//      }
+
+      //var response = $"{path}/test.pdf"; //File(fileResult.Value, "application/pdf");
+      //return Ok(response);
+      return Ok();
     }
     
     

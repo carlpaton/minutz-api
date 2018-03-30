@@ -2,6 +2,10 @@
 {
     public interface IApplicationSetting
     {
+        string ClientId { get; }
+        
+        string ClientSecret { get; }
+        
         string Catalogue { get; }
         
         string Schema { get; }
@@ -12,7 +16,11 @@
         
         string Server { get; }
         
+        string AuthorityDomain { get; }
+        
         string Authority { get; }
+        
+        string AuthorityConnection { get; }
         
         string ReportUrl { get; }
         

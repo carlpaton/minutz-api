@@ -1,55 +1,52 @@
 ﻿using System;
-using System.Net.Http;
-using System.Text;
 using AuthenticationRepository.Extensions;
 using Interface.Repositories;
 using Interface.Services;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Logging;
 using Minutz.Models.Entities;
-using Models;
 using Models.Auth0Models;
 
 namespace AuthenticationRepository
 {
   public class Auth0Repository : IAuth0Repository
   {
-    internal string _urlSignUp = $"https://minutz.eu.auth0.com/dbconnections/signup";
-    internal string _urlToken = $"https://minutz.eu.auth0.com/oauth/token";
-    internal string _urlInfo = $"https://minutz.eu.auth0.com/userinfo";
-    internal string _clientId = "WDzuh9escySpPeAF5V0t2HdC3Lmo68a-";//Environment.GetEnvironmentVariable ("CLIENTID");
-    internal string _domain = "minutz.eu.auth0.com";//Environment.GetEnvironmentVariable ("DOMAIN");
-    internal string _clientSecret = "_kVUASQWVawA2pwYry-xP53kQpOALkEj_IGLWCSspXkpUFRtE_W-Gg74phrxZkz8"; //Environment.GetEnvironmentVariable ("CLIENTSECRET");
-    internal string _connection = "Username-Password-Authentication"; //Environment.GetEnvironmentVariable ("CONNECTION");
-    internal string _validationMessage = "The username or password was not supplied or is incorrect. Please provide valid details.";
+    private string _validationMessage = "The username or password was not supplied or is incorrect. Please provide valid details.";
     private readonly IHttpService _httpService;
     private readonly ILogService _logService;
     private IMemoryCache _cache;
+    private readonly IApplicationSetting _applicationSetting;
+
     public Auth0Repository (
-      ILogService logService, IMemoryCache memoryCache)
+      ILogService logService, IMemoryCache memoryCache, IApplicationSetting applicationSetting)
     {
-      this._httpService = new HttpService ();
-      this._logService = logService;
-      this._cache = memoryCache;
+      _httpService = new HttpService ();
+      _logService = logService;
+      _cache = memoryCache;
+      _applicationSetting = applicationSetting;
     }
+    
     public (bool condition, string message, AuthRestModel value) CreateUser (
       string name, string username, string email, string password, string role, string instanceId)
     {
       var requestBody = new UserRequestModel
         {
-          client_id = _clientId,
+          client_id = _applicationSetting.ClientId,
             email = email,
             username = username,
             password = password,
-            connection = _connection
+            connection = _applicationSetting.AuthorityConnection
         }.Prepare (instanceId, name, role)
         .ToJSON ().ToStringContent ();
-      var createResult = this._httpService.Post (this._urlSignUp, requestBody);
+      
+      var createResult = _httpService.Post ($"{_applicationSetting.Authority}dbconnections/signup", requestBody);
+      
       if (!createResult.condition)
       {
         return (createResult.condition, "There was a issue creating the user.", null);
       }
+      
       var resultObject = createResult.result.ToUserCreateResponseModelModel ();
+      
       var result = new AuthRestModel
       {
         IsVerified = resultObject.email_verified,
@@ -58,7 +55,9 @@ namespace AuthenticationRepository
         InstanceId = resultObject.user_metadata.instance,
         Role = resultObject.user_metadata.role
       };
+      
       (bool condition, string message, UserResponseModel tokenResponse) tokenResult = this.CreateToken (username, password);
+      
       if (tokenResult.condition)
       {
         (bool condition, string message, AuthRestModel infoResponse) userInfoResult = this.GetUserInfo (tokenResult.tokenResponse.access_token);
@@ -93,13 +92,14 @@ namespace AuthenticationRepository
       string token)
     {
       AuthRestModel authResult;
+      var url = $"{_applicationSetting.Authority}userinfo";
       bool requestResult = _cache.TryGetValue (token, out authResult);
       if (!requestResult)
       {
-        var httpResult = this._httpService.Get (this._urlInfo, token);
+        var httpResult = _httpService.Get (url, token);
         if (!httpResult.condition)
         {
-          this._logService.Log (Minutz.Models.LogLevel.Exception, $"Auth0Repository.GetUserInfo -> there was a issue getting the details from auth0");
+          _logService.Log (Minutz.Models.LogLevel.Exception, $"Auth0Repository.GetUserInfo -> there was a issue getting the details from auth0");
           throw new Exception ("Auth0 Exception");
         }
         authResult = Newtonsoft.Json.JsonConvert.DeserializeObject<AuthRestModel> (httpResult.result);
@@ -119,25 +119,28 @@ namespace AuthenticationRepository
     {
       if (string.IsNullOrEmpty (username))
       {
-        return (false, this._validationMessage, null);
+        return (false, _validationMessage, null);
       }
       if (string.IsNullOrEmpty (password))
       {
-        return (false, this._validationMessage, null);
+        return (false, _validationMessage, null);
       }
-      this._logService.Log (Minutz.Models.LogLevel.Info, $"username: {username} - password:{password}");
+      _logService.Log (Minutz.Models.LogLevel.Info, $"username: {username} - password:{password}");
+
       var requestBody = new UserTokenRequestModel
       {
         grant_type = "password",
           username = username,
           password = password,
-          client_id = this._clientId,
-          client_secret = this._clientSecret,
-          connection = this._connection
+          client_id = _applicationSetting.ClientId,
+          client_secret = _applicationSetting.ClientSecret,
+          connection = _applicationSetting.AuthorityConnection
       }.ToJSON ();
-      this._logService.Log (Minutz.Models.LogLevel.Info, requestBody.ToString ());
-      var tokenRequestResult = this._httpService.Post (this._urlToken, requestBody.ToStringContent ());
-      this._logService.Log (Minutz.Models.LogLevel.Info, tokenRequestResult.result);
+      
+      _logService.Log (Minutz.Models.LogLevel.Info, requestBody.ToString ());
+      var tokenRequestResult = this._httpService.Post ($"{_applicationSetting.Authority}oauth/token", requestBody.ToStringContent ());
+      _logService.Log (Minutz.Models.LogLevel.Info, tokenRequestResult.result);
+      
       if (tokenRequestResult.condition)
       {
         var token = Newtonsoft.Json.JsonConvert.DeserializeObject<UserResponseModel> (tokenRequestResult.result);

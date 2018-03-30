@@ -8,17 +8,11 @@ using Interface.Repositories;
 
 namespace SqlRepository {
   public class LogRepository : ILogRepository {
-    public bool Log (string schema,
-      string connectionString,
-      int logId,
-      string logLevel,
-      string log) {
+    public bool Log
+      (string schema, string connectionString, int logId, string logLevel, string log) 
+    {
       if (string.IsNullOrEmpty (connectionString))
         throw new ArgumentException ("The connectionString is not supplied");
-
-//      if (string.IsNullOrEmpty (schema))
-//        throw new ArgumentException ("The schema was not supplied.");
-
       if (string.IsNullOrEmpty (logLevel))
         throw new ArgumentException ("The loglevel was not supplied.");
 

@@ -14,6 +14,10 @@ namespace Core
       _instanceRepository = instanceRepository;
     }
 
+    public string ClientId => Environment.GetEnvironmentVariable("CLIENTID");
+
+    public string ClientSecret => Environment.GetEnvironmentVariable("CLIENTSECRET");
+    
     public string Server => Environment.GetEnvironmentVariable("SERVER_ADDRESS");
 
     public string Catalogue => Environment.GetEnvironmentVariable("DEFAULT_CATALOGUE");
@@ -24,7 +28,11 @@ namespace Core
 
     public string Password => Environment.GetEnvironmentVariable("DEFAULT_PASSWORD");
 
+    public string AuthorityDomain => Environment.GetEnvironmentVariable("DOMAIN");
+    
     public string Authority => Environment.GetEnvironmentVariable("AUTHORITY");
+    
+    public string AuthorityConnection => Environment.GetEnvironmentVariable("CONNECTION");
     
     public string ReportUrl => Environment.GetEnvironmentVariable("ReportUrl");
 

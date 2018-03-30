@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Notifications;
 using Reports;
@@ -29,6 +30,9 @@ namespace Minutz.Api
     internal string _clientSecret = "_kVUASQWVawA2pwYry-xP53kQpOALkEj_IGLWCSspXkpUFRtE_W-Gg74phrxZkz8"; //Environment.GetEnvironmentVariable ("CLIENTSECRET");
     internal string _connection = "Username-Password-Authentication"; //Environment.GetEnvironmentVariable ("CONNECTION");
     internal string _validationMessage = "The username or password was not supplied or is incorrect. Please provide valid details.";
+    
+    // private IHostingEnvironment _hostingEnvironment;
+    
     public Startup(IHostingEnvironment env)
     {
       var builder = new ConfigurationBuilder()
@@ -38,6 +42,7 @@ namespace Minutz.Api
           .AddEnvironmentVariables();
       
       Configuration = builder.Build();
+      // _hostingEnvironment = env;
     }
     public const string Version = "3.1.0";
     public const string Title = "Minutz Api";
@@ -47,7 +52,8 @@ namespace Minutz.Api
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-
+      // var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
+      // services.AddSingleton<IFileProvider>(physicalProvider);
       services.AddTransient<IHttpService, HttpService>();
       services.AddTransient<IValidationService, ValidationService>();
       services.AddTransient<IUserRepository, UserRepository>();

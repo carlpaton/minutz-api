@@ -127,6 +127,9 @@ namespace Core.ExternalServices
       (bool condition, string message, Person person) existsResult =
         this._userRepository.GetUserByEmail (userInfo.infoResponse.Email, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
 
+      // if existsResult = null check if there is one in auth0
+      
+      
       if (string.IsNullOrEmpty (existsResult.person.Related))
       {
         if (string.IsNullOrEmpty (existsResult.person.InstanceId))
