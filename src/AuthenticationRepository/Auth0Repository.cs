@@ -5,6 +5,7 @@ using AuthenticationRepository.Extensions;
 using Interface.Repositories;
 using Interface.Services;
 using Microsoft.Extensions.Caching.Memory;
+using Minutz.Models.Auth0Models;
 using Minutz.Models.Entities;
 using Models.Auth0Models;
 
@@ -73,7 +74,7 @@ namespace AuthenticationRepository
       return (createResult.condition, createResult.result, result);
     }
 
-    public void SearchUserByEmail
+    public (bool condition, string message, UserQueryModel value)  SearchUserByEmail
       (string email)
     {
       var emailEncoded = System.Net.WebUtility.UrlEncode(email);
@@ -81,21 +82,20 @@ namespace AuthenticationRepository
       var httpResult = _httpService.Get (url, _applicationSetting.AuthorityManagmentToken);
       if (!httpResult.condition)
       {
-        _logService.Log (Minutz.Models.LogLevel.Exception, $"Auth0Repository.GetUserInfo -> there was a issue getting the details from auth0");
-        throw new Exception ("Auth0 Exception");
+        _logService.Log (Minutz.Models.LogLevel.Exception, $"(bool condition, string message, UserQueryModel value)  SearchUserByEmail -> there was a issue getting the details from auth0");
+        return (false, "There was a issue getting the user information.", null);
       }
+      var result = Newtonsoft.Json.JsonConvert.DeserializeObject<UserQueryModel> (httpResult.result);
+      return (httpResult.condition, "Success", result);
     }
 
-    public void ValidateUser ()
+    public (bool condition, string message, bool value) ValidateUser 
+      (string email)
     {
-      //https://{{auth0_domain}}/oauth/token
-      //grant_type = password
-      //client_id=
-      //client_secret=
-      //username
-      //password
-      //connection=Username-Password-Authentication
-
+      var result = SearchUserByEmail(email);
+      return result.condition 
+        ? (result.condition, result.message ,result.value.email_verified) 
+        : (result.condition, result.message, result.condition);
     }
 
     public (bool condition, string message, AuthRestModel infoResponse) GetUserInfo (
