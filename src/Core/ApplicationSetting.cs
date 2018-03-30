@@ -33,6 +33,8 @@ namespace Core
     public string Authority => Environment.GetEnvironmentVariable("AUTHORITY");
     
     public string AuthorityConnection => Environment.GetEnvironmentVariable("CONNECTION");
+
+    public string AuthorityManagmentToken => Environment.GetEnvironmentVariable("AuthorityManagmentToken");
     
     public string ReportUrl => Environment.GetEnvironmentVariable("ReportUrl");
 

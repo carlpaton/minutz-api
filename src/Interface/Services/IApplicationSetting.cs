@@ -22,6 +22,8 @@
         
         string AuthorityConnection { get; }
         
+        string AuthorityManagmentToken { get; }
+        
         string ReportUrl { get; }
         
         string ReportUsername { get; }

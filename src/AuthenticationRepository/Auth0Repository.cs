@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text;
+using System.Text.Encodings.Web;
 using AuthenticationRepository.Extensions;
 using Interface.Repositories;
 using Interface.Services;
@@ -71,9 +73,17 @@ namespace AuthenticationRepository
       return (createResult.condition, createResult.result, result);
     }
 
-    public void CheckIfUserIsValidated ()
+    public void SearchUserByEmail
+      (string email)
     {
-
+      var emailEncoded = System.Net.WebUtility.UrlEncode(email);
+      var url = $"{_applicationSetting.Authority}/api/v2/users-by-email?email={emailEncoded}";
+      var httpResult = _httpService.Get (url, _applicationSetting.AuthorityManagmentToken);
+      if (!httpResult.condition)
+      {
+        _logService.Log (Minutz.Models.LogLevel.Exception, $"Auth0Repository.GetUserInfo -> there was a issue getting the details from auth0");
+        throw new Exception ("Auth0 Exception");
+      }
     }
 
     public void ValidateUser ()
