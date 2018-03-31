@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Interface.Repositories;
 using Interface.Services;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Caching.Memory;
 using Minutz.Models;
 using Minutz.Models.Entities;
@@ -115,21 +116,57 @@ namespace Core.ExternalServices
       }
 
       (bool condition, string message, UserResponseModel tokenResponse) tokenResult =
-        this._auth0Repository.CreateToken (username, password);
+        _auth0Repository.CreateToken (username, password);
 
       (bool condition, string message, AuthRestModel infoResponse) userInfo =
-        this._auth0Repository.GetUserInfo (tokenResult.tokenResponse.access_token);
+        _auth0Repository.GetUserInfo (tokenResult.tokenResponse.access_token);
 
       userInfo.infoResponse.IdToken = tokenResult.tokenResponse.id_token;
       userInfo.infoResponse.AccessToken = tokenResult.tokenResponse.access_token;
       userInfo.infoResponse.TokenExpire = tokenResult.tokenResponse.expires_in;
 
       (bool condition, string message, Person person) existsResult =
-        this._userRepository.GetUserByEmail (userInfo.infoResponse.Email, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+        _userRepository.GetUserByEmail (userInfo.infoResponse.Email, _applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
 
       // if existsResult = null check if there is one in auth0
+      if (existsResult.person == null)
+      {
+        var user = _auth0Repository.SearchUserByEmail(userInfo.infoResponse.Email);
+        if (user.condition)
+        {
+          if (user.value != null)
+          {
+            if (string.IsNullOrEmpty(instanceId))
+            {
+              if (user.value.user_metadata.role == RoleTypes.User)
+              {
+                instanceId = Guid.NewGuid().ToString();
+              }
+            }
+            var newUser = new AuthRestModel
+            {
+              Email = userInfo.infoResponse.Email,
+              Name = user.value.name,
+              Picture = user.value.picture,
+              Sub = user.value.user_id,
+              InstanceId = user.value.user_metadata.instance,
+              Role = user.value.user_metadata.role
+            };
+            var createUserResponse = _userRepository.CreateNewUser(newUser, _applicationSetting.Schema, _applicationSetting.CreateConnectionString());
+            if (createUserResponse.condition)
+            {
+              var createInstance = CreateUser(newUser.Name, username, newUser.Email, password, newUser.Role,instanceId,null);
+              if (!createInstance.condition)
+               {
+                 _logService.Log(LogLevel.Error, $"Login => CreateUser  => error: {createInstance.message}.");
+               }
+            }
+          }
+        }
+      }
       
-      
+      existsResult = _userRepository.GetUserByEmail (userInfo.infoResponse.Email, _applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+
       if (string.IsNullOrEmpty (existsResult.person.Related))
       {
         if (string.IsNullOrEmpty (existsResult.person.InstanceId))
@@ -148,11 +185,11 @@ namespace Core.ExternalServices
       else
       {
         List<(string instanceId, string meetingId)> relatedInstances =
-          existsResult.person.Related.SplitToList (Minutz.Models.StringDeviders.InstanceStringDevider, Minutz.Models.StringDeviders.MeetingStringDevider);
+          existsResult.person.Related.SplitToList (StringDeviders.InstanceStringDevider, StringDeviders.MeetingStringDevider);
         instanceId = relatedInstances.FirstOrDefault ().instanceId;
       }
 
-      Instance instance = this._instanceRepository.GetByUsername (instanceId, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+      Instance instance = _instanceRepository.GetByUsername (instanceId, _applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
       userInfo.infoResponse.InstanceId = instance.Username;
       userInfo.infoResponse.Company = instance.Company;
       userInfo.infoResponse.Related = existsResult.person.Related;
@@ -247,7 +284,7 @@ namespace Core.ExternalServices
             
             if (!tokenResponse.condition)
             {
-              this._logService.Log (Minutz.Models.LogLevel.Error, $"[(bool condition, string message, UserResponseModel tokenResponse) tokenResponse] There was a issue getting the token info for user {email}");
+              this._logService.Log (LogLevel.Error, $"[(bool condition, string message, UserResponseModel tokenResponse) tokenResponse] There was a issue getting the token info for user {email}");
               return (tokenResponse.condition, tokenResponse.message, null);
             }
             
@@ -260,7 +297,7 @@ namespace Core.ExternalServices
               
               if (!infoResponseResult.condition)
               {
-                this._logService.Log (Minutz.Models.LogLevel.Error, $"[(bool condition, string message, AuthRestModel infoResponse) infoResponseResult] There was a issue getting the information info for user {email}");
+                this._logService.Log (LogLevel.Error, $"[(bool condition, string message, AuthRestModel infoResponse) infoResponseResult] There was a issue getting the information info for user {email}");
                 return (tokenResponse.condition, tokenResponse.message, null);
               }
 

@@ -12,5 +12,6 @@ namespace Minutz.Models.Auth0Models
         public bool email_verified { get; set; }
         public string email { get; set; }
         public DateTime updated_at { get; set; }
+        public UserQueryMetadata user_metadata { get; set; }
     }
 }

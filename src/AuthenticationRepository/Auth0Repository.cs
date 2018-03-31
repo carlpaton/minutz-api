@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Text;
-using System.Text.Encodings.Web;
 using AuthenticationRepository.Extensions;
 using Interface.Repositories;
 using Interface.Services;
