@@ -63,7 +63,7 @@ namespace Api.Controllers
       }
 
       (bool condition, string message, AuthRestModel infoResponse) loginResult =
-        this._authenticationService.Login (username, password, instanceId);
+        _authenticationService.Login (username, password, instanceId);
       if (loginResult.condition)
       {
         return Ok (new { Value = loginResult.infoResponse, Message = loginResult.message });

@@ -24,6 +24,10 @@
         
         string AuthorityManagmentToken { get; }
         
+        string AuthorityManagementClientId { get; }
+        
+        string AuthorityManagementClientSecret { get; }
+        
         string ReportUrl { get; }
         
         string ReportUsername { get; }

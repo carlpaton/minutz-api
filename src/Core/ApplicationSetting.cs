@@ -36,6 +36,10 @@ namespace Core
 
     public string AuthorityManagmentToken => Environment.GetEnvironmentVariable("AuthorityManagmentToken");
     
+    public string AuthorityManagementClientId => Environment.GetEnvironmentVariable("MANAGEMENT_CLIENTID");
+    
+    public string AuthorityManagementClientSecret => Environment.GetEnvironmentVariable("MANAGEMENT_CLIENT_SECRETE");
+
     public string ReportUrl => Environment.GetEnvironmentVariable("ReportUrl");
 
     public string ReportUsername => Environment.GetEnvironmentVariable("ReportUsername");

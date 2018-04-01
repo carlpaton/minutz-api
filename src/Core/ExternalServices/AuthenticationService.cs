@@ -49,7 +49,8 @@ namespace Core.ExternalServices
       userInfo.TokenExpire = expires_in;
 
       (bool condition, string message, Person person) existsResult =
-        this._userRepository.GetUserByEmail (userInfo.Email, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+        _userRepository.GetUserByEmail (userInfo.Email, _applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+      
       if (string.IsNullOrEmpty (existsResult.person.Related))
       {
         if (string.IsNullOrEmpty (existsResult.person.InstanceId))
