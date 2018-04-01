@@ -13,12 +13,11 @@ namespace Api.Controllers
     {        
         public IActionResult Index()
         {
+            // ReSharper disable once Mvc.ViewNotResolved
             return View();
         }
 
-        
-        
-        public ActionResult iCalendar()
+        public ActionResult Calendar()
         {
             var now = DateTime.Now;
             var later = now.AddHours(1);

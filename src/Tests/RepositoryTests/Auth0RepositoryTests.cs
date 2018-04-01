@@ -25,7 +25,8 @@ namespace Tests.RepositoryTests
         {
             var logService = NSubstitute.Substitute.For<ILogService>();
             var cache = NSubstitute.Substitute.For<IMemoryCache>();
-            var repository = new Auth0Repository (logService,cache);
+            var setting = NSubstitute.Substitute.For<IApplicationSetting>();
+            var repository = new Auth0Repository (logService,cache, setting);
             var result = repository.CreateToken (string.Empty, "password");
             Assert.IsFalse (result.condition);
             Assert.AreSame (result.message, this._validationMessage);
@@ -36,7 +37,8 @@ namespace Tests.RepositoryTests
         {
             var logService = NSubstitute.Substitute.For<ILogService>();
             var cache = NSubstitute.Substitute.For<IMemoryCache>();
-            var repository = new Auth0Repository (logService,cache);
+            var setting = NSubstitute.Substitute.For<IApplicationSetting>();
+            var repository = new Auth0Repository (logService,cache, setting);
             var result = repository.CreateToken (string.Empty, "password");
             Assert.IsFalse (result.condition);
             Assert.AreSame (result.message, this._validationMessage);
@@ -47,7 +49,8 @@ namespace Tests.RepositoryTests
         {
             var logService = NSubstitute.Substitute.For<ILogService>();
             var cache = NSubstitute.Substitute.For<IMemoryCache>();
-            var repository = new Auth0Repository (logService,cache);
+            var setting = NSubstitute.Substitute.For<IApplicationSetting>();
+            var repository = new Auth0Repository (logService,cache, setting);
             var result = repository.CreateToken ("leeroya", "@nathan001");
             Assert.IsFalse (result.condition);
         }
@@ -57,7 +60,8 @@ namespace Tests.RepositoryTests
         {
             var logService = NSubstitute.Substitute.For<ILogService>();
             var cache = NSubstitute.Substitute.For<IMemoryCache>();
-            var repository = new Auth0Repository (logService,cache);
+            var setting = NSubstitute.Substitute.For<IApplicationSetting>();
+            var repository = new Auth0Repository (logService,cache, setting);
             var result = repository.CreateToken ("leeroya", "@nathan01");
             Assert.IsTrue (result.condition);
             Assert.AreSame (result.message, "Success");
