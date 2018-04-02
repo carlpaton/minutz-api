@@ -129,7 +129,7 @@ namespace Api.Extensions
         viewModel.MeetingDecisionCollection = new List<MinutzDecision>();
       }
 
-      var result = new Minutz.Models.Entities.Meeting
+      var result = new Meeting
       {
         Id = meetingId,
         Name = viewModel.Name,

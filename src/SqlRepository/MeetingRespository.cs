@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System;
 using Dapper;
+using Minutz.Models.ViewModels;
 
 namespace SqlRepository
 {
@@ -235,5 +236,53 @@ namespace SqlRepository
         return instance == 1;
       }
     }
+
+    public (bool condition, string message, MinutesViewModel minutes) GetMeetingMinutes
+      (string schema, string connectionString,string meetingId)
+    {
+      if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(schema))
+        throw new ArgumentException("Please provide a valid schema or connection string.");
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        MinutesViewModel data;
+        try
+        {
+          dbConnection.Open();
+          var sql = $"select * from [{schema}].[Meeting] WHERE Id = '{meetingId}'";
+          data = dbConnection.Query<MinutesViewModel>(sql).ToList().FirstOrDefault();
+          if (data != null) data.FileName = $"{data.IssuedDate}.pdf";
+        }
+        catch (Exception e)
+        {
+          return (false, e.InnerException.Message, null);
+        }
+        return (data != null, data != null? "Success": "Can't find the meeting that you are looking for", data);
+      }
+    }
+    
+    public (bool condition, string message) CreateUpdateMeetingMinutes
+      (string schema, string connectionString,string meetingId, byte[] fileData)
+    {
+      var meeting = new Meeting{Id = Guid.Parse(meetingId), IssuedMinutes = fileData, IssuedDate = DateTime.UtcNow};
+      
+      if (Guid.Parse(meetingId) == Guid.NewGuid() || string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
+        throw new ArgumentException("Please provide a valid meeting attendee identifier, schema or connection string.");
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        dbConnection.Open();
+        string updateQuery = $@"UPDATE [{schema}].[Meeting] 
+                             SET IssuedMinutes = @IssuedMinutes, 
+                                 IssuedDate = @IssuedDate
+                             WHERE Id   = @Id";
+        var instance = dbConnection.Execute(updateQuery, new
+        {
+          meeting.IssuedDate,
+          meeting.IssuedMinutes,
+          meeting.Id
+        });
+        return (instance == 1,instance == 1? "Successfull":"There was a issue saving the meeting minutes.");
+      }
+    }
+    
   }
 }

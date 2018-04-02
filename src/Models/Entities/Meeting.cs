@@ -22,5 +22,7 @@ namespace Minutz.Models.Entities
     public string Purpose { get; set; }
     public string MeetingOwnerId { get; set; }
     public string Outcome { get; set; }
+    public byte[] IssuedMinutes { get; set; }
+    public DateTime IssuedDate { get; set; }
   }
 }
