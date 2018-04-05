@@ -39,8 +39,8 @@ namespace Interface.Services
     KeyValuePair<bool, string> SendInvatations(
       AuthRestModel user, Guid meetingId, IInvatationService invatationService);
 
-    KeyValuePair<bool, byte[]> GetMinutesPreview
-      (AuthRestModel user, Guid meetingId);
+    KeyValuePair<bool, string> GetMinutesPreview
+      (AuthRestModel user, Guid meetingId,string folderPath);
     
     IEnumerable<KeyValuePair<string, string>> ExtractQueries(
       string returnUri);

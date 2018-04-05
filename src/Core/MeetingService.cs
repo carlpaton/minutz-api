@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Core.Helper;
 using Interface.Repositories;
@@ -160,6 +161,16 @@ namespace Core
         _meetingAttendeeRepository.AddAvailibleAttendee(userAttendee, user.InstanceId, instanceConnectionString);
         availibleAttendees = _meetingAttendeeRepository.GetAvalibleAttendees(user.InstanceId, instanceConnectionString, masterConnectionString);
       }
+
+      var agendaItems =
+        _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, user.InstanceId, instanceConnectionString);
+      var attachments =
+        _meetingAttachmentRepository.GetMeetingAttachments(meeting.Id, user.InstanceId, instanceConnectionString);
+      var attendees = _meetingAttendeeRepository.GetMeetingAttendees(meeting.Id, user.InstanceId,
+        instanceConnectionString, masterConnectionString);
+      var notes = _meetingNoteRepository.GetMeetingNotes(meeting.Id, user.InstanceId, instanceConnectionString);
+      var actions = _meetingActionRepository.GetMeetingActions(meeting.Id, user.InstanceId, instanceConnectionString);
+      var descions = _decisionRepository.GetMeetingDecisions(meeting.Id, user.InstanceId, instanceConnectionString);
       
       var meetingViewModel = new Minutz.Models.ViewModels.MeetingViewModel
       {
@@ -182,18 +193,18 @@ namespace Core
         TimeZone = meeting.TimeZone,
         UpdatedDate = DateTime.UtcNow,
         AvailableAttendeeCollection = availibleAttendees,
-        MeetingAgendaCollection =
-          _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, user.InstanceId, instanceConnectionString),
-        MeetingAttachmentCollection =
-          _meetingAttachmentRepository.GetMeetingAttachments(meeting.Id, user.InstanceId, instanceConnectionString),
-        MeetingAttendeeCollection =
-          _meetingAttendeeRepository.GetMeetingAttendees(meeting.Id, user.InstanceId, instanceConnectionString, masterConnectionString),
-        MeetingNoteCollection =
-          _meetingNoteRepository.GetMeetingNotes(meeting.Id, user.InstanceId, instanceConnectionString),
-        MeetingActionCollection = 
-          _meetingActionRepository.GetMeetingActions(meeting.Id, user.InstanceId, instanceConnectionString),
-        MeetingDecisionCollection =
-          _decisionRepository.GetMeetingDecisions(meeting.Id, user.InstanceId, instanceConnectionString)
+        MeetingAgendaCollection = agendaItems
+          ,
+        MeetingAttachmentCollection = attachments
+          ,
+        MeetingAttendeeCollection = attendees
+          ,
+        MeetingNoteCollection = notes
+         ,
+        MeetingActionCollection = actions
+          ,
+        MeetingDecisionCollection = descions
+          
       };
       
 
@@ -289,6 +300,17 @@ namespace Core
         var meetings = _meetingRepository.List(user.InstanceId, instanceConnectionString);
         foreach (var meeting in meetings)
         {
+          var avalibleAttendees =
+            _meetingAttendeeRepository.GetAvalibleAttendees(user.InstanceId, instanceConnectionString,
+              masterConnectionString);
+          var agendaItems =
+            _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, user.InstanceId, instanceConnectionString);
+          var attachments =
+            _meetingAttachmentRepository.GetMeetingAttachments(meeting.Id, user.InstanceId, instanceConnectionString);
+          var attendees = _meetingAttendeeRepository.GetMeetingAttendees(meeting.Id, user.InstanceId,
+            instanceConnectionString, masterConnectionString);
+          var notes = _meetingNoteRepository.GetMeetingNotes(meeting.Id, user.InstanceId, instanceConnectionString);
+          
           var meetingViewModel = new Minutz.Models.ViewModels.MeetingViewModel
           {
             Id = meeting.Id.ToString(),
@@ -308,16 +330,11 @@ namespace Core
             Time = meeting.Time,
             TimeZone = meeting.TimeZone,
             UpdatedDate = DateTime.UtcNow,
-            AvailableAttendeeCollection =
-              _meetingAttendeeRepository.GetAvalibleAttendees(user.InstanceId, instanceConnectionString,masterConnectionString),
-            MeetingAgendaCollection =
-              _meetingAgendaRepository.GetMeetingAgenda(meeting.Id, user.InstanceId, instanceConnectionString),
-            MeetingAttachmentCollection =
-              _meetingAttachmentRepository.GetMeetingAttachments(meeting.Id, user.InstanceId, instanceConnectionString),
-            MeetingAttendeeCollection =
-              _meetingAttendeeRepository.GetMeetingAttendees(meeting.Id, user.InstanceId, instanceConnectionString, masterConnectionString),
-            MeetingNoteCollection =
-              _meetingNoteRepository.GetMeetingNotes(meeting.Id, user.InstanceId,  instanceConnectionString)
+            AvailableAttendeeCollection = avalibleAttendees,
+            MeetingAgendaCollection = agendaItems,
+            MeetingAttachmentCollection = attachments,
+            MeetingAttendeeCollection = attendees,
+            MeetingNoteCollection = notes
           };
 
           result.Add(meetingViewModel);
@@ -876,8 +893,8 @@ namespace Core
       return new KeyValuePair<bool, string>(true, "");
     }
 
-    public KeyValuePair<bool, byte[]> GetMinutesPreview
-      (AuthRestModel user, Guid meetingId)
+    public KeyValuePair<bool, string> GetMinutesPreview
+      (AuthRestModel user, Guid meetingId, string folderPath)
     {
       var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
         _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
@@ -897,8 +914,14 @@ namespace Core
       
       (bool condition, string message, byte[] file) report = _reportRepository.CreateMinutesReport
         (CreateReportRequestPayload(meeting,agendaItems,attendees,notes));
+
+      var fileName = $"{folderPath}/{DateTime.UtcNow}.pdf";
+      using (var bw = new BinaryWriter(File.Open(fileName, FileMode.OpenOrCreate)))
+      {
+        bw.Write(report.file);
+      }
       
-      return new KeyValuePair<bool, byte[]>(report.condition,report.file);
+      return new KeyValuePair<bool, string>(report.condition,fileName);
     }
 
     public KeyValuePair<bool, string> SendInvatations

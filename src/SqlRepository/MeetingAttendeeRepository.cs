@@ -199,15 +199,23 @@ namespace SqlRepository {
                                                                 ,@Role
                                                                 ,@Status
                                                                 )";
-        var instance = dbConnection.Execute (insertSql, new {
-          attendee.Id,
-          attendee.ReferenceId,
-          attendee.PersonIdentity,
-          attendee.Email,
-          attendee.Role,
-          attendee.Status
-        });
-        return instance == 1;
+        try
+        {
+          var instance = dbConnection.Execute (insertSql, new {
+            attendee.Id,
+            attendee.ReferenceId,
+            attendee.PersonIdentity,
+            attendee.Email,
+            attendee.Role,
+            attendee.Status
+          });
+          return instance == 1;
+        }
+        catch (Exception e)
+        {
+          _logService.Log(LogLevel.Exception, $"Add Meeting Attendee: {e.InnerException.Message}");
+          return false;
+        } 
       }
     }
 

@@ -19,14 +19,14 @@ namespace Api.Controllers
   {
     private readonly IMeetingService _meetingService;
     private readonly IAuthenticationService _authenticationService;
-    //private readonly IFileProvider _fileProvider;
+    private readonly IFileProvider _fileProvider;
 
     public MinutesController(
-      IMeetingService meetingService, IAuthenticationService authenticationService)//, IFileProvider fileProvider)
+      IMeetingService meetingService, IAuthenticationService authenticationService, IFileProvider fileProvider)
     {
       _meetingService = meetingService;
       _authenticationService = authenticationService;
-      //_fileProvider = fileProvider;
+      _fileProvider = fileProvider;
     }
 
      [HttpPost("api/meetingminutes/{referenceId}")]
@@ -51,7 +51,8 @@ namespace Api.Controllers
     public IActionResult GetPreview(string meetingId)
     {
       var userInfo = ExtractAuth();
-      var fileResult = _meetingService.GetMinutesPreview(userInfo.infoResponse, Guid.Parse(meetingId));
+      var path = Directory.GetCurrentDirectory();
+      var fileResult = _meetingService.GetMinutesPreview(userInfo.infoResponse, Guid.Parse(meetingId),path);
       if (!fileResult.Key) return StatusCode(500);
       // var directoryContents = _fileProvider.GetDirectoryContents("");
 //      var path = Directory.GetCurrentDirectory();
