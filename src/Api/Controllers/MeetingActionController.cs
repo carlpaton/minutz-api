@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Interface.Services;
@@ -10,13 +11,13 @@ namespace Api.Controllers
 {
   public class MeetingActionController : Controller
   {
-    private readonly IMeetingService _meetingService;
+    private readonly IMeetingActionService _meetingActionService;
     private readonly IAuthenticationService _authenticationService;
 
     public MeetingActionController(
-      IMeetingService meetingService, IAuthenticationService authenticationService)
+      IMeetingActionService meetingActionService, IAuthenticationService authenticationService)
     {
-      _meetingService = meetingService;
+      _meetingActionService = meetingActionService;
       _authenticationService = authenticationService;
     }
 
@@ -36,24 +37,8 @@ namespace Api.Controllers
          return BadRequest("Please provide a valid referenceId [meeting id]");
        }
        var userInfo = ExtractAuth();
-       var result = _meetingService.GetMinutzActions(referenceId, userInfo.infoResponse);
+       var result = _meetingActionService.GetMinutzActions(referenceId, userInfo.infoResponse);
        return Ok(result);
-     }
-
-    /// <summary>
-    ///  Returns one instance of a meeting action
-    /// </summary>
-    /// <returns>MeetingAgenda object</returns>
-     [Authorize]
-     [ProducesResponseType(typeof(string), 400)]
-     [ProducesResponseType(typeof(MinutzAction), 200)]
-     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MinutzAction))]
-     [HttpGet("api/meeting/{referenceId}/actions", Name = "Get Machine by Id")]
-     public MinutzAction Get(string referenceId, string id)
-     {
-       var userInfo = ExtractAuth();
-       //var result = _meetingService.GetMeeting(token, )
-       return new MinutzAction();
      }
 
     /// <summary>
@@ -62,10 +47,12 @@ namespace Api.Controllers
     /// <returns></returns>
      [HttpPut("api/meetingAction/{referenceId}/action")]
      [Authorize]
-     public MinutzAction Put([FromBody] MinutzAction action)
+     public IActionResult Put([FromBody] MinutzAction action)
      {
        var userInfo = ExtractAuth();
-       return new MinutzAction();
+       var result =
+         _meetingActionService.CreateMinutzAction(action.ReferanceId.ToString(), action, userInfo.infoResponse);
+       return result.condition ? Ok(action) : StatusCode(500 ,result.message);
      }
 
     /// <summary>
@@ -74,10 +61,11 @@ namespace Api.Controllers
     /// <returns></returns>
      [HttpPost("api/meetingAction/{referenceId}/action/{id}")]
      [Authorize]
-     public MinutzAction Post([FromBody] MinutzAction action)
+     public IActionResult Post([FromBody] MinutzAction action)
      {
        var userInfo = ExtractAuth();
-       return new MinutzAction();
+       var result = _meetingActionService.UpdateMinutzAction(action.ReferanceId.ToString(), action, userInfo.infoResponse);
+       return result.condition ? Ok(action) : StatusCode(500, result.message);
      }
 
     /// <summary>

@@ -44,12 +44,14 @@ namespace SqlRepository
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
-        dbConnection.Open();
-        string insertSql = $@"insert into [{schema}].[MinutzDecision](
+        try
+        {
+          dbConnection.Open();
+          string insertSql = $@"insert into [{schema}].[MinutzDecision](
                                                                  [Id]
                                                                 ,[ReferanceId]
-                                                                ,[DecisionText]
-                                                                ,[DecisionComment]
+                                                                ,[DescisionText]
+                                                                ,[Descisioncomment]
                                                                 ,[AgendaId]
                                                                 ,[PersonId]
                                                                 ,[CreatedDate]
@@ -58,24 +60,31 @@ namespace SqlRepository
                                                          values(
                                                                  @Id
                                                                 ,@ReferanceId
-                                                                ,@DecisionText
-                                                                ,@DecisionComment
+                                                                ,@DescisionText
+                                                                ,@Descisioncomment
                                                                 ,@AgendaId
                                                                 ,@PersonId
                                                                 ,@CreatedDate
                                                                 ,@IsOverturned)";
-        var instance = dbConnection.Execute(insertSql, new
+          var instance = dbConnection.Execute(insertSql, new
+          {
+            decision.Id,
+            decision.ReferanceId,
+            decision.DescisionText,
+            decision.Descisioncomment,
+            decision.AgendaId,
+            decision.PersonId,
+            decision.CreatedDate,
+            decision.IsOverturned
+          });
+          return instance == 1;
+        }
+        catch (Exception e)
         {
-          decision.Id,
-          decision.ReferenceId,
-          decision.DescisionText,
-          decision.Descisioncomment,
-          decision.AgendaId,
-          decision.PersonId,
-          decision.CreatedDate,
-          decision.IsOverturned
-        });
-        return instance == 1;
+          Console.WriteLine(e);
+          return false;
+        }
+        
       }
     }
     
@@ -97,7 +106,7 @@ namespace SqlRepository
                              WHERE Id = @Id";
         var instance = dbConnection.Execute(updateQuery, new
         {
-          decision.ReferenceId,
+          decision.ReferanceId,
           decision.DescisionText,
           decision.Descisioncomment,
           decision.AgendaId,

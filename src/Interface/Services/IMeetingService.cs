@@ -30,9 +30,7 @@ namespace Interface.Services
     Minutz.Models.ViewModels.MeetingViewModel UpdateMeeting(
       AuthRestModel user, Minutz.Models.ViewModels.MeetingViewModel meetingViewModel);
 
-    IEnumerable<MinutzAction> GetMinutzActions(
-      string referenceId, AuthRestModel user);
-
+    
     KeyValuePair<bool, string> SendMinutes(
       AuthRestModel user, Guid meetingId);
 

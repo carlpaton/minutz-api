@@ -22,18 +22,21 @@ namespace Api.Controllers
     private readonly IInvatationService _invatationService;
     private readonly ILogService _logService;
     private readonly IAuthenticationService _authenticationService;
+    private readonly IMeetingAttachmentService _meetingAttachmentService;
     private readonly ILogger _logger;
 
     public MeetingController(IMeetingService meetingService,
       IInvatationService invatationService,
       ILogService logService,
       ILoggerFactory logger,
-      IAuthenticationService authenticationService)
+      IAuthenticationService authenticationService,
+      IMeetingAttachmentService meetingAttachmentService)
     {
       this._meetingService = meetingService;
       this._invatationService = invatationService;
       this._logService = logService;
       _authenticationService = authenticationService;
+      _meetingAttachmentService = meetingAttachmentService;
       this._logger = logger.CreateLogger("MeetingController");
     }
 
@@ -228,21 +231,36 @@ namespace Api.Controllers
 
     [Authorize]
     [HttpPost("api/UploadMeetingFiles")]
-    public async Task<IActionResult> Post(List<IFormFile> files)
+    public ActionResult Post(List<IFormFile> files)
     {
+      if (string.IsNullOrEmpty(HttpContext.Request.Query["id"].ToString()))
+      {
+        return StatusCode(404, "Please provide a referenceId");
+      }
       long size = files.Sum(f => f.Length);
       string meetingId = HttpContext.Request.Query["id"].ToString();
+      var userInfo = ExtractAuth();
       // full path to file in temp location
       var filePath = Path.GetTempFileName();
 
       foreach (var formFile in Request.Form.Files)
       {
-        if (formFile.Length > 0)
+        if (formFile.Length <= 0) continue;
+        using (var ms = new MemoryStream())
         {
-          using (var stream = new FileStream(filePath, FileMode.Create))
+           formFile.CopyTo(ms);
+          var fileBytes =  ms.ToArray();
+          //string file = Convert.ToBase64String(fileBytes);
+          var meetingFile = new MeetingAttachment
           {
-            await formFile.CopyToAsync(stream);
-          }
+            Date = DateTime.UtcNow,
+            FileData = fileBytes,
+            FileName = formFile.FileName,
+            Id = Guid.NewGuid(),
+            MeetingAttendeeId = userInfo.infoResponse.Sub,
+            ReferanceId =  Guid.Parse(meetingId)
+          };
+          var meetingAttachmentResult = _meetingAttachmentService.Add(meetingFile, userInfo.infoResponse);
         }
       }
 

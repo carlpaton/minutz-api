@@ -58,8 +58,10 @@ namespace SqlRepository
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
-        dbConnection.Open();
-        string insertSql = $@"insert into [{schema}].[MinutzAction](
+        try
+        {
+          dbConnection.Open();
+          string insertSql = $@"insert into [{schema}].[MinutzAction](
                                                                  [Id]
                                                                 ,[ReferanceId]
                                                                 ,[ActionText]
@@ -74,16 +76,22 @@ namespace SqlRepository
                                                                 ,@PersonId
                                                                 ,@DueDate
                                                                 ,@IsComplete)";
-        var instance = dbConnection.Execute(insertSql, new
+          var instance = dbConnection.Execute(insertSql, new
+          {
+            action.Id,
+            action.ReferanceId,
+            action.ActionText,
+            action.PersonId,
+            action.DueDate,
+            action.IsComplete
+          });
+          return instance == 1;
+        }
+        catch (Exception e)
         {
-          action.Id,
-          action.ReferanceId,
-          action.ActionText,
-          action.PersonId,
-          action.DueDate,
-          action.IsComplete
-        });
-        return instance == 1;
+          Console.WriteLine(e);
+          return false;
+        }
       }
     }
 
@@ -101,8 +109,9 @@ namespace SqlRepository
                              WHERE Id = @Id";
         var instance = dbConnection.Execute(updateQuery, new
         {
-          Action = action.ActionText,
-          PersonId = action.PersonId.ToString(),
+          action.Id,
+          action.ActionText,
+          action.PersonId,
           action.DueDate,
           action.IsComplete
         });

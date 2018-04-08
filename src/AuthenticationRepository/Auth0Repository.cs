@@ -113,7 +113,7 @@ namespace AuthenticationRepository
         : (result.condition, result.message, result.condition);
     }
 
-    public (bool condition, string message, AuthRestModel infoResponse) GetUserInfo (
+    public (bool condition, string message, AuthRestModel infoResponse)   GetUserInfo (
       string token)
     {
       AuthRestModel authResult;

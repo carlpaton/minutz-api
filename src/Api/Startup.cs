@@ -84,6 +84,12 @@ namespace Minutz.Api
       services.AddTransient<IUserValidationService, UserValidationService>();
       services.AddTransient<IAuthenticationService, AuthenticationService>();
       services.AddTransient<IApplicationManagerService, ApplicationManagerService>();
+
+      services.AddTransient<IMeetingAttachmentService, MeetingAttachmentService>();
+      services.AddTransient<IMeetingActionService, MeetingActionService>();
+      services.AddTransient<IMeetingDecisionService, MeetingDecisionService>();
+      
+      //Main meeting Service
       services.AddTransient<IMeetingService, MeetingService>();
 
       services.AddTransient<IInvatationService, InvatationService>();

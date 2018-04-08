@@ -36,6 +36,7 @@ namespace SqlRepository
         return data.ToList();
       }
     }
+    
     public IEnumerable<MeetingAttachment> List(string schema, string connectionString)
     {
       if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(schema))
@@ -43,17 +44,21 @@ namespace SqlRepository
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
         dbConnection.Open();
-        var sql = $"select * from [{schema}].[MeetingAttachment]";
+        var sql = $"select [Id], [ReferanceId], [FileName], [MeetingAttendeeId], [Date], [FileData] from [{schema}].[MeetingAttachment]";
         var data = dbConnection.Query<MeetingAttachment>(sql).ToList();
         return data;
       }
     }
-    public bool Add(MeetingAttachment attachment, string schema, string connectionString)
+    
+    public bool Add
+      (MeetingAttachment attachment, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
-        dbConnection.Open();
-        string insertSql = $@"insert into [{schema}].[MeetingAttachment](
+        try
+        {
+          dbConnection.Open();
+          string insertSql = $@"insert into [{schema}].[MeetingAttachment](
                                                                  [Id]
                                                                 ,[ReferanceId]
                                                                 ,[FileName]
@@ -63,47 +68,64 @@ namespace SqlRepository
                                                                 ) 
                                                          values(
                                                                  @Id
-                                                                ,@ReferenceId
+                                                                ,@ReferanceId
                                                                 ,@FileName
                                                                 ,@MeetingAttendeeId
                                                                 ,@Date
                                                                 ,@FileData
                                                                 )";
-        var instance = dbConnection.Execute(insertSql, new
+          var instance = dbConnection.Execute(insertSql, new
+          {
+            attachment.Id,
+            attachment.ReferanceId,
+            attachment.FileName,
+            attachment.MeetingAttendeeId,
+            attachment.Date,
+            attachment.FileData
+          });
+          return instance == 1;
+        }
+        catch (Exception e)
         {
-          attachment.Id,
-          attachment.ReferanceId,
-          attachment.FileName,
-          attachment.MeetingAttendeeId,
-          attachment.Date,
-          attachment.FileData
-        });
-        return instance == 1;
+          return false;
+        }
+        
       }
     }
-    public bool Update(MeetingAttachment attachment, string schema, string connectionString)
+    
+    public bool Update
+      (MeetingAttachment attachment, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
-        dbConnection.Open();
-        string updateQuery = $@"UPDATE [{schema}].[MeetingAttachment] 
-                             SET ReferanceId = @ReferenceId, 
+        try
+        {
+          dbConnection.Open();
+          string updateQuery = $@"UPDATE [{schema}].[MeetingAttachment] 
+                             SET ReferanceId = @ReferanceId, 
                                  FileName = @FileName, 
                                  MeetingAttendeeId = @MeetingAttendeeId, 
-                                 Date = @Date,
-                                 FileData = @FileData
+                                 Date = @Date
                              WHERE Id = @Id";
-        var instance = dbConnection.Execute(updateQuery, new
+          var instance = dbConnection.Execute(updateQuery, new
+          {
+            attachment.Id,
+            attachment.ReferanceId,
+            attachment.FileName,
+            attachment.MeetingAttendeeId,
+            attachment.Date
+          });
+          return instance == 1;
+        }
+        catch (Exception e)
         {
-          attachment.ReferanceId,
-          attachment.FileName,
-          attachment.MeetingAttendeeId,
-          attachment.Date,
-          attachment.FileData
-        });
-        return instance == 1;
+          Console.WriteLine(e);
+          return false;
+        }
+        
       }
     }
+    
     public bool DeleteMeetingAcchments(Guid referenceId, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
@@ -114,6 +136,7 @@ namespace SqlRepository
         return instance == 1;
       }
     }
+    
     public bool Delete(Guid attachmentId, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
