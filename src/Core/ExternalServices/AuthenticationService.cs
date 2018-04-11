@@ -39,67 +39,69 @@ namespace Core.ExternalServices
       this._meetingAttendeeRepository = meetingAttendeeRepository;
     }
 
-    public (bool condition, string message, AuthRestModel infoResponse) Login (
-      string access_token, string id_token,string expires_in,string instanceId = null)
-    {
-      var userInfo = GetUserInfo (access_token);
-      
-      userInfo.IdToken = id_token;
-      userInfo.AccessToken = access_token;
-      userInfo.TokenExpire = expires_in;
-
-      (bool condition, string message, Person person) existsResult =
-        _userRepository.GetUserByEmail (userInfo.Email, _applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
-      
-      if (string.IsNullOrEmpty (existsResult.person.Related))
-      {
-        if (string.IsNullOrEmpty (existsResult.person.InstanceId))
-        {
-          if (string.IsNullOrEmpty (instanceId))
-          {
-            instanceId = $"A_{userInfo.Sub.Split ('|')[1]}";
-          }
-        }
-        else
-        {
-          instanceId = existsResult.person.InstanceId;
-        }
-
-      }
-      else
-      {
-        List<(string instanceId, string meetingId)> relatedInstances =
-          existsResult.person.Related.SplitToList (Minutz.Models.StringDeviders.InstanceStringDevider, Minutz.Models.StringDeviders.MeetingStringDevider);
-        instanceId = relatedInstances.FirstOrDefault ().instanceId;
-      }
-
-      if (string.IsNullOrEmpty(existsResult.person.FullName))
-      {
-        if (string.IsNullOrEmpty(existsResult.person.FirstName))
-        {
-          var emailSplit = existsResult.person.Email.Split('@');
-          existsResult.person.FullName = emailSplit[0];
-          try
-          {
-            _userRepository.UpdatePerson( _applicationSetting.CreateConnectionString(),this._applicationSetting.Schema, existsResult.person);
-          }
-          catch (Exception e)
-          {
-            _logService.Log(LogLevel.Exception, e.Message);
-          }  
-        }
-      }
-
-      Instance instance = this._instanceRepository.GetByUsername (instanceId, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
-      userInfo.InstanceId = instance.Username;
-      userInfo.Company = instance.Company;
-      userInfo.Related = existsResult.person.Related;
-      userInfo.Role = existsResult.person.Role;
-      userInfo.FirstName = existsResult.person.FirstName;
-      userInfo.LastName = existsResult.person.LastName;
-      userInfo.Email = existsResult.person.Email;
-      return (true, "Success", userInfo);
-    }
+//    public (bool condition, string message, AuthRestModel infoResponse) Login (
+//      string access_token, string id_token,string expires_in,string instanceId = null)
+//    {
+//      var userInfo = GetUserInfo (access_token);
+//      
+//      userInfo.IdToken = id_token;
+//      userInfo.AccessToken = access_token;
+//      userInfo.TokenExpire = expires_in;
+//
+//      (bool condition, string message, Person person) existsResult =
+//        _userRepository.GetUserByEmail (userInfo.Email, _applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+//      
+//      if (string.IsNullOrEmpty (existsResult.person.Related))
+//      {
+//        if (string.IsNullOrEmpty (existsResult.person.InstanceId))
+//        {
+//          if (string.IsNullOrEmpty (instanceId))
+//          {
+//            instanceId = $"A_{userInfo.Sub.Split ('|')[1]}";
+//          }
+//        }
+//        else
+//        {
+//          instanceId = existsResult.person.InstanceId;
+//        }
+//
+//      }
+//      else
+//      {
+//        List<(string instanceId, string meetingId)> relatedInstances =
+//          existsResult.person.Related.SplitToList (Minutz.Models.StringDeviders.InstanceStringDevider, Minutz.Models.StringDeviders.MeetingStringDevider);
+//        instanceId = relatedInstances.FirstOrDefault ().instanceId;
+//      }
+//
+//      if (string.IsNullOrEmpty(existsResult.person.FullName))
+//      {
+//        if (string.IsNullOrEmpty(existsResult.person.FirstName))
+//        {
+//          var emailSplit = existsResult.person.Email.Split('@');
+//          existsResult.person.FullName = emailSplit[0];
+//          try
+//          {
+//            _userRepository.UpdatePerson( _applicationSetting.CreateConnectionString(),this._applicationSetting.Schema, existsResult.person);
+//          }
+//          catch (Exception e)
+//          {
+//            _logService.Log(LogLevel.Exception, e.Message);
+//          }  
+//        }
+//      }
+//
+//      Instance instance = this._instanceRepository.GetByUsername (instanceId, this._applicationSetting.Schema, _applicationSetting.CreateConnectionString ());
+//      
+//      
+//      userInfo.InstanceId = instance.Username;
+//      userInfo.Company = instance.Company;
+//      userInfo.Related = existsResult.person.Related;
+//      userInfo.Role = existsResult.person.Role;
+//      userInfo.FirstName = existsResult.person.FirstName;
+//      userInfo.LastName = existsResult.person.LastName;
+//      userInfo.Email = existsResult.person.Email;
+//      return (true, "Success", userInfo);
+//    }
 
 
     public (bool condition, string message, AuthRestModel infoResponse) Login (
