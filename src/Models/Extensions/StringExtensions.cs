@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Minutz.Models.Entities;
 
 namespace Minutz.Models.Extensions
 {
@@ -83,6 +84,16 @@ namespace Minutz.Models.Extensions
         result.Append($"{instance.instanceId}{Models.StringDeviders.InstanceStringDevider}{instance.meetingId}{Models.StringDeviders.MeetingStringDevider}");
       }
       return result.ToString ();
+    }
+
+    public static string ToInstanceString(this AuthRestModel user)
+    {
+     return $"A_{user.Sub.Split ('|')[1]}";
+    }
+
+    public static string NamedFromEmail(this string email)
+    {
+      return email.Split('@')[0].Replace(".", " ");
     }
   }
 }

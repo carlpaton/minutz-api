@@ -32,13 +32,12 @@ namespace AuthenticationRepository
     }
     
     public (bool condition, string message, AuthRestModel value) CreateUser (
-      string name, string username, string email, string password, string role, string instanceId)
+      string name, string email, string password, string role, string instanceId)
     {
       var requestBody = new UserRequestModel
         {
           client_id = _applicationSetting.ClientId,
             email = email,
-            username = username,
             password = password,
             connection = _applicationSetting.AuthorityConnection
         }.Prepare (instanceId, name, role)
@@ -62,7 +61,7 @@ namespace AuthenticationRepository
         Role = resultObject.user_metadata.role
       };
       
-      (bool condition, string message, UserResponseModel tokenResponse) tokenResult = this.CreateToken (username, password);
+      (bool condition, string message, UserResponseModel tokenResponse) tokenResult = this.CreateToken (email, password);
       
       if (tokenResult.condition)
       {
@@ -140,9 +139,9 @@ namespace AuthenticationRepository
     }
 
     public (bool condition, string message, UserResponseModel tokenResponse) CreateToken (
-      string username, string password)
+      string email, string password)
     {
-      if (string.IsNullOrEmpty (username))
+      if (string.IsNullOrEmpty (email))
       {
         return (false, _validationMessage, null);
       }
@@ -150,12 +149,12 @@ namespace AuthenticationRepository
       {
         return (false, _validationMessage, null);
       }
-      _logService.Log (Minutz.Models.LogLevel.Info, $"username: {username} - password:{password}");
+      _logService.Log (Minutz.Models.LogLevel.Info, $"username: {email} - password:{password}");
 
       var requestBody = new UserTokenRequestModel
       {
         grant_type = "password",
-          username = username,
+          username = email,
           password = password,
           client_id = _applicationSetting.ClientId,
           client_secret = _applicationSetting.ClientSecret,

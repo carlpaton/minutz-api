@@ -273,7 +273,7 @@ namespace Api.Controllers
     private (bool condition, string message, AuthRestModel infoResponse) ExtractAuth()
     {
       (bool condition, string message, AuthRestModel infoResponse) userInfo =
-        _authenticationService.Login(
+        _authenticationService.LoginFromFromToken(
           Request.Headers.First(i => i.Key == "access_token").Value,
           Request.Headers.First(i => i.Key == "Authorization").Value,
           User.Claims.ToList().First(i => i.Type == "exp").Value, "");

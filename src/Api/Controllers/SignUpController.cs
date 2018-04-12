@@ -40,7 +40,7 @@ namespace Api.Controllers
       var email = string.Empty;
       var name = string.Empty;
       var password = string.Empty;
-      var username = string.Empty;
+      //var username = string.Empty;
       var instanceId = string.Empty;
       var meetingId = string.Empty;
       var role = string.Empty;
@@ -51,7 +51,7 @@ namespace Api.Controllers
          email = user.email.ToString ();
          name = user.name.ToString ();
          password = user.password.ToString ();
-         username = user.username.ToString ();
+       // username = user.username.ToString ();
          instanceId = user.RefInstanceId.ToString();
          meetingId = user.refMeetingId.ToString();
          role = user.role.ToString();
@@ -76,10 +76,10 @@ namespace Api.Controllers
       {
         return StatusCode(401, new { Message = "Please provide a valid email address" });
       }
-      if (string.IsNullOrEmpty(username))
-      {
-        return StatusCode(401, new { Message = "Please provide a username" });
-      }
+//      if (string.IsNullOrEmpty(username))
+//      {
+//        return StatusCode(401, new { Message = "Please provide a username" });
+//      }
       if (string.IsNullOrEmpty(password))
       {
         return StatusCode(401, new { Message = "Please provide a password" });
@@ -93,7 +93,7 @@ namespace Api.Controllers
       // }
 
       (bool condition, string message, AuthRestModel tokenResponse) result =
-        this._authenticationService.CreateUser (name, username, email, password,role, instanceId, meetingId);
+        this._authenticationService.CreateUser (name, email, password,role, instanceId, meetingId);
       
       _logService.Log(LogLevel.Info, JsonConvert.SerializeObject(result));
       _logService.Log(LogLevel.Info, JsonConvert.SerializeObject(result.tokenResponse));
