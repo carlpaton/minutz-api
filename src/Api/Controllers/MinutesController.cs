@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
 using Minutz.Models.Entities;
+using Minutz.Models.Message;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 //using Swashbuckle.AspNetCore.SwaggerGen;
@@ -40,7 +41,7 @@ namespace Api.Controllers
        if (string.IsNullOrEmpty(referenceId))
          return BadRequest("Please provide a valid id");
        var userInfo = ExtractAuth();
-       var result = _meetingService.SendMinutes(userInfo.infoResponse, Guid.Parse(referenceId));
+       var result = _meetingService.SendMinutes(userInfo.InfoResponse, Guid.Parse(referenceId));
        if (result.Key)
          return Ok(result.Value);
        return BadRequest(result.Value);
@@ -52,7 +53,7 @@ namespace Api.Controllers
     {
       var userInfo = ExtractAuth();
       var path = Directory.GetCurrentDirectory();
-      var fileResult = _meetingService.GetMinutesPreview(userInfo.infoResponse, Guid.Parse(meetingId),path);
+      var fileResult = _meetingService.GetMinutesPreview(userInfo.InfoResponse, Guid.Parse(meetingId),path);
       if (!fileResult.Key) return StatusCode(500);
       // var directoryContents = _fileProvider.GetDirectoryContents("");
 //      var path = Directory.GetCurrentDirectory();
@@ -75,9 +76,9 @@ namespace Api.Controllers
     }
     
     
-    private (bool condition, string message, AuthRestModel infoResponse) ExtractAuth()
+    private AuthRestModelResponse ExtractAuth()
     {
-      (bool condition, string message, AuthRestModel infoResponse) userInfo =
+      var userInfo =
         _authenticationService.LoginFromFromToken(
           Request.Headers.First(i => i.Key == "access_token").Value,
           Request.Headers.First(i => i.Key == "Authorization").Value,

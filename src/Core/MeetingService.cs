@@ -228,13 +228,15 @@ namespace Core
       try
       {
         if (user.InstanceId == null)
-          return (true, 404, "There are no meetings.", new List<Minutz.Models.ViewModels.MeetingViewModel>());
+        {
+          return (true, 204, "There are no meetings.", new List<Minutz.Models.ViewModels.MeetingViewModel>());
+        }
 
-        var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
-          _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
+        var instanceConnectionString = _applicationSetting.CreateConnectionString
+          (_applicationSetting.Server,_applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
           
-        var masterConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
-          _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
+        var masterConnectionString = _applicationSetting.CreateConnectionString
+          (_applicationSetting.Server, _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
         
         var result = new List<Minutz.Models.ViewModels.MeetingViewModel>();
         if (user.Role == AuthenticationHelper.Guest)

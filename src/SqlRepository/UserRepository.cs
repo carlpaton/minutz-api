@@ -8,6 +8,7 @@ using Dapper;
 using Interface.Repositories;
 using Interface.Services;
 using Minutz.Models.Entities;
+using Minutz.Models.Message;
 using SqlRepository.Extensions;
 
 namespace SqlRepository
@@ -20,15 +21,32 @@ namespace SqlRepository
       this._logService = logService;
     }
 
-    public (bool condition, string message, Person person) GetUserByEmail
-      (string email, string schema, string connectionString)
+    public PersonResponse MinutzPersonCheckIfUserExistsByEmail
+      (string email, string minutzAppConnectionString)
     {
-      using (IDbConnection dbConnection = new SqlConnection (connectionString))
+      var result = new PersonResponse { Condition = false, Message = string.Empty, People = new List<Person>()};
+      try
       {
-        var sql = $"SELECT * FROM [{schema}].[Person] WHERE Email = '{email}' ";
-        var user = dbConnection.Query<Person> (sql).ToList ();
-        return (user.Any (), user.Any () ? "User exists" : "No User with that email exists.", user.FirstOrDefault ());
+        using (IDbConnection dbConnection = new SqlConnection (minutzAppConnectionString))
+        {
+          var sql = $"SELECT * FROM [app].[Person] WHERE [Email] = '{email}' ";
+          var userQueryResult = dbConnection.Query<Person> (sql).ToList ();
+          if (!userQueryResult.Any())
+          {
+            result.Message = "No User with that email exists.";
+            return result;
+          }
+          result.Condition = true;
+          result.Person = userQueryResult.FirstOrDefault();
+          result.People = userQueryResult;
+        }
       }
+      catch (Exception exception)
+      {
+        result.Message = exception.InnerException.Message;
+        Console.WriteLine(exception);
+      }
+      return result;
     }
 
     public bool CheckIfNewUser
@@ -43,24 +61,23 @@ namespace SqlRepository
       }
     }
 
-    public (bool condition, string message) CreateNewUser
-      (AuthRestModel authUser, string schema, string connectionString)
+    public MessageBase CreateNewUser
+      (AuthRestModel authUser, string connectionString)
     {
+      var result = new MessageBase{ Condition = false, Message =  string.Empty };
       using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {
-        var sql = $@"insert into [{schema}].[Person](
-                                                    [Identityid]
-                                                    ,[FirstName]
-                                                    ,[LastName]
-                                                    ,[FullName]
-                                                    ,[ProfilePicture]
-                                                    ,[Email]
-                                                    ,[Role]
-                                                    ,[Active]
-                                                    ,[InstanceId]
-                                                    ,[Related]) 
-                                            values(
-                                                    @Identityid
+        var sql = $@"insert into [app].[Person]( [Identityid]
+                                                ,[FirstName]
+                                                ,[LastName]
+                                                ,[FullName]
+                                                ,[ProfilePicture]
+                                                ,[Email]
+                                                ,[Role]
+                                                ,[Active]
+                                                ,[InstanceId]
+                                                ,[Related]) 
+                                            values( @Identityid
                                                     ,@FirstName
                                                     ,@LastName
                                                     ,@FullName
@@ -86,10 +103,12 @@ namespace SqlRepository
         });
         if (user == 1)
         {
-          return (true, "Success");
+          result.Condition = true;
+          return result;
         }
-        this._logService.Log (Minutz.Models.LogLevel.Error, $"There was a issue inserting the new user");
-        return (false, "There was a issue inserting the new user");
+        _logService.Log (Minutz.Models.LogLevel.Error, "There was a issue inserting the new user");
+        result.Message = "There was a issue inserting the new user";
+        return result;
       }
     }
 
@@ -187,12 +206,18 @@ namespace SqlRepository
       var id = authUser.Sub.Split ('|') [1];
       var username = $"A_{id}";
       var password = CreatePassword (10); //need to salt the password and username
-      this.createSecurityUser (masterConnectionString, username, password);
-      this.createLoginSchemaUser (connectionString, username);
-      this.createSchema (connectionString, username);
-      this.createInstanceRecord (connectionString, "app", authUser.Name, username, password, true, 1);
-      this.updatePersonRecord (connectionString, "app", username, authUser.Sub);
-      this.updatePersonRoleRecord (connectionString, "app", authUser.Sub, authUser.Role);
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        var createUserSQL = $@" EXEC [app].[createUser] '{authUser.Sub}','{authUser.Email}', '{id}', '{password}'; ";
+        var createUserSQLResult = dbConnection.Execute (createUserSQL);
+      }
+
+      //var createsecurityuserresult = createSecurityUser (masterConnectionString, username, password);
+      //var createloginresult = createLoginSchemaUser (masterConnectionString, username);
+      //var createshcemaresult = createSchema (connectionString, username);
+      //var createinstancerecordresult = createInstanceRecord (masterConnectionString, "app", authUser.Name, username, password, true, 1);
+      //var updatepersonresult = updatePersonRecord (masterConnectionString, "app", username, authUser.Sub);
+      //var updaterolepersonresult = updatePersonRoleRecord (masterConnectionString, "app", authUser.Sub, authUser.Role);
       return username;
     }
 
@@ -275,8 +300,8 @@ namespace SqlRepository
         {
           var sql = $@"CREATE LOGIN {user}   
                       WITH PASSWORD = '{password}' ";
-
-          return dbConnection.Execute (sql) == -1;
+          var sqlresult = dbConnection.Execute(sql);
+          return sqlresult == -1;
         }
       }
       catch (Exception ex)
@@ -297,8 +322,9 @@ namespace SqlRepository
           return createSchemaResult == -1;
         }
       }
-      catch (Exception)
+      catch (Exception ex)
       {
+        Console.WriteLine (ex.Message);
         return false;
       }
     }

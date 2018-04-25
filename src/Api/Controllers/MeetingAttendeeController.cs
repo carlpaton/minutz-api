@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using Minutz.Models.Entities;
+using Minutz.Models.Message;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Api.Controllers
@@ -47,7 +48,7 @@ namespace Api.Controllers
      public MeetingAttendee GetMeetingAttendee(string referenceId, string id)
      {
        var userInfo = ExtractAuth();
-       var result = _meetingService.GetAttendee(userInfo.infoResponse, Guid.Parse(referenceId), Guid.Parse(id));
+       var result = _meetingService.GetAttendee(userInfo.InfoResponse, Guid.Parse(referenceId), Guid.Parse(id));
        return result;
      }
 
@@ -56,7 +57,7 @@ namespace Api.Controllers
      public List<MeetingAttendee> UpdateMeetingAttendees(List<MeetingAttendee> attendees)
      {
        var userInfo = ExtractAuth();
-       var result = _meetingService.UpdateMeetingAttendees(attendees, userInfo.infoResponse);
+       var result = _meetingService.UpdateMeetingAttendees(attendees, userInfo.InfoResponse);
        return result;
      }
 
@@ -98,16 +99,16 @@ namespace Api.Controllers
          return BadRequest("Please provide a valid meetingId");
        }
        var userInfo = ExtractAuth();
-       var meeting = _meetingService.GetMeeting(userInfo.infoResponse, invitee.ReferenceId.ToString());
+       var meeting = _meetingService.GetMeeting(userInfo.InfoResponse, invitee.ReferenceId.ToString());
        //var instance = _meetingService.GetInstance(token);
        invitee.PersonIdentity = invitee.Email;
        
        invitee.Role = "Invited";
        invitee.Status = "Invited";
-       var result = _invationService.SendMeetingInvatation(invitee, meeting,userInfo.infoResponse.InstanceId);
+       var result = _invationService.SendMeetingInvatation(invitee, meeting,userInfo.InfoResponse.InstanceId);
        if (result)
        {
-         var savedUser = _meetingService.InviteUser(userInfo.infoResponse, invitee,meeting.Id,invitee.Email);
+         var savedUser = _meetingService.InviteUser(userInfo.InfoResponse, invitee,meeting.Id,invitee.Email);
          if (savedUser)
          {
            return new ObjectResult(invitee);
@@ -146,9 +147,9 @@ namespace Api.Controllers
        return true;
      }
     
-    private (bool condition, string message, AuthRestModel infoResponse) ExtractAuth()
+    private AuthRestModelResponse ExtractAuth()
     {
-      (bool condition, string message, AuthRestModel infoResponse) userInfo =
+     var userInfo =
         _authenticationService.LoginFromFromToken(
           Request.Headers.First(i => i.Key == "access_token").Value,
           Request.Headers.First(i => i.Key == "Authorization").Value,

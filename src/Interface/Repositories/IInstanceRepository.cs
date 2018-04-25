@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Minutz.Models.Entities;
+using Minutz.Models.Message;
 
 namespace Interface.Repositories
 {
@@ -9,10 +10,8 @@ namespace Interface.Repositories
       string schema,
       string connectionString);
     
-    Instance GetByUsername(
-      string username,
-      string schema,
-      string connectionString);
+    InstanceResponse GetByUsername
+      (string username, string connectionString);
 
     Instance SetInstanceDetailsForSchema(
       string schema,

@@ -9,6 +9,7 @@ using Minutz.Models;
 using Minutz.Models.Auth0Models;
 using Minutz.Models.Entities;
 using Minutz.Models.Extensions;
+using Minutz.Models.Message;
 using Models.Auth0Models;
 using Newtonsoft.Json;
 
@@ -61,25 +62,26 @@ namespace AuthenticationRepository
         Role = resultObject.user_metadata.role
       };
       
-      (bool condition, string message, UserResponseModel tokenResponse) tokenResult = this.CreateToken (email, password);
+      var tokenResult = this.CreateToken (email, password);
       
-      if (tokenResult.condition)
+      if (tokenResult.Condition)
       {
-        (bool condition, string message, AuthRestModel infoResponse) userInfoResult = this.GetUserInfo (tokenResult.tokenResponse.access_token);
-        if (userInfoResult.condition)
+        var userInfoResult = this.GetUserInfo (tokenResult.AuthTokenResponse.access_token);
+        if (userInfoResult.Condition)
         {
-          result.Sub = userInfoResult.infoResponse.Sub;
-          result.Picture = userInfoResult.infoResponse.Picture;
+          result.Sub = userInfoResult.InfoResponse.Sub;
+          result.Picture = userInfoResult.InfoResponse.Picture;
         }
       }
 
       return (createResult.condition, createResult.result, result);
     }
 
-    public (bool condition, string message, UserQueryModel value)  SearchUserByEmail
+    public AuthUserQueryResponse SearchUserByEmail
       (string email)
     {
-      var emailEncoded = System.Net.WebUtility.UrlEncode(email);
+      var result = new AuthUserQueryResponse { Condition = false, Message = string.Empty, User = new UserQueryModel()};
+      //var emailEncoded = System.Net.WebUtility.UrlEncode(email);
       var url = $"{_applicationSetting.Authority}api/v2/users-by-email?email={email}";
       var tokenResult = GetManagementApiToken();
       
@@ -87,34 +89,37 @@ namespace AuthenticationRepository
       if (!httpResult.condition)
       {
         _logService.Log (LogLevel.Exception, $"(bool condition, string message, UserQueryModel value)  SearchUserByEmail -> there was a issue getting the details from auth0");
-        return (false, "There was a issue getting the user information.", null);
+        result.Message = "There was a issue getting the user information.";
+        return result;
       }
       try
       {
-        var json = httpResult.result;
-        var result = JsonConvert.DeserializeObject<List<UserQueryModel>> (json);
-        return (httpResult.condition, "Success", result.First());
+        var deserializedResult = JsonConvert.DeserializeObject<List<UserQueryModel>> (httpResult.result);
+        result.Condition = true;
+        result.User = deserializedResult.First();
+        return result;
       }
       catch (Exception e)
       {
         _logService.Log(LogLevel.Exception, e.InnerException.Message);
+        result.Message = e.InnerException.Message;
+        return result;
       }
-      
-      return (false, "There was a issue with the requerst.", null);
     }
 
     public (bool condition, string message, bool value) ValidateUser 
       (string email)
     {
       var result = SearchUserByEmail(email);
-      return result.condition 
-        ? (result.condition, result.message ,result.value.email_verified) 
-        : (result.condition, result.message, result.condition);
+      return result.Condition 
+        ? (result.Condition, result.Message ,result.User.email_verified) 
+        : (result.Condition, result.Message, result.Condition);
     }
 
-    public (bool condition, string message, AuthRestModel infoResponse)   GetUserInfo (
-      string token)
+    public AuthRestModelResponse GetUserInfo 
+      (string token)
     {
+      var result = new AuthRestModelResponse { Condition = false, Message = string.Empty, InfoResponse = new AuthRestModel()};
       AuthRestModel authResult;
       var url = $"{_applicationSetting.Authority}userinfo";
       bool requestResult = _cache.TryGetValue (token, out authResult);
@@ -123,33 +128,38 @@ namespace AuthenticationRepository
         var httpResult = _httpService.Get (url, token);
         if (!httpResult.condition)
         {
-          _logService.Log (Minutz.Models.LogLevel.Exception, $"Auth0Repository.GetUserInfo -> there was a issue getting the details from auth0");
-          throw new Exception ("Auth0 Exception");
+          _logService.Log (LogLevel.Exception, $"Auth0Repository.GetUserInfo -> there was a issue getting the details from auth0");
+          result.Message = httpResult.result;
+          return result;
         }
-        authResult = Newtonsoft.Json.JsonConvert.DeserializeObject<AuthRestModel> (httpResult.result);
-        requestResult = httpResult.condition;
-        // Set cache options.
-        var cacheEntryOptions = new MemoryCacheEntryOptions ()
-          // Keep in cache for this time, reset time if accessed.
-          .SetSlidingExpiration (TimeSpan.FromMinutes (10));
-        // Save data in cache.
+        authResult = JsonConvert.DeserializeObject<AuthRestModel> (httpResult.result);
+        result.Condition = httpResult.condition;
+        var cacheEntryOptions = new MemoryCacheEntryOptions ().SetSlidingExpiration (TimeSpan.FromMinutes (10));
         _cache.Set (token, authResult, cacheEntryOptions);
       }
-      return (requestResult, "Success", authResult);
+      else
+      {
+        result.Condition = true;
+      }
+      result.InfoResponse = authResult;
+      return result;
     }
 
-    public (bool condition, string message, UserResponseModel tokenResponse) CreateToken (
-      string email, string password)
+    public TokenResponse CreateToken 
+      (string email, string password)
     {
+      var result = new TokenResponse { Condition = false, Message = string.Empty, AuthTokenResponse = new UserResponseModel()};
       if (string.IsNullOrEmpty (email))
       {
-        return (false, _validationMessage, null);
+        result.Message = _validationMessage;
+        return result;
       }
       if (string.IsNullOrEmpty (password))
       {
-        return (false, _validationMessage, null);
+        result.Message = _validationMessage;
+        return result;
       }
-      _logService.Log (Minutz.Models.LogLevel.Info, $"username: {email} - password:{password}");
+      _logService.Log (LogLevel.Info, $"username: {email} - password:{password}");
 
       var requestBody = new UserTokenRequestModel
       {
@@ -161,19 +171,20 @@ namespace AuthenticationRepository
           connection = _applicationSetting.AuthorityConnection
       }.ToJSON ();
       
-      _logService.Log (Minutz.Models.LogLevel.Info, requestBody.ToString ());
-      var tokenRequestResult = this._httpService.Post ($"{_applicationSetting.Authority}oauth/token", requestBody.ToStringContent ());
-      _logService.Log (Minutz.Models.LogLevel.Info, tokenRequestResult.result);
-      
+      _logService.Log (LogLevel.Info, requestBody);
+      var tokenRequestResult = _httpService.Post ($"{_applicationSetting.Authority}oauth/token", requestBody.ToStringContent ());
+
+      _logService.Log (LogLevel.Info, tokenRequestResult.result);
       if (tokenRequestResult.condition)
       {
-        var token = Newtonsoft.Json.JsonConvert.DeserializeObject<UserResponseModel> (tokenRequestResult.result);
+        var token = JsonConvert.DeserializeObject<UserResponseModel> (tokenRequestResult.result);
         token.expires_in = DateTime.UtcNow.AddDays(1).ToString("yyyy-MM-ddTHH:mm:ss");
-        return (tokenRequestResult.condition,
-          "Success", token
-        );
+        result.Condition = true;
+        result.AuthTokenResponse = token;
+        return result;
       }
-      return (tokenRequestResult.condition, tokenRequestResult.result, null);
+      result.Message = tokenRequestResult.result;
+      return result;
     }
 
     private (bool condition, string message, string token) GetManagementApiToken()

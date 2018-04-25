@@ -1,4 +1,5 @@
-﻿using AuthenticationRepository;
+﻿using System;
+using AuthenticationRepository;
 using Core;
 using Core.ExternalServices;
 using Core.LogProvider;
@@ -9,6 +10,7 @@ using Interface.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -52,6 +54,7 @@ namespace Minutz.Api
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+    
       // var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
       // services.AddSingleton<IFileProvider>(physicalProvider);
       services.AddTransient<IHttpService, HttpService>();
@@ -104,7 +107,6 @@ namespace Minutz.Api
       services.AddMemoryCache();
       services.AddMvc();
       
-      
       var version = Configuration.GetSection("Version").Value;
       services.AddSwaggerGen(c =>
       {
@@ -118,8 +120,6 @@ namespace Minutz.Api
               builder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
             });
       });
-      
-      
       
       services.AddAuthentication(options =>
       {
@@ -160,6 +160,15 @@ namespace Minutz.Api
           name: "default",
           template: "{controller=Home}/{action=Index}/{id?}");
       });
+    }
+
+    private static string DefaultConnectionString()
+    {
+      string server = Environment.GetEnvironmentVariable("SERVER_ADDRESS");
+      string user = Environment.GetEnvironmentVariable("DEFAULT_USER");
+      string database = Environment.GetEnvironmentVariable("DEFAULT_CATALOGUE");
+      string password = Environment.GetEnvironmentVariable("DEFAULT_PASSWORD");
+     return $"Server={server};User ID={user};pwd={password};database={database};";
     }
   }
 }

@@ -19,9 +19,9 @@ namespace Tests.RepositoryTests
             var repository = new UserRepository (logService);
             var connectionString = $"Server=127.0.0.1,1401;User ID=sa;pwd=password1234$;database=minutz-test;";
 
-            var result = repository.GetUserByEmail ("info1@docker.durban", "app", connectionString);
-            Assert.IsTrue (result.condition);
-            Assert.AreSame (result.message, "Success");
+            var result = repository.MinutzPersonCheckIfUserExistsByEmail ("info1@docker.durban", connectionString);
+            Assert.IsTrue (result.Condition);
+            Assert.AreSame (result.Message, "Success");
         }
     }
 }

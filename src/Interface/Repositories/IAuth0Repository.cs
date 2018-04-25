@@ -1,6 +1,5 @@
-using Minutz.Models.Auth0Models;
 using Minutz.Models.Entities;
-using Models.Auth0Models;
+using Minutz.Models.Message;
 
 namespace Interface.Repositories
 {
@@ -9,12 +8,13 @@ namespace Interface.Repositories
         (bool condition, string message, AuthRestModel value) CreateUser (
             string name,string email, string password, string role, string instanceId);
 
-        (bool condition, string message, AuthRestModel infoResponse) GetUserInfo (
-            string token);
-        (bool condition, string message, UserResponseModel tokenResponse) CreateToken (
+        AuthRestModelResponse GetUserInfo 
+            (string token);
+        
+        TokenResponse CreateToken (
             string username, string password);
 
-        (bool condition, string message, UserQueryModel value) SearchUserByEmail
+        AuthUserQueryResponse SearchUserByEmail
             (string email);
 
         (bool condition, string message, bool value) ValidateUser

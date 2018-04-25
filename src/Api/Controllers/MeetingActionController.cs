@@ -5,6 +5,7 @@ using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Minutz.Models.Entities;
+using Minutz.Models.Message;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Api.Controllers
@@ -37,7 +38,7 @@ namespace Api.Controllers
          return BadRequest("Please provide a valid referenceId [meeting id]");
        }
        var userInfo = ExtractAuth();
-       var result = _meetingActionService.GetMinutzActions(referenceId, userInfo.infoResponse);
+       var result = _meetingActionService.GetMinutzActions(referenceId, userInfo.InfoResponse);
        return Ok(result);
      }
 
@@ -51,7 +52,7 @@ namespace Api.Controllers
      {
        var userInfo = ExtractAuth();
        var result =
-         _meetingActionService.CreateMinutzAction(action.ReferanceId.ToString(), action, userInfo.infoResponse);
+         _meetingActionService.CreateMinutzAction(action.ReferanceId.ToString(), action, userInfo.InfoResponse);
        return result.condition ? Ok(action) : StatusCode(500 ,result.message);
      }
 
@@ -64,7 +65,7 @@ namespace Api.Controllers
      public IActionResult Post([FromBody] MinutzAction action)
      {
        var userInfo = ExtractAuth();
-       var result = _meetingActionService.UpdateMinutzAction(action.ReferanceId.ToString(), action, userInfo.infoResponse);
+       var result = _meetingActionService.UpdateMinutzAction(action.ReferanceId.ToString(), action, userInfo.InfoResponse);
        return result.condition ? Ok(action) : StatusCode(500, result.message);
      }
 
@@ -80,10 +81,9 @@ namespace Api.Controllers
        return true;
      }
     
-    private (bool condition, string message, AuthRestModel infoResponse) ExtractAuth()
+    private AuthRestModelResponse ExtractAuth()
     {
-      (bool condition, string message, AuthRestModel infoResponse) userInfo =
-        _authenticationService.LoginFromFromToken(
+      var userInfo = _authenticationService.LoginFromFromToken(
           Request.Headers.First(i => i.Key == "access_token").Value,
           Request.Headers.First(i => i.Key == "Authorization").Value,
           User.Claims.ToList().First(i => i.Type == "exp").Value, "");

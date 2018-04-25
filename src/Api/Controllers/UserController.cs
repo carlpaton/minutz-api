@@ -62,13 +62,13 @@ namespace Api.Controllers
         return StatusCode (404, "please provide a valid username or password");
       }
 
-      (bool condition, string message, AuthRestModel infoResponse) loginResult =
-        _authenticationService.Login ((string) username, (string) password, (string) instanceId);
-      if (loginResult.condition)
+      var loginResult =
+        _authenticationService.LoginFromLoginForm ((string) username, (string) password, (string) instanceId);
+      if (loginResult.Condition)
       {
-        return Ok (new { Value = loginResult.infoResponse, Message = loginResult.message });
+        return Ok (new { Value = loginResult.InfoResponse, Message = loginResult.Message });
       }
-      return StatusCode (404, new { Message = loginResult.message });
+      return StatusCode (404, new { Message = loginResult.Message });
     }
 
     [Authorize]
@@ -84,10 +84,10 @@ namespace Api.Controllers
       }
       
       var userInfo = _authenticationService.GetUserInfo (Request.Token ());
-      if (!_userValidationService.IsNewUser (userInfo.Sub, reference))
-        _userValidationService.CreateAttendee (userInfo, reference);
+      if (!_userValidationService.IsNewUser (userInfo.InfoResponse.Sub, reference))
+        _userValidationService.CreateAttendee (userInfo.InfoResponse, reference);
 
-      var result = _userValidationService.GetUser (userInfo.Sub);
+      var result = _userValidationService.GetUser (userInfo.InfoResponse.Sub);
       return Ok (result);
     }
   }

@@ -44,4 +44,7 @@
   <ItemGroup>
     <Folder Include="Extensions\" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="MinutzContext.cs" />
+  </ItemGroup>
 </Project>

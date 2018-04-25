@@ -282,15 +282,22 @@ namespace SqlRepository {
                                                                 ,@Status
                                                                 ,@Role
                                                                 )";
-        var instance = dbConnection.Execute (insertSql, new {
-          attendee.Id,
-          attendee.ReferenceId,
-          attendee.PersonIdentity,
-          inviteEmail,
-          attendee.Status,
-          attendee.Role
-        });
-        return instance == 1;
+        try
+        {
+          var instance = dbConnection.Execute (insertSql, new {
+            attendee.Id,
+            attendee.ReferenceId,
+            attendee.PersonIdentity,
+            inviteEmail,
+            attendee.Status,
+            attendee.Role
+          });
+          return instance == 1;
+        }
+        catch (Exception e)
+        {
+          return false;
+        }
       }
     }
 

@@ -28,8 +28,8 @@ namespace Tests.RepositoryTests
             var setting = NSubstitute.Substitute.For<IApplicationSetting>();
             var repository = new Auth0Repository (logService,cache, setting);
             var result = repository.CreateToken (string.Empty, "password");
-            Assert.IsFalse (result.condition);
-            Assert.AreSame (result.message, this._validationMessage);
+            Assert.IsFalse (result.Condition);
+            Assert.AreSame (result.Message, this._validationMessage);
         }
 
         [Test]
@@ -40,8 +40,8 @@ namespace Tests.RepositoryTests
             var setting = NSubstitute.Substitute.For<IApplicationSetting>();
             var repository = new Auth0Repository (logService,cache, setting);
             var result = repository.CreateToken (string.Empty, "password");
-            Assert.IsFalse (result.condition);
-            Assert.AreSame (result.message, this._validationMessage);
+            Assert.IsFalse (result.Condition);
+            Assert.AreSame (result.Message, this._validationMessage);
         }
 
         [Test]
@@ -52,7 +52,7 @@ namespace Tests.RepositoryTests
             var setting = NSubstitute.Substitute.For<IApplicationSetting>();
             var repository = new Auth0Repository (logService,cache, setting);
             var result = repository.CreateToken ("leeroya", "@nathan001");
-            Assert.IsFalse (result.condition);
+            Assert.IsFalse (result.Condition);
         }
 
         [Test]
@@ -63,8 +63,8 @@ namespace Tests.RepositoryTests
             var setting = NSubstitute.Substitute.For<IApplicationSetting>();
             var repository = new Auth0Repository (logService,cache, setting);
             var result = repository.CreateToken ("leeroya", "@nathan01");
-            Assert.IsTrue (result.condition);
-            Assert.AreSame (result.message, "Success");
+            Assert.IsTrue (result.Condition);
+            Assert.AreSame (result.Message, "Success");
         }
     }
 }

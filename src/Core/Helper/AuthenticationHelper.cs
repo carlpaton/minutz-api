@@ -27,18 +27,17 @@ namespace Core.Helper
       
       var userInfo = _authenticationService.GetUserInfo (token);
       
-      this.UserInfo = userValidationService.GetUser(userInfo.Sub);
+      this.UserInfo = userValidationService.GetUser(userInfo.InfoResponse.Sub);
 
       if (string.IsNullOrEmpty(this.UserInfo.Related))// this will use the defasult user instance id, this is if the user is a owner
       {
 
         this.Instance = instanceRepository.GetByUsername(this.UserInfo.InstanceId,
-                                                              applicationSetting.Schema,
                                                               applicationSetting.CreateConnectionString(
                                                                                                         applicationSetting.Server,
                                                                                                         applicationSetting.Catalogue,
                                                                                                         applicationSetting.Username,
-                                                                                                        applicationSetting.Password));
+                                                                                                        applicationSetting.Password)).Instance;
 
       }
       else
@@ -51,22 +50,20 @@ namespace Core.Helper
 
           (string instanceId, string meetingId) relatedInstance = relatedstring.SplitToList("&", ";").FirstOrDefault(); // This is to be updated to allow multiple
           this.Instance = instanceRepository.GetByUsername(relatedInstance.instanceId,
-                                                                        applicationSetting.Schema,
                                                                         applicationSetting.CreateConnectionString(
                                                                                                                   applicationSetting.Server,
                                                                                                                   applicationSetting.Catalogue,
                                                                                                                   applicationSetting.Username,
-                                                                                                                  applicationSetting.Password));
+                                                                                                                  applicationSetting.Password)).Instance;
         }
         else
         {
           this.Instance = instanceRepository.GetByUsername(this.UserInfo.Name,
-                                                             applicationSetting.Schema,
                                                              applicationSetting.CreateConnectionString(
                                                                                                        applicationSetting.Server,
                                                                                                        applicationSetting.Catalogue,
                                                                                                        applicationSetting.Username,
-                                                                                                       applicationSetting.Password));
+                                                                                                       applicationSetting.Password)).Instance;
         }
 
       }

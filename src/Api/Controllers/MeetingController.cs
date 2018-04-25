@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Minutz.Models;
 using Minutz.Models.Entities;
+using Minutz.Models.Message;
 using Minutz.Models.ViewModels;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -32,12 +33,12 @@ namespace Api.Controllers
       IAuthenticationService authenticationService,
       IMeetingAttachmentService meetingAttachmentService)
     {
-      this._meetingService = meetingService;
-      this._invatationService = invatationService;
-      this._logService = logService;
+      _meetingService = meetingService;
+      _invatationService = invatationService;
+      _logService = logService;
       _authenticationService = authenticationService;
       _meetingAttachmentService = meetingAttachmentService;
-      this._logger = logger.CreateLogger("MeetingController");
+      _logger = logger.CreateLogger("MeetingController");
     }
 
     /// <summary>
@@ -49,10 +50,10 @@ namespace Api.Controllers
     [Produces("application/json")]
     [HttpGet("api/meetings", Name = "Get all meetings for a user")]
     [ProducesResponseType(typeof(string), 400)]
-    [ProducesResponseType(typeof(List<Minutz.Models.ViewModels.MeetingViewModel>), 200)]
-    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(List<Minutz.Models.ViewModels.MeetingViewModel>))]
-    public IActionResult GetMeetings(
-    string reference)
+    [ProducesResponseType(typeof(List<MeetingViewModel>), 200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(List<MeetingViewModel>))]
+    public IActionResult GetMeetings
+      (string reference)
     {
       if (!string.IsNullOrEmpty(reference))
       {
@@ -60,9 +61,9 @@ namespace Api.Controllers
       }
 
       _logger.LogInformation(Core.LogProvider.LoggingEvents.ListItems, "GetMeetings {ID}", 1);
-      this._logService.Log(Minutz.Models.LogLevel.Info, "GetMeetings called.");
+      _logService.Log(Minutz.Models.LogLevel.Info, "GetMeetings called.");
       var userInfo = ExtractAuth();
-      var meetingsResult = this._meetingService.GetMeetings(userInfo.infoResponse, reference);
+      var meetingsResult = _meetingService.GetMeetings(userInfo.InfoResponse, reference);
       if (meetingsResult.condition == true && meetingsResult.statusCode == 200)
         return Ok(meetingsResult.value);
       if (meetingsResult.condition == true && meetingsResult.statusCode == 404)
@@ -82,13 +83,13 @@ namespace Api.Controllers
     [HttpGet("api/meeting", Name = "Get a meeting for a user by id")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(string), 400)]
-    [ProducesResponseType(typeof(Minutz.Models.ViewModels.MeetingViewModel), 200)]
-    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Minutz.Models.ViewModels.MeetingViewModel))]
+    [ProducesResponseType(typeof(MeetingViewModel), 200)]
+    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingViewModel))]
     public IActionResult GetMeeting
       (string id, string related)
     {
       var userInfo = ExtractAuth();
-      var meeting = this._meetingService.GetMeeting(userInfo.infoResponse, id);
+      var meeting = _meetingService.GetMeeting(userInfo.InfoResponse, id);
       return Ok(new { status = 200, data = meeting });
     }
 
@@ -113,7 +114,7 @@ namespace Api.Controllers
       var data = new MeetingViewModel
       {
         Id = Guid.NewGuid().ToString(),
-        AvailableAttendeeCollection = new List<Minutz.Models.Entities.MeetingAttendee>(),
+        AvailableAttendeeCollection = new List<MeetingAttendee>(),
         Date = DateTime.UtcNow,
         Duration = 60,
         IsFormal = false,
@@ -123,11 +124,11 @@ namespace Api.Controllers
         TimeZoneOffSet = 2,
         IsReacurance = false,
         Location = "Durban",
-        MeetingActionCollection = new List<Minutz.Models.Entities.MinutzAction>(),
-        MeetingAgendaCollection = new List<Minutz.Models.Entities.MeetingAgenda>(),
-        MeetingAttachmentCollection = new List<Minutz.Models.Entities.MeetingAttachment>(),
-        MeetingAttendeeCollection = new List<Minutz.Models.Entities.MeetingAttendee>(),
-        MeetingNoteCollection = new List<Minutz.Models.Entities.MeetingNote>(),
+        MeetingActionCollection = new List<MinutzAction>(),
+        MeetingAgendaCollection = new List<MeetingAgenda>(),
+        MeetingAttachmentCollection = new List<MeetingAttachment>(),
+        MeetingAttendeeCollection = new List<MeetingAttendee>(),
+        MeetingNoteCollection = new List<MeetingNote>(),
         MeetingDecisionCollection = new List<MinutzDecision>(),
         Outcome = string.Empty,
         Purpose = string.Empty,
@@ -138,7 +139,7 @@ namespace Api.Controllers
       _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - created viewmodel {ID}", 1);
       
       var result = _meetingService.CreateMeeting(
-        userInfo.infoResponse,
+        userInfo.InfoResponse,
         data.ToEntity(),
         data.MeetingAttendeeCollection,
         data.MeetingAgendaCollection,
@@ -183,7 +184,7 @@ namespace Api.Controllers
       
       _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "UpdateMeeting - entry point {ID}", 1);
 
-      var result = _meetingService.UpdateMeeting(userInfo.infoResponse, meeting);
+      var result = _meetingService.UpdateMeeting(userInfo.InfoResponse, meeting);
       return new ObjectResult(result);
     }
 
@@ -204,7 +205,7 @@ namespace Api.Controllers
       if (string.IsNullOrEmpty(id))
         return BadRequest("Please provide a valid id");
       var userInfo = ExtractAuth();
-      var result = _meetingService.DeleteMeeting(userInfo.infoResponse, Guid.Parse(id));
+      var result = _meetingService.DeleteMeeting(userInfo.InfoResponse, Guid.Parse(id));
       if (result.Key)
         return Ok(result.Value);
       return BadRequest(result.Value);
@@ -221,7 +222,7 @@ namespace Api.Controllers
       if (string.IsNullOrEmpty(meetingId))
         return BadRequest("Please provide a valid id");
       var userInfo = ExtractAuth();
-      var meeting = _meetingService.GetMeeting(userInfo.infoResponse, meetingId);
+      var meeting = _meetingService.GetMeeting(userInfo.InfoResponse, meetingId);
       foreach (var attendee in meeting.MeetingAttendeeCollection)
       {
         var result = _invatationService.SendMeetingInvatation(attendee, meeting, "instanceId");
@@ -257,10 +258,10 @@ namespace Api.Controllers
             FileData = fileBytes,
             FileName = formFile.FileName,
             Id = Guid.NewGuid(),
-            MeetingAttendeeId = userInfo.infoResponse.Sub,
+            MeetingAttendeeId = userInfo.InfoResponse.Sub,
             ReferanceId =  Guid.Parse(meetingId)
           };
-          var meetingAttachmentResult = _meetingAttachmentService.Add(meetingFile, userInfo.infoResponse);
+          var meetingAttachmentResult = _meetingAttachmentService.Add(meetingFile, userInfo.InfoResponse);
         }
       }
 
@@ -270,9 +271,9 @@ namespace Api.Controllers
       return Ok(new { count = files.Count, size, filePath });
       }
     
-    private (bool condition, string message, AuthRestModel infoResponse) ExtractAuth()
+    private AuthRestModelResponse ExtractAuth()
     {
-      (bool condition, string message, AuthRestModel infoResponse) userInfo =
+      var userInfo =
         _authenticationService.LoginFromFromToken(
           Request.Headers.First(i => i.Key == "access_token").Value,
           Request.Headers.First(i => i.Key == "Authorization").Value,

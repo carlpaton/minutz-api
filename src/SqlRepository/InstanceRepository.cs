@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
 using Interface.Repositories;
 using Minutz.Models.Entities;
+using Minutz.Models.Message;
 
 namespace SqlRepository
 {
@@ -25,22 +27,38 @@ namespace SqlRepository
       }
     }
 
-    /// <summary>
-    /// This gets the instance by the instance username that is in the person table for a user
-    /// </summary>
-    /// <param name="username">instance username used as the schema</param>
-    /// <param name="schema">default app schema</param>
-    /// <param name="connectionString">default connection string</param>
-    /// <returns></returns>
-    public Instance GetByUsername (
-      string username, string schema, string connectionString)
+    public InstanceResponse GetByUsername 
+      (string username, string connectionString)
     {
-      using (IDbConnection dbConnection = new SqlConnection (connectionString))
+      var result = new InstanceResponse
       {
-        dbConnection.Open ();
-        var sql = $"select * from [{schema}].{_instance} WHERE Username = '{username}'";
-        var data = dbConnection.Query<Instance> (sql).FirstOrDefault ();
-        return data;
+        Condition = false, Message = string.Empty, Instances = new List<Instance>(), Instance =  new Instance()
+      };
+      try
+      {
+        using (IDbConnection dbConnection = new SqlConnection (connectionString))
+        {
+          dbConnection.Open ();
+          var sql = $"SELECT * FROM [app].[Instance] WHERE [Username] = '{username}'";
+          var data = dbConnection.Query<Instance>(sql);
+          var enumerable = data.ToList();
+          if (!enumerable.Any())
+          {
+            result.Message = "No instances found.";
+            return result;
+          }
+
+          result.Condition = true;
+          result.Instance = enumerable.FirstOrDefault();
+          result.Instances.AddRange(enumerable);
+          return result;
+        }
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine(e);
+        result.Message = e.InnerException.Message;
+        return result;
       }
     }
 

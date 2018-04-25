@@ -51,23 +51,22 @@ namespace Core
       return Environment.GetEnvironmentVariable("ReportMinutesKey");
     }
 
-    public string CreateConnectionString(
-      string server, string catalogue, string username, string password)
+    public string CreateConnectionString
+      (string server, string catalogue, string username, string password)
     {
       return $"Server={server};User ID={username};pwd={password};database={catalogue};";
     }
 
     public string CreateConnectionString()
     {
-      return $"Server={this.Server};User ID={this.Username};pwd={this.Password};database={this.Catalogue};";
+      return $"Server={Server};User ID={Username};pwd={Password};database={Catalogue};";
     }
 
-    public string GetInstancePassword(
-      string instance)
+    public string GetInstancePassword
+      (string instance)
     {
-      var instanceObject = _instanceRepository.GetByUsername(instance, "app", CreateConnectionString());
-      
-      return instanceObject.Password;
+      var instanceObject = _instanceRepository.GetByUsername(instance, CreateConnectionString());  
+      return instanceObject.Instance.Password;
     }
   }
 }

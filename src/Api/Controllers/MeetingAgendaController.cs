@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Minutz.Models.Entities;
 using Newtonsoft.Json;
 using System;
+using Minutz.Models.Message;
 
 namespace Api.Controllers
 {
@@ -57,7 +58,7 @@ namespace Api.Controllers
      {
        var userInfo = ExtractAuth();
        var id = agendaitems.First().ReferenceId;
-       var result = _meetingService.UpdateMeetingAgendaItems(id,agendaitems, userInfo.infoResponse);
+       var result = _meetingService.UpdateMeetingAgendaItems(id,agendaitems, userInfo.InfoResponse);
        return result;
      }
 
@@ -75,7 +76,7 @@ namespace Api.Controllers
        
        var userInfo = ExtractAuth();
        if (agenda.Id == Guid.Parse(_defaultAgendaId)) agenda.Id = Guid.NewGuid();
-       var result = _meetingService.CreateMeetingAgendaItem(agenda, userInfo.infoResponse);
+       var result = _meetingService.CreateMeetingAgendaItem(agenda, userInfo.InfoResponse);
        return result;
      }
 
@@ -103,9 +104,9 @@ namespace Api.Controllers
        return true;
      }
     
-    private (bool condition, string message, AuthRestModel infoResponse) ExtractAuth()
+    private AuthRestModelResponse ExtractAuth()
     {
-      (bool condition, string message, AuthRestModel infoResponse) userInfo =
+      var userInfo =
         _authenticationService.LoginFromFromToken(
           Request.Headers.First(i => i.Key == "access_token").Value,
           Request.Headers.First(i => i.Key == "Authorization").Value,

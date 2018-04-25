@@ -4,6 +4,7 @@ using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Minutz.Models.Entities;
+using Minutz.Models.Message;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Api.Controllers
@@ -36,7 +37,7 @@ namespace Api.Controllers
                 return BadRequest("Please provide a valid referenceId [meeting id]");
             }
             var userInfo = ExtractAuth();
-            var result = _meetingDecisionService.GetMinutzDecisions(referenceId, userInfo.infoResponse);
+            var result = _meetingDecisionService.GetMinutzDecisions(referenceId, userInfo.InfoResponse);
             return Ok(result);
         }
         
@@ -50,7 +51,7 @@ namespace Api.Controllers
         {
             var userInfo = ExtractAuth();
             var result =
-                _meetingDecisionService.CreateMinutzDecision(decision.ReferanceId.ToString(), decision,userInfo.infoResponse);
+                _meetingDecisionService.CreateMinutzDecision(decision.ReferanceId.ToString(), decision,userInfo.InfoResponse);
             return result.condition ? Ok(result.value) : StatusCode(500, result.message);
         }
 
@@ -64,7 +65,7 @@ namespace Api.Controllers
         {
             var userInfo = ExtractAuth();
             var result =
-                _meetingDecisionService.UpdateMinutzDecision(decision.ReferanceId.ToString(), decision, userInfo.infoResponse);
+                _meetingDecisionService.UpdateMinutzDecision(decision.ReferanceId.ToString(), decision, userInfo.InfoResponse);
             return result.condition ? Ok(result.value) : StatusCode(500, result.message);
         }
 
@@ -77,13 +78,13 @@ namespace Api.Controllers
         public IActionResult Delete(string referenceId, string id)
         {
             var userInfo = ExtractAuth();
-            var result = _meetingDecisionService.DeleteMinutzDecision(referenceId, id, userInfo.infoResponse);
+            var result = _meetingDecisionService.DeleteMinutzDecision(referenceId, id, userInfo.InfoResponse);
             return result.condition ? Ok(result.message) : StatusCode(500, result.message);
         }
         
-        private (bool condition, string message, AuthRestModel infoResponse) ExtractAuth()
+        private AuthRestModelResponse ExtractAuth()
         {
-            (bool condition, string message, AuthRestModel infoResponse) userInfo =
+           var userInfo =
                 _authenticationService.LoginFromFromToken(
                     Request.Headers.First(i => i.Key == "access_token").Value,
                     Request.Headers.First(i => i.Key == "Authorization").Value,
