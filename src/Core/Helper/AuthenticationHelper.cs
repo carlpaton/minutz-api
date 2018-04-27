@@ -27,7 +27,7 @@ namespace Core.Helper
       
       var userInfo = _authenticationService.GetUserInfo (token);
       
-      this.UserInfo = userValidationService.GetUser(userInfo.InfoResponse.Sub);
+      this.UserInfo = userValidationService.GetUser(userInfo.Sub);
 
       if (string.IsNullOrEmpty(this.UserInfo.Related))// this will use the defasult user instance id, this is if the user is a owner
       {

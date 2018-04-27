@@ -84,10 +84,10 @@ namespace Api.Controllers
       }
       
       var userInfo = _authenticationService.GetUserInfo (Request.Token ());
-      if (!_userValidationService.IsNewUser (userInfo.InfoResponse.Sub, reference))
-        _userValidationService.CreateAttendee (userInfo.InfoResponse, reference);
+      if (!_userValidationService.IsNewUser (userInfo.Sub, reference))
+        _userValidationService.CreateAttendee (userInfo, reference);
 
-      var result = _userValidationService.GetUser (userInfo.InfoResponse.Sub);
+      var result = _userValidationService.GetUser (userInfo.Sub);
       return Ok (result);
     }
   }

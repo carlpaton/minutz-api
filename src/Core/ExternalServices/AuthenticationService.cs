@@ -44,17 +44,18 @@ namespace Core.ExternalServices
     {
       var result = new AuthRestModelResponse { Condition = false, Message =  string.Empty, InfoResponse = new AuthRestModel()};
       var userInfoResult = GetUserInfo (accessToken);
-      if (!userInfoResult.Condition)
-      {
-        result.Message = userInfoResult.Message;
-        return result;
-      }
+//      if (!userInfoResult.Condition)
+//      {
+//        result.Message = userInfoResult.Message;
+//        return result;
+//      }
 
-      userInfoResult.InfoResponse.IdToken = idToken;
-      userInfoResult.InfoResponse.AccessToken = accessToken;
-      userInfoResult.InfoResponse.TokenExpire = expiresIn;
+      userInfoResult.IdToken = idToken;
+      userInfoResult.AccessToken = accessToken;
+      userInfoResult.TokenExpire = expiresIn;
 
-      result = Login(userInfoResult, instanceId);
+      var model = new AuthRestModelResponse{InfoResponse = userInfoResult , Condition = true};
+      result = Login(model, instanceId);
 
       return result;
     }
@@ -151,7 +152,7 @@ namespace Core.ExternalServices
       }
 
       var instanceResponse = _instanceRepository.GetByUsername (instanceId, _applicationSetting.CreateConnectionString ());
-      if (instanceResponse == null)
+      if (!instanceResponse.Condition)
       {
         userInfoResult.InfoResponse.Role = RoleTypes.User;
         userInfoResult.InfoResponse.Related = string.Empty;
@@ -468,25 +469,25 @@ namespace Core.ExternalServices
 
     public AuthRestModelResponse ResetUserInfo (string token)
     {
+      var result = new AuthRestModelResponse { Condition = false, Message = string.Empty, InfoResponse = new AuthRestModel()};
+
       _cache.Remove (token);
-      return GetUserInfo (token);
+      result.InfoResponse = GetUserInfo (token);
+      return result;
     }
 
-    public AuthRestModelResponse GetUserInfo (string token)
+    public AuthRestModel GetUserInfo (string token)
     {
       var result = new AuthRestModelResponse { Condition = false, Message = string.Empty, InfoResponse = new AuthRestModel()};
       
-      if (!_cache.TryGetValue (token, out AuthRestModel userInfo))
+      if (!_cache.TryGetValue (token ,out AuthRestModel userInfo))
       {
         var httpResult = Helper.HttpService.Get ($"{_applicationSetting.Authority}userinfo", token);
         userInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<AuthRestModel> (httpResult);
         var cacheEntryOptions = new MemoryCacheEntryOptions ().SetSlidingExpiration (TimeSpan.FromMinutes (10));
-        _cache.Set (token, result, cacheEntryOptions);
+        _cache.Set (token, userInfo, cacheEntryOptions);
       }
-
-      result.Condition = true;
-      result.InfoResponse = userInfo;
-      return result;
+      return userInfo;
     }
     
     private MessageBase ValidateStringUsernameAndPassword

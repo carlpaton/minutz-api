@@ -8,6 +8,7 @@ using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Minutz.Models;
 using Minutz.Models.Entities;
@@ -62,7 +63,7 @@ namespace Api.Controllers
 
       _logger.LogInformation(Core.LogProvider.LoggingEvents.ListItems, "GetMeetings {ID}", 1);
       _logService.Log(Minutz.Models.LogLevel.Info, "GetMeetings called.");
-      var userInfo = ExtractAuth();
+      var userInfo = Request.ExtractAuth(User, _authenticationService);
       var meetingsResult = _meetingService.GetMeetings(userInfo.InfoResponse, reference);
       if (meetingsResult.condition == true && meetingsResult.statusCode == 200)
         return Ok(meetingsResult.value);
@@ -88,7 +89,7 @@ namespace Api.Controllers
     public IActionResult GetMeeting
       (string id, string related)
     {
-      var userInfo = ExtractAuth();
+      var userInfo = Request.ExtractAuth(User, _authenticationService);
       var meeting = _meetingService.GetMeeting(userInfo.InfoResponse, id);
       return Ok(new { status = 200, data = meeting });
     }
@@ -106,7 +107,9 @@ namespace Api.Controllers
     public IActionResult CreateMeeting
       (string id, string instanceId = "")
     {
-      var userInfo = ExtractAuth();
+      var userInfo = Request.ExtractAuth(User, _authenticationService);
+      
+      
       
       _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - entry point {ID}", 1);
       
@@ -148,7 +151,7 @@ namespace Api.Controllers
         data.MeetingActionCollection, instanceId);
       if (result.Key)
       {
-        return new ObjectResult(result.Value);
+        return new OkObjectResult(result.Value);
       }
       return new BadRequestResult();
     }
@@ -180,7 +183,7 @@ namespace Api.Controllers
         }
       }
       
-      var userInfo = ExtractAuth();
+      var userInfo = Request.ExtractAuth(User, _authenticationService);
       
       _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "UpdateMeeting - entry point {ID}", 1);
 
@@ -204,7 +207,7 @@ namespace Api.Controllers
     {
       if (string.IsNullOrEmpty(id))
         return BadRequest("Please provide a valid id");
-      var userInfo = ExtractAuth();
+      var userInfo = Request.ExtractAuth(User, _authenticationService);
       var result = _meetingService.DeleteMeeting(userInfo.InfoResponse, Guid.Parse(id));
       if (result.Key)
         return Ok(result.Value);
@@ -221,7 +224,7 @@ namespace Api.Controllers
     {
       if (string.IsNullOrEmpty(meetingId))
         return BadRequest("Please provide a valid id");
-      var userInfo = ExtractAuth();
+      var userInfo = Request.ExtractAuth(User, _authenticationService);
       var meeting = _meetingService.GetMeeting(userInfo.InfoResponse, meetingId);
       foreach (var attendee in meeting.MeetingAttendeeCollection)
       {
@@ -240,7 +243,7 @@ namespace Api.Controllers
       }
       long size = files.Sum(f => f.Length);
       string meetingId = HttpContext.Request.Query["id"].ToString();
-      var userInfo = ExtractAuth();
+      var userInfo = Request.ExtractAuth(User, _authenticationService);
       // full path to file in temp location
       var filePath = Path.GetTempFileName();
 
@@ -271,14 +274,5 @@ namespace Api.Controllers
       return Ok(new { count = files.Count, size, filePath });
       }
     
-    private AuthRestModelResponse ExtractAuth()
-    {
-      var userInfo =
-        _authenticationService.LoginFromFromToken(
-          Request.Headers.First(i => i.Key == "access_token").Value,
-          Request.Headers.First(i => i.Key == "Authorization").Value,
-          User.Claims.ToList().First(i => i.Type == "exp").Value, "");
-      return userInfo;
-    }
   }
 }

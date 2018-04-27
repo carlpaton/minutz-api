@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Net.Mail;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Minutz.Models.Entities;
+using Minutz.Models.Message;
 
 namespace Api.Extensions
 {
@@ -34,5 +36,14 @@ namespace Api.Extensions
             }
         }
         
+        public static AuthRestModelResponse ExtractAuth
+            (this HttpRequest resquest,ClaimsPrincipal user ,Interface.Services.IAuthenticationService authenticationService)
+        {
+            var userInfo = authenticationService.LoginFromFromToken(
+                    resquest.Headers.First(i => i.Key == "access_token").Value,
+                    resquest.Headers.First(i => i.Key == "Authorization").Value,
+                    user.Claims.ToList().First(i => i.Type == "exp").Value, "");
+            return userInfo;
+        }
     }
 }

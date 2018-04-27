@@ -171,7 +171,7 @@ namespace AuthenticationRepository
           connection = _applicationSetting.AuthorityConnection
       }.ToJSON ();
       
-      _logService.Log (LogLevel.Info, requestBody);
+       _logService.Log (LogLevel.Info, requestBody);
       var tokenRequestResult = _httpService.Post ($"{_applicationSetting.Authority}oauth/token", requestBody.ToStringContent ());
 
       _logService.Log (LogLevel.Info, tokenRequestResult.result);

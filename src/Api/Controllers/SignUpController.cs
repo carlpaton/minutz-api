@@ -109,7 +109,7 @@ namespace Api.Controllers
     {
       var token = Request.Headers.FirstOrDefault (i => i.Key == "Authorization").Value;
       var userInfo = _authenticationService.GetUserInfo (token);
-      var person = _userValidationService.GetUser (userInfo.InfoResponse.Sub);
+      var person = _userValidationService.GetUser (userInfo.Sub);
 
       var result = _applicationManagerService.ResetAcccount (person);
       if (result.condition)

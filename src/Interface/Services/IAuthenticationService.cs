@@ -15,7 +15,7 @@ namespace Interface.Services
     AuthRestModelResponse LoginFromFromToken(
       string access_token, string id_token, string expires_in, string instanceId = null);
 
-    AuthRestModelResponse GetUserInfo(string token);
+    AuthRestModel GetUserInfo(string token);
 
     AuthRestModelResponse ResetUserInfo(string token);
   }

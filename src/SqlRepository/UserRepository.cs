@@ -7,6 +7,7 @@ using System.Text;
 using Dapper;
 using Interface.Repositories;
 using Interface.Services;
+using Minutz.Models;
 using Minutz.Models.Entities;
 using Minutz.Models.Message;
 using SqlRepository.Extensions;
@@ -206,18 +207,21 @@ namespace SqlRepository
       var id = authUser.Sub.Split ('|') [1];
       var username = $"A_{id}";
       var password = CreatePassword (10); //need to salt the password and username
-      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      using (IDbConnection dbConnection = new SqlConnection(masterConnectionString))
       {
-        var createUserSQL = $@" EXEC [app].[createUser] '{authUser.Sub}','{authUser.Email}', '{id}', '{password}'; ";
-        var createUserSQLResult = dbConnection.Execute (createUserSQL);
+        var createUserSql = $@"EXEC [app].[spCreateUserAndSchema] '{authUser.Sub}','{authUser.Email}', '{username}', '{password}'; ";
+        try
+        {
+          var createUserSqlResult = dbConnection.Execute (createUserSql);
+        }
+        catch (Exception e)
+        {
+          Console.WriteLine(e);
+          _logService.Log(LogLevel.Exception, e.InnerException.Message);
+          throw;
+        }
+        
       }
-
-      //var createsecurityuserresult = createSecurityUser (masterConnectionString, username, password);
-      //var createloginresult = createLoginSchemaUser (masterConnectionString, username);
-      //var createshcemaresult = createSchema (connectionString, username);
-      //var createinstancerecordresult = createInstanceRecord (masterConnectionString, "app", authUser.Name, username, password, true, 1);
-      //var updatepersonresult = updatePersonRecord (masterConnectionString, "app", username, authUser.Sub);
-      //var updaterolepersonresult = updatePersonRoleRecord (masterConnectionString, "app", authUser.Sub, authUser.Role);
       return username;
     }
 
