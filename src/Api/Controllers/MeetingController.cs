@@ -149,6 +149,7 @@ namespace Api.Controllers
         data.MeetingNoteCollection,
         data.MeetingAttachmentCollection,
         data.MeetingActionCollection, instanceId);
+      result.Value.Status = "Create";
       if (result.Key)
       {
         return new OkObjectResult(result.Value);
