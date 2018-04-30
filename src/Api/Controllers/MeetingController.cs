@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Api.Extensions;
+using Api.Models;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -221,12 +222,12 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(string), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(string))]
-    public IActionResult SendMeetingInvatations(string meetingId)
+    public IActionResult SendMeetingInvatations(MeetingInviteModel model)
     {
-      if (string.IsNullOrEmpty(meetingId))
+      if (string.IsNullOrEmpty(model.meetingId))
         return BadRequest("Please provide a valid id");
       var userInfo = Request.ExtractAuth(User, _authenticationService);
-      var meeting = _meetingService.GetMeeting(userInfo.InfoResponse, meetingId);
+      var meeting = _meetingService.GetMeeting(userInfo.InfoResponse, model.meetingId);
       foreach (var attendee in meeting.MeetingAttendeeCollection)
       {
         var result = _invatationService.SendMeetingInvatation(attendee, meeting, "instanceId");

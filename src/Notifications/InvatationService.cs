@@ -17,24 +17,15 @@ namespace Notifications
       this._notify = notify;
     }
 
-    public bool SendMeetingInvatation(
-      MeetingAttendee attendee, Minutz.Models.ViewModels.MeetingViewModel meeting, string instanceId)
+    public bool SendMeetingInvatation
+      (MeetingAttendee attendee, Minutz.Models.ViewModels.MeetingViewModel meeting, string instanceId)
     {
       var to = new EmailAddress(attendee.Email, attendee.Name);
       var result = new SendGridClient(_notify.NotifyKey)
-                                      .SendEmailAsync(CreateInvitationMessage(to,
-                                                                               _invitationSubject,
-                                                                               meeting.Location,
-                                                                               meeting.Id.ToString(),
-                                                                               meeting.Name, meeting.MeetingAgendaCollection,
-                                                                               instanceId))
-                                      .Result;
+                                      .SendEmailAsync(CreateInvitationMessage
+        (to, _invitationSubject, meeting.Location, meeting.Id, meeting.Name, meeting.MeetingAgendaCollection, instanceId)).Result;
       var resultBody = result.Body.ReadAsStringAsync().Result;
-      if (result.StatusCode == System.Net.HttpStatusCode.OK || result.StatusCode == System.Net.HttpStatusCode.Accepted)
-      {
-        return true;
-      }
-      return false;
+      return result.StatusCode == System.Net.HttpStatusCode.OK || result.StatusCode == System.Net.HttpStatusCode.Accepted;
     }
 
     internal SendGridMessage CreateInvitationMessage(
