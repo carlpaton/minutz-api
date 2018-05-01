@@ -177,27 +177,51 @@ namespace SqlRepository
       using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {
         var sql = $"select * FROM [{schema}].[Person] WHERE Identityid ='{authUserId}'; ";
-        //dbConnection.Open ();
-        var query = dbConnection.Query<Person> (sql);
-        if (query.Any ())
+        try
         {
-          var user = query.FirstOrDefault ();
-          if (user != null)
-            return new AuthRestModel
-            {
-              Email = user.Email,
-              Name = user.FullName,
-              Nickname = user.FirstName,
-              FirstName = user.FullName,
-              LastName = user.LastName,
-              Picture = user.ProfilePicture,
-              Role = user.Role,
-              Sub = user.Identityid,
-              InstanceId = user.InstanceId,
-              Related = user.Related
-            };
+          var query = dbConnection.Query<Person> (sql).ToList();
+          if (!query.Any()) return null;
+          var user = query.First();            
+          return new AuthRestModel
+                 {
+                   Email = user.Email,
+                   Name = user.FullName,
+                   Nickname = user.FirstName,
+                   FirstName = user.FullName,
+                   LastName = user.LastName,
+                   Picture = user.ProfilePicture,
+                   Role = user.Role,
+                   Sub = user.Identityid,
+                   InstanceId = user.InstanceId,
+                   Related = user.Related
+                 };
         }
-        throw new System.Exception ("User does not exist in the datastore.");
+        catch (Exception e)
+        {
+          Console.WriteLine(e);
+          return null;
+        }
+      }
+    }
+    
+    public Person GetUserByEmail
+      (string email, string schema, string connectionString)
+    {
+      using (IDbConnection dbConnection = new SqlConnection (connectionString))
+      {
+        var sql = $"select * FROM [{schema}].[Person] WHERE [Email] ='{email}'; ";
+        try
+        {
+          var query = dbConnection.Query<Person> (sql).ToList();
+          if (!query.Any()) return null;
+          var user = query.First();
+          return user;
+        }
+        catch (Exception e)
+        {
+          Console.WriteLine(e);
+          return null;
+        }
       }
     }
 

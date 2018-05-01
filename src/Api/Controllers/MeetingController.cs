@@ -217,7 +217,7 @@ namespace Api.Controllers
     }
 
     [Authorize]
-    [HttpPost("api/sendmeetinginvatations/{meetingId}")]
+    [HttpPost("api/sendmeetinginvatations")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(string), 200)]
@@ -228,10 +228,34 @@ namespace Api.Controllers
         return BadRequest("Please provide a valid id");
       var userInfo = Request.ExtractAuth(User, _authenticationService);
       var meeting = _meetingService.GetMeeting(userInfo.InfoResponse, model.meetingId);
-      foreach (var attendee in meeting.MeetingAttendeeCollection)
+      switch (model.recipients)
       {
-        var result = _invatationService.SendMeetingInvatation(attendee, meeting, "instanceId");
-      }
+          case InviteAttendees.allAttendess:
+            foreach (var attendee in meeting.MeetingAttendeeCollection)
+            {
+              var result = _invatationService.SendMeetingInvatation(attendee, meeting, "instanceId");
+            }
+            return Ok();
+          case InviteAttendees.custom:
+            foreach (var attendee in model.customRecipients)
+            {
+              var personResult = _authenticationService.GetPersonByEmail(attendee);
+              if (!personResult.Condition) continue;
+              var meetingAttendee = new MeetingAttendee
+                                    {
+                                      Email = attendee,
+                                      Name = personResult.Person.FullName
+                                    };
+              var result = _invatationService.SendMeetingInvatation(meetingAttendee, meeting, "instanceId");
+            }
+            return Ok();
+          case InviteAttendees.newAttendees:
+            foreach (var attendee in meeting.MeetingAttendeeCollection)
+            {
+              var result = _invatationService.SendMeetingInvatation(attendee, meeting, "instanceId");
+            }
+            return Ok();
+      }      
       return Ok();
     }
 

@@ -39,6 +39,24 @@ namespace Core.ExternalServices
       _meetingAttendeeRepository = meetingAttendeeRepository;
     }
 
+    public PersonResponse GetPersonByEmail
+      (string email)
+    {
+      var result = new PersonResponse { Condition = false, Message =  string.Empty };
+      var personResult =
+        _userDatabaseRepository.GetUserByEmail
+          (email, "app", _applicationSetting.CreateConnectionString());
+      if (personResult == null)
+      {
+        result.Message = "User cannot be found.";
+        return result;
+      }
+      result.Condition = true;
+      result.Message = "Successful.";
+      result.Person = personResult;
+      return result;
+    }
+
     public AuthRestModelResponse LoginFromFromToken
       (string accessToken, string idToken,string expiresIn,string instanceId = null)
     {
@@ -467,7 +485,8 @@ namespace Core.ExternalServices
       return (false, "Not a valid role was supplied.", null);
     }
 
-    public AuthRestModelResponse ResetUserInfo (string token)
+    public AuthRestModelResponse ResetUserInfo
+      (string token)
     {
       var result = new AuthRestModelResponse { Condition = false, Message = string.Empty, InfoResponse = new AuthRestModel()};
 
@@ -476,7 +495,8 @@ namespace Core.ExternalServices
       return result;
     }
 
-    public AuthRestModel GetUserInfo (string token)
+    public AuthRestModel GetUserInfo
+      (string token)
     {
       var result = new AuthRestModelResponse { Condition = false, Message = string.Empty, InfoResponse = new AuthRestModel()};
       
@@ -539,7 +559,8 @@ namespace Core.ExternalServices
       return instanceId;
     }
     
-    private void UpdatePersonName((bool condition, string message, Person person) existsResult)
+    private void UpdatePersonName
+      ((bool condition, string message, Person person) existsResult)
     {
       if (string.IsNullOrEmpty(existsResult.person.FullName))
       {

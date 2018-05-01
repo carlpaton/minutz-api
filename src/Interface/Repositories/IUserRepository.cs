@@ -22,6 +22,9 @@ namespace Interface.Repositories
     AuthRestModel GetUser 
       (string authUserId, string schema, string connectionString);
 
+    Person GetUserByEmail
+      (string email, string schema, string connectionString);
+    
     string CreateNewSchema 
       (AuthRestModel authUser,string connectionString, string masterConnectionString);
 
