@@ -261,10 +261,10 @@ namespace SqlRepository {
       (MeetingAttendee attendee, string schema, string connectionString, string defaultConnectionString, string defaultSchema, string referenceMeetingId, string inviteEmail)
     {
       using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
-        string reference = $"invite|{schema}&{referenceMeetingId}";
-        if (attendee.Id != Guid.Empty) {
-          attendee.Id = Guid.NewGuid ();
-        }
+        //string reference = $"invite|{schema}&{referenceMeetingId}";
+//        if (attendee.Id != Guid.Empty) {
+//          attendee.Id = Guid.NewGuid ();
+//        }
         dbConnection.Open ();
         string insertSql = $@"insert into [{schema}].[AvailibleAttendee](
                                                                  [Id]
@@ -288,7 +288,7 @@ namespace SqlRepository {
             attendee.Id,
             attendee.ReferenceId,
             attendee.PersonIdentity,
-            inviteEmail,
+            Email = inviteEmail,
             attendee.Status,
             attendee.Role
           });

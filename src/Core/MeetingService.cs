@@ -421,6 +421,7 @@ namespace Core
         {
           var userAttendee = new MeetingAttendee
           {
+            Id = Guid.NewGuid(),
             Email = user.Email,
             Name = user.Name,PersonIdentity = user.Sub,
             Picture = user.Picture,
@@ -472,7 +473,7 @@ namespace Core
 
           foreach (var attendee in attendees)
           {
-            attendee.Id = Guid.NewGuid();
+            //attendee.Id = Guid.NewGuid();
             attendee.ReferenceId = meeting.Id;
             var savedAttendee = _meetingAttendeeRepository.Add(attendee, instanceId,  _applicationSetting.CreateConnectionString(
               _applicationSetting.Server,_applicationSetting.Catalogue,instanceId,_applicationSetting.GetInstancePassword(instanceId)));
