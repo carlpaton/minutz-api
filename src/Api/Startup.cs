@@ -82,6 +82,7 @@ namespace Minutz.Api
 
       services.AddTransient< IAuth0Repository,Auth0Repository>();
       services.AddTransient<IReportRepository,JsReportRepository>();
+      services.AddTransient<ICacheRepository,CacheRepository>();
 
       //Features
       services.AddTransient<IUserValidationService, UserValidationService>();

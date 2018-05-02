@@ -15,6 +15,7 @@ namespace Core.ExternalServices
   public class AuthenticationService : IAuthenticationService
   {
     private readonly IMeetingAttendeeRepository _meetingAttendeeRepository;
+    private readonly ICacheRepository _cacheRepository;
     private readonly IApplicationSetupRepository _applicationSetupRepository;
     private readonly IApplicationSetting _applicationSetting;
     private readonly IAuth0Repository _auth0Repository;
@@ -27,7 +28,8 @@ namespace Core.ExternalServices
       IApplicationSetting applicationSetting, IMemoryCache memoryCache,
       IAuth0Repository auth0Repository, ILogService logService,
       IUserRepository userDatabaseRepository, IApplicationSetupRepository applicationSetupRepository,
-      IInstanceRepository instanceRepository, IMeetingAttendeeRepository meetingAttendeeRepository)
+      IInstanceRepository instanceRepository, IMeetingAttendeeRepository meetingAttendeeRepository,
+      ICacheRepository cacheRepository)
     {
       _applicationSetting = applicationSetting;
       _cache = memoryCache;
@@ -37,6 +39,7 @@ namespace Core.ExternalServices
       _applicationSetupRepository = applicationSetupRepository;
       _instanceRepository = instanceRepository;
       _meetingAttendeeRepository = meetingAttendeeRepository;
+      _cacheRepository = cacheRepository;
     }
 
     public PersonResponse GetPersonByEmail
@@ -499,15 +502,20 @@ namespace Core.ExternalServices
       (string token)
     {
       var result = new AuthRestModelResponse { Condition = false, Message = string.Empty, InfoResponse = new AuthRestModel()};
-      
-      if (!_cache.TryGetValue (token ,out AuthRestModel userInfo))
+      var cacheExists = _cacheRepository.CheckUserTokenCache(token, _applicationSetting.CreateConnectionString());
+      if (cacheExists)
       {
-        var httpResult = Helper.HttpService.Get ($"{_applicationSetting.Authority}userinfo", token);
-        userInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<AuthRestModel> (httpResult);
-        var cacheEntryOptions = new MemoryCacheEntryOptions ().SetSlidingExpiration (TimeSpan.FromMinutes (10));
-        _cache.Set (token, userInfo, cacheEntryOptions);
+        var tokenModel = _cacheRepository.GetUserTokenCache(token, _applicationSetting.CreateConnectionString());
+        if (tokenModel.Expire > DateTime.UtcNow)
+        {
+          return Newtonsoft.Json.JsonConvert.DeserializeObject<AuthRestModel>(tokenModel.Token);
+        }
       }
-      return userInfo;
+
+      var httpResult = Helper.HttpService.Get ($"{_applicationSetting.Authority}userinfo", token);
+      var newToken = Newtonsoft.Json.JsonConvert.DeserializeObject<AuthRestModel> (httpResult);
+      _cacheRepository.GetUserTokenCache(token, httpResult, _applicationSetting.CreateConnectionString());
+     return newToken;
     }
     
     private MessageBase ValidateStringUsernameAndPassword

@@ -71,7 +71,7 @@ namespace SqlRepository
       CreateUser(connectionString, profile, schema);
       return Interface.RoleEnum.Attendee;
     }
-
+    
     internal Person GetUser(string identifier, string connectionString, string schema = "app")
     {
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
