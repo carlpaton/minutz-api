@@ -65,17 +65,15 @@ namespace Core.ExternalServices
     {
       var result = new AuthRestModelResponse { Condition = false, Message =  string.Empty, InfoResponse = new AuthRestModel()};
       var userInfoResult = GetUserInfo (accessToken);
-//      if (!userInfoResult.Condition)
-//      {
-//        result.Message = userInfoResult.Message;
-//        return result;
-//      }
-
+      Console.WriteLine("Info: --  LoginFromFromToken");
+      Console.WriteLine($"Info: --  {userInfoResult.IdToken }");
+      
       userInfoResult.IdToken = idToken;
       userInfoResult.AccessToken = accessToken;
       userInfoResult.TokenExpire = expiresIn;
 
       var model = new AuthRestModelResponse{InfoResponse = userInfoResult , Condition = true};
+      Console.WriteLine("Info: --  Login - call");
       result = Login(model, instanceId);
 
       return result;
@@ -88,6 +86,7 @@ namespace Core.ExternalServices
       var valid =  ValidateStringUsernameAndPassword(username, password);
       if (!valid.Condition)
       {
+        Console.WriteLine("Info: -- ValidateStringUsernameAndPassword");
         result.Message = valid.Message;
         return result;
       }
@@ -95,16 +94,20 @@ namespace Core.ExternalServices
       var tokenCreateResult = _auth0Repository.CreateToken (username, password);
       if (!tokenCreateResult.Condition)
       {
+        Console.WriteLine("Info: -- CreateToken");
         result.Message = tokenCreateResult.Message;
         return result;
       }
       var userInfoResult = _auth0Repository.GetUserInfo(tokenCreateResult.AuthTokenResponse.access_token);
       if (!userInfoResult.Condition)
       {
+        Console.WriteLine("Info: -- GetUserInfo");
         result.Message = userInfoResult.Message;
         return result;
       }
       userInfoResult.InfoResponse.UpdateTokenInfo(tokenCreateResult.AuthTokenResponse);
+      Console.WriteLine("Info: -- UpdateTokenInfo");
+      Console.WriteLine("Info: -- Login");
       result = Login(userInfoResult, instanceId);
      
       return result;
@@ -114,11 +117,13 @@ namespace Core.ExternalServices
       (AuthRestModelResponse userInfoResult, string instanceId)
     {
       var result = new AuthRestModelResponse { Condition = false, Message =  string.Empty, InfoResponse = new AuthRestModel()};
-
+      Console.WriteLine("Info: -- Login");
+      Console.WriteLine("Info: -- Calling: _userDatabaseRepository.MinutzPersonCheckIfUserExistsByEmail");
       var userExistsByEmail = _userDatabaseRepository.MinutzPersonCheckIfUserExistsByEmail (userInfoResult.InfoResponse.Email, _applicationSetting.CreateConnectionString ());
 
       if (!userExistsByEmail.Condition)
       {
+        Console.WriteLine("Info: -- SearchUserByEmail");
         var userSearchResult = _auth0Repository.SearchUserByEmail(userInfoResult.InfoResponse.Email);
         if (userSearchResult.Condition)
         {
@@ -131,20 +136,21 @@ namespace Core.ExternalServices
             InstanceId = userSearchResult.User.user_metadata.instance,
             Role = userSearchResult.User.user_metadata.role
           };
-
+          Console.WriteLine($"Info: -- SearchUserByEmail {userSearchResult.User.user_metadata}");
           if (userSearchResult.User.user_metadata != null)
           {
             newInsertUser.Role = !string.IsNullOrEmpty(userSearchResult.User.user_metadata.role) 
               ? userSearchResult.User.user_metadata.role 
               : RoleTypes.Guest;
           }
-
+          Console.WriteLine($"Info: -- CreateNewUser");
           var createUserResult = _userDatabaseRepository.CreateNewUser
             (newInsertUser, _applicationSetting.CreateConnectionString());
           
           if (!createUserResult.Condition)
           {
             _logService.Log(LogLevel.Error, $"Login => CreateUser  => error: {createUserResult.Message}.");
+            Console.WriteLine($"Info: -- Login => CreateUser  => error: {createUserResult.Message}.");
             result.Message = createUserResult.Message;
             return result;
           }
@@ -158,11 +164,13 @@ namespace Core.ExternalServices
         {
           if (string.IsNullOrEmpty (instanceId))
           {
+            Console.WriteLine($"Info: -- userInfoResult.InfoResponse.ToInstanceString() {userInfoResult.InfoResponse.ToInstanceString()}");
             instanceId = userInfoResult.InfoResponse.ToInstanceString();
           }
         }
         else
         {
+          Console.WriteLine($"Info: -- userExistsByEmail.Person.InstanceId {userExistsByEmail.Person.InstanceId}");
           instanceId = userExistsByEmail.Person.InstanceId;
         }
       }
@@ -175,12 +183,14 @@ namespace Core.ExternalServices
       var instanceResponse = _instanceRepository.GetByUsername (instanceId, _applicationSetting.CreateConnectionString ());
       if (!instanceResponse.Condition)
       {
+        Console.WriteLine($"Info: -- CreateNewSchema");
         userInfoResult.InfoResponse.Role = RoleTypes.User;
         userInfoResult.InfoResponse.Related = string.Empty;
-          _userDatabaseRepository.CreateNewSchema(userInfoResult.InfoResponse, _applicationSetting.Schema, _applicationSetting.CreateConnectionString());
+        _userDatabaseRepository.CreateNewSchema(userInfoResult.InfoResponse, _applicationSetting.Schema, _applicationSetting.CreateConnectionString());
+        Console.WriteLine($"Info: -- _instanceRepository.GetByUsername");
         instanceResponse = _instanceRepository.GetByUsername (instanceId, _applicationSetting.CreateConnectionString ());
       }
-
+      Console.WriteLine($"Info: -- UpdateFromInstance");
       userInfoResult.InfoResponse.UpdateFromInstance(userExistsByEmail.Person, instanceResponse.Instance);
       result.InfoResponse = userInfoResult.InfoResponse;
       result.Condition = true;

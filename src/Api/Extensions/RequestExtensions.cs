@@ -37,12 +37,20 @@ namespace Api.Extensions
         }
         
         public static AuthRestModelResponse ExtractAuth
-            (this HttpRequest resquest,ClaimsPrincipal user ,Interface.Services.IAuthenticationService authenticationService)
+            (this HttpRequest request, ClaimsPrincipal user ,Interface.Services.IAuthenticationService authenticationService)
         {
-            var userInfo = authenticationService.LoginFromFromToken(
-                    resquest.Headers.First(i => i.Key == "access_token").Value,
-                    resquest.Headers.First(i => i.Key == "Authorization").Value,
-                    user.Claims.ToList().First(i => i.Type == "exp").Value, "");
+            Console.WriteLine("Info: ExtractAuth --");
+            if (request.Headers != null)
+            {
+                Console.WriteLine("Has headers");
+                foreach (var header in request.Headers.ToList())
+                {
+                    Console.WriteLine(header.Key);
+                }
+            }
+            
+            var userInfo = authenticationService.LoginFromFromToken
+                (request.Headers.First(i => i.Key == "access_token").Value, request.Headers.First(i => i.Key == "Authorization").Value, user.Claims.ToList().First(i => i.Type == "exp").Value, "");
             return userInfo;
         }
     }

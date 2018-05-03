@@ -26,6 +26,7 @@ namespace SqlRepository
       (string email, string minutzAppConnectionString)
     {
       var result = new PersonResponse { Condition = false, Message = string.Empty, People = new List<Person>()};
+      Console.WriteLine("Info: -- MinutzPersonCheckIfUserExistsByEmail");
       try
       {
         using (IDbConnection dbConnection = new SqlConnection (minutzAppConnectionString))
@@ -47,6 +48,7 @@ namespace SqlRepository
         result.Message = exception.InnerException.Message;
         Console.WriteLine(exception);
       }
+      Console.WriteLine($"Info: -- {result.Person?.Email}");
       return result;
     }
 
