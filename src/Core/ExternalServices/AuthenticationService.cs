@@ -129,6 +129,7 @@ namespace Core.ExternalServices
         {
           var newInsertUser = new AuthRestModel
           {
+            
             Email = userSearchResult.User.email,
             Name = userSearchResult.User.name,
             Picture = userSearchResult.User.picture,
