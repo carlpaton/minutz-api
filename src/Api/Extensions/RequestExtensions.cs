@@ -37,6 +37,13 @@ namespace Api.Extensions
         public static AuthRestModelResponse ExtractAuth
             (this HttpRequest request, ClaimsPrincipal user ,Interface.Services.IAuthenticationService authenticationService)
         {
+            var accessTokenKey = "accessToken";
+            var authorizationKey = "Authorization";
+            var xExp = "xExp";
+            
+            var accessTokenValue = string.Empty;
+            var authorization = string.Empty;
+            var expiration = string.Empty;
             Console.WriteLine("Info: ExtractAuth --");
             if (request.Headers != null)
             {
@@ -44,14 +51,38 @@ namespace Api.Extensions
                 foreach (var header in request.Headers.ToList())
                 {
                     Console.WriteLine(header.Key);
+                    Console.WriteLine("-------");
                     Console.Write(header.Value);
                 }
             }
+
+            if (request.Headers != null && request.Headers.Keys.Contains(accessTokenKey))
+            {
+                accessTokenValue = request.Headers.First(i => i.Key == "accessToken").Value;
+            }
+            else
+            {
+                Console.Write("accessToken is missing");
+            }
+
+            if (user.Claims.ToList().Any( i => i.Type == "exp") )
+            {
+                expiration = user.Claims.ToList().First(i => i.Type == "exp").Value;
+            }else
+            {
+                Console.Write("xExp is missing");
+            }
+            
+            if (request.Headers != null && request.Headers.Keys.Contains(authorizationKey))
+            {
+                authorization = request.Headers.First(i => i.Key == "Authorization").Value;
+            }else
+            {
+                Console.Write("Authorization is missing");
+            }
             
             var userInfo = authenticationService.LoginFromFromToken
-                (request.Headers.First(i => i.Key == "accessToken").Value,
-                request.Headers.First(i => i.Key == "Authorization").Value,
-                user.Claims.ToList().First(i => i.Type == "xExp").Value, "");
+                (accessTokenValue, authorization,expiration , "");
             return userInfo;
         }
     }
