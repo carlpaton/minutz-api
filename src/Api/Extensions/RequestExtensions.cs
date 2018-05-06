@@ -46,11 +46,12 @@ namespace Api.Extensions
                 foreach (var header in request.Headers.ToList())
                 {
                     Console.WriteLine(header.Key);
+                    Console.Write(header.Value);
                 }
             }
             
             var userInfo = authenticationService.LoginFromFromToken
-                (request.Headers.First(i => i.Key == "access_token").Value, request.Headers.First(i => i.Key == "Authorization").Value, user.Claims.ToList().First(i => i.Type == "exp").Value, "");
+                (request.Headers.First(i => i.Key == "access-token").Value, request.Headers.First(i => i.Key == "Authorization").Value, user.Claims.ToList().First(i => i.Type == "exp").Value, "");
             return userInfo;
         }
     }
