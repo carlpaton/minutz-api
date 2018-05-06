@@ -50,9 +50,11 @@ namespace Api.Extensions
                 Console.WriteLine("Has headers");
                 foreach (var header in request.Headers.ToList())
                 {
+                    Console.WriteLine("-------");
                     Console.WriteLine(header.Key);
                     Console.WriteLine("-------");
                     Console.Write(header.Value);
+                    Console.WriteLine("-------");
                 }
             }
 
@@ -67,7 +69,10 @@ namespace Api.Extensions
 
             if (user.Claims.ToList().Any( i => i.Type == "exp") )
             {
+                Console.WriteLine("-------");
                 expiration = user.Claims.ToList().First(i => i.Type == "exp").Value;
+                Console.Write(expiration);
+                Console.WriteLine("-------");
             }else
             {
                 Console.Write("xExp is missing");

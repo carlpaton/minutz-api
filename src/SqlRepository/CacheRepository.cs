@@ -22,7 +22,13 @@ namespace SqlRepository
             (string userIdentifier, string connectionString)
         {
             if (string.IsNullOrEmpty(userIdentifier) || string.IsNullOrEmpty(connectionString))
-                throw new ArgumentException("Please provide a valid meeting identifier, schema or connection string.");
+            {
+                Console.Write("Please provide a valid meeting identifier, schema or connection string.");
+                //throw new ArgumentException("Please provide a valid meeting identifier, schema or connection string.");
+                return false;
+            }
+
+            
             using (IDbConnection dbConnection = new SqlConnection(connectionString))
             {
                 dbConnection.Open();
