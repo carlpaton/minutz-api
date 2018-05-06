@@ -12,7 +12,7 @@ namespace Api.Controllers
 {
   public class UserController : Controller
   {
-    internal string _auth = "x-auth-minutz";
+    internal string _auth = "xAuthMinutz";
     private readonly IUserValidationService _userValidationService;
     private readonly IAuthenticationService _authenticationService;
     private readonly IValidationService _validationService;
@@ -33,16 +33,16 @@ namespace Api.Controllers
     [HttpPost ("api/user/login", Name = "Log in the user.")]
     public IActionResult Login ([FromBody] dynamic user)
     {
-      var hasHeader = Request.Headers.ToList ().Any (i => i.Key == "x-auth-header");
+      var hasHeader = Request.Headers.ToList ().Any (i => i.Key == "xAuthHeader");
       if (!hasHeader)
       {
-        this._logService.Log (Minutz.Models.LogLevel.Info, "The request did not have x-auth-header header.");
+        this._logService.Log (Minutz.Models.LogLevel.Info, "The request did not have xAuthHeader header.");
         return StatusCode (404, "please provide a valid username or password");
       }
-      var authHeaderValue = Request.Headers.ToList ().First (i => i.Key == "x-auth-header").Value;
+      var authHeaderValue = Request.Headers.ToList ().First (i => i.Key == "xAuthHeader").Value;
       if (authHeaderValue != this._auth)
       {
-        this._logService.Log (Minutz.Models.LogLevel.Info, "The request had a x-auth-header header, but the value did not match the configuration for the instance.");
+        this._logService.Log (Minutz.Models.LogLevel.Info, "The request had a xAuthHeader header, but the value did not match the configuration for the instance.");
         return StatusCode (404, "please provide a valid username or password");
       }
 

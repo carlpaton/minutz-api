@@ -2,9 +2,7 @@
 using System.Linq;
 using System.Net.Mail;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using Minutz.Models.Entities;
 using Minutz.Models.Message;
 
 namespace Api.Extensions
@@ -51,7 +49,9 @@ namespace Api.Extensions
             }
             
             var userInfo = authenticationService.LoginFromFromToken
-                (request.Headers.First(i => i.Key == "access-token").Value, request.Headers.First(i => i.Key == "Authorization").Value, user.Claims.ToList().First(i => i.Type == "exp").Value, "");
+                (request.Headers.First(i => i.Key == "accessToken").Value,
+                request.Headers.First(i => i.Key == "Authorization").Value,
+                user.Claims.ToList().First(i => i.Type == "xExp").Value, "");
             return userInfo;
         }
     }
