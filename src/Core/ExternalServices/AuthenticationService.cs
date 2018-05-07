@@ -509,24 +509,18 @@ namespace Core.ExternalServices
       return result;
     }
 
-    public AuthRestModel GetUserInfo
-      (string token)
+    public AuthRestModel GetUserInfo (string token)
     {
       var result = new AuthRestModelResponse { Condition = false, Message = string.Empty, InfoResponse = new AuthRestModel()};
-      var cacheExists = _cacheRepository.CheckUserTokenCache(token, _applicationSetting.CreateConnectionString());
-      if (cacheExists)
+      
+      if (!_cache.TryGetValue (token ,out AuthRestModel userInfo))
       {
-        var tokenModel = _cacheRepository.GetUserTokenCache(token, _applicationSetting.CreateConnectionString());
-        if (tokenModel.Expire > DateTime.UtcNow)
-        {
-          return Newtonsoft.Json.JsonConvert.DeserializeObject<AuthRestModel>(tokenModel.Token);
-        }
+        var httpResult = Helper.HttpService.Get ($"{_applicationSetting.Authority}userinfo", token);
+        userInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<AuthRestModel> (httpResult);
+        var cacheEntryOptions = new MemoryCacheEntryOptions ().SetSlidingExpiration (TimeSpan.FromMinutes (10));
+        _cache.Set (token, userInfo, cacheEntryOptions);
       }
-
-      var httpResult = Helper.HttpService.Get ($"{_applicationSetting.Authority}userinfo", token);
-      var newToken = Newtonsoft.Json.JsonConvert.DeserializeObject<AuthRestModel> (httpResult);
-      _cacheRepository.GetUserTokenCache(token, httpResult, _applicationSetting.CreateConnectionString());
-     return newToken;
+      return userInfo;
     }
     
     private MessageBase ValidateStringUsernameAndPassword
