@@ -28,13 +28,13 @@ namespace SqlRepository
                 return false;
             }
             Console.WriteLine($"userIdentifier: {userIdentifier}");
-            Console.WriteLine($"-----------------------------");
+            Console.WriteLine("-----------------------------");
             Console.WriteLine($"connection: {connectionString}");
             Console.WriteLine("------");
             using (IDbConnection dbConnection = new SqlConnection(connectionString))
             {
                 dbConnection.Open();
-                var sql = $"SELECT COUNT(identifier) AS count from [{_applicationSetting.Schema}].[tokenCache] WHERE [identifier] = '{userIdentifier}' ";
+                var sql = $"SELECT COUNT(identifier) AS count from [app].[tokenCache] WHERE [identifier] = '{userIdentifier}' ";
                 try
                 {
                     var data = dbConnection.Query<int>(sql).ToList();
