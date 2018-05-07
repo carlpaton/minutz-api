@@ -27,7 +27,7 @@ namespace SqlRepository
                 //throw new ArgumentException("Please provide a valid meeting identifier, schema or connection string.");
                 return false;
             }
-
+            Console.Write($"userIdentifier: {userIdentifier}");
             
             using (IDbConnection dbConnection = new SqlConnection(connectionString))
             {
