@@ -2,18 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Api.Extensions;
 using Api.Models;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Minutz.Models;
 using Minutz.Models.Entities;
-using Minutz.Models.Message;
 using Minutz.Models.ViewModels;
 using Swashbuckle.AspNetCore.SwaggerGen;
 

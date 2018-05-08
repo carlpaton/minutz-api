@@ -1,8 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using Api.Extensions;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 using Minutz.Models.Entities;
 using Minutz.Models.Message;
@@ -14,18 +15,21 @@ namespace Api.Controllers
   {
     private readonly IMeetingActionService _meetingActionService;
     private readonly IAuthenticationService _authenticationService;
+    private readonly ILogger _logger;
+    private readonly ILogService _logService;
 
     public MeetingActionController(
-      IMeetingActionService meetingActionService, IAuthenticationService authenticationService)
+      IMeetingActionService meetingActionService,
+      IAuthenticationService authenticationService,
+      ILogService logService,
+      ILoggerFactory logger)
     {
       _meetingActionService = meetingActionService;
       _authenticationService = authenticationService;
+      _logService = logService;
+      _logger = logger.CreateLogger("MeetingActionController");
     }
 
-    /// <summary>
-    /// Get all agenda items for a meeting
-    /// </summary>
-    /// <returns>Collection of MeetingAgenda objects</returns>
      [Authorize]
      [ProducesResponseType(typeof(string), 400)]
      [ProducesResponseType(typeof(List<MinutzAction>), 200)]
@@ -37,22 +41,21 @@ namespace Api.Controllers
        {
          return BadRequest("Please provide a valid referenceId [meeting id]");
        }
-       var userInfo = ExtractAuth();
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        var result = _meetingActionService.GetMinutzActions(referenceId, userInfo.InfoResponse);
        return Ok(result);
      }
 
-    /// <summary>
-    /// Create a meeting Agenda
-    /// </summary>
-    /// <returns></returns>
+
      [HttpPut("api/meetingAction/{referenceId}/action")]
      [Authorize]
-     public IActionResult Put([FromBody] MinutzAction action)
+     public IActionResult Create([FromBody] MinutzAction action)
      {
-       var userInfo = ExtractAuth();
-       var result =
-         _meetingActionService.CreateMinutzAction(action.ReferanceId.ToString(), action, userInfo.InfoResponse);
+       _logger.LogInformation(Core.LogProvider.LoggingEvents.ListItems, "GetMeetings {ID}", 1);
+       _logService.Log(Minutz.Models.LogLevel.Info, "GetMeetings called.");
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
+       var result = _meetingActionService.CreateMinutzAction
+         (action.ReferanceId.ToString(), action, userInfo.InfoResponse);
        return result.condition ? Ok(action) : StatusCode(500 ,result.message);
      }
 
@@ -64,7 +67,7 @@ namespace Api.Controllers
      [Authorize]
      public IActionResult Post([FromBody] MinutzAction action)
      {
-       var userInfo = ExtractAuth();
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        var result = _meetingActionService.UpdateMinutzAction(action.ReferanceId.ToString(), action, userInfo.InfoResponse);
        return result.condition ? Ok(action) : StatusCode(500, result.message);
      }
@@ -77,17 +80,8 @@ namespace Api.Controllers
      [Authorize]
      public bool Delete(string referenceId, string id)
      {
-       var userInfo = ExtractAuth();
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        return true;
      }
-    
-    private AuthRestModelResponse ExtractAuth()
-    {
-      var userInfo = _authenticationService.LoginFromFromToken(
-          Request.Headers.First(i => i.Key == "access_token").Value,
-          Request.Headers.First(i => i.Key == "Authorization").Value,
-          User.Claims.ToList().First(i => i.Type == "exp").Value, "");
-      return userInfo;
-    }
   }
 }
