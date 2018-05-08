@@ -1,17 +1,33 @@
 using System.Collections.Generic;
 using System.Linq;
+using Api.Extensions;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Minutz.Models.Entities;
 
 namespace Api.Controllers
 {
   public class MeetingNoteController : Controller
-  {
-    public MeetingNoteController()
+  {      private readonly IMeetingService _meetingService;
+      private readonly ILogService _logService;
+      private readonly IAuthenticationService _authenticationService;
+      private readonly IMeetingAttachmentService _meetingAttachmentService;
+      private readonly ILogger _logger;
+      
+    public MeetingNoteController(
+        IMeetingService meetingService,
+        ILogService logService,
+        ILoggerFactory logger,
+        IAuthenticationService authenticationService,
+        IMeetingAttachmentService meetingAttachmentService)
     {
-
+        _meetingService = meetingService;
+        _logService = logService;
+        _authenticationService = authenticationService;
+        _meetingAttachmentService = meetingAttachmentService;
+        _logger = logger.CreateLogger("MeetingNoteController");
     }
 
     /// <summary>
@@ -22,7 +38,7 @@ namespace Api.Controllers
      [Authorize]
      public List<MeetingNote> Get(string referenceId)
      {
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        return new List<MeetingNote>();
      }
 
@@ -34,7 +50,7 @@ namespace Api.Controllers
      [Authorize]
      public MeetingNote Get(string referenceId, string id)
      {
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        return new MeetingNote();
      }
 
@@ -46,7 +62,7 @@ namespace Api.Controllers
      [Authorize]
      public MeetingNote Put([FromBody] MeetingNote note)
      {
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        return new MeetingNote();
      }
 
@@ -58,7 +74,7 @@ namespace Api.Controllers
      [Authorize]
      public MeetingNote Post([FromBody] MeetingNote note)
      {
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        return new MeetingNote();
      }
 
@@ -70,7 +86,7 @@ namespace Api.Controllers
      [Authorize]
      public bool Delete(string referenceId, string id)
      {
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        return true;
      }
   }

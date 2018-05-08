@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Api.Extensions;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,8 +15,9 @@ namespace Api.Controllers
         private readonly IMeetingDecisionService _meetingDecisionService;
         private readonly IAuthenticationService _authenticationService;
 
-        public MeetingDecisionController
-            (IMeetingDecisionService meetingDecisionService, IAuthenticationService authenticationService)
+        public MeetingDecisionController(
+            IMeetingDecisionService meetingDecisionService,
+             IAuthenticationService authenticationService)
         {
             _meetingDecisionService = meetingDecisionService;
             _authenticationService = authenticationService;
@@ -36,7 +38,7 @@ namespace Api.Controllers
             {
                 return BadRequest("Please provide a valid referenceId [meeting id]");
             }
-            var userInfo = ExtractAuth();
+            var userInfo = Request.ExtractAuth(User, _authenticationService);
             var result = _meetingDecisionService.GetMinutzDecisions(referenceId, userInfo.InfoResponse);
             return Ok(result);
         }
@@ -49,7 +51,7 @@ namespace Api.Controllers
         [Authorize]
         public IActionResult Put([FromBody] MinutzDecision decision)
         {
-            var userInfo = ExtractAuth();
+            var userInfo = Request.ExtractAuth(User, _authenticationService);
             var result =
                 _meetingDecisionService.CreateMinutzDecision(decision.ReferanceId.ToString(), decision,userInfo.InfoResponse);
             return result.condition ? Ok(result.value) : StatusCode(500, result.message);
@@ -63,7 +65,7 @@ namespace Api.Controllers
         [Authorize]
         public IActionResult Post([FromBody] MinutzDecision decision)
         {
-            var userInfo = ExtractAuth();
+            var userInfo = Request.ExtractAuth(User, _authenticationService);
             var result =
                 _meetingDecisionService.UpdateMinutzDecision(decision.ReferanceId.ToString(), decision, userInfo.InfoResponse);
             return result.condition ? Ok(result.value) : StatusCode(500, result.message);
@@ -77,19 +79,9 @@ namespace Api.Controllers
         [Authorize]
         public IActionResult Delete(string referenceId, string id)
         {
-            var userInfo = ExtractAuth();
+            var userInfo = Request.ExtractAuth(User, _authenticationService);
             var result = _meetingDecisionService.DeleteMinutzDecision(referenceId, id, userInfo.InfoResponse);
             return result.condition ? Ok(result.message) : StatusCode(500, result.message);
-        }
-        
-        private AuthRestModelResponse ExtractAuth()
-        {
-           var userInfo =
-                _authenticationService.LoginFromFromToken(
-                    Request.Headers.First(i => i.Key == "access_token").Value,
-                    Request.Headers.First(i => i.Key == "Authorization").Value,
-                    User.Claims.ToList().First(i => i.Type == "exp").Value, "");
-            return userInfo;
         }
     }
 }

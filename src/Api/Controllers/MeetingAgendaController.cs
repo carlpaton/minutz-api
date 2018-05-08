@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Minutz.Models.Entities;
 using Newtonsoft.Json;
 using System;
+using Api.Extensions;
 using Minutz.Models.Message;
 
 namespace Api.Controllers
@@ -19,11 +20,13 @@ namespace Api.Controllers
     internal const string _defaultAgendaId = "e38b69b3-8f2a-4979-9323-1819db4331f8";
     
     public MeetingAgendaController(
-      IMeetingService meetingService, ILoggerFactory logger, IAuthenticationService authenticationService)
+      IMeetingService meetingService,
+      ILoggerFactory logger,
+      IAuthenticationService authenticationService)
     {
-      this._meetingService = meetingService;
+      _meetingService = meetingService;
       _authenticationService = authenticationService;
-      this._logger = logger.CreateLogger("MeetingAgendaController");
+      _logger = logger.CreateLogger("MeetingAgendaController");
     }
 
     /// <summary>
@@ -36,7 +39,7 @@ namespace Api.Controllers
             string referenceId)
      {
       
-       var userInfo = ExtractAuth();
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        return new List<MeetingAgenda>();
      }
 
@@ -48,7 +51,7 @@ namespace Api.Controllers
      [Authorize]
      public List<MeetingAgenda> GetAgendaItem(string id)
      {
-       var userInfo = ExtractAuth();
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        return null;
      }
 
@@ -56,7 +59,7 @@ namespace Api.Controllers
      [Authorize]
      public List<MeetingAgenda> UpdateMeetingAgendaitems([FromBody] List<MeetingAgenda> agendaitems)
      {
-       var userInfo = ExtractAuth();
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        var id = agendaitems.First().ReferenceId;
        var result = _meetingService.UpdateMeetingAgendaItems(id,agendaitems, userInfo.InfoResponse);
        return result;
@@ -74,7 +77,7 @@ namespace Api.Controllers
        var payload = JsonConvert.SerializeObject(agenda);
        _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem," sent data {payload}", payload);
        
-       var userInfo = ExtractAuth();
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        if (agenda.Id == Guid.Parse(_defaultAgendaId)) agenda.Id = Guid.NewGuid();
        var result = _meetingService.CreateMeetingAgendaItem(agenda, userInfo.InfoResponse);
        return result;
@@ -88,7 +91,7 @@ namespace Api.Controllers
      [Authorize]
      public MeetingAgenda Post([FromBody] MeetingAgenda agenda)
      {
-       var userInfo = ExtractAuth();
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        return new MeetingAgenda();
      }
 
@@ -100,18 +103,9 @@ namespace Api.Controllers
      [Authorize]
      public bool Delete(string id)
      {
-       var userInfo = ExtractAuth();
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        return true;
      }
     
-    private AuthRestModelResponse ExtractAuth()
-    {
-      var userInfo =
-        _authenticationService.LoginFromFromToken(
-          Request.Headers.First(i => i.Key == "access_token").Value,
-          Request.Headers.First(i => i.Key == "Authorization").Value,
-          User.Claims.ToList().First(i => i.Type == "exp").Value, "");
-      return userInfo;
-    }
   }
 }

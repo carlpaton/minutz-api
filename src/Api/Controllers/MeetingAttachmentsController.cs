@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
+using Api.Extensions;
+using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Minutz.Models.Entities;
@@ -9,9 +12,24 @@ namespace Api.Controllers
 {
   public class MeetingAttachmentsController : Controller
   {
-    public MeetingAttachmentsController()
+      private readonly IMeetingService _meetingService;
+      private readonly ILogService _logService;
+      private readonly IAuthenticationService _authenticationService;
+      private readonly IMeetingAttachmentService _meetingAttachmentService;
+      private readonly ILogger _logger;
+      
+    public MeetingAttachmentsController(
+        IMeetingService meetingService,
+        ILogService logService,
+        ILoggerFactory logger,
+        IAuthenticationService authenticationService,
+        IMeetingAttachmentService meetingAttachmentService)
     {
-
+        _meetingService = meetingService;
+        _logService = logService;
+        _authenticationService = authenticationService;
+        _meetingAttachmentService = meetingAttachmentService;
+        _logger = logger.CreateLogger("MeetingAttachmentsController");
     }
 
     /// <summary>
@@ -22,7 +40,7 @@ namespace Api.Controllers
      [Authorize]
      public List<MeetingAttachment> Get(string referenceId)
      {
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        return new List<MeetingAttachment>();
      }
 
@@ -34,7 +52,7 @@ namespace Api.Controllers
      [Authorize]
      public MeetingAttachment Get(string referenceId, string id)
      {
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        return new MeetingAttachment();
      }
 
@@ -46,7 +64,7 @@ namespace Api.Controllers
      [Authorize]
      public MeetingAttachment Put([FromBody] MeetingAttachment attachment)
      {
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        return new MeetingAttachment();
      }
 
@@ -58,7 +76,7 @@ namespace Api.Controllers
      [Authorize]
      public MeetingAttachment Post([FromBody] List<IFormFile> files, string referenceId, string id)
      {
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        return new MeetingAttachment();
      }
 
@@ -70,7 +88,7 @@ namespace Api.Controllers
      [Authorize]
      public bool Delete(string referenceId, string id)
      {
-       var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        return true;
      }
   }

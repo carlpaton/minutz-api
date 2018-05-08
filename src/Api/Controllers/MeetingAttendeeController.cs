@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using Api.Extensions;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,9 @@ namespace Api.Controllers
     private readonly IAuthenticationService _authenticationService;
 
     public MeetingAttendeeController(
-      IMeetingService meetingService, IInvatationService invatationService, IAuthenticationService authenticationService)
+      IMeetingService meetingService,
+      IInvatationService invatationService,
+      IAuthenticationService authenticationService)
     {
       _meetingService = meetingService;
       _invationService = invatationService;
@@ -34,7 +37,7 @@ namespace Api.Controllers
      [Authorize]
      public List<MeetingAttendee> Get(string referenceId)
      {
-       var userInfo = ExtractAuth();
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        return new List<MeetingAttendee>();
      }
 
@@ -47,7 +50,7 @@ namespace Api.Controllers
      [Authorize]
      public MeetingAttendee GetMeetingAttendee(string referenceId, string id)
      {
-       var userInfo = ExtractAuth();
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        var result = _meetingService.GetAttendee(userInfo.InfoResponse, Guid.Parse(referenceId), Guid.Parse(id));
        return result;
      }
@@ -56,7 +59,7 @@ namespace Api.Controllers
      [Authorize]
      public List<MeetingAttendee> UpdateMeetingAttendees(List<MeetingAttendee> attendees)
      {
-       var userInfo = ExtractAuth();
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        var result = _meetingService.UpdateMeetingAttendees(attendees, userInfo.InfoResponse);
        return result;
      }
@@ -98,7 +101,7 @@ namespace Api.Controllers
        {
          return BadRequest("Please provide a valid meetingId");
        }
-       var userInfo = ExtractAuth();
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        var meeting = _meetingService.GetMeeting(userInfo.InfoResponse, invitee.ReferenceId.ToString());
        //var instance = _meetingService.GetInstance(token);
        invitee.PersonIdentity = invitee.Email;
@@ -127,7 +130,7 @@ namespace Api.Controllers
      [Authorize]
      public MeetingAttendee Post([FromBody] MeetingAttendee attendee)
      {
-       var userInfo = ExtractAuth();
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        return attendee;
      }
 
@@ -135,7 +138,7 @@ namespace Api.Controllers
      [Authorize]
      public MeetingAttendee Put([FromBody] MeetingAttendee attendee)
      {
-       var userInfo = ExtractAuth();
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        return attendee;
      }
 
@@ -143,18 +146,8 @@ namespace Api.Controllers
      [Authorize]
      public bool Delete(string referenceId, string id)
      {
-       var userInfo = ExtractAuth();
+       var userInfo = Request.ExtractAuth(User, _authenticationService);
        return true;
      }
-    
-    private AuthRestModelResponse ExtractAuth()
-    {
-     var userInfo =
-        _authenticationService.LoginFromFromToken(
-          Request.Headers.First(i => i.Key == "access_token").Value,
-          Request.Headers.First(i => i.Key == "Authorization").Value,
-          User.Claims.ToList().First(i => i.Type == "exp").Value, "");
-      return userInfo;
-    }
   }
 }

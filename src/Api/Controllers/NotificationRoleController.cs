@@ -1,17 +1,35 @@
 ﻿using System.Linq;
+using Api.Extensions;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Api.Controllers
 {
 	public class NotificationRoleController : Controller
 	{
 		private readonly INotificationRoleService _notificationRoleService;
-
-		public NotificationRoleController(INotificationRoleService notificationRoleService)
+		private readonly IMeetingService _meetingService;
+		private readonly ILogService _logService;
+		private readonly IAuthenticationService _authenticationService;
+		private readonly IMeetingAttachmentService _meetingAttachmentService;
+		private readonly ILogger _logger;
+		
+		public NotificationRoleController(
+			INotificationRoleService notificationRoleService,
+			IMeetingService meetingService,
+			ILogService logService,
+			ILoggerFactory logger,
+			IAuthenticationService authenticationService,
+			IMeetingAttachmentService meetingAttachmentService)
 		{
 			this._notificationRoleService = notificationRoleService;
+			_meetingService = meetingService;
+			_logService = logService;
+			_authenticationService = authenticationService;
+			_meetingAttachmentService = meetingAttachmentService;
+			_logger = logger.CreateLogger("NotificationRoleController");
 		}
 
 		[HttpGet("api/notificationRoles")]
@@ -19,18 +37,18 @@ namespace Api.Controllers
 		[Produces("application/json")]
 		public IActionResult NotificationRoles()
 		{
-			var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-			var result = this._notificationRoleService.GetList(token);
+			var userInfo = Request.ExtractAuth(User, _authenticationService);
+			var result = this._notificationRoleService.GetList(userInfo.InfoResponse.AccessToken);
 			return Ok(result);
 		}
 
 		[HttpGet("api/notificationRole")]
 		[Authorize]
 		[Produces("application/json")]
-		public IActionResult nNotificationRole()
+		public IActionResult NotificationRole()
 		{
-			var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-			var result = this._notificationRoleService.GetNotificationRole(token);
+			var userInfo = Request.ExtractAuth(User, _authenticationService);
+			var result = this._notificationRoleService.GetNotificationRole(userInfo.InfoResponse.AccessToken);
 			return Ok(result);
 		}
 		
@@ -39,8 +57,8 @@ namespace Api.Controllers
 		[Produces("application/json")]
 		public IActionResult SetNotificationRole(int notificationRoleId)
 		{
-			var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-			var result = this._notificationRoleService.SetNotificationRoleForSchema(token,notificationRoleId);
+			var userInfo = Request.ExtractAuth(User, _authenticationService);
+			var result = this._notificationRoleService.SetNotificationRoleForSchema(userInfo.InfoResponse.AccessToken,notificationRoleId);
 			return Ok(result);
 		}
 	}

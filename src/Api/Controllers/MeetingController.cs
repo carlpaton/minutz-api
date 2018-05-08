@@ -24,7 +24,8 @@ namespace Api.Controllers
     private readonly IMeetingAttachmentService _meetingAttachmentService;
     private readonly ILogger _logger;
 
-    public MeetingController(IMeetingService meetingService,
+    public MeetingController(
+      IMeetingService meetingService,
       IInvatationService invatationService,
       ILogService logService,
       ILoggerFactory logger,

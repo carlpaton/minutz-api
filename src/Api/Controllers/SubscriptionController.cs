@@ -1,17 +1,39 @@
 ﻿using System.Linq;
+using Api.Extensions;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Api.Controllers
 {
 	public class SubscriptionController : Controller
 	{
 		private readonly ISubscriptionService _subscriptionService;
+		private readonly INotificationTypeService _notificationTypeService;
+		private readonly IMeetingService _meetingService;
+		private readonly ILogService _logService;
+		private readonly IAuthenticationService _authenticationService;
+		private readonly IMeetingAttachmentService _meetingAttachmentService;
+		private readonly ILogger _logger;
 
-		public SubscriptionController(ISubscriptionService subscriptionService)
+		public SubscriptionController(
+			ISubscriptionService subscriptionService,
+			INotificationTypeService notificationTypeService,
+			INotificationRoleService notificationRoleService,
+			IMeetingService meetingService,
+			ILogService logService,
+			ILoggerFactory logger,
+			IAuthenticationService authenticationService,
+			IMeetingAttachmentService meetingAttachmentService)
 		{
-			this._subscriptionService = subscriptionService;
+			_subscriptionService = subscriptionService;
+			_notificationTypeService = notificationTypeService;
+			_meetingService = meetingService;
+			_logService = logService;
+			_authenticationService = authenticationService;
+			_meetingAttachmentService = meetingAttachmentService;
+			_logger = logger.CreateLogger("SubscriptionController");
 		}
 
 		[HttpGet("api/subscriptions")]
@@ -19,8 +41,8 @@ namespace Api.Controllers
 		[Produces("application/json")]
 		public IActionResult Subscriptions()
 		{
-			var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-			var result = this._subscriptionService.GetList(token);
+			var userInfo = Request.ExtractAuth(User, _authenticationService);
+			var result = this._subscriptionService.GetList(userInfo.InfoResponse.AccessToken);
 			return Ok(result);
 		}
 
@@ -29,8 +51,8 @@ namespace Api.Controllers
 		[Produces("application/json")]
 		public IActionResult Subscription()
 		{
-			var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-			var result = this._subscriptionService.GetSubscription(token);
+			var userInfo = Request.ExtractAuth(User, _authenticationService);
+			var result = this._subscriptionService.GetSubscription(userInfo.InfoResponse.AccessToken);
 			return Ok(result);
 		}
 
@@ -39,8 +61,8 @@ namespace Api.Controllers
 		[Produces("application/json")]
 		public IActionResult SetSubscription(int subscriptionId)
 		{
-			var token = Request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
-			var result = this._subscriptionService.SetSubscriptionForSchema(token, subscriptionId);
+			var userInfo = Request.ExtractAuth(User, _authenticationService);
+			var result = this._subscriptionService.SetSubscriptionForSchema(userInfo.InfoResponse.AccessToken, subscriptionId);
 			return Ok(result);
 		}
 	}

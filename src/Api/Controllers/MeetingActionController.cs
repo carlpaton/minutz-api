@@ -1,12 +1,10 @@
 using System.Collections.Generic;
-using System.Linq;
 using Api.Extensions;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 using Minutz.Models.Entities;
-using Minutz.Models.Message;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Api.Controllers
