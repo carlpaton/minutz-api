@@ -524,7 +524,7 @@ namespace Core
           foreach (var action in actions)
           {
             action.Id = Guid.NewGuid();
-            action.ReferanceId = meeting.Id;
+            action.referenceId = meeting.Id;
             var actionSaved = _meetingActionRepository.Add(action, instanceId,  _applicationSetting.CreateConnectionString(
               _applicationSetting.Server,_applicationSetting.Catalogue,instanceId,_applicationSetting.GetInstancePassword(instanceId)));
             if (!actionSaved)
@@ -749,7 +749,7 @@ namespace Core
           if (actionAction == null || actionAction.Id == Guid.Empty)
           {
             action.Id = Guid.NewGuid();
-            action.ReferanceId = Guid.Parse( meetingViewModel.Id);
+            action.referenceId = Guid.Parse( meetingViewModel.Id);
             _meetingActionRepository.Add(action, user.InstanceId, instanceConnectionString);
           }
           else

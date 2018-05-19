@@ -155,6 +155,7 @@ namespace Minutz.Api
       });
       app.UseCors("AllowAllOrigins");
       app.UseStaticFiles();
+      // app.UseCorsMiddleware();
       app.UseMvc(routes =>
       {
         routes.MapRoute(

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Api.Extensions;
 using Interface;
 using Interface.Services;
@@ -30,9 +31,10 @@ namespace Api.Controllers
       this._logService = logService;
     }
 
-    [HttpPost ("api/user/login", Name = "Log in the user.")]
-    public IActionResult Login ([FromBody] dynamic user)
-    {
+    [HttpPost("api/user/login", Name = "Log in the user.")]
+    public IActionResult Login ([FromBody]  dynamic user)
+
+    { 
       var hasHeader = Request.Headers.ToList ().Any (i => i.Key == "xAuthHeader");
       if (!hasHeader)
       {
@@ -66,9 +68,9 @@ namespace Api.Controllers
         _authenticationService.LoginFromLoginForm ((string) username, (string) password, (string) instanceId);
       if (loginResult.Condition)
       {
-        return Ok (new { Value = loginResult.InfoResponse, Message = loginResult.Message });
+        return Ok (loginResult.InfoResponse);
       }
-      return StatusCode (404, new { Message = loginResult.Message });
+      return StatusCode (404, loginResult.Message);
     }
 
     [Authorize]

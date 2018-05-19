@@ -7,6 +7,7 @@ namespace Minutz.Models.Entities
         public string Id { get; set; }
         public string ReferanceId { get; set; }
         public string ActionText { get; set; }
+        public string ActionTitle { get; set; }
         public string PersonId { get; set; }
         public DateTime DueDate { get; set; }
         public bool IsComplete { get; set; }
