@@ -10,10 +10,8 @@ using Interface.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Notifications;
 using Reports;
@@ -107,6 +105,7 @@ namespace Minutz.Api
 
       services.AddMemoryCache();
       services.AddMvc();
+      var appSetting = new ApplicationSetting(new InstanceRepository());
       
       var version = Configuration.GetSection("Version").Value;
       services.AddSwaggerGen(c =>
@@ -130,8 +129,8 @@ namespace Minutz.Api
       }).AddJwtBearer(options =>
       {
         options.SaveToken = true;
-        options.Authority = $"https://{this._domain}/";
-        options.Audience = _clientId;
+        options.Authority = $"https://{appSetting.AuthorityDomain}/";
+        options.Audience = appSetting.AuthorityManagementClientId;
       });
     }
 

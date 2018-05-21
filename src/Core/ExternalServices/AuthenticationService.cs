@@ -509,7 +509,8 @@ namespace Core.ExternalServices
       return result;
     }
 
-    public AuthRestModel GetUserInfo (string token)
+    public AuthRestModel GetUserInfo
+      (string token)
     {
       var result = new AuthRestModelResponse { Condition = false, Message = string.Empty, InfoResponse = new AuthRestModel()};
       

@@ -199,7 +199,7 @@ namespace AuthenticationRepository
 
       var tokenRequestResult =
         _httpService.Post($"{_applicationSetting.Authority}oauth/token", payload);
-      _logService.Log(Minutz.Models.LogLevel.Info, tokenRequestResult.result);
+      _logService.Log(LogLevel.Info, tokenRequestResult.result);
 
       if (!tokenRequestResult.condition)
       {
