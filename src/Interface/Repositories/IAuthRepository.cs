@@ -3,7 +3,7 @@ using Minutz.Models.Message;
 
 namespace Interface.Repositories
 {
-    public interface IAuth0Repository
+    public interface IAuthRepository
     {
         (bool condition, string message, AuthRestModel value) CreateUser (
             string name,string email, string password, string role, string instanceId);

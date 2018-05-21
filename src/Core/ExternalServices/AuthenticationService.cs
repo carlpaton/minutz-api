@@ -18,7 +18,7 @@ namespace Core.ExternalServices
     private readonly ICacheRepository _cacheRepository;
     private readonly IApplicationSetupRepository _applicationSetupRepository;
     private readonly IApplicationSetting _applicationSetting;
-    private readonly IAuth0Repository _auth0Repository;
+    private readonly IAuthRepository _authRepository;
     private readonly IUserRepository _userDatabaseRepository;
     private readonly IInstanceRepository _instanceRepository;
     private readonly ILogService _logService;
@@ -26,14 +26,14 @@ namespace Core.ExternalServices
 
     public AuthenticationService(
       IApplicationSetting applicationSetting, IMemoryCache memoryCache,
-      IAuth0Repository auth0Repository, ILogService logService,
+      IAuthRepository authRepository, ILogService logService,
       IUserRepository userDatabaseRepository, IApplicationSetupRepository applicationSetupRepository,
       IInstanceRepository instanceRepository, IMeetingAttendeeRepository meetingAttendeeRepository,
       ICacheRepository cacheRepository)
     {
       _applicationSetting = applicationSetting;
       _cache = memoryCache;
-      _auth0Repository = auth0Repository;
+      _authRepository = authRepository;
       _logService = logService;
       _userDatabaseRepository = userDatabaseRepository;
       _applicationSetupRepository = applicationSetupRepository;
@@ -91,14 +91,14 @@ namespace Core.ExternalServices
         return result;
       }
 
-      var tokenCreateResult = _auth0Repository.CreateToken (username, password);
+      var tokenCreateResult = _authRepository.CreateToken (username, password);
       if (!tokenCreateResult.Condition)
       {
         Console.WriteLine("Info: -- CreateToken");
         result.Message = tokenCreateResult.Message;
         return result;
       }
-      var userInfoResult = _auth0Repository.GetUserInfo(tokenCreateResult.AuthTokenResponse.access_token);
+      var userInfoResult = _authRepository.GetUserInfo(tokenCreateResult.AuthTokenResponse.access_token);
       if (!userInfoResult.Condition)
       {
         Console.WriteLine("Info: -- GetUserInfo");
@@ -124,7 +124,7 @@ namespace Core.ExternalServices
       if (!userExistsByEmail.Condition)
       {
         Console.WriteLine("Info: -- SearchUserByEmail");
-        var userSearchResult = _auth0Repository.SearchUserByEmail(userInfoResult.InfoResponse.Email);
+        var userSearchResult = _authRepository.SearchUserByEmail(userInfoResult.InfoResponse.Email);
         if (userSearchResult.Condition)
         {
           var newInsertUser = new AuthRestModel
@@ -209,7 +209,7 @@ namespace Core.ExternalServices
         var instanceId = Guid.NewGuid ().ToString ();
         
         // Create the user in Auth0
-        (bool condition, string message, AuthRestModel tokenResponse) createNewAuth0Response = _auth0Repository.CreateUser (name, email, password, role, $"A_{instanceId}");
+        (bool condition, string message, AuthRestModel tokenResponse) createNewAuth0Response = _authRepository.CreateUser (name, email, password, role, $"A_{instanceId}");
         
         if (!createNewAuth0Response.condition)
         {
@@ -262,7 +262,7 @@ namespace Core.ExternalServices
           {
             //Get the token from auth0 by logging in
             var tokenResponse =
-              _auth0Repository.CreateToken (email, password);
+              _authRepository.CreateToken (email, password);
             
             if (!tokenResponse.Condition)
             {
@@ -275,7 +275,7 @@ namespace Core.ExternalServices
             {
               //Get users info from auth0
               var infoResponseResult =
-                _auth0Repository.GetUserInfo (tokenResponse.AuthTokenResponse.access_token);
+                _authRepository.GetUserInfo (tokenResponse.AuthTokenResponse.access_token);
               
               if (!infoResponseResult.Condition)
               {
@@ -328,7 +328,7 @@ namespace Core.ExternalServices
           }
           
           var newUserTokenResponse =
-            _auth0Repository.CreateToken (email, password);
+            _authRepository.CreateToken (email, password);
           
           if (!newUserTokenResponse.Condition)
           {
@@ -336,7 +336,7 @@ namespace Core.ExternalServices
             return (newUserTokenResponse.Condition, newUserTokenResponse.Message, null);
           }
           var newInfoResponseResult =
-            _auth0Repository.GetUserInfo (newUserTokenResponse.AuthTokenResponse.access_token);
+            _authRepository.GetUserInfo (newUserTokenResponse.AuthTokenResponse.access_token);
           
           if (!newInfoResponseResult.Condition)
           {
@@ -407,14 +407,14 @@ namespace Core.ExternalServices
           return (true, "Success", createAuthRestResult);
         case RoleTypes.Guest:
           _logService.Log (LogLevel.Error, $"Starting Guest signup {existsResult.Person.Email}");
-          var guestTokenResponse = _auth0Repository.CreateToken (email, password);
+          var guestTokenResponse = _authRepository.CreateToken (email, password);
           if (!guestTokenResponse.Condition)
           {
             _logService.Log (LogLevel.Error, $"[(bool condition, string message, UserResponseModel tokenResponse) guestTokenResponse] There was a issue getting the token info for user {email}");
             return (guestTokenResponse.Condition, guestTokenResponse.Message, null);
           }
           _logService.Log (LogLevel.Error, $"getting Guest info from auth0 {existsResult.Person.Email}");
-          var guestinfoResponseResult = _auth0Repository.GetUserInfo (guestTokenResponse.AuthTokenResponse.access_token);
+          var guestinfoResponseResult = _authRepository.GetUserInfo (guestTokenResponse.AuthTokenResponse.access_token);
 
           if (!guestinfoResponseResult.Condition)
           {

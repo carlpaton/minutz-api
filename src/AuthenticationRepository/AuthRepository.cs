@@ -15,7 +15,7 @@ using Newtonsoft.Json;
 
 namespace AuthenticationRepository
 {
-  public class Auth0Repository : IAuth0Repository
+  public class Auth0Repository : IAuthRepository
   {
     private string _validationMessage = "The username or password was not supplied or is incorrect. Please provide valid details.";
     private readonly IHttpService _httpService;
@@ -101,8 +101,8 @@ namespace AuthenticationRepository
       }
       catch (Exception e)
       {
-        _logService.Log(LogLevel.Exception, e.InnerException.Message);
-        result.Message = e.InnerException.Message;
+        _logService.Log(LogLevel.Exception, e.Message);
+        result.Message = e.Message;
         return result;
       }
     }
