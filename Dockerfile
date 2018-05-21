@@ -5,7 +5,7 @@ WORKDIR /app
 # RUN dotnet restore
 
 COPY . .
-RUN dotnet publish src/minutz.sln -c pipelines -o out 
+RUN dotnet publish src/minutz.sln --framework netcoreapp2.0 -c pipelines -o out 
 # --version-suffix UPDATE_DLL
 FROM microsoft/aspnetcore:2
 ARG source
