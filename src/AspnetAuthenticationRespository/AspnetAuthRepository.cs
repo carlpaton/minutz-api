@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using Interface.Repositories;
+using Interface.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Minutz.Models.Auth0Models;
 using Minutz.Models.Entities;
 using Minutz.Models.Message;
+using Models.Auth0Models;
+using Remotion.Linq.Clauses.ResultOperators;
 
 namespace AspnetAuthenticationRespository
 {
@@ -19,15 +23,18 @@ namespace AspnetAuthenticationRespository
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly IApplicationSetting _applicationSetting;
 
         public AspnetAuthRepository(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IApplicationSetting applicationSetting)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
+            _applicationSetting = applicationSetting;
         }
 
         public (bool condition, string message, AuthRestModel value) CreateUser
@@ -57,43 +64,53 @@ namespace AspnetAuthenticationRespository
                 }
                 var roles = _userManager.GetRolesAsync(appUser).Result;
                 
-                var token =  GenerateJwtToken(email, user, roles);
+                //var token =  GenerateJwtToken(email, user, roles);
 
                 var resultModel = new AuthRestModel
                                   {
                                       IsVerified = false,
                                       Email = email,
                                       Nickname = name,
-                                      InstanceId = $"A_{appUser.Id}",
+                                      InstanceId = $"A_{appUser?.Id}",
                                       Role = roles.FirstOrDefault()
                                   };
                 return (true,"Success", resultModel);
             }
             return (false, string.Join(",",result.Errors), null);
         }
-        private object GenerateJwtToken(string email, IdentityUser user, IList<string> roles)
+
+        private UserResponseModel GenerateJwtToken(string email, IdentityUser user, IList<string> roles)
         {
+            var jti = Guid.NewGuid().ToString();
             var claims = new List<Claim>
                          {
                              new Claim(JwtRegisteredClaimNames.Sub, email),
-                             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                             new Claim(JwtRegisteredClaimNames.Jti, jti ),
                              new Claim("roles", string.Join(",", roles)),
                              new Claim(ClaimTypes.NameIdentifier, user.Id)
                          };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtKey"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_applicationSetting.ClientSecret));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expires = DateTime.Now.AddDays(Convert.ToDouble(_configuration["JwtExpireDays"]));
+            var expires = DateTime.Now.AddHours(3);
 
             var token = new JwtSecurityToken(
-                _configuration["JwtIssuer"],
-                _configuration["JwtIssuer"],
+                _applicationSetting.AuthorityDomain,
+                _applicationSetting.AuthorityDomain,
                 claims,
                 expires: expires,
                 signingCredentials: creds
             );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+            var userModel = new UserResponseModel
+                    {
+                        access_token = tokenString,
+                        expires_in = expires.ToString(CultureInfo.CurrentCulture),
+                        id_token = jti,
+                        scope = string.Join(",", roles),
+                        token_type = "aspnet"
+                    };
+            return userModel;
         }
 
         public AuthRestModelResponse GetUserInfo(string token)
@@ -104,6 +121,28 @@ namespace AspnetAuthenticationRespository
 
         public TokenResponse CreateToken(string username, string password)
         {
+            var returnObject = new TokenResponse { };
+            
+            var user = new IdentityUser { UserName = username, Email = username };
+            var result =  _signInManager.PasswordSignInAsync(username, password, false, false).Result;
+            
+            if (result.Succeeded)
+            {
+                var appUser = _userManager.Users.SingleOrDefault(r => r.Email == username);
+                var rolesCheck = _userManager.GetRolesAsync(appUser).Result;
+                if (!rolesCheck.Contains("User"))
+                {
+                    var createRole =  _userManager.AddToRoleAsync(appUser, "User").Result;
+                }
+
+                var roles = _userManager.GetRolesAsync(appUser).Result;
+
+                var token =  GenerateJwtToken(username, appUser, roles);
+                var q = new UserResponseModel
+                        {
+                            
+                        };
+            }
             throw new NotImplementedException();
         }
 

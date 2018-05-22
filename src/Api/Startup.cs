@@ -1,4 +1,5 @@
 ﻿using System;
+using AspnetAuthenticationRespository;
 using AuthenticationRepository;
 using Core;
 using Core.ExternalServices;
@@ -13,6 +14,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Models.Auth0Models;
 using Notifications;
 using Reports;
 using SqlRepository;
@@ -78,7 +80,8 @@ namespace Minutz.Api
       services.AddTransient<INotify, Notify>();
       services.AddTransient<ILogService, LogService>();
 
-      services.AddTransient< IAuthRepository,Auth0Repository>();
+      //services.AddTransient< IAuthRepository,Auth0Repository>();
+      services.AddTransient<IAuthRepository, AspnetAuthRepository>();
       services.AddTransient<IReportRepository,JsReportRepository>();
       services.AddTransient<ICacheRepository,CacheRepository>();
 
