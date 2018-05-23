@@ -93,12 +93,12 @@ namespace Api.Controllers
       // }
 
       (bool condition, string message, AuthRestModel tokenResponse) result =
-        this._authenticationService.CreateUser (name, email, password,role, instanceId, meetingId);
+        _authenticationService.CreateUser (name, email, password,role, instanceId, meetingId);
       
       _logService.Log(LogLevel.Info, JsonConvert.SerializeObject(result));
       _logService.Log(LogLevel.Info, JsonConvert.SerializeObject(result.tokenResponse));
       
-      if (result.condition || result.message == "successfull")
+      if (result.condition)
         return Ok (result.tokenResponse);
       return StatusCode (500, result.message);
     }
