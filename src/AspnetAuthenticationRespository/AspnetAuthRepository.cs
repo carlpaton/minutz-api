@@ -121,9 +121,7 @@ namespace AspnetAuthenticationRespository
 
         public TokenResponse CreateToken(string username, string password)
         {
-            var returnObject = new TokenResponse { };
-            
-            var user = new IdentityUser { UserName = username, Email = username };
+            var returnObject = new TokenResponse { Condition = false};
             var result =  _signInManager.PasswordSignInAsync(username, password, false, false).Result;
             
             if (result.Succeeded)
@@ -136,14 +134,28 @@ namespace AspnetAuthenticationRespository
                 }
 
                 var roles = _userManager.GetRolesAsync(appUser).Result;
-
-                var token =  GenerateJwtToken(username, appUser, roles);
-                var q = new UserResponseModel
-                        {
-                            
-                        };
+                var userResponseModel = GenerateJwtToken(username, appUser, roles);
+                returnObject.AuthTokenResponse = userResponseModel;
+                returnObject.Condition = true;
+                return returnObject;
             }
-            throw new NotImplementedException();
+
+            if (result.IsLockedOut)
+            {
+                returnObject.Message = "It appears that you are locked out.";
+            }
+
+            if (result.IsNotAllowed)
+            {
+                returnObject.Message = "It appears tha you are not allowed.";
+            }
+
+            if (result.RequiresTwoFactor)
+            {
+                returnObject.Message = "Your authentication requires two factor authentication.";
+            }
+
+            return returnObject;
         }
 
         public AuthUserQueryResponse SearchUserByEmail(string email)
