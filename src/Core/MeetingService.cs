@@ -865,7 +865,6 @@ namespace Core
       return data;
     }
 
-
     public bool InviteUser
       (AuthRestModel user, MeetingAttendee attendee, string referenceMeetingId, string inviteEmail)
     {

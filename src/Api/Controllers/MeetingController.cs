@@ -61,8 +61,8 @@ namespace Api.Controllers
 
       _logger.LogInformation(Core.LogProvider.LoggingEvents.ListItems, "GetMeetings {ID}", 1);
       _logService.Log(Minutz.Models.LogLevel.Info, "GetMeetings called.");
-      var userInfo = Request.ExtractAuth(User, _authenticationService);
-      var meetingsResult = _meetingService.GetMeetings(userInfo.InfoResponse, reference);
+      var userInfo = User.ToRest(); //Request.ExtractAuth(User, _authenticationService);
+      var meetingsResult = _meetingService.GetMeetings(userInfo, reference);
       if (meetingsResult.condition == true && meetingsResult.statusCode == 200)
         return Ok(meetingsResult.value);
       if (meetingsResult.condition == true && meetingsResult.statusCode == 404)
@@ -87,8 +87,8 @@ namespace Api.Controllers
     public IActionResult GetMeeting
       (string id, string related)
     {
-      var userInfo = Request.ExtractAuth(User, _authenticationService);
-      var meeting = _meetingService.GetMeeting(userInfo.InfoResponse, id);
+      var userInfo = User.ToRest(); // Request.ExtractAuth(User, _authenticationService);
+      var meeting = _meetingService.GetMeeting(userInfo, id);
       return Ok(new { status = 200, data = meeting });
     }
 
@@ -105,7 +105,7 @@ namespace Api.Controllers
     public IActionResult CreateMeeting
       (string instanceId = "")
     {
-      var userInfo = Request.ExtractAuth(User, _authenticationService);
+      var userInfo = User.ToRest(); //Request.ExtractAuth(User, _authenticationService);
 
       _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - entry point {ID}", 1);
       
@@ -138,7 +138,7 @@ namespace Api.Controllers
       _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - created viewmodel {ID}", 1);
       
       var result = _meetingService.CreateMeeting(
-        userInfo.InfoResponse,
+        userInfo,
         data.ToEntity(),
         data.MeetingAttendeeCollection,
         data.MeetingAgendaCollection,
@@ -180,11 +180,11 @@ namespace Api.Controllers
         }
       }
       
-      var userInfo = Request.ExtractAuth(User, _authenticationService);
+      var userInfo = User.ToRest(); //Request.ExtractAuth(User, _authenticationService);
       
       _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "UpdateMeeting - entry point {ID}", 1);
 
-      var result = _meetingService.UpdateMeeting(userInfo.InfoResponse, meeting);
+      var result = _meetingService.UpdateMeeting(userInfo, meeting);
       return new ObjectResult(result);
     }
 
@@ -204,8 +204,8 @@ namespace Api.Controllers
     {
       if (string.IsNullOrEmpty(id))
         return BadRequest("Please provide a valid id");
-      var userInfo = Request.ExtractAuth(User, _authenticationService);
-      var result = _meetingService.DeleteMeeting(userInfo.InfoResponse, Guid.Parse(id));
+      var userInfo = User.ToRest(); //Request.ExtractAuth(User, _authenticationService);
+      var result = _meetingService.DeleteMeeting(userInfo, Guid.Parse(id));
       if (result.Key)
         return Ok(result.Value);
       return BadRequest(result.Value);
@@ -217,8 +217,8 @@ namespace Api.Controllers
     {
       if (string.IsNullOrEmpty(model.meetingId))
         return BadRequest("Please provide a valid id");
-      var userInfo = Request.ExtractAuth(User, _authenticationService);
-      var meeting = _meetingService.GetMeeting(userInfo.InfoResponse, model.meetingId);
+      var userInfo = User.ToRest(); //Request.ExtractAuth(User, _authenticationService);
+      var meeting = _meetingService.GetMeeting(userInfo, model.meetingId);
 //      switch (model.recipients)
 //      {
           //case InviteAttendees.allAttendess:
@@ -260,7 +260,7 @@ namespace Api.Controllers
       }
       long size = files.Sum(f => f.Length);
       string meetingId = HttpContext.Request.Query["id"].ToString();
-      var userInfo = Request.ExtractAuth(User, _authenticationService);
+      var userInfo = User.ToRest(); //Request.ExtractAuth(User, _authenticationService);
       // full path to file in temp location
       var filePath = Path.GetTempFileName();
 
@@ -278,10 +278,10 @@ namespace Api.Controllers
             FileData = fileBytes,
             FileName = formFile.FileName,
             Id = Guid.NewGuid(),
-            MeetingAttendeeId = userInfo.InfoResponse.Sub,
+            MeetingAttendeeId = userInfo.Sub,
             ReferanceId =  Guid.Parse(meetingId)
           };
-          var meetingAttachmentResult = _meetingAttachmentService.Add(meetingFile, userInfo.InfoResponse);
+          var meetingAttachmentResult = _meetingAttachmentService.Add(meetingFile, userInfo);
         }
       }
 
