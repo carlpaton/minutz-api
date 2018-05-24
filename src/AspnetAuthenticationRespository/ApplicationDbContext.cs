@@ -19,9 +19,9 @@ namespace AspnetAuthenticationRespository
             optionsBuilder.UseSqlServer(GetConnectionString());
         }
         
-        private string GetConnectionString()
-        {   
-            return $"Server={Server}; database={Catalogue};uid={Username};pwd={Password};pooling=true;";
+        public static string GetConnectionString()
+        {
+            return $"Server=localhost,1433; database=minutz_auth;uid=sa;pwd=yourStrong(!)Password;pooling=true;";
         }
     }
 }

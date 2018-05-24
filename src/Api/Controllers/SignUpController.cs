@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Api.Extensions;
+using Api.Models;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -35,44 +36,21 @@ namespace Api.Controllers
     /// <returns>If it was successful or not</returns>
     //[Authorize]
     [HttpPost ("api/Signup")]
-    public IActionResult Post ([FromBody] dynamic user)
+    public IActionResult Post ([FromBody] CreateUserModel user)
     {
-      var email = string.Empty;
-      var name = string.Empty;
-      var password = string.Empty;
-      //var username = string.Empty;
-      var instanceId = string.Empty;
-      var meetingId = string.Empty;
-      var role = string.Empty;
     
       _logService.Log(LogLevel.Info, JsonConvert.SerializeObject(user));
-      try
-      {
-         email = user.email.ToString ();
-         name = user.name.ToString ();
-         password = user.password.ToString ();
-       // username = user.username.ToString ();
-         instanceId = user.RefInstanceId.ToString();
-         meetingId = user.refMeetingId.ToString();
-         role = user.role.ToString();
-      }
-      catch (Exception e)
-      {
-        _logService.Log(LogLevel.Info, e.Message);
-        return StatusCode(500, "Could not user some/any imputs provided.");
-      }
-      
 
-      if (string.IsNullOrEmpty(email))
+      if (string.IsNullOrEmpty(user.email))
       {
         return StatusCode(401, new { Message = "Please provide a email address" });
       }
-      if (string.IsNullOrEmpty(email))
+      if (string.IsNullOrEmpty(user.email))
       {
         return StatusCode(401, new { Message = "Please provide a email address" });
       }
 
-      if (!email.CheckEmail())
+      if (!user.email.CheckEmail())
       {
         return StatusCode(401, new { Message = "Please provide a valid email address" });
       }
@@ -80,7 +58,7 @@ namespace Api.Controllers
 //      {
 //        return StatusCode(401, new { Message = "Please provide a username" });
 //      }
-      if (string.IsNullOrEmpty(password))
+      if (string.IsNullOrEmpty(user.password))
       {
         return StatusCode(401, new { Message = "Please provide a password" });
       }
@@ -93,7 +71,7 @@ namespace Api.Controllers
       // }
 
       (bool condition, string message, AuthRestModel tokenResponse) result =
-        _authenticationService.CreateUser (name, email, password,role, instanceId, meetingId);
+        _authenticationService.CreateUser (user.name, user.email, user.password, user.role, user.RefInstanceId, user.refMeetingId);
       
       _logService.Log(LogLevel.Info, JsonConvert.SerializeObject(result));
       _logService.Log(LogLevel.Info, JsonConvert.SerializeObject(result.tokenResponse));

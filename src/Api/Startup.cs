@@ -179,7 +179,7 @@ namespace Minutz.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, ApplicationDbContext dbContext)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             //loggerFactory.AddProvider (new LoggerDBProvider ());
@@ -203,6 +203,7 @@ namespace Minutz.Api
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            dbContext.Database.EnsureCreated();
         }
 
         private static string DefaultConnectionString()

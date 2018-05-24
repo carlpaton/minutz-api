@@ -238,11 +238,11 @@ namespace Core.ExternalServices
 
             if (!existsResult.Condition)
             {
-                var instanceId = Guid.NewGuid().ToString();
+               // var instanceId = Guid.NewGuid().ToString();
 
                 // Create the user in Auth0
                 (bool condition, string message, AuthRestModel authRestModel) createNewAuthResponse =
-                    _authRepository.CreateUser(name, email, password, role, $"A_{instanceId}");
+                    _authRepository.CreateUser(name, email, password, role, string.Empty);
 
                 if (!createNewAuthResponse.condition)
                 {
@@ -263,6 +263,8 @@ namespace Core.ExternalServices
                 createNewAuthResponse.authRestModel.Role = role;
                 createNewAuthResponse.authRestModel.FirstName = name;
                 createNewAuthResponse.authRestModel.Nickname = name;
+                createNewAuthResponse.authRestModel.Name = name;
+                
 
                 // Default the company name
                 if (string.IsNullOrEmpty(invitationInstanceId))
