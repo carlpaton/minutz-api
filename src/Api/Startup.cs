@@ -18,7 +18,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Models.Auth0Models;
 using Notifications;
 using Reports;
 using SqlRepository;
@@ -28,27 +27,6 @@ namespace Minutz.Api
 {
     public class Startup
     {
-//        internal string _urlSignUp = $"https://minutz.eu.auth0.com/dbconnections/signup";
-//        internal string _urlToken = $"https://minutz.eu.auth0.com/oauth/token";
-//        internal string _urlInfo = $"https://minutz.eu.auth0.com/userinfo";
-//
-//        internal string
-//            _clientId = "WDzuh9escySpPeAF5V0t2HdC3Lmo68a-"; //Environment.GetEnvironmentVariable ("CLIENTID");
-//
-//        internal string _domain = "minutz.eu.auth0.com"; //Environment.GetEnvironmentVariable ("DOMAIN");
-//
-//        internal string
-//            _clientSecret =
-//                "_kVUASQWVawA2pwYry-xP53kQpOALkEj_IGLWCSspXkpUFRtE_W-Gg74phrxZkz8"; //Environment.GetEnvironmentVariable ("CLIENTSECRET");
-//
-//        internal string
-//            _connection = "Username-Password-Authentication"; //Environment.GetEnvironmentVariable ("CONNECTION");
-//
-//        internal string _validationMessage =
-//            "The username or password was not supplied or is incorrect. Please provide valid details.";
-
-        // private IHostingEnvironment _hostingEnvironment;
-
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()

@@ -14,7 +14,6 @@ using Minutz.Models.Auth0Models;
 using Minutz.Models.Entities;
 using Minutz.Models.Message;
 using Models.Auth0Models;
-using Remotion.Linq.Clauses.ResultOperators;
 
 namespace AspnetAuthenticationRespository
 {
