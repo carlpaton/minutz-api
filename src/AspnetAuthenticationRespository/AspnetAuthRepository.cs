@@ -42,6 +42,7 @@ namespace AspnetAuthenticationRespository
         public (bool condition, string message, AuthRestModel value) CreateUser
             (string name, string email, string password, string role, string instanceId)
         {
+            
             //todo: check bad passwords
             var user = new IdentityUser {UserName = email, Email = email};
             if (_userManager.Users.SingleOrDefault(r => r.Email == email) == null)
