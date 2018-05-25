@@ -81,7 +81,7 @@ namespace AspnetAuthenticationRespository
                 IsVerified = false,
                 Email = email,
                 Nickname = name,
-                InstanceId = $"A_{rolesResult.userId}",
+                InstanceId = $"A_{rolesResult.user.Id}",
                 Role = rolesResult.roles.FirstOrDefault()
             };
             return (true, "Success", resultModel);
@@ -111,15 +111,14 @@ namespace AspnetAuthenticationRespository
 
             if (result.Succeeded)
             {
-                var appUser = _userManager.Users.SingleOrDefault(r => r.Email == username);
-                var rolesCheck = _userManager.GetRolesAsync(appUser).Result;
-                if (!rolesCheck.Contains("User"))
+                var rolesResult = _minutzRoleManager.Ensure(_userManager, username, "User");
+                if (!rolesResult.Condition)
                 {
-                    var createRole = _userManager.AddToRoleAsync(appUser, "User").Result;
+                    returnObject.Message = rolesResult.Message;
+                    return returnObject;
                 }
 
-                var roles = _userManager.GetRolesAsync(appUser).Result;
-                var userResponseModel = GenerateJwtToken(username, appUser, roles);
+                var userResponseModel = GenerateJwtToken(username, rolesResult.user, rolesResult.roles);
                 returnObject.AuthTokenResponse.access_token = username;
                 returnObject.AuthTokenResponse = userResponseModel;
                 returnObject.Condition = true;
