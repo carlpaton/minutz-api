@@ -8,12 +8,32 @@ namespace AspnetAuthenticationRespository
 {
     public class Encryptor : IEncryptor
     {
+        private readonly string _key;
+        
+        public Encryptor()
+        {
+            _key = "E546C8DF278CD5931069B522E695D4F2";
+        }
+
+        public string EncryptString(string text)
+        {
+            return EncryptString(text, _key);
+        }
+
+        public string DecryptString(string cipherText)
+        {
+            return DecryptString(cipherText, _key);
+        }
+
         public string EncryptString(string text, string keyString)
         {
+            if(string.IsNullOrEmpty(keyString)) throw new ArgumentNullException(nameof(keyString));
+            if(string.IsNullOrEmpty(text)) throw new ArgumentNullException(nameof(text));
             var key = Encoding.UTF8.GetBytes(keyString);
 
             using (var aesAlg = Aes.Create())
             {
+                if (aesAlg == null) throw new Exception("aesAlg is null");
                 using (var encryptor = aesAlg.CreateEncryptor(key, aesAlg.IV))
                 {
                     using (var msEncrypt = new MemoryStream())
@@ -41,6 +61,9 @@ namespace AspnetAuthenticationRespository
         
         public string DecryptString(string cipherText, string keyString)
         {
+            if(string.IsNullOrEmpty(keyString)) throw new ArgumentNullException(nameof(keyString));
+            if(string.IsNullOrEmpty(cipherText)) throw new ArgumentNullException(nameof(cipherText));
+            
             var fullCipher = Convert.FromBase64String(cipherText);
 
             var iv = new byte[16];
@@ -52,6 +75,7 @@ namespace AspnetAuthenticationRespository
 
             using (var aesAlg = Aes.Create())
             {
+                if (aesAlg == null) throw new Exception("aesAlg is null");
                 using (var decryptor = aesAlg.CreateDecryptor(key, iv))
                 {
                     string result;
