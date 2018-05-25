@@ -5,11 +5,13 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using Interface;
 using Interface.Repositories;
 using Interface.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Minutz.Models;
 using Minutz.Models.Auth0Models;
 using Minutz.Models.Entities;
 using Minutz.Models.Message;
@@ -23,6 +25,7 @@ namespace AspnetAuthenticationRespository
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IConfiguration _configuration;
         private readonly IUserRepository _userRepository;
+        private readonly ICustomPasswordValidator _customPasswordValidator;
         private readonly IApplicationSetting _applicationSetting;
 
         public AspnetAuthRepository(
@@ -30,20 +33,33 @@ namespace AspnetAuthenticationRespository
             SignInManager<IdentityUser> signInManager,
             IConfiguration configuration,
             IUserRepository userRepository,
+            ICustomPasswordValidator customPasswordValidator,
             IApplicationSetting applicationSetting)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
             _userRepository = userRepository;
+            _customPasswordValidator = customPasswordValidator;
             _applicationSetting = applicationSetting;
         }
 
         public (bool condition, string message, AuthRestModel value) CreateUser
             (string name, string email, string password, string role, string instanceId)
         {
+            if (string.IsNullOrEmpty(email)) return (false, "Please provide as username", null);
+            if (string.IsNullOrEmpty(password)) return (false, "Please provide as password", null);
+            if (string.IsNullOrEmpty(role)) return (false, "Please provide as role", null);
             
-            //todo: check bad passwords
+            if (_customPasswordValidator.CheckStrength(password) == PasswordScore.Blank)
+            {
+                return (false, "Please provide a valid password", null);
+            }
+            if (_customPasswordValidator.CheckStrength(password) == PasswordScore.Weak)
+            {
+                return (false, "Please provide a stronger password", null);
+            }
+
             var user = new IdentityUser {UserName = email, Email = email};
             if (_userManager.Users.SingleOrDefault(r => r.Email == email) == null)
             {

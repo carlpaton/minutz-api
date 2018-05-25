@@ -23,6 +23,7 @@ using Reports;
 using SqlRepository;
 using Swashbuckle.AspNetCore.Swagger;
 
+// ReSharper disable once CheckNamespace
 namespace Minutz.Api
 {
     public class Startup
@@ -38,9 +39,8 @@ namespace Minutz.Api
             Configuration = builder.Build();
             // _hostingEnvironment = env;
         }
-
         public const string Version = "3.1.0";
-        public const string Title = "Minutz Api";
+        private const string Title = "Minutz Api";
 
         public IConfiguration Configuration { get; }
 
@@ -48,7 +48,8 @@ namespace Minutz.Api
         public void ConfigureServices(IServiceCollection services)
         {
             // var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
-            // services.AddSingleton<IFileProvider>(physicalProvider);
+            services.AddTransient<IEncryptor, Encryptor>();
+            services.AddTransient<ICustomPasswordValidator, CustomPasswordValidator>();
             services.AddTransient<IHttpService, HttpService>();
             services.AddTransient<IValidationService, ValidationService>();
             services.AddTransient<IUserRepository, UserRepository>();
