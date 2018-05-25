@@ -29,6 +29,8 @@ namespace AspnetAuthenticationRespository
         private readonly ICustomPasswordValidator _customPasswordValidator;
         private readonly IMinutzUserManager _minutzUserManager;
         private readonly IMinutzRoleManager _minutzRoleManager;
+        private readonly IMinutzClaimManager _minutzClaimManager;
+        private readonly IMinutzJwtSecurityTokenManager _minutzJwtSecurityTokenManager;
         private readonly IApplicationSetting _applicationSetting;
 
         public AspnetAuthRepository(
@@ -39,6 +41,8 @@ namespace AspnetAuthenticationRespository
             ICustomPasswordValidator customPasswordValidator,
             IMinutzUserManager minutzUserManager,
             IMinutzRoleManager minutzRoleManager,
+            IMinutzClaimManager minutzClaimManager,
+            IMinutzJwtSecurityTokenManager minutzJwtSecurityTokenManager,
             IApplicationSetting applicationSetting)
         {
             _userManager = userManager;
@@ -48,6 +52,8 @@ namespace AspnetAuthenticationRespository
             _customPasswordValidator = customPasswordValidator;
             _minutzUserManager = minutzUserManager;
             _minutzRoleManager = minutzRoleManager;
+            _minutzClaimManager = minutzClaimManager;
+            _minutzJwtSecurityTokenManager = minutzJwtSecurityTokenManager;
             _applicationSetting = applicationSetting;
         }
 
@@ -177,47 +183,22 @@ namespace AspnetAuthenticationRespository
             var dbUser = _userRepository.GetUserByEmail(email, "app", _applicationSetting.CreateConnectionString());
             var instanceId = dbUser == null ? $"A_{Guid.NewGuid()}" : dbUser.Identityid;
             var name = dbUser == null ? email : dbUser.FullName;
-            var picture = (dbUser == null ? string.Empty : dbUser.ProfilePicture) ?? string.Empty;
-            var jti = Guid.NewGuid().ToString();
-            var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, email),
-                new Claim("nickname", name),
-                new Claim("picture", picture),
-                new Claim("access_token", email),
-                new Claim(JwtRegisteredClaimNames.Jti, jti),
-                new Claim("roles", string.Join(",", roles)),
-                new Claim("instanceId", instanceId),
-                new Claim(ClaimTypes.NameIdentifier, user.Id)
-            };
+            var picture = (dbUser == null ? "default" : dbUser.ProfilePicture) ?? "default";
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_applicationSetting.ClientSecret));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expires = DateTime.Now.AddHours(3);
+            var claims = _minutzClaimManager.CreateClaims(email, picture, name, roles, instanceId, user.Id);
 
-            var token = new JwtSecurityToken(
-                _applicationSetting.AuthorityDomain,
-                _applicationSetting.AuthorityDomain,
-                claims,
-                expires: expires,
-                signingCredentials: creds
-            );
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+            var tokenStringResult = _minutzJwtSecurityTokenManager.JwtSecurityToken
+                (_applicationSetting.ClientSecret, _applicationSetting.AuthorityDomain, claims);
+            
             var userModel = new UserResponseModel
             {
-                access_token = tokenString,
-                expires_in = expires.ToString(CultureInfo.CurrentCulture),
-                id_token = jti,
+                access_token = tokenStringResult.token,
+                expires_in = tokenStringResult.expires.ToString(CultureInfo.CurrentCulture),
+                id_token = tokenStringResult.token,
                 scope = string.Join(",", roles),
                 token_type = "aspnet"
             };
             return userModel;
-        }
-
-        internal int JavascriptTime()
-        {
-            return (int) DateTime.UtcNow
-                .AddDays(1).Minute;
         }
     }
 }
