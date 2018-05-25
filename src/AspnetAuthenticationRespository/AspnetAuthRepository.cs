@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using AspnetAuthenticationRespository.Interfaces;
 using Interface;
 using Interface.Repositories;
 using Interface.Services;
@@ -26,6 +27,7 @@ namespace AspnetAuthenticationRespository
         private readonly IConfiguration _configuration;
         private readonly IUserRepository _userRepository;
         private readonly ICustomPasswordValidator _customPasswordValidator;
+        private readonly IMinutzUserManager _minutzUserManager;
         private readonly IApplicationSetting _applicationSetting;
 
         public AspnetAuthRepository(
@@ -34,6 +36,7 @@ namespace AspnetAuthenticationRespository
             IConfiguration configuration,
             IUserRepository userRepository,
             ICustomPasswordValidator customPasswordValidator,
+            IMinutzUserManager minutzUserManager,
             IApplicationSetting applicationSetting)
         {
             _userManager = userManager;
@@ -41,6 +44,7 @@ namespace AspnetAuthenticationRespository
             _configuration = configuration;
             _userRepository = userRepository;
             _customPasswordValidator = customPasswordValidator;
+            _minutzUserManager = minutzUserManager;
             _applicationSetting = applicationSetting;
         }
 
@@ -60,16 +64,10 @@ namespace AspnetAuthenticationRespository
                 return (false, "Please provide a stronger password", null);
             }
 
-            var user = new IdentityUser {UserName = email, Email = email};
-            if (_userManager.Users.SingleOrDefault(r => r.Email == email) == null)
-            {
-                var create = _userManager.CreateAsync(user, password).Result;
-                if (!create.Succeeded)
-                {
-                    return (false, "Could not create the user", null);
-                }
-            }
-            _signInManager.SignInAsync(user, false);
+            var userResult = _minutzUserManager.Ensure(_userManager, email, password);
+            if (!userResult.Condition) return (userResult.Condition, userResult.message, null);
+            
+            _signInManager.SignInAsync(userResult.user, false);
 
             var appUser = _userManager.Users.SingleOrDefault(r => r.Email == email);
             var rolesCheck = _userManager.GetRolesAsync(appUser).Result;

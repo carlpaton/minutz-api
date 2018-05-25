@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using AspnetAuthenticationRespository;
+using AspnetAuthenticationRespository.Interfaces;
 using AuthenticationRepository;
 using Core;
 using Core.ExternalServices;
@@ -50,6 +51,8 @@ namespace Minutz.Api
             // var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
             services.AddTransient<IEncryptor, Encryptor>();
             services.AddTransient<ICustomPasswordValidator, CustomPasswordValidator>();
+            services.AddTransient<IMinutzUserManager, MinuzUserManager>();
+            
             services.AddTransient<IHttpService, HttpService>();
             services.AddTransient<IValidationService, ValidationService>();
             services.AddTransient<IUserRepository, UserRepository>();
