@@ -52,6 +52,7 @@ namespace Minutz.Api
             services.AddTransient<IEncryptor, Encryptor>();
             services.AddTransient<ICustomPasswordValidator, CustomPasswordValidator>();
             services.AddTransient<IMinutzUserManager, MinuzUserManager>();
+            services.AddTransient<IMinutzRoleManager, MinutzRoleManager>();
             
             services.AddTransient<IHttpService, HttpService>();
             services.AddTransient<IValidationService, ValidationService>();

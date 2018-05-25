@@ -28,6 +28,7 @@ namespace AspnetAuthenticationRespository
         private readonly IUserRepository _userRepository;
         private readonly ICustomPasswordValidator _customPasswordValidator;
         private readonly IMinutzUserManager _minutzUserManager;
+        private readonly IMinutzRoleManager _minutzRoleManager;
         private readonly IApplicationSetting _applicationSetting;
 
         public AspnetAuthRepository(
@@ -37,6 +38,7 @@ namespace AspnetAuthenticationRespository
             IUserRepository userRepository,
             ICustomPasswordValidator customPasswordValidator,
             IMinutzUserManager minutzUserManager,
+            IMinutzRoleManager minutzRoleManager,
             IApplicationSetting applicationSetting)
         {
             _userManager = userManager;
@@ -45,6 +47,7 @@ namespace AspnetAuthenticationRespository
             _userRepository = userRepository;
             _customPasswordValidator = customPasswordValidator;
             _minutzUserManager = minutzUserManager;
+            _minutzRoleManager = minutzRoleManager;
             _applicationSetting = applicationSetting;
         }
 
@@ -69,21 +72,17 @@ namespace AspnetAuthenticationRespository
             
             _signInManager.SignInAsync(userResult.user, false);
 
-            var appUser = _userManager.Users.SingleOrDefault(r => r.Email == email);
-            var rolesCheck = _userManager.GetRolesAsync(appUser).Result;
-            if (!rolesCheck.Contains(role))
-            {
-                var createRole = _userManager.AddToRoleAsync(appUser, role).Result;
-            }
-            var roles = _userManager.GetRolesAsync(appUser).Result;
+            var rolesResult = _minutzRoleManager.Ensure(_userManager, email, role);
+            if (!rolesResult.Condition) return (rolesResult.Condition, rolesResult.Message, null);
+            
             var resultModel = new AuthRestModel
             {
                 Sub = email,
                 IsVerified = false,
                 Email = email,
                 Nickname = name,
-                InstanceId = $"A_{appUser?.Id}",
-                Role = roles.FirstOrDefault()
+                InstanceId = $"A_{rolesResult.userId}",
+                Role = rolesResult.roles.FirstOrDefault()
             };
             return (true, "Success", resultModel);
         }
