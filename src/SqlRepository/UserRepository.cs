@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using Dapper;
+using Interface;
 using Interface.Repositories;
 using Interface.Services;
 using Minutz.Models;
@@ -17,9 +18,12 @@ namespace SqlRepository
   public class UserRepository : IUserRepository
   {
     private readonly ILogService _logService;
-    public UserRepository (ILogService logService)
+    private readonly IEncryptor _encryptor;
+
+    public UserRepository (ILogService logService, IEncryptor encryptor)
     {
-      this._logService = logService;
+      _logService = logService;
+      _encryptor = encryptor;
     }
 
     public PersonResponse MinutzPersonCheckIfUserExistsByEmail
@@ -230,9 +234,9 @@ namespace SqlRepository
     public string CreateNewSchema
       (AuthRestModel authUser, string connectionString, string masterConnectionString)
     {
-      var id = authUser.Sub.Split ('|') [1];
-      var username = $"A_{id}";
-      var password = CreatePassword (10); //need to salt the password and username
+      //var id = authUser.Sub.Split ('|') [1];
+      var username = $"A_{authUser.Sub}";
+      var password = _encryptor.EncryptString(CreatePassword (10)); //need to salt the password and username
       using (IDbConnection dbConnection = new SqlConnection(masterConnectionString))
       {
         var createUserSql = $@"EXEC [app].[spCreateUserAndSchema] '{authUser.Sub}','{authUser.Email}', '{username}', '{password}'; ";

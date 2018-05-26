@@ -9,10 +9,12 @@ namespace Core.LogProvider {
         private readonly string _categoryName;
         private readonly ILogRepository _repository;
         private readonly IApplicationSetting _appSettings;
+        
         public Logger (string categoryName) {
-            this._categoryName = categoryName;
-            this._repository = new LogRepository ();
-            this._appSettings = new ApplicationSetting (new InstanceRepository());
+            _categoryName = categoryName;
+            _repository = new LogRepository ();
+            _appSettings = new ApplicationSetting
+                (new InstanceRepository(), new MinutzEncryption.Encryptor());
         }
         IDisposable ILogger.BeginScope<TState> (TState state) {
             return new LogDisposable ();

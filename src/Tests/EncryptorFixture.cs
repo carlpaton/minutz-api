@@ -1,6 +1,5 @@
 ﻿using System;
-using AspnetAuthenticationRespository;
-using Microsoft.Extensions.DependencyModel;
+using MinutzEncryption;
 using NUnit.Framework;
 
 namespace Tests

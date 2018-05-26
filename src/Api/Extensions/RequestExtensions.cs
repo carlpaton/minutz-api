@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Mail;
 using System.Security.Claims;
+using Interface.Services;
 using Microsoft.AspNetCore.Http;
 using Minutz.Models.Message;
 
@@ -9,6 +10,28 @@ namespace Api.Extensions
 {
     public static class RequestExtensions
     {
+        private const string Auth = "xAuthMinutz";
+        private const string AuthHeader = "xAuthHeader";
+        
+        public static (bool Condition, int Code, string Message) HasAuthHeaders
+            (this  HttpRequest request, ILogService logService)
+        {
+            var hasHeader = request.Headers.ToList ().Any (i => i.Key == AuthHeader);
+            if (!hasHeader)
+            {
+                logService.Log (Minutz.Models.LogLevel.Info, $"The request did not have {AuthHeader} header.");
+                return  (false,404, "please provide a valid username or password");
+            }
+            var authHeaderValue = request.Headers.ToList ().First (i => i.Key == AuthHeader).Value;
+            if (authHeaderValue != Auth)
+            {
+                logService.Log (Minutz.Models.LogLevel.Info, $"The request had a {AuthHeader} header, but the value did not match the configuration for the instance.");
+                return (false ,404, "please provide a valid username or password");
+            }
+
+            return (true, 200, "Success");
+        }
+
         public static string Token(this HttpRequest request)
         {
             if (!request.Headers.Any())

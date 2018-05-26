@@ -1,19 +1,21 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Api.Extensions;
+using Api.Models;
 using Interface;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Minutz.Models;
 using Minutz.Models.Entities;
+using StackExchange.Redis;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Api.Controllers
 {
   public class UserController : Controller
   {
-    internal string _auth = "xAuthMinutz";
+    
     private readonly IUserValidationService _userValidationService;
     private readonly IAuthenticationService _authenticationService;
     private readonly IValidationService _validationService;
@@ -25,52 +27,27 @@ namespace Api.Controllers
       IValidationService validationService,
       ILogService logService)
     {
-      this._userValidationService = userValidationService;
-      this._authenticationService = authenticationService;
-      this._validationService = validationService;
-      this._logService = logService;
+      _userValidationService = userValidationService;
+      _authenticationService = authenticationService;
+      _validationService = validationService;
+      _logService = logService;
     }
 
     [HttpPost("api/user/login", Name = "Log in the user.")]
-    public IActionResult Login ([FromBody]  dynamic user)
+    public IActionResult Login ([FromBody]  LoginModel user)
 
-    { 
-      var hasHeader = Request.Headers.ToList ().Any (i => i.Key == "xAuthHeader");
-      if (!hasHeader)
-      {
-        this._logService.Log (Minutz.Models.LogLevel.Info, "The request did not have xAuthHeader header.");
-        return StatusCode (404, "please provide a valid username or password");
-      }
-      var authHeaderValue = Request.Headers.ToList ().First (i => i.Key == "xAuthHeader").Value;
-      if (authHeaderValue != this._auth)
-      {
-        this._logService.Log (Minutz.Models.LogLevel.Info, "The request had a xAuthHeader header, but the value did not match the configuration for the instance.");
-        return StatusCode (404, "please provide a valid username or password");
-      }
+    {
+      var validation = Request.HasAuthHeaders(_logService);
+      if (!validation.Condition)
+        return StatusCode(validation.Code, validation.Message);
 
-      var username = user.username.ToString ();
-      var instanceId = user.instanceId.ToString ();
-      var password = user.password.ToString ();
-
-      if (string.IsNullOrEmpty (username))
-      {
-        this._logService.Log (Minutz.Models.LogLevel.Info, "The request did not have a username.");
-        return StatusCode (404, "please provide a valid username or password");
-      }
-
-      if (string.IsNullOrEmpty (password))
-      {
-        this._logService.Log (Minutz.Models.LogLevel.Info, "The request did not have a password.");
-        return StatusCode (404, "please provide a valid username or password");
-      }
+      var loginValidation = Request.Validate(user, _logService);
+      if (!loginValidation.Condition)
+        return StatusCode(validation.Code, validation.Message);
 
       var loginResult =
-        _authenticationService.LoginFromLoginForm ((string) username, (string) password, (string) instanceId);
-      if (loginResult.Condition)
-      {
-        return Ok (loginResult.InfoResponse);
-      }
-      return StatusCode (404, loginResult.Message);
+        _authenticationService.LoginFromLoginForm (user.username, user.password, user.instanceId);
+      return loginResult.Condition ? Ok (loginResult.InfoResponse) : StatusCode (loginResult.Code, loginResult.Message);
     }
 
     [Authorize]

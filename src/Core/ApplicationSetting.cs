@@ -1,4 +1,5 @@
 ﻿using System;
+using Interface;
 using Interface.Repositories;
 using Interface.Services;
 using Minutz.Models.Entities;
@@ -8,10 +9,13 @@ namespace Core
   public class ApplicationSetting : IApplicationSetting
   {
     private readonly IInstanceRepository _instanceRepository;
+    private readonly IEncryptor _encryptor;
 
-    public ApplicationSetting(IInstanceRepository instanceRepository)
+    public ApplicationSetting
+      (IInstanceRepository instanceRepository, IEncryptor encryptor)
     {
       _instanceRepository = instanceRepository;
+      _encryptor = encryptor;
     }
 
     public string ClientId => Environment.GetEnvironmentVariable("CLIENTID");
@@ -54,7 +58,8 @@ namespace Core
     public string CreateConnectionString
       (string server, string catalogue, string username, string password)
     {
-      return $"Server={server};User ID={username};pwd={password};database={catalogue};";
+      var unecryptedPassword = _encryptor.DecryptString(password);
+      return $"Server={server};User ID={username};pwd={unecryptedPassword};database={catalogue};";
     }
 
     public string CreateConnectionString()

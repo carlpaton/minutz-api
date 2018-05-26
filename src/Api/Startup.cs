@@ -19,6 +19,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using MinutzEncryption;
 using Notifications;
 using Reports;
 using SqlRepository;
@@ -49,11 +50,12 @@ namespace Minutz.Api
         public void ConfigureServices(IServiceCollection services)
         {
             // var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
-            services.AddTransient<IEncryptor, Encryptor>();
+            services.AddTransient<IEncryptor, MinutzEncryption.Encryptor>();
             services.AddTransient<ICustomPasswordValidator, CustomPasswordValidator>();
             services.AddTransient<IMinutzUserManager, MinuzUserManager>();
             services.AddTransient<IMinutzRoleManager, MinutzRoleManager>();
             services.AddTransient<IMinutzClaimManager, MinutzClaimManager>();
+            services.AddTransient<IMinutzJwtSecurityTokenManager, MinutzJwtSecurityTokenManager>();
             
             services.AddTransient<IHttpService, HttpService>();
             services.AddTransient<IValidationService, ValidationService>();
@@ -106,7 +108,7 @@ namespace Minutz.Api
 
             services.AddMemoryCache();
             services.AddMvc();
-            var appSetting = new ApplicationSetting(new InstanceRepository());
+            var appSetting = new ApplicationSetting(new InstanceRepository(), new MinutzEncryption.Encryptor());
 
             var version = Configuration.GetSection("Version").Value;
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = Startup.Title, Version = version}); });

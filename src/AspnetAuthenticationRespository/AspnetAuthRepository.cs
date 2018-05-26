@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using AspnetAuthenticationRespository.Extentions;
 using AspnetAuthenticationRespository.Interfaces;
 using Interface;
 using Interface.Repositories;
@@ -102,15 +103,27 @@ namespace AspnetAuthenticationRespository
         /// <exception cref="NotImplementedException"></exception>
         public AuthRestModelResponse GetUserInfo(string email)
         {
-            var result = new AuthRestModelResponse {Condition = false};
-            //todo: check the usage
-            var userModel = SearchUserByEmail(email);
-            result.InfoResponse = new AuthRestModel {Email = userModel.User.email};
+            var result = new AuthRestModelResponse { Condition = false};
+            var user = _userManager.Users.SingleOrDefault(i => i.Email == email);
+            if (user == null) return result;
 
+            result.InfoResponse = new AuthRestModel { Email = email};
+            var dbUser = _userRepository.GetUserByEmail(email, "app", _applicationSetting.CreateConnectionString());
+            if (dbUser == null) return result;
+
+            var rolesResponse = _minutzRoleManager.Roles(_userManager, email);
+            var tokenResponse = GenerateJwtToken(email, user, rolesResponse.Roles);
+            
+            result.InfoResponse.FirstName = dbUser.FirstName;
+            result.Code = 200;
+            result.Condition = true;
+            result.InfoResponse = dbUser.ToModel
+             (user.EmailConfirmed, user.Id, tokenResponse.expires_in, tokenResponse.access_token);
             return result;
         }
 
-        public TokenResponse CreateToken(string username, string password)
+        public TokenResponse CreateToken
+            (string username, string password)
         {
             var returnObject = new TokenResponse {Condition = false, AuthTokenResponse = new UserResponseModel()};
             var result = _signInManager.PasswordSignInAsync(username, password, false, false).Result;
@@ -125,7 +138,6 @@ namespace AspnetAuthenticationRespository
                 }
 
                 var userResponseModel = GenerateJwtToken(username, rolesResult.user, rolesResult.roles);
-                returnObject.AuthTokenResponse.access_token = username;
                 returnObject.AuthTokenResponse = userResponseModel;
                 returnObject.Condition = true;
                 return returnObject;
@@ -149,7 +161,8 @@ namespace AspnetAuthenticationRespository
             return returnObject;
         }
 
-        public AuthUserQueryResponse SearchUserByEmail(string email)
+        public AuthUserQueryResponse SearchUserByEmail
+            (string email)
         {
             var result =
                 new AuthUserQueryResponse {Condition = false, Message = string.Empty, User = new UserQueryModel()};
@@ -158,6 +171,7 @@ namespace AspnetAuthenticationRespository
                 var user = _userManager.Users.SingleOrDefault(i => i.Email == email);
                 if (user == null) return result;
                 result.Condition = true;
+                result.User.user_id = user.Id;
                 result.User.email = user.Email;
                 result.User.email_verified = user.EmailConfirmed;
                 return result;
@@ -170,7 +184,8 @@ namespace AspnetAuthenticationRespository
             }
         }
 
-        public (bool condition, string message, bool value) ValidateUser(string email)
+        public (bool condition, string message, bool value) ValidateUser
+            (string email)
         {
             var result = SearchUserByEmail(email);
             return result.Condition
@@ -178,7 +193,8 @@ namespace AspnetAuthenticationRespository
                 : (result.Condition, result.Message, result.Condition);
         }
 
-        private UserResponseModel GenerateJwtToken(string email, IdentityUser user, IList<string> roles)
+        private UserResponseModel GenerateJwtToken
+            (string email, IdentityUser user, IList<string> roles)
         {
             var dbUser = _userRepository.GetUserByEmail(email, "app", _applicationSetting.CreateConnectionString());
             var instanceId = dbUser == null ? $"A_{Guid.NewGuid()}" : dbUser.Identityid;

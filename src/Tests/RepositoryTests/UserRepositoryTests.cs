@@ -16,7 +16,7 @@ namespace Tests.RepositoryTests
         {
             var logService = NSubstitute.Substitute.For<ILogService>();
             
-            var repository = new UserRepository (logService);
+            var repository = new UserRepository (logService , new MinutzEncryption.Encryptor());
             var connectionString = $"Server=127.0.0.1,1401;User ID=sa;pwd=password1234$;database=minutz-test;";
 
             var result = repository.MinutzPersonCheckIfUserExistsByEmail ("info1@docker.durban", connectionString);

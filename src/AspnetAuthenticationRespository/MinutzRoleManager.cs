@@ -28,5 +28,21 @@ namespace AspnetAuthenticationRespository
                 return (false, e.Message, null, null);
             }
         }
+
+        public (bool Condition, string Message, List<string> Roles) Roles
+            (UserManager<IdentityUser> userManager, string email)
+        {
+            var appUser = userManager.Users.SingleOrDefault(r => r.Email == email);
+            if(appUser == null) throw new Exception("User does not exist.");
+            try
+            {
+                var roles = userManager.GetRolesAsync(appUser).Result;
+                return  (true, "Success", roles.ToList());
+            }
+            catch (Exception e)
+            {
+                return (false, e.Message, null);
+            }
+        }
     }
 }

@@ -71,7 +71,7 @@ namespace Tests
     [Test]
     public void TestReport()
     {
-      var appsetting = new ApplicationSetting(new InstanceRepository());
+      var appsetting = new ApplicationSetting(new InstanceRepository(), new MinutzEncryption.Encryptor());
       var reportRepo = new JsReportRepository(appsetting,new HttpService());
       var agenditems = new List<dynamic>(){new {agendaHeading = "Some cool meeting idea",agendaText = "Some other information"}};
       var attendees = new List<dynamic>() {new {name = "Lee-Roy", role = "meeting owner"}};

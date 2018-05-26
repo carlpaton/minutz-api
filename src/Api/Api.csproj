@@ -59,6 +59,7 @@
     <ProjectReference Include="..\AspnetAuthenticationRespository\AspnetAuthenticationRespository.csproj" />
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Interface\Interface.csproj" />
+    <ProjectReference Include="..\MinutzEncryption\MinutzEncryption.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
     <ProjectReference Include="..\Notifications\Notifications.csproj" />
     <ProjectReference Include="..\Reports\Reports.csproj" />

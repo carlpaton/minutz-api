@@ -95,10 +95,13 @@ namespace Core.ExternalServices
                              Message = string.Empty,
                              InfoResponse = new AuthRestModel()
                          };
+            
             var valid = ValidateStringUsernameAndPassword(username, password);
             if (!valid.Condition)
             {
+                _logService.Log(LogLevel.Error, $"Info: -- ValidateStringUsernameAndPassword: '\n' {valid.Message}");
                 Console.WriteLine("Info: -- ValidateStringUsernameAndPassword");
+                result.Code = 404;
                 result.Message = valid.Message;
                 return result;
             }
@@ -106,7 +109,9 @@ namespace Core.ExternalServices
             var tokenCreateResult = _authRepository.CreateToken(username, password);
             if (!tokenCreateResult.Condition)
             {
+                _logService.Log(LogLevel.Error, $"Info: -- CreateToken: '\n' {tokenCreateResult.Message}");
                 Console.WriteLine("Info: -- CreateToken");
+                result.Code = 500;
                 result.Message = tokenCreateResult.Message;
                 return result;
             }
@@ -114,16 +119,27 @@ namespace Core.ExternalServices
             var userInfoResult = _authRepository.GetUserInfo(tokenCreateResult.AuthTokenResponse.access_token);
             if (!userInfoResult.Condition)
             {
+                _logService.Log(LogLevel.Error, $"Info: -- CreateToken: '\n' {userInfoResult.Message}");
                 Console.WriteLine("Info: -- GetUserInfo");
                 result.Message = userInfoResult.Message;
+                result.Code = 500;
                 return result;
             }
 
             userInfoResult.InfoResponse.UpdateTokenInfo(tokenCreateResult.AuthTokenResponse);
+            _logService.Log(LogLevel.Info, $"Info: -- UpdateTokenInfo: '\n' {userInfoResult.Message}");
             Console.WriteLine("Info: -- UpdateTokenInfo");
             Console.WriteLine("Info: -- Login");
+            
             result = Login(userInfoResult, instanceId);
-
+            if (!result.Condition)
+            {
+                _logService.Log(LogLevel.Error, $"Info: -- Login: '\n' {result.Message}");
+                Console.WriteLine("Info: -- Login");
+                result.Message = result.Message;
+                result.Code = 500;
+                return result;
+            }
             return result;
         }
 
@@ -138,6 +154,7 @@ namespace Core.ExternalServices
                          };
             Console.WriteLine("Info: -- Login");
             Console.WriteLine("Info: -- Calling: _userDatabaseRepository.MinutzPersonCheckIfUserExistsByEmail");
+            _logService.Log(LogLevel.Info, $"Info: -- Calling: _userDatabaseRepository.MinutzPersonCheckIfUserExistsByEmail");
             var userExistsByEmail =
                 _userDatabaseRepository.MinutzPersonCheckIfUserExistsByEmail(userInfoResult.InfoResponse.Email,
                     _applicationSetting.CreateConnectionString());
@@ -264,7 +281,11 @@ namespace Core.ExternalServices
                 createNewAuthResponse.authRestModel.FirstName = name;
                 createNewAuthResponse.authRestModel.Nickname = name;
                 createNewAuthResponse.authRestModel.Name = name;
-                
+                if (createNewAuthResponse.authRestModel.Picture == null)
+                {
+                    createNewAuthResponse.authRestModel.Picture = "default";
+                }
+
 
                 // Default the company name
                 if (string.IsNullOrEmpty(invitationInstanceId))
@@ -329,8 +350,8 @@ namespace Core.ExternalServices
             }
 
             var newInfoResponseResult = NewUserInstance(email, password);
-            newInfoResponseResult.tokenResponse.InfoResponse.Role = role;
-            newInfoResponseResult.tokenResponse.InfoResponse.FirstName = name;
+            //newInfoResponseResult.tokenResponse.InfoResponse.Role = role;
+            //newInfoResponseResult.tokenResponse.InfoResponse.FirstName = name;
 
             // create the schema as the user is trial user;
             (string userConnectionString, string masterConnectionString) connectionStrings = GetConnectionStrings();
@@ -483,7 +504,7 @@ namespace Core.ExternalServices
             }
 
             var newInfoResponseResult =
-                _authRepository.GetUserInfo(newUserTokenResponse.AuthTokenResponse.access_token);
+                _authRepository.GetUserInfo(email);
 
             if (!newInfoResponseResult.Condition)
             {
