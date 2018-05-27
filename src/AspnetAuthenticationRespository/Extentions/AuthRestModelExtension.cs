@@ -20,6 +20,7 @@ namespace AspnetAuthenticationRespository.Extentions
             result.Picture = person.ProfilePicture;
             result.Role = person.Role;
             result.TokenExpire = tokenExpires;
+            result.IdToken = token;
             result.AccessToken = token;
             return result;
         }

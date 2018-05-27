@@ -24,11 +24,7 @@ namespace Core.LogProvider
         throw new ArgumentException("No log message was supplied.");
       try
       {
-        var connectionString = _applicationSetting.CreateConnectionString(
-                                                   _applicationSetting.Server,
-                                                   _applicationSetting.Catalogue,
-                                                   _applicationSetting.Username,
-                                                   _applicationSetting.Password);
+        var connectionString = _applicationSetting.CreateConnectionString();
         if (string.IsNullOrEmpty(connectionString))
           throw new ArgumentNullException(nameof(connectionString),
                                           "The connection string was not provided in the log service.");

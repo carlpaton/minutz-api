@@ -38,43 +38,19 @@ namespace Api.Controllers
     [HttpPost ("api/Signup")]
     public IActionResult Post ([FromBody] CreateUserModel user)
     {
-    
-      _logService.Log(LogLevel.Info, JsonConvert.SerializeObject(user));
-
-      if (string.IsNullOrEmpty(user.email))
+      var validate = Request.SignUp(user, _logService);
+      if (!validate.Condition)
       {
-        return StatusCode(401, new { Message = "Please provide a email address" });
+        return StatusCode(validate.Code, validate.Message);
       }
-      if (string.IsNullOrEmpty(user.email))
-      {
-        return StatusCode(401, new { Message = "Please provide a email address" });
-      }
-
-      if (!user.email.CheckEmail())
-      {
-        return StatusCode(401, new { Message = "Please provide a valid email address" });
-      }
-//      if (string.IsNullOrEmpty(username))
-//      {
-//        return StatusCode(401, new { Message = "Please provide a username" });
-//      }
-      if (string.IsNullOrEmpty(user.password))
-      {
-        return StatusCode(401, new { Message = "Please provide a password" });
-      }
-      
-
-      // string role = "Guest";
-      // if(string.IsNullOrEmpty(instanceId))
-      // {
-      //   role = "User";
-      // }
 
       (bool condition, string message, AuthRestModel tokenResponse) result =
         _authenticationService.CreateUser (user.name, user.email, user.password, user.role, user.RefInstanceId, user.refMeetingId);
-      
-      _logService.Log(LogLevel.Info, JsonConvert.SerializeObject(result));
-      _logService.Log(LogLevel.Info, JsonConvert.SerializeObject(result.tokenResponse));
+
+      if (!result.condition)
+      {
+        _logService.Log(LogLevel.Info, JsonConvert.SerializeObject(result.tokenResponse));
+      }
       
       if (result.condition)
         return Ok (result.tokenResponse);

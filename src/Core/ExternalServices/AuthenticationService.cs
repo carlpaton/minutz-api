@@ -255,9 +255,7 @@ namespace Core.ExternalServices
 
             if (!existsResult.Condition)
             {
-               // var instanceId = Guid.NewGuid().ToString();
-
-                // Create the user in Auth0
+                // Create the user in Auth
                 (bool condition, string message, AuthRestModel authRestModel) createNewAuthResponse =
                     _authRepository.CreateUser(name, email, password, role, string.Empty);
 
@@ -328,7 +326,7 @@ namespace Core.ExternalServices
             switch (role)
             {
                 case RoleTypes.User:
-                    return ManageUser(existsResult, email, password, invitationInstanceId, name, role);
+                    return ManageUser(existsResult, email, password, invitationInstanceId);
                 case RoleTypes.Guest:
                     return ManageGuest(existsResult, email, password, invitationInstanceId, name, role, meetingId);
                 case RoleTypes.Admin:
@@ -341,8 +339,7 @@ namespace Core.ExternalServices
         #region UserManagement
 
         private (bool condition, string message, AuthRestModel tokenResponse) ManageUser
-        (PersonResponse existsResult, string email, string password, string invitationInstanceId, string name,
-         string role)
+        (PersonResponse existsResult, string email, string password, string invitationInstanceId)
         {
             if (!string.IsNullOrEmpty(existsResult.Person.InstanceId))
             {
@@ -350,26 +347,12 @@ namespace Core.ExternalServices
             }
 
             var newInfoResponseResult = NewUserInstance(email, password);
-            //newInfoResponseResult.tokenResponse.InfoResponse.Role = role;
-            //newInfoResponseResult.tokenResponse.InfoResponse.FirstName = name;
-
             // create the schema as the user is trial user;
             (string userConnectionString, string masterConnectionString) connectionStrings = GetConnectionStrings();
 
             var schemaCreateResult = _userDatabaseRepository.CreateNewSchema(
                 newInfoResponseResult.tokenResponse.InfoResponse, connectionStrings.userConnectionString,
                 connectionStrings.masterConnectionString);
-
-            // create the tables as the user is trial user;
-            var tablesCreateResult = _applicationSetupRepository.CreateSchemaTables(
-                _applicationSetting.Schema, schemaCreateResult, _applicationSetting.CreateConnectionString());
-
-            if (!tablesCreateResult)
-            {
-                _logService.Log(LogLevel.Error,
-                    $"[(bool condition, string message, AuthRestModel infoResponse) newInfoResponseResult] There was a issue creating the tables for user {email}");
-                return (false, "There was a problem creating the records.", null);
-            }
 
             Instance newInstance;
             if (!string.IsNullOrEmpty(invitationInstanceId))
@@ -405,16 +388,19 @@ namespace Core.ExternalServices
                         .Instance;
             }
 
+            if (newInstance.Company == null) newInstance.Company = $"{newInfoResponseResult.tokenResponse.InfoResponse.Nickname}' Company";
             var createAuthRestResult = new AuthRestModel
                                        {
-                                           Company = newInstance.Company,
+                                           Company = newInstance.Company?? newInfoResponseResult.tokenResponse.InfoResponse.Company,
                                            InstanceId = newInstance.Username,
                                            FirstName = existsResult.Person.FirstName,
                                            LastName = existsResult.Person.LastName,
+                                           Nickname = newInfoResponseResult.tokenResponse.InfoResponse.Nickname,
                                            Role = existsResult.Person.Role,
                                            Email = existsResult.Person.Email,
-                                           TokenExpire = DateTime.Now.AddHours(3).ToString(CultureInfo.CurrentCulture),
-                                           AccessToken = existsResult.Person.Email,
+                                           IdToken = newInfoResponseResult.tokenResponse.InfoResponse.IdToken,
+                                           TokenExpire = newInfoResponseResult.tokenResponse.InfoResponse.TokenExpire,
+                                           AccessToken = newInfoResponseResult.tokenResponse.InfoResponse.AccessToken,
                                            Picture = newInfoResponseResult.tokenResponse.InfoResponse.Picture,
                                            IsVerified = newInfoResponseResult.tokenResponse.InfoResponse.IsVerified,
                                            Sub = newInfoResponseResult.tokenResponse.InfoResponse.Sub,
@@ -439,7 +425,7 @@ namespace Core.ExternalServices
 
             var authRestResult = new AuthRestModel();
             if (!tokenResponse.Condition) return (tokenResponse.Condition, tokenResponse.Message, authRestResult);
-            //Get users info from auth0
+            //Get users info from auth
             var infoResponseResult = _authRepository.GetUserInfo(tokenResponse.AuthTokenResponse.access_token);
 
             if (!infoResponseResult.Condition)
@@ -747,16 +733,8 @@ namespace Core.ExternalServices
 
         private (string userConnectionString, string masterConnectionString) GetConnectionStrings()
         {
-            var masterConnectionString = _applicationSetting.CreateConnectionString(
-                _applicationSetting.Server,
-                "master",
-                _applicationSetting.Username,
-                _applicationSetting.Password);
-            var userConnectionString = _applicationSetting.CreateConnectionString(
-                _applicationSetting.Server,
-                _applicationSetting.Catalogue,
-                _applicationSetting.Username,
-                _applicationSetting.Password);
+            var masterConnectionString = _applicationSetting.CreateMasterConnectionString();
+            var userConnectionString = _applicationSetting.CreateConnectionString();
             return (userConnectionString, masterConnectionString);
         }
     }

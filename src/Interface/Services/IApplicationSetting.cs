@@ -35,7 +35,9 @@
         string ReportPassword { get; }
 
         string GetReportTemplateKey();
-        
+
+        string CreateMasterConnectionString();
+            
         string CreateConnectionString(
             string server,string catalogue, string username,string password);
 

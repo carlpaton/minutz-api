@@ -62,6 +62,11 @@ namespace Core
       return $"Server={server};User ID={username};pwd={unecryptedPassword};database={catalogue};";
     }
 
+    public string CreateMasterConnectionString()
+    {
+      return $"Server={Server};User ID={Username};pwd={Password};database=master;";
+    }
+    
     public string CreateConnectionString()
     {
       return $"Server={Server};User ID={Username};pwd={Password};database={Catalogue};";

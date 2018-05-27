@@ -2,9 +2,12 @@
 using System.Linq;
 using System.Net.Mail;
 using System.Security.Claims;
+using Api.Models;
 using Interface.Services;
 using Microsoft.AspNetCore.Http;
+using Minutz.Models;
 using Minutz.Models.Message;
+using Newtonsoft.Json;
 
 namespace Api.Extensions
 {
@@ -27,6 +30,30 @@ namespace Api.Extensions
             {
                 logService.Log (Minutz.Models.LogLevel.Info, $"The request had a {AuthHeader} header, but the value did not match the configuration for the instance.");
                 return (false ,404, "please provide a valid username or password");
+            }
+
+            return (true, 200, "Success");
+        }
+
+        public static (bool Condition, int Code, string Message) SignUp
+            (this  HttpRequest request, CreateUserModel user, ILogService logService)
+        {
+            logService.Log(LogLevel.Info, JsonConvert.SerializeObject(user));
+
+            if (string.IsNullOrEmpty(user.email))
+            {
+                logService.Log(LogLevel.Info, $"{user.email} : Please provide a email address");
+                return (false,401, "Please provide a email address" );
+            }
+            if (!user.email.CheckEmail())
+            {
+                logService.Log(LogLevel.Info, $"{user.email} : Please provide a valid email address");
+                return (false,401,  "Please provide a valid email address");
+            }
+            if (string.IsNullOrEmpty(user.password))
+            {
+                logService.Log(LogLevel.Info, $"{user.email} : Please provide a password");
+                return (false, 401,  "Please provide a password");
             }
 
             return (true, 200, "Success");

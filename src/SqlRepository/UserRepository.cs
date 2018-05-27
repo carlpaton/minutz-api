@@ -235,11 +235,12 @@ namespace SqlRepository
       (AuthRestModel authUser, string connectionString, string masterConnectionString)
     {
       //var id = authUser.Sub.Split ('|') [1];
-      var username = $"A_{authUser.Sub}";
-      var password = _encryptor.EncryptString(CreatePassword (10)); //need to salt the password and username
-      using (IDbConnection dbConnection = new SqlConnection(masterConnectionString))
+      var username = $"A_{authUser.Sub.Replace("-", "_")}";
+      var password = CreatePassword (10);
+      var encryptedPassword = _encryptor.EncryptString(password);
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
-        var createUserSql = $@"EXEC [app].[spCreateUserAndSchema] '{authUser.Sub}','{authUser.Email}', '{username}', '{password}'; ";
+        var createUserSql = $@"EXEC [app].[spCreateUserAndSchema] '{authUser.Sub}','{authUser.Email}', '{username}','{encryptedPassword}','{password}'; ";
         try
         {
           var createUserSqlResult = dbConnection.Execute (createUserSql);
