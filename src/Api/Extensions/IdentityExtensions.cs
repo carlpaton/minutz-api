@@ -10,7 +10,7 @@ namespace Api.Extensions
         public static AuthRestModel ToRest
             (this ClaimsPrincipal user)
         {
-            var email = user.Claims.ToList().SingleOrDefault(i => i.Type == "sub");
+            var email = user.Claims.ToList().SingleOrDefault(i => i.Type == "access_token");
             if (email == null) throw new Exception("The user Identity does not contain a sub [email].");
             var instanceId = user.Claims.ToList().SingleOrDefault(i => i.Type == "instanceId");
             if (instanceId == null) throw new Exception("The user Identity does not contain instanceId.");

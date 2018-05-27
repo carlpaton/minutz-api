@@ -19,7 +19,7 @@ namespace AspnetAuthenticationRespository
             var jti = Guid.NewGuid().ToString();
             var claims = new List<Claim>
                          {
-                             new Claim(JwtRegisteredClaimNames.Sub, email),
+                             new Claim(JwtRegisteredClaimNames.Sub, instanceId),
                              new Claim("nickname", name),
                              new Claim("picture", picture),
                              new Claim("access_token", email),

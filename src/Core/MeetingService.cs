@@ -235,8 +235,7 @@ namespace Core
         var instanceConnectionString = _applicationSetting.CreateConnectionString
           (_applicationSetting.Server,_applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
           
-        var masterConnectionString = _applicationSetting.CreateConnectionString
-          (_applicationSetting.Server, _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
+        var masterConnectionString = _applicationSetting.CreateMasterConnectionString();
         
         var result = new List<Minutz.Models.ViewModels.MeetingViewModel>();
         if (user.Role == AuthenticationHelper.Guest)
@@ -408,8 +407,7 @@ namespace Core
 
         _logService.Log(LogLevel.Info, "CreateMeeting - Service - auth ");
         
-        var masterConnectionString = _applicationSetting.CreateConnectionString
-          (_applicationSetting.Server, _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
+        var masterConnectionString = _applicationSetting.CreateMasterConnectionString();
         
         var instanceConnectionString = _applicationSetting.CreateConnectionString
         (_applicationSetting.Server, _applicationSetting.Catalogue, instanceId,

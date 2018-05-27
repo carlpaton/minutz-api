@@ -197,7 +197,8 @@ namespace AspnetAuthenticationRespository
             (string email, IdentityUser user, IList<string> roles)
         {
             var dbUser = _userRepository.GetUserByEmail(email, "app", _applicationSetting.CreateConnectionString());
-            var instanceId = dbUser == null ? $"A_{Guid.NewGuid()}" : dbUser.Identityid;
+            var instanceId = $"A_{Guid.NewGuid()}";
+            if (dbUser != null) instanceId = dbUser.InstanceId;
             var name = dbUser == null ? email : dbUser.FullName;
             var picture = (dbUser == null ? "default" : dbUser.ProfilePicture) ?? "default";
 

@@ -102,10 +102,10 @@ namespace Api.Controllers
     [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(MeetingViewModel), 200)]
     [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingViewModel))]
-    public IActionResult CreateMeeting
-      (string instanceId = "")
+    public IActionResult CreateMeeting()
     {
-      var userInfo = User.ToRest(); //Request.ExtractAuth(User, _authenticationService);
+      
+      var userInfo = User.ToRest();
 
       _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "CreateMeeting - entry point {ID}", 1);
       
@@ -144,7 +144,7 @@ namespace Api.Controllers
         data.MeetingAgendaCollection,
         data.MeetingNoteCollection,
         data.MeetingAttachmentCollection,
-        data.MeetingActionCollection, instanceId);
+        data.MeetingActionCollection, userInfo.InstanceId);
       result.Value.Status = "Create";
       if (result.Key)
       {
