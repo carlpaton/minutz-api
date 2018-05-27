@@ -116,7 +116,7 @@ namespace Core.ExternalServices
                 return result;
             }
 
-            var userInfoResult = _authRepository.GetUserInfo(tokenCreateResult.AuthTokenResponse.access_token);
+            var userInfoResult = _authRepository.GetUserInfo(username);
             if (!userInfoResult.Condition)
             {
                 _logService.Log(LogLevel.Error, $"Info: -- CreateToken: '\n' {userInfoResult.Message}");
@@ -127,7 +127,7 @@ namespace Core.ExternalServices
             }
 
             userInfoResult.InfoResponse.UpdateTokenInfo(tokenCreateResult.AuthTokenResponse);
-            _logService.Log(LogLevel.Info, $"Info: -- UpdateTokenInfo: '\n' {userInfoResult.Message}");
+            // _logService.Log(LogLevel.Info, $"Info: -- UpdateTokenInfo: '\n' {userInfoResult.Message}");
             Console.WriteLine("Info: -- UpdateTokenInfo");
             Console.WriteLine("Info: -- Login");
             
