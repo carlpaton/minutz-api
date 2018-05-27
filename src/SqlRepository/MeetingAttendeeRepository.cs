@@ -107,7 +107,7 @@ namespace SqlRepository {
       using (IDbConnection masterdbConnection = new SqlConnection(masterConnectionString))
       {
         masterdbConnection.Open ();
-        var personSql = $"select * from [app].[Person]";
+        var personSql = $"select * from [minutz].[app].[Person]";
         people = masterdbConnection.Query<Person> (personSql).ToList();
       }
 
