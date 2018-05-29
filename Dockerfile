@@ -1,9 +1,40 @@
 FROM microsoft/aspnetcore-build:2 AS build-env
 ARG UPDATE_DLL
 WORKDIR /tmp
+COPY src/Interface/Interface.csproj .
+RUN dotnet restore
+RUN rm Interface.csproj
+COPY src/Models/Models.csproj .
+RUN dotnet restore
+RUN rm Models.csproj
+COPY src/MinutzEncryption/MinutzEncryption.csproj .
+RUN dotnet restore
+RUN rm MinutzEncryption.csproj
+COPY src/Notifications/Notifications.csproj .
+RUN dotnet restore
+RUN rm Notifications.csproj
+COPY src/Reports/Reports.csproj .
+RUN dotnet restore
+RUN rm Reports.csproj
+COPY src/SqlRepository/SqlRepository.csproj .
+RUN dotnet restore
+RUN rm SqlRepository.csproj
 COPY src/AspnetAuthenticationRespository/AspnetAuthenticationRespository.csproj .
 RUN dotnet restore
 RUN rm AspnetAuthenticationRespository.csproj
+COPY src/AuthenticationRepository/AuthenticationRepository.csproj .
+RUN dotnet restore
+RUN rm AuthenticationRepository.csproj
+COPY src/Core/Core.csproj .
+RUN dotnet restore
+RUN rm Core.csproj
+COPY src/Api/Api.csproj .
+RUN dotnet restore
+RUN rm Api.csproj
+COPY src/Tests/Tests.csproj .
+RUN dotnet restore
+RUN rm Tests.csproj
+
 WORKDIR /app
 COPY . .
 RUN dotnet publish src/minutz.sln  -c release -o out 
