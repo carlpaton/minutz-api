@@ -42,7 +42,7 @@ namespace SqlRepository {
       using (IDbConnection persondbConnection = new SqlConnection(masterConnectionString))
       {
         persondbConnection.Open ();
-        var personSql = $"SELECT * FROM [app].[Person] ";
+        var personSql = $"SELECT * FROM [minutz].[app].[Person] ";
         people = persondbConnection.Query<Person> (personSql).ToList();
       }
       
@@ -296,6 +296,7 @@ namespace SqlRepository {
         }
         catch (Exception e)
         {
+          Console.WriteLine(e.Message);
           return false;
         }
       }
@@ -360,6 +361,7 @@ namespace SqlRepository {
       }
       catch (Exception e)
       {
+        Console.WriteLine(e.Message);
         return false;
       }
     }
