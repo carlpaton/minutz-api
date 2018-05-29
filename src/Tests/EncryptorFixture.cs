@@ -10,7 +10,7 @@ namespace Tests
         private readonly string _keyInvalid;
         private readonly string _keyLongValid;
         private readonly string _keyValid;
-        private readonly string _ssh;
+        //private readonly string _ssh;
 
         public EncryptorFixture()
         {

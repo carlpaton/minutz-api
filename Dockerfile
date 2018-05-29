@@ -1,11 +1,12 @@
 FROM microsoft/aspnetcore-build:2 AS build-env
 ARG UPDATE_DLL
+WORKDIR /tmp
+COPY src/AspnetAuthenticationRespository/AspnetAuthenticationRespository.csproj .
+RUN dotnet restore
+RUN rm AspnetAuthenticationRespository.csproj
 WORKDIR /app
-# COPY src/minutz.sln .
-# RUN dotnet restore
-
 COPY . .
-RUN dotnet publish src/minutz.sln  -c pipelines -o out 
+RUN dotnet publish src/minutz.sln  -c release -o out 
 # --version-suffix UPDATE_DLL
 FROM microsoft/aspnetcore:2
 ARG source

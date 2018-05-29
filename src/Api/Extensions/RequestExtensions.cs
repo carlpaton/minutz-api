@@ -89,7 +89,7 @@ namespace Api.Extensions
         {
             var accessTokenKey = "accessToken";
             var authorizationKey = "Authorization";
-            var xExp = "xExp";
+            // var xExp = "xExp";
             
             var accessTokenValue = string.Empty;
             var authorization = string.Empty;
