@@ -42,7 +42,7 @@ namespace Api.Controllers
 		public IActionResult Subscriptions()
 		{
 			var userInfo = Request.ExtractAuth(User, _authenticationService);
-			var result = this._subscriptionService.GetList(userInfo.InfoResponse.AccessToken);
+			var result = _subscriptionService.GetList(userInfo.InfoResponse.AccessToken);
 			return Ok(result);
 		}
 
@@ -52,7 +52,7 @@ namespace Api.Controllers
 		public IActionResult Subscription()
 		{
 			var userInfo = Request.ExtractAuth(User, _authenticationService);
-			var result = this._subscriptionService.GetSubscription(userInfo.InfoResponse.AccessToken);
+			var result = _subscriptionService.GetSubscription(userInfo.InfoResponse.AccessToken);
 			return Ok(result);
 		}
 
@@ -62,7 +62,7 @@ namespace Api.Controllers
 		public IActionResult SetSubscription(int subscriptionId)
 		{
 			var userInfo = Request.ExtractAuth(User, _authenticationService);
-			var result = this._subscriptionService.SetSubscriptionForSchema(userInfo.InfoResponse.AccessToken, subscriptionId);
+			var result = _subscriptionService.SetSubscriptionForSchema(userInfo.InfoResponse.AccessToken, subscriptionId);
 			return Ok(result);
 		}
 	}

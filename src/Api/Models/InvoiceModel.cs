@@ -4,10 +4,10 @@ namespace Api.Models
 {
     public class InvoiceModel
     {
-        public string Number { get; set; }
-        public CompanyModel Seller { get; set; }
-        public CompanyModel Buyer { get; set; }
-        public IEnumerable<ItemModel> Items { get; set; }
+        public string Number { get; private set; }
+        public CompanyModel Seller { get; private set; }
+        public CompanyModel Buyer { get; private set; }
+        public IEnumerable<ItemModel> Items { get; private set; }
 
         public static InvoiceModel Example()
         {

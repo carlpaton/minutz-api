@@ -28,7 +28,7 @@ namespace Api.Controllers
       _userValidationService = userValidationService;
       _authenticationService = authenticationService;
       _applicationManagerService = applicationManagerService;
-      this._logService = logService;
+      _logService = logService;
     }
     /// <summary>
     /// Use this to start the full version.

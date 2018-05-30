@@ -39,7 +39,7 @@ namespace Api.Controllers
 		public IActionResult SotificationTypes()
 		{
 			var userInfo = Request.ExtractAuth(User, _authenticationService);
-			var result = this._notificationTypeService.GetList(userInfo.InfoResponse.AccessToken);
+			var result = _notificationTypeService.GetList(userInfo.InfoResponse.AccessToken);
 			return Ok(result);
 		}
 
@@ -49,7 +49,7 @@ namespace Api.Controllers
 		public IActionResult NotificationType()
 		{
 			var userInfo = Request.ExtractAuth(User, _authenticationService);
-			var result = this._notificationTypeService.GetNotificationType(userInfo.InfoResponse.AccessToken);
+			var result = _notificationTypeService.GetNotificationType(userInfo.InfoResponse.AccessToken);
 			return Ok(result);
 		}
 		
@@ -59,7 +59,7 @@ namespace Api.Controllers
 		public IActionResult SetNotificationType(int notificationTypeId)
 		{
 			var userInfo = Request.ExtractAuth(User, _authenticationService);
-			var result = this._notificationTypeService.SetNotificationTypeForSchema(userInfo.InfoResponse.AccessToken,notificationTypeId);
+			var result = _notificationTypeService.SetNotificationTypeForSchema(userInfo.InfoResponse.AccessToken,notificationTypeId);
 			return Ok(result);
 		}
 	}

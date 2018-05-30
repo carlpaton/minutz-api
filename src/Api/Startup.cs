@@ -111,7 +111,7 @@ namespace Minutz.Api
             var appSetting = new ApplicationSetting(new InstanceRepository(), new MinutzEncryption.Encryptor());
 
             var version = Configuration.GetSection("Version").Value;
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = Startup.Title, Version = version}); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = Title, Version = version}); });
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAllOrigins",
@@ -190,15 +190,6 @@ namespace Minutz.Api
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
             dbContext.Database.EnsureCreated();
-        }
-
-        private static string DefaultConnectionString()
-        {
-            string server = Environment.GetEnvironmentVariable("SERVER_ADDRESS");
-            string user = Environment.GetEnvironmentVariable("DEFAULT_USER");
-            string database = Environment.GetEnvironmentVariable("DEFAULT_CATALOGUE");
-            string password = Environment.GetEnvironmentVariable("DEFAULT_PASSWORD");
-            return $"Server={server};User ID={user};pwd={password};database={database};";
         }
     }
 }

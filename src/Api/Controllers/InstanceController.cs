@@ -12,7 +12,7 @@ namespace Api.Controllers
 		private readonly IInstanceService _instanceService;
 		public InstanceController(IInstanceService instanceService)
 		{
-			this._instanceService = instanceService;
+			_instanceService = instanceService;
 		}
 
 		[HttpPost("api/instance")]
@@ -26,7 +26,7 @@ namespace Api.Controllers
 			dirty.Id = instance.Id;
 			dirty.Colour = instance.Colour;
 			dirty.Style = instance.Style;
-			var result = this._instanceService.SetInstanceDetailsForSchema(token,dirty);
+			var result = _instanceService.SetInstanceDetailsForSchema(token,dirty);
 			return Ok(result);
 		}
 	}

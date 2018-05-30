@@ -205,7 +205,7 @@ namespace Api.Extensions
       return result;
     }
 
-    internal static void _defaultValues
+    private static void _defaultValues
       (Minutz.Models.ViewModels.MeetingViewModel meetingViewModel, List<MeetingAgenda> agendaItems = null, List<MeetingAttendee> attendees = null, List<MeetingNote> notes = null, List<MeetingAttachment> attachments = null, List<MinutzDecision> descisions = null)
     {
       if (Guid.Parse(meetingViewModel.Id) == Guid.Empty)

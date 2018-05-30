@@ -60,7 +60,7 @@ namespace Api.Controllers
              
             var bytes = Encoding.UTF8.GetBytes(serializedCalendar);
 
-            return this.File(bytes, "text/calendar", "meeting.ics");
+            return File(bytes, "text/calendar", "meeting.ics");
            
         }
     }

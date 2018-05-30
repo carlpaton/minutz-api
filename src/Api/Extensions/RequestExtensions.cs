@@ -64,18 +64,19 @@ namespace Api.Extensions
             if (!request.Headers.Any())
                 throw new NullReferenceException(
                     "There was a problem looking for the token header, as there are no headers for this request");
-            if (!request.Headers.Any(i => i.Key == "Authorization"))
+            if (request.Headers.All(i => i.Key != "Authorization"))
                 throw new NullReferenceException("There was a problem looking for the Authorization header.");
             if (string.IsNullOrEmpty(request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value))
                 throw new NullReferenceException("There was a problem with the token provided, it seems empty.");
             return request.Headers.FirstOrDefault(i => i.Key == "Authorization").Value;
         }
 
-        public static bool CheckEmail(this string email)
+        private static bool CheckEmail(this string email)
         {
             try
             {
-                MailAddress m = new MailAddress(email);
+                var m = new MailAddress(email);
+                Console.Write(m.Address);
                 return true;
             }
             catch (FormatException)

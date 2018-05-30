@@ -17,7 +17,7 @@ namespace Api.Controllers
     private readonly IMeetingService _meetingService;
     private readonly IAuthenticationService _authenticationService;
     private readonly ILogger _logger;
-    internal const string _defaultAgendaId = "e38b69b3-8f2a-4979-9323-1819db4331f8";
+    private const string _defaultAgendaId = "e38b69b3-8f2a-4979-9323-1819db4331f8";
     
     public MeetingAgendaController(
       IMeetingService meetingService,

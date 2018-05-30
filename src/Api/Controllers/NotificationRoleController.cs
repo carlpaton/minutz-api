@@ -24,7 +24,7 @@ namespace Api.Controllers
 			IAuthenticationService authenticationService,
 			IMeetingAttachmentService meetingAttachmentService)
 		{
-			this._notificationRoleService = notificationRoleService;
+			_notificationRoleService = notificationRoleService;
 			_meetingService = meetingService;
 			_logService = logService;
 			_authenticationService = authenticationService;
@@ -38,7 +38,7 @@ namespace Api.Controllers
 		public IActionResult NotificationRoles()
 		{
 			var userInfo = Request.ExtractAuth(User, _authenticationService);
-			var result = this._notificationRoleService.GetList(userInfo.InfoResponse.AccessToken);
+			var result = _notificationRoleService.GetList(userInfo.InfoResponse.AccessToken);
 			return Ok(result);
 		}
 
@@ -48,7 +48,7 @@ namespace Api.Controllers
 		public IActionResult NotificationRole()
 		{
 			var userInfo = Request.ExtractAuth(User, _authenticationService);
-			var result = this._notificationRoleService.GetNotificationRole(userInfo.InfoResponse.AccessToken);
+			var result = _notificationRoleService.GetNotificationRole(userInfo.InfoResponse.AccessToken);
 			return Ok(result);
 		}
 		
@@ -58,7 +58,7 @@ namespace Api.Controllers
 		public IActionResult SetNotificationRole(int notificationRoleId)
 		{
 			var userInfo = Request.ExtractAuth(User, _authenticationService);
-			var result = this._notificationRoleService.SetNotificationRoleForSchema(userInfo.InfoResponse.AccessToken,notificationRoleId);
+			var result = _notificationRoleService.SetNotificationRoleForSchema(userInfo.InfoResponse.AccessToken,notificationRoleId);
 			return Ok(result);
 		}
 	}

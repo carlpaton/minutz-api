@@ -42,7 +42,7 @@ namespace Api.Controllers
         public IActionResult Reminders()
         {
             var userInfo = Request.ExtractAuth(User, _authenticationService);
-            var result = this._reminderService.GetList(userInfo.InfoResponse.AccessToken);
+            var result = _reminderService.GetList(userInfo.InfoResponse.AccessToken);
             return Ok(result);
         }
 
@@ -52,7 +52,7 @@ namespace Api.Controllers
         public IActionResult Reminder()
         {
             var userInfo = Request.ExtractAuth(User, _authenticationService);
-            var result = this._reminderService.GetReminder(userInfo.InfoResponse.AccessToken);
+            var result = _reminderService.GetReminder(userInfo.InfoResponse.AccessToken);
             return Ok(result);
         }
 
@@ -62,7 +62,7 @@ namespace Api.Controllers
         public IActionResult SetReminder(int reminderId)
         {
             var userInfo = Request.ExtractAuth(User, _authenticationService);
-            var result = this._reminderService.SetReminderForSchema(userInfo.InfoResponse.AccessToken, reminderId);
+            var result = _reminderService.SetReminderForSchema(userInfo.InfoResponse.AccessToken, reminderId);
             return Ok(result);
         }
     }
