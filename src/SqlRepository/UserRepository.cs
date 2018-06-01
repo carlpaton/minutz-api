@@ -230,6 +230,27 @@ namespace SqlRepository
         }
       }
     }
+    
+    public string GetAuthUserIdByEmail
+      (string email, string connectionString)
+    {
+      using (IDbConnection dbConnection = new SqlConnection (connectionString))
+      {
+        var sql = $"SELECT Id FROM dbo.AspNetUsers where Email ='{email}'; ";
+        try
+        {
+          var query = dbConnection.Query<string> (sql).ToList();
+          if (!query.Any()) return string.Empty;
+          var userId = query.First();
+          return userId;
+        }
+        catch (Exception e)
+        {
+          Console.WriteLine(e);
+          return string.Empty;
+        }
+      }
+    }
 
     public string CreateNewSchema
       (AuthRestModel authUser, string connectionString, string masterConnectionString)
@@ -248,7 +269,7 @@ namespace SqlRepository
         catch (Exception e)
         {
           Console.WriteLine(e);
-          _logService.Log(LogLevel.Exception, e.InnerException.Message);
+          _logService.Log(LogLevel.Exception, e.Message);
           throw;
         }
         

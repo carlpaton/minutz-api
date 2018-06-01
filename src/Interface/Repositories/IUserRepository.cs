@@ -1,4 +1,5 @@
-﻿using Minutz.Models.Entities;
+﻿using System;
+using Minutz.Models.Entities;
 using Minutz.Models.Message;
 
 namespace Interface.Repositories
@@ -18,6 +19,9 @@ namespace Interface.Repositories
 
     PersonResponse MinutzPersonCheckIfUserExistsByEmail 
       (string email, string minutzAppConnectionString);
+
+    string GetAuthUserIdByEmail
+      (string email, string connectionString);
     
     AuthRestModel GetUser 
       (string authUserId, string schema, string connectionString);

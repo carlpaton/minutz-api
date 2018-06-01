@@ -66,7 +66,12 @@ namespace Core
     {
       return $"Server={Server};User ID={Username};pwd={Password};database=master;";
     }
-    
+
+    public string AuthConnectionString()
+    {
+      return $"Server={Server}; database={Catalogue}_asp_auth;uid={Username};pwd={Password};pooling=true;MultipleActiveResultSets=true;";
+    }
+
     public string CreateConnectionString()
     {
       return $"Server={Server};User ID={Username};pwd={Password};database={Catalogue};";

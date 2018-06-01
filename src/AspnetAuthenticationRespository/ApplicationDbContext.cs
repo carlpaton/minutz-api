@@ -22,7 +22,7 @@ namespace AspnetAuthenticationRespository
         
         public string GetConnectionString()
         {
-            return $"Server={Server}; database={Catalogue}_asp_auth;uid={Username};pwd={Password};pooling=true;";
+            return $"Server={Server}; database={Catalogue}_asp_auth;uid={Username};pwd={Password};pooling=true;MultipleActiveResultSets=true;";
         }
     }
 }

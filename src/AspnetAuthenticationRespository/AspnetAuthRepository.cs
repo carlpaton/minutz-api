@@ -76,8 +76,8 @@ namespace AspnetAuthenticationRespository
 
             var userResult = _minutzUserManager.Ensure(_userManager, email, password);
             if (!userResult.Condition) return (userResult.Condition, userResult.message, null);
-            
-            _signInManager.SignInAsync(userResult.user, false);
+
+            _signInManager.SignInAsync(userResult.user, false).ConfigureAwait(false);
 
             var rolesResult = _minutzRoleManager.Ensure(_userManager, email, role);
             if (!rolesResult.Condition) return (rolesResult.Condition, rolesResult.Message, null);
@@ -198,8 +198,10 @@ namespace AspnetAuthenticationRespository
             (string email, IdentityUser user, IList<string> roles)
         {
             var dbUser = _userRepository.GetUserByEmail(email, "app", _applicationSetting.CreateConnectionString());
-            var instanceId = $"A_{Guid.NewGuid()}";
-            if (dbUser != null) instanceId = dbUser.InstanceId;
+            var authUser = _userRepository.GetAuthUserIdByEmail(email, _applicationSetting.AuthConnectionString());
+            if (string.IsNullOrEmpty(authUser)) throw new Exception("The user does not exist.");
+            var instanceId = $"A_{authUser}".Replace("-","_");
+            //if (dbUser != null) instanceId = dbUser.InstanceId;
             var name = dbUser == null ? email : dbUser.FullName;
             var picture = (dbUser == null ? "default" : dbUser.ProfilePicture) ?? "default";
 
