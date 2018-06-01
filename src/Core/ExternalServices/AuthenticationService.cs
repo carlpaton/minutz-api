@@ -86,20 +86,18 @@ namespace Core.ExternalServices
             return result;
         }
 
-        public AuthRestModelResponse LoginFromLoginForm
-            (string username, string password, string instanceId = null)
+        public AuthRestModelResponse LoginFromLoginForm (string username, string password, string instanceId = null)
         {
             var result = new AuthRestModelResponse
-                         {
-                             Condition = false,
-                             Message = string.Empty,
-                             InfoResponse = new AuthRestModel()
-                         };
+            {
+               Condition = false,
+               Message = string.Empty,
+               InfoResponse = new AuthRestModel()
+            };
             
             var valid = ValidateStringUsernameAndPassword(username, password);
             if (!valid.Condition)
             {
-                _logService.Log(LogLevel.Error, $"Info: -- ValidateStringUsernameAndPassword: '\n' {valid.Message}");
                 Console.WriteLine("Info: -- ValidateStringUsernameAndPassword");
                 result.Code = 404;
                 result.Message = valid.Message;
@@ -109,9 +107,8 @@ namespace Core.ExternalServices
             var tokenCreateResult = _authRepository.CreateToken(username, password);
             if (!tokenCreateResult.Condition)
             {
-                _logService.Log(LogLevel.Error, $"Info: -- CreateToken: '\n' {tokenCreateResult.Message}");
                 Console.WriteLine("Info: -- CreateToken");
-                result.Code = 500;
+                result.Code = 404;
                 result.Message = tokenCreateResult.Message;
                 return result;
             }
@@ -119,7 +116,6 @@ namespace Core.ExternalServices
             var userInfoResult = _authRepository.GetUserInfo(username);
             if (!userInfoResult.Condition)
             {
-                _logService.Log(LogLevel.Error, $"Info: -- CreateToken: '\n' {userInfoResult.Message}");
                 Console.WriteLine("Info: -- GetUserInfo");
                 result.Message = userInfoResult.Message;
                 result.Code = 500;
@@ -127,14 +123,12 @@ namespace Core.ExternalServices
             }
 
             userInfoResult.InfoResponse.UpdateTokenInfo(tokenCreateResult.AuthTokenResponse);
-            // _logService.Log(LogLevel.Info, $"Info: -- UpdateTokenInfo: '\n' {userInfoResult.Message}");
             Console.WriteLine("Info: -- UpdateTokenInfo");
             Console.WriteLine("Info: -- Login");
             
             result = Login(userInfoResult, instanceId);
             if (!result.Condition)
             {
-                _logService.Log(LogLevel.Error, $"Info: -- Login: '\n' {result.Message}");
                 Console.WriteLine("Info: -- Login");
                 result.Message = result.Message;
                 result.Code = 500;

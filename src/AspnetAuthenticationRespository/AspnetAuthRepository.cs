@@ -158,6 +158,7 @@ namespace AspnetAuthenticationRespository
                 returnObject.Message = "Your authentication requires two factor authentication.";
             }
 
+            returnObject.Message = "Username or password appears to be incorrect.";
             return returnObject;
         }
 

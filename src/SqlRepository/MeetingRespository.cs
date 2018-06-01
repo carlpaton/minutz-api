@@ -28,8 +28,8 @@ namespace SqlRepository
       {
         dbConnection.Open();
         var sql = $"select * from [{schema}].[Meeting] WHERE Id = '{id.ToString()}'";
-        var data = dbConnection.Query<Meeting>(sql).FirstOrDefault();
-        return data;
+        var data = dbConnection.Query<Meeting>(sql);
+        return data.FirstOrDefault();
       }
     }
 

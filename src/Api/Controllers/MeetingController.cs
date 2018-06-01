@@ -89,7 +89,11 @@ namespace Api.Controllers
     {
       var userInfo = User.ToRest(); // Request.ExtractAuth(User, _authenticationService);
       var meeting = _meetingService.GetMeeting(userInfo, id);
-      return Ok(new { status = 200, data = meeting });
+      if (meeting == null)
+      {
+        return StatusCode(404);
+      }
+      return Ok(meeting);
     }
 
     /// <summary>

@@ -146,8 +146,7 @@ namespace Core
       var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
         _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
           
-      var masterConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
-        _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
+      var masterConnectionString = _applicationSetting.CreateConnectionString();
       
       var meeting = _meetingRepository.Get(Guid.Parse(id), user.InstanceId, instanceConnectionString);
       var availibleAttendees = _meetingAttendeeRepository.GetAvalibleAttendees(user.InstanceId, instanceConnectionString, masterConnectionString);
