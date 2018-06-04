@@ -1,14 +1,10 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Api.Extensions;
+﻿using Api.Extensions;
 using Api.Models;
 using Interface;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Minutz.Models;
 using Minutz.Models.Entities;
-using StackExchange.Redis;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Api.Controllers
