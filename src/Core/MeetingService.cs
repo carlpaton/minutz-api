@@ -617,8 +617,7 @@ namespace Core
       var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
         _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
       
-      var masterConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
-        _applicationSetting.Catalogue, _applicationSetting.Username, _applicationSetting.Password);
+      var masterConnectionString = _applicationSetting.CreateConnectionString();
       
       if (!string.IsNullOrEmpty(user.InstanceId))
       {
@@ -644,10 +643,17 @@ namespace Core
           Tag = String.Join(",", meetingViewModel.Tag.ToArray()),
           Time = meetingViewModel.Time,
           TimeZone = meetingViewModel.TimeZone,
-          UpdatedDate = DateTime.UtcNow
+          UpdatedDate = DateTime.UtcNow,
+          Status = meetingViewModel.Status
         };
         var result = _meetingRepository.Update(meetingEntity, user.InstanceId, instanceConnectionString);
+        if (!result)
+        {
+          Console.WriteLine($"Could not update the meeting {meetingEntity.Name}");
+          throw new Exception("There was a issue updating the meeting record.");
+        }
 
+        
         // Update the agenda items
         foreach (var agendaItem in meetingViewModel.MeetingAgendaCollection)
         {
