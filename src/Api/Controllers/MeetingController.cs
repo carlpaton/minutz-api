@@ -125,7 +125,7 @@ namespace Api.Controllers
         IsPrivate = true,
         Time = $"{DateTime.UtcNow.Hour.ToString()}:00",
         TimeZoneOffSet = 2,
-        IsReacurance = false,
+        IsRecurrence = false,
         Location = "Durban",
         MeetingActionCollection = new List<MinutzAction>(),
         MeetingAgendaCollection = new List<MeetingAgenda>(),
