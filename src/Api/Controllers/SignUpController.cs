@@ -2,6 +2,7 @@
 using System.Linq;
 using Api.Extensions;
 using Api.Models;
+using Interface;
 using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,17 +18,20 @@ namespace Api.Controllers
     private readonly IUserValidationService _userValidationService;
     private readonly IAuthenticationService _authenticationService;
     private readonly IApplicationManagerService _applicationManagerService;
+    private readonly IValidationService _validationService;
     private readonly ILogService _logService;
     
     public SignUpController (
       IUserValidationService userValidationService,
       IAuthenticationService authenticationService,
       IApplicationManagerService applicationManagerService,
+      IValidationService validationService,
       ILogService logService)
     {
       _userValidationService = userValidationService;
       _authenticationService = authenticationService;
       _applicationManagerService = applicationManagerService;
+      _validationService = validationService;
       _logService = logService;
     }
     /// <summary>
@@ -38,7 +42,7 @@ namespace Api.Controllers
     [HttpPost ("api/Signup")]
     public IActionResult Post ([FromBody] CreateUserModel user)
     {
-      var validate = Request.SignUp(user, _logService);
+      var validate = Request.SignUp(user, _logService, _validationService);
       if (!validate.Condition)
       {
         return StatusCode(validate.Code, validate.Message);

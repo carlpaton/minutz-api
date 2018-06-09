@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Security.Claims;
 using Api.Models;
+using Interface;
 using Interface.Services;
 using Microsoft.AspNetCore.Http;
 using Minutz.Models;
@@ -36,7 +37,7 @@ namespace Api.Extensions
         }
 
         public static (bool Condition, int Code, string Message) SignUp
-            (this  HttpRequest request, CreateUserModel user, ILogService logService)
+            (this  HttpRequest request, CreateUserModel user, ILogService logService, IValidationService validationService)
         {
             logService.Log(LogLevel.Info, JsonConvert.SerializeObject(user));
 
@@ -54,6 +55,13 @@ namespace Api.Extensions
             {
                 logService.Log(LogLevel.Info, $"{user.email} : Please provide a password");
                 return (false, 401,  "Please provide a password");
+            }
+
+            var passwordValidation = validationService.ValidPassword(user.password);
+            if (!passwordValidation.condition)
+            {
+                logService.Log(LogLevel.Info, $"{user.email} : Please provide a password");
+                return (false, 401, passwordValidation.message);
             }
 
             return (true, 200, "Success");
