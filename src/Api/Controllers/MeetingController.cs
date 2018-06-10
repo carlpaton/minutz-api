@@ -135,7 +135,7 @@ namespace Api.Controllers
         MeetingDecisionCollection = new List<MinutzDecision>(),
         Outcome = string.Empty,
         Purpose = string.Empty,
-        ReacuranceType = 0,
+        RecurrenceType = 0,
         UpdatedDate = DateTime.UtcNow
       };
 
