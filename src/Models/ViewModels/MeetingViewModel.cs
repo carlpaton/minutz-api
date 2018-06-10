@@ -11,9 +11,9 @@ namespace Minutz.Models.ViewModels
     public DateTime UpdatedDate { get; set; }
     public string Time { get; set; }
     public int Duration { get; set; }
-    public bool IsReacurance { get; set; }
+    public bool IsRecurrence { get; set; }
     public bool IsPrivate { get; set; }
-    public int ReacuranceType { get; set; }
+    public int RecurrenceType { get; set; }
     public bool IsLocked { get; set; }
     public bool IsFormal { get; set; }
     public string Status { get; set; }
