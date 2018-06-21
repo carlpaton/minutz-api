@@ -127,6 +127,7 @@ namespace Api.Controllers
         TimeZoneOffSet = 2,
         IsRecurrence = false,
         Location = "Durban",
+        Status =  "create",
         MeetingActionCollection = new List<MinutzAction>(),
         MeetingAgendaCollection = new List<MeetingAgenda>(),
         MeetingAttachmentCollection = new List<MeetingAttachment>(),
@@ -149,7 +150,7 @@ namespace Api.Controllers
         data.MeetingNoteCollection,
         data.MeetingAttachmentCollection,
         data.MeetingActionCollection, userInfo.InstanceId);
-      result.Value.Status = "Create";
+      result.Value.Status = "create";
       if (result.Key)
       {
         return new OkObjectResult(result.Value);
