@@ -120,7 +120,9 @@ namespace Minutz.Api
             //Meeting Location
             services.AddTransient<IMeetingLocationRepository, MeetingLocationRepository>();
             services.AddTransient<IMeetingLocationService, MeetingLocationService>();
-            
+            //Meeting Date
+            services.AddTransient<IMeetingDateRepository, MeetingDateRepository>();
+            services.AddTransient<IMeetingDateService, MeetingDateService>();          
             
             
             services.AddMemoryCache();
