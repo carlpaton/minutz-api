@@ -615,8 +615,8 @@ namespace Core
       (AuthRestModel user, Minutz.Models.ViewModels.MeetingViewModel meetingViewModel)
     {
       var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
-        _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
-      
+              _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
+            
       var masterConnectionString = _applicationSetting.CreateConnectionString();
       
       if (!string.IsNullOrEmpty(user.InstanceId))

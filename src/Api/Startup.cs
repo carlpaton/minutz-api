@@ -6,11 +6,14 @@ using AspnetAuthenticationRespository.Interfaces;
 using AuthenticationRepository;
 using Core;
 using Core.ExternalServices;
+using Core.Feature.Meeting.Header;
 using Core.LogProvider;
 using Core.Validation;
 using Interface;
 using Interface.Repositories;
+using Interface.Repositories.Feature.Meeting.Header;
 using Interface.Services;
+using Interface.Services.Feature.Meeting.Header;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -19,10 +22,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using MinutzEncryption;
+
 using Notifications;
 using Reports;
 using SqlRepository;
+using SqlRepository.Features.Meeting.Header;
 using Swashbuckle.AspNetCore.Swagger;
 
 // ReSharper disable once CheckNamespace
@@ -106,6 +110,19 @@ namespace Minutz.Api
             services.AddTransient<IInstanceService, InstanceService>();
             services.AddTransient<IReportService, JsReportService>();
 
+            
+            //*
+            // Features
+            //*
+            //Meeting Title
+            services.AddTransient<IMeetingTitleRepository, MeetingTitleRepository>();
+            services.AddTransient<IMeetingTitleService, MeetingTitleService>();
+            //Meeting Location
+            services.AddTransient<IMeetingLocationRepository, MeetingLocationRepository>();
+            services.AddTransient<IMeetingLocationService, MeetingLocationService>();
+            
+            
+            
             services.AddMemoryCache();
             services.AddMvc();
             var appSetting = new ApplicationSetting(new InstanceRepository(), new MinutzEncryption.Encryptor());

@@ -186,7 +186,11 @@ namespace Api.Controllers
       }
       
       var userInfo = User.ToRest(); //Request.ExtractAuth(User, _authenticationService);
-      
+      if (string.IsNullOrEmpty(meeting.Status))
+      {
+        meeting.Status = "edit";
+      }
+
       _logger.LogInformation(Core.LogProvider.LoggingEvents.InsertItem, "UpdateMeeting - entry point {ID}", 1);
 
       var result = _meetingService.UpdateMeeting(userInfo, meeting);
