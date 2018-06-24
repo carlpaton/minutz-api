@@ -145,6 +145,9 @@ namespace Minutz.Api
             //User Meetings
             services.AddTransient<IUserMeetingsRepository, UserMeetingsRepository>();
             services.AddTransient<IUserMeetingsService, UserMeetingsService>();
+            //User Actions
+            services.AddTransient<IUserActionsRepository, UserActionsRepository>();
+            services.AddTransient<IUserActionsService, UserActionsService>();
             
             
             services.AddMemoryCache();
@@ -158,18 +161,6 @@ namespace Minutz.Api
                 options.AddPolicy("AllowAllOrigins",
                     builder => { builder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin(); });
             });
-
-//      services.AddAuthentication(options =>
-//      {
-//        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//
-//      }).AddJwtBearer(options =>
-//      {
-//        options.SaveToken = true;
-//        options.Authority = $"https://{appSetting.AuthorityDomain}/";
-//        options.Audience = appSetting.AuthorityManagementClientId;
-//      });
             services.AddDbContext<ApplicationDbContext>();
 
             // ===== Add Identity ========
@@ -205,25 +196,19 @@ namespace Minutz.Api
                 });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, ApplicationDbContext dbContext)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            //loggerFactory.AddProvider (new LoggerDBProvider ());
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseAuthentication();
             app.UseSwagger();
             var version = Configuration.GetSection("Version").Value;
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", version); });
             app.UseCors("AllowAllOrigins");
             app.UseStaticFiles();
-            // app.UseCorsMiddleware();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
