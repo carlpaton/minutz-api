@@ -123,6 +123,12 @@ namespace Minutz.Api
             //Meeting Date
             services.AddTransient<IMeetingDateRepository, MeetingDateRepository>();
             services.AddTransient<IMeetingDateService, MeetingDateService>();          
+            //Meeting Time
+            services.AddTransient<IMeetingTimeRepository, MeetingTimeRepository>();
+            services.AddTransient<IMeetingTimeService, MeetingTimeService>();          
+            //Meeting Time
+            services.AddTransient<IMeetingDurationRepository, MeetingDurationRepository>();
+            services.AddTransient<IMeetingDurationService, MeetingDurationService>();
             
             
             services.AddMemoryCache();
