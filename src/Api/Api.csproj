@@ -33,6 +33,7 @@
     <LangVersion>Latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="Controllers\Feature\Dashboard\Action" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>

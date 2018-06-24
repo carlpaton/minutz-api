@@ -6,13 +6,16 @@ using AspnetAuthenticationRespository.Interfaces;
 using AuthenticationRepository;
 using Core;
 using Core.ExternalServices;
+using Core.Feature.Dashboard;
 using Core.Feature.Meeting.Header;
 using Core.LogProvider;
 using Core.Validation;
 using Interface;
 using Interface.Repositories;
+using Interface.Repositories.Feature.Dashboard;
 using Interface.Repositories.Feature.Meeting.Header;
 using Interface.Services;
+using Interface.Services.Feature.Dashboard;
 using Interface.Services.Feature.Meeting.Header;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -26,6 +29,7 @@ using Microsoft.IdentityModel.Tokens;
 using Notifications;
 using Reports;
 using SqlRepository;
+using SqlRepository.Features.Dashboard;
 using SqlRepository.Features.Meeting.Header;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -113,6 +117,7 @@ namespace Minutz.Api
             
             //*
             // Features
+            // ---- Meeting
             //*
             //Meeting Title
             services.AddTransient<IMeetingTitleRepository, MeetingTitleRepository>();
@@ -132,6 +137,15 @@ namespace Minutz.Api
             //Meeting Tag
             services.AddTransient<IMeetingTagRepository, MeetingTagRepository>();
             services.AddTransient<IMeetingTagService, MeetingTagService>();
+            
+            //*
+            // Features
+            // ---- Dashboard
+            //*
+            //User Meetings
+            services.AddTransient<IUserMeetingsRepository, UserMeetingsRepository>();
+            services.AddTransient<IUserMeetingsService, UserMeetingsService>();
+            
             
             services.AddMemoryCache();
             services.AddMvc();
