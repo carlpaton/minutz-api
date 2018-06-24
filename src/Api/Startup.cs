@@ -129,7 +129,9 @@ namespace Minutz.Api
             //Meeting Time
             services.AddTransient<IMeetingDurationRepository, MeetingDurationRepository>();
             services.AddTransient<IMeetingDurationService, MeetingDurationService>();
-            
+            //Meeting Tag
+            services.AddTransient<IMeetingTagRepository, MeetingTagRepository>();
+            services.AddTransient<IMeetingTagService, MeetingTagService>();
             
             services.AddMemoryCache();
             services.AddMvc();
