@@ -2,7 +2,7 @@
 
 namespace Interface.Repositories.Feature.Meeting.Header
 {
-    public interface IMeetingLocationRepository
+    public interface IMinutzLocationRepository
     {
         MessageBase Update(string meetingId, string location, string schema, string connectionString);
     }

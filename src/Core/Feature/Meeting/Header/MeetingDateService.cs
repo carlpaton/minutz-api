@@ -10,19 +10,19 @@ namespace Core.Feature.Meeting.Header
     public class MeetingDateService : IMeetingDateService
     {
         private readonly IApplicationSetting _applicationSetting;
-        private readonly IMeetingDateRepository _meetingDateRepository;
+        private readonly IMinutzDateRepository _minutzDateRepository;
 
-        public MeetingDateService(IApplicationSetting applicationSetting, IMeetingDateRepository meetingDateRepository)
+        public MeetingDateService(IApplicationSetting applicationSetting, IMinutzDateRepository minutzDateRepository)
         {
             _applicationSetting = applicationSetting;
-            _meetingDateRepository = meetingDateRepository;
+            _minutzDateRepository = minutzDateRepository;
         }
 
         public MessageBase Update(string meetingId, DateTime date, AuthRestModel user)
         {
             var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
                 _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
-            return _meetingDateRepository.Update(meetingId, date, user.InstanceId, instanceConnectionString);
+            return _minutzDateRepository.Update(meetingId, date, user.InstanceId, instanceConnectionString);
         }
     }
 }

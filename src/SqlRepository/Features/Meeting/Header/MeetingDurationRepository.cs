@@ -7,7 +7,7 @@ using Minutz.Models.Message;
 
 namespace SqlRepository.Features.Meeting.Header
 {
-    public class MeetingDurationRepository: IMeetingDurationRepository
+    public class MinutzDurationRepository: IMinutzDurationRepository
     {
         public MessageBase Update(string meetingId, int duration, string schema, string connectionString)
         {

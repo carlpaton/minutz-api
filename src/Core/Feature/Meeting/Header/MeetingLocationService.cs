@@ -8,12 +8,12 @@ namespace Core.Feature.Meeting.Header
 {
     public class MeetingLocationService: IMeetingLocationService
     {
-        private readonly IMeetingLocationRepository _meetingLocationRepository;
+        private readonly IMinutzLocationRepository _minutzLocationRepository;
         private readonly IApplicationSetting _applicationSetting;
 
-        public MeetingLocationService(IMeetingLocationRepository meetingLocationRepository, IApplicationSetting applicationSetting)
+        public MeetingLocationService(IMinutzLocationRepository minutzLocationRepository, IApplicationSetting applicationSetting)
         {
-            _meetingLocationRepository = meetingLocationRepository;
+            _minutzLocationRepository = minutzLocationRepository;
             _applicationSetting = applicationSetting;
         }
         
@@ -21,7 +21,7 @@ namespace Core.Feature.Meeting.Header
         {
             var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
                 _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
-            return _meetingLocationRepository.Update(meetingId, location, user.InstanceId, instanceConnectionString);
+            return _minutzLocationRepository.Update(meetingId, location, user.InstanceId, instanceConnectionString);
         }
     }
 }

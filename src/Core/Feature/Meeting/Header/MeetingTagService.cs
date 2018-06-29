@@ -8,12 +8,12 @@ namespace Core.Feature.Meeting.Header
 {
     public class MeetingTagService :IMeetingTagService
     {
-        private readonly IMeetingTagRepository _meetingTagRepository;
+        private readonly IMinutzTagRepository _minutzTagRepository;
         private readonly IApplicationSetting _applicationSetting;
 
-        public MeetingTagService(IMeetingTagRepository meetingTagRepository, IApplicationSetting applicationSetting)
+        public MeetingTagService(IMinutzTagRepository minutzTagRepository, IApplicationSetting applicationSetting)
         {
-            _meetingTagRepository = meetingTagRepository;
+            _minutzTagRepository = minutzTagRepository;
             _applicationSetting = applicationSetting;
         }
 
@@ -21,7 +21,7 @@ namespace Core.Feature.Meeting.Header
         {
             var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
                 _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
-            return _meetingTagRepository.Update(meetingId, tags, user.InstanceId, instanceConnectionString);
+            return _minutzTagRepository.Update(meetingId, tags, user.InstanceId, instanceConnectionString);
         }
     }
 }

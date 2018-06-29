@@ -8,12 +8,12 @@ namespace Core.Feature.Meeting.Header
 {
     public class MeetingTitleService : IMeetingTitleService
     {
-        private readonly IMeetingTitleRepository _meetingTitleRepository;
+        private readonly IMinutzTitleRepository _minutzTitleRepository;
         private readonly IApplicationSetting _applicationSetting;
 
-        public MeetingTitleService(IMeetingTitleRepository meetingTitleRepository, IApplicationSetting applicationSetting)
+        public MeetingTitleService(IMinutzTitleRepository minutzTitleRepository, IApplicationSetting applicationSetting)
         {
-            _meetingTitleRepository = meetingTitleRepository;
+            _minutzTitleRepository = minutzTitleRepository;
             _applicationSetting = applicationSetting;
         }
 
@@ -21,7 +21,7 @@ namespace Core.Feature.Meeting.Header
         {
             var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
                 _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
-            return _meetingTitleRepository.Update(meetingId, title, user.InstanceId, instanceConnectionString);
+            return _minutzTitleRepository.Update(meetingId, title, user.InstanceId, instanceConnectionString);
         }
     }
 }
