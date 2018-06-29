@@ -3,8 +3,8 @@ using Minutz.Models.Message;
 
 namespace Interface.Services.Feature.Meeting.Header
 {
-    public interface IMeetingTimeService
+    public interface IMinutzLocationService
     {
-        MessageBase Update(string meetingId, string time, AuthRestModel user);
+        MessageBase Update(string meetingId, string location, AuthRestModel user);
     }
 }

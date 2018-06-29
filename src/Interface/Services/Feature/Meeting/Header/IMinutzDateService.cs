@@ -4,7 +4,7 @@ using Minutz.Models.Message;
 
 namespace Interface.Services.Feature.Meeting.Header
 {
-    public interface IMeetingDateService
+    public interface IMinutzDateService
     {
         MessageBase Update(string meetingId, DateTime date, AuthRestModel user);
     }

@@ -7,11 +7,11 @@ namespace Api.Controllers
 {
     public class MeetingTagController : Controller
     {
-        private readonly IMeetingTagService _meetingTagService;
+        private readonly IMinutzTagService _minutzTagService;
         
-        public MeetingTagController(IMeetingTagService meetingTagService)
+        public MeetingTagController(IMinutzTagService minutzTagService)
         {
-            _meetingTagService = meetingTagService;
+            _minutzTagService = minutzTagService;
         }
 
         [Authorize]
@@ -19,7 +19,7 @@ namespace Api.Controllers
         public IActionResult UpdateMeetingTagResult(string id, string tag)
         {
             var userInfo = User.ToRest();
-            var result = _meetingTagService.Update(id, tag, userInfo);
+            var result = _minutzTagService.Update(id, tag, userInfo);
             if (result.Condition)
             {
                 return Ok();

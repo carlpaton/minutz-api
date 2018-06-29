@@ -3,7 +3,7 @@ using Minutz.Models.Message;
 
 namespace Interface.Services.Feature.Meeting.Header
 {
-    public interface IMeetingTagService
+    public interface IMinutzTagService
     {
         MessageBase Update(string meetingId, string tags, AuthRestModel user);
     }

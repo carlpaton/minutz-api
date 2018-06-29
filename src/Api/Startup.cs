@@ -121,22 +121,22 @@ namespace Minutz.Api
             //*
             //Meeting Title
             services.AddTransient<IMinutzTitleRepository, MinutzTitleRepository>();
-            services.AddTransient<IMeetingTitleService, MeetingTitleService>();
+            services.AddTransient<IMinutzTitleService, MinutzTitleService>();
             //Meeting Location
             services.AddTransient<IMinutzLocationRepository, MinutzLocationRepository>();
-            services.AddTransient<IMeetingLocationService, MeetingLocationService>();
+            services.AddTransient<IMinutzLocationService, MinutzLocationService>();
             //Meeting Date
             services.AddTransient<IMinutzDateRepository, MinutzDateRepository>();
-            services.AddTransient<IMeetingDateService, MeetingDateService>();          
+            services.AddTransient<IMinutzDateService, MinutzDateService>();          
             //Meeting Time
             services.AddTransient<IMinutzTimeRepository, MinutzTimeRepository>();
-            services.AddTransient<IMeetingTimeService, MeetingTimeService>();          
+            services.AddTransient<IMinutzTimeService, MinutzTimeService>();          
             //Meeting Time
             services.AddTransient<IMinutzDurationRepository, MinutzDurationRepository>();
-            services.AddTransient<IMeetingDurationService, MeetingDurationService>();
+            services.AddTransient<IMinutzDurationService, MinutzDurationService>();
             //Meeting Tag
             services.AddTransient<IMinutzTagRepository, MinutzTagRepository>();
-            services.AddTransient<IMeetingTagService, MeetingTagService>();
+            services.AddTransient<IMinutzTagService, MinutzTagService>();
             
             //*
             // Features

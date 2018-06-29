@@ -7,11 +7,11 @@ namespace Api.Controllers
 {
     public class MeetingTitleController : Controller
     {
-        private readonly IMeetingTitleService _meetingTitleService;
+        private readonly IMinutzTitleService _minutzTitleService;
 
-        public MeetingTitleController(IMeetingTitleService meetingTitleService)
+        public MeetingTitleController(IMinutzTitleService minutzTitleService)
         {
-            _meetingTitleService = meetingTitleService;
+            _minutzTitleService = minutzTitleService;
         }
 
         [Authorize]
@@ -19,7 +19,7 @@ namespace Api.Controllers
         public IActionResult UpdateMeetingTitleResult(string id, string title)
         {
             var userInfo = User.ToRest();
-            var result = _meetingTitleService.Update(id, title, userInfo);
+            var result = _minutzTitleService.Update(id, title, userInfo);
             if (result.Condition)
             {
                 return Ok();

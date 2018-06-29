@@ -7,11 +7,11 @@ namespace Api.Controllers
 {
     public class MeetingLocationController : Controller
     {
-        private readonly IMeetingLocationService _meetingLocationService;
+        private readonly IMinutzLocationService _minutzLocationService;
 
-        public MeetingLocationController(IMeetingLocationService meetingLocationService)
+        public MeetingLocationController(IMinutzLocationService minutzLocationService)
         {
-            _meetingLocationService = meetingLocationService;
+            _minutzLocationService = minutzLocationService;
         }
 
         [Authorize]
@@ -19,7 +19,7 @@ namespace Api.Controllers
         public IActionResult UpdateMeetingLocationResult(string id, string location)
         {
             var userInfo = User.ToRest();
-            var result = _meetingLocationService.Update(id, location, userInfo);
+            var result = _minutzLocationService.Update(id, location, userInfo);
             if (result.Condition)
             {
                 return Ok();

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using Dapper;
 using Interface.Repositories.Feature.Meeting.Agenda;
+using Minutz.Models.Entities;
 using Minutz.Models.Message;
 
 namespace SqlRepository.Features.Meeting.Agenda
@@ -160,7 +162,7 @@ namespace SqlRepository.Features.Meeting.Agenda
             }
         }
         
-        public MessageBase QuickCreate(string meetingId, string agendaTitle, int order, string schema, string connectionString)
+        public AgendaMessage QuickCreate(string meetingId, string agendaTitle, int order, string schema, string connectionString)
         {
             if (string.IsNullOrEmpty(meetingId) ||
                 string.IsNullOrEmpty(schema) ||
@@ -172,18 +174,23 @@ namespace SqlRepository.Features.Meeting.Agenda
                 {
                     var id = Guid.NewGuid();
                     dbConnection.Open();
-                    var sql = $@"INSERT INTO [{schema}].[MeetingAgenda]([Id],[ReferanceId],[AgendaHeading],[Order]) 
+                    var insertSql = $@"INSERT INTO [{schema}].[MeetingAgenda]([Id],[ReferanceId],[AgendaHeading],[Order]) 
                                  VALUES('{id}','{meetingId}','{agendaTitle}', {order} )";
-                    var data = dbConnection.Execute(sql);
-                    return data == 1
-                        ? new MessageBase {Code = 200, Condition = true, Message = "Success"}
-                        : new MessageBase {Code = 404, Condition = false, Message = "Could not quick create agenda."};
+                    var insertData = dbConnection.Execute(insertSql);
+                    if (insertData == 1)
+                    {
+                        var instanceSql = $@"SELECT * FROM [{schema}].[MeetingAgenda] WHERE [Id] = '{id}'";
+                        var instanceData = dbConnection.Query<MeetingAgenda>(instanceSql).FirstOrDefault();
+                        if (instanceData == null) return  new AgendaMessage {Code = 404, Condition = false, Message = "Could not find quick create agenda item."};
+                        return new AgendaMessage {Code = 200, Condition = true, Message = "Success", Agenda = instanceData };
+                    }
+                    return  new AgendaMessage {Code = 404, Condition = false, Message = "Could not quick create agenda."};
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return new MessageBase {Code = 500, Condition = false, Message = e.Message};
+                return new AgendaMessage {Code = 500, Condition = false, Message = e.Message};
             }
         }
         

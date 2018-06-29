@@ -6,22 +6,22 @@ using Minutz.Models.Message;
 
 namespace Core.Feature.Meeting.Header
 {
-    public class MeetingLocationService: IMeetingLocationService
+    public class MinutzTimeService : IMinutzTimeService
     {
-        private readonly IMinutzLocationRepository _minutzLocationRepository;
+        private readonly IMinutzTimeRepository _minutzTimeRepository;
         private readonly IApplicationSetting _applicationSetting;
 
-        public MeetingLocationService(IMinutzLocationRepository minutzLocationRepository, IApplicationSetting applicationSetting)
+        public MinutzTimeService(IMinutzTimeRepository minutzTimeRepository, IApplicationSetting applicationSetting)
         {
-            _minutzLocationRepository = minutzLocationRepository;
+            _minutzTimeRepository = minutzTimeRepository;
             _applicationSetting = applicationSetting;
         }
-        
-        public MessageBase Update(string meetingId, string location, AuthRestModel user)
+
+        public MessageBase Update(string meetingId, string time, AuthRestModel user)
         {
             var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
                 _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
-            return _minutzLocationRepository.Update(meetingId, location, user.InstanceId, instanceConnectionString);
+            return _minutzTimeRepository.Update(meetingId, time, user.InstanceId, instanceConnectionString);
         }
     }
 }
