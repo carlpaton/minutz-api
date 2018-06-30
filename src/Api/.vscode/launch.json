@@ -30,7 +30,29 @@
                 }
             },
             "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "CLIENTSECRET": "_kVUASQWVawA2pwYry-xP53kQpOALkEj_IGLWCSspXkpUFRtE_W-Gg74phrxZkz8",
+                "DEFAULT_PASSWORD": "2r31QYenF!aw",
+                "NOTIFY-DEFAULT-TEMPLATE-KEY": "716b366a-5d7f-4e19-a07c-bb32762903e5",
+                "DOMAIN": "minutz.eu.auth0.com",
+                "DEFAULT_CATALOGUE": "minutz",
+                "SERVER_ADDRESS": "db.minutz.net,1450",
+                "DEFAULT_SCHEMA": "app",
+                "DEFAULT_USER": "sa",
+                "NOTIFY-KEY": "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",
+                "ReportMinutesKey": "SJKYFyoYM",
+                "CLIENTID": "WDzuh9escySpPeAF5V0t2HdC3Lmo68a-",
+                "UI_BASE_URL": "http://localhost:4200",
+                "AUTHORITY": "https://minutz.eu.auth0.com/",
+                "CONNECTION": "Username-Password-Authentication",
+                "ReportUsername": "leeroya@gmail.com",
+                "NOTIFY-USER": "Minutz",
+                "ReportPassword": "@nathan01",
+                "ReportUrl": "https://minutz.jsreportonline.net/api/report",
+                "AuthorityManagmentToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlFqUTJOME15TURCR01ETXpSVVJDTTBGRE1rRkZNVGRCUTBaRE16UkNRalUyTjBOQ01qVTNRdyJ9.eyJpc3MiOiJodHRwczovL21pbnV0ei5ldS5hdXRoMC5jb20vIiwic3ViIjoiQ3NvNVVRZHVRV2c3N3d4Rmt5aHM3dnVMbUl0OXc1VDRAY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vbWludXR6LmV1LmF1dGgwLmNvbS9hcGkvdjIvIiwiaWF0IjoxNTIyNDE1MTc2LCJleHAiOjE1MjI1MDE1NzYsImF6cCI6IkNzbzVVUWR1UVdnNzd3eEZreWhzN3Z1TG1JdDl3NVQ0Iiwic2NvcGUiOiJyZWFkOmNsaWVudF9ncmFudHMgY3JlYXRlOmNsaWVudF9ncmFudHMgZGVsZXRlOmNsaWVudF9ncmFudHMgdXBkYXRlOmNsaWVudF9ncmFudHMgcmVhZDp1c2VycyB1cGRhdGU6dXNlcnMgZGVsZXRlOnVzZXJzIGNyZWF0ZTp1c2VycyByZWFkOnVzZXJzX2FwcF9tZXRhZGF0YSB1cGRhdGU6dXNlcnNfYXBwX21ldGFkYXRhIGRlbGV0ZTp1c2Vyc19hcHBfbWV0YWRhdGEgY3JlYXRlOnVzZXJzX2FwcF9tZXRhZGF0YSBjcmVhdGU6dXNlcl90aWNrZXRzIHJlYWQ6Y2xpZW50cyB1cGRhdGU6Y2xpZW50cyBkZWxldGU6Y2xpZW50cyBjcmVhdGU6Y2xpZW50cyByZWFkOmNsaWVudF9rZXlzIHVwZGF0ZTpjbGllbnRfa2V5cyBkZWxldGU6Y2xpZW50X2tleXMgY3JlYXRlOmNsaWVudF9rZXlzIHJlYWQ6Y29ubmVjdGlvbnMgdXBkYXRlOmNvbm5lY3Rpb25zIGRlbGV0ZTpjb25uZWN0aW9ucyBjcmVhdGU6Y29ubmVjdGlvbnMgcmVhZDpyZXNvdXJjZV9zZXJ2ZXJzIHVwZGF0ZTpyZXNvdXJjZV9zZXJ2ZXJzIGRlbGV0ZTpyZXNvdXJjZV9zZXJ2ZXJzIGNyZWF0ZTpyZXNvdXJjZV9zZXJ2ZXJzIHJlYWQ6ZGV2aWNlX2NyZWRlbnRpYWxzIHVwZGF0ZTpkZXZpY2VfY3JlZGVudGlhbHMgZGVsZXRlOmRldmljZV9jcmVkZW50aWFscyBjcmVhdGU6ZGV2aWNlX2NyZWRlbnRpYWxzIHJlYWQ6cnVsZXMgdXBkYXRlOnJ1bGVzIGRlbGV0ZTpydWxlcyBjcmVhdGU6cnVsZXMgcmVhZDpydWxlc19jb25maWdzIHVwZGF0ZTpydWxlc19jb25maWdzIGRlbGV0ZTpydWxlc19jb25maWdzIHJlYWQ6ZW1haWxfcHJvdmlkZXIgdXBkYXRlOmVtYWlsX3Byb3ZpZGVyIGRlbGV0ZTplbWFpbF9wcm92aWRlciBjcmVhdGU6ZW1haWxfcHJvdmlkZXIgYmxhY2tsaXN0OnRva2VucyByZWFkOnN0YXRzIHJlYWQ6dGVuYW50X3NldHRpbmdzIHVwZGF0ZTp0ZW5hbnRfc2V0dGluZ3MgcmVhZDpsb2dzIHJlYWQ6c2hpZWxkcyBjcmVhdGU6c2hpZWxkcyBkZWxldGU6c2hpZWxkcyB1cGRhdGU6dHJpZ2dlcnMgcmVhZDp0cmlnZ2VycyByZWFkOmdyYW50cyBkZWxldGU6Z3JhbnRzIHJlYWQ6Z3VhcmRpYW5fZmFjdG9ycyB1cGRhdGU6Z3VhcmRpYW5fZmFjdG9ycyByZWFkOmd1YXJkaWFuX2Vucm9sbG1lbnRzIGRlbGV0ZTpndWFyZGlhbl9lbnJvbGxtZW50cyBjcmVhdGU6Z3VhcmRpYW5fZW5yb2xsbWVudF90aWNrZXRzIHJlYWQ6dXNlcl9pZHBfdG9rZW5zIGNyZWF0ZTpwYXNzd29yZHNfY2hlY2tpbmdfam9iIGRlbGV0ZTpwYXNzd29yZHNfY2hlY2tpbmdfam9iIHJlYWQ6Y3VzdG9tX2RvbWFpbnMgZGVsZXRlOmN1c3RvbV9kb21haW5zIGNyZWF0ZTpjdXN0b21fZG9tYWlucyByZWFkOmVtYWlsX3RlbXBsYXRlcyBjcmVhdGU6ZW1haWxfdGVtcGxhdGVzIHVwZGF0ZTplbWFpbF90ZW1wbGF0ZXMiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMifQ.NVnWI9dQbJqdmPt5RO2eHHKM97BOYMVUnHNRsX-_iGFq48CbNuoCbG8Cv3rg14vezerP5737N0L_Zm8IVXyDGNeQxLySzODQ9e2ia1yw0f4rBPhvOQHj1FFIMa3BLHoBperr5MpWfnuIU5blIkx3EBCUhtX6sGytUhW9-aorkpHiDf0tUlAHfN2MnHOUjNtMAXqv4bqGGOoDF_HVUl3gzdOrSqKXIEpgXEcvZebRoPQ7K8XxfToQiNNcAo2uRHuw6POI5WKFJx7g13oiS_4O3rOFkIUYNBwk_-6bhcMsXvh3PZc55dif7VtPBQxiUvjxHCyQPk-m9_y5KcPmLNAm9g",
+                "MANAGEMENT_CLIENTID": "Cso5UQduQWg77wxFkyhs7vuLmIt9w5T4",
+                "MANAGEMENT_CLIENT_SECRETE": "t9z1Ac3Py4zF3mIuUFLc2izEBOv-mQ1a6Yt2jLmyNZI8LNG3kC2_BqxAxYS0y1VV",
+                "NOTIFY-INVITATION-ADDRESS": "invitation@minutz.net"
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"

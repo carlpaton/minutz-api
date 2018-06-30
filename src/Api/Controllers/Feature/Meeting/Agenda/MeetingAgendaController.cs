@@ -106,8 +106,8 @@ namespace Api.Controllers.Feature.Meeting.Agenda
         }
         
         [Authorize]
-        [HttpDelete("api/feature/agenda", Name = "Quick create agenda")]
-        public IActionResult UpdateMeetingDateResult(Guid id)
+        [HttpDelete("api/feature/agenda", Name = "Delete agenda")]
+        public IActionResult DeleteAgendaResult(Guid id)
         {
             if (!ModelState.IsValid)
                 return StatusCode(401, "Request is missing values for the request");

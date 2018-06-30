@@ -11,7 +11,7 @@ using Minutz.Models;
 using Minutz.Models.Entities;
 using Newtonsoft.Json;
 
-namespace Api.Controllers
+namespace Api.Controllers.Authentication
 {
   public class SignUpController : Controller
   {

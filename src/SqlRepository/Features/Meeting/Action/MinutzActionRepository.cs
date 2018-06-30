@@ -3,17 +3,17 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
-using Interface.Repositories.Feature.Meeting.Agenda;
+using Interface.Repositories.Feature.Meeting.Action;
 using Minutz.Models.Entities;
 using Minutz.Models.Message;
 
-namespace SqlRepository.Features.Meeting.Agenda
+namespace SqlRepository.Features.Meeting.Action
 {
-    public class MinutzAgendaRepository : IMinutzAgendaRepository
+    public class MinutzActionRepository: IMinutzActionRepository
     {
-        public MessageBase UpdateComplete(Guid agendaId, bool isComplete, string schema, string connectionString)
+        public MessageBase UpdateActionComplete(Guid actionId, bool isComplete, string schema, string connectionString)
         {
-            if (agendaId == Guid.Empty ||
+            if (actionId == Guid.Empty ||
                 string.IsNullOrEmpty(schema) ||
                 string.IsNullOrEmpty(connectionString))
                 throw new ArgumentException("Please provide a valid agenda identifier, schema or connection string.");
@@ -23,11 +23,11 @@ namespace SqlRepository.Features.Meeting.Agenda
                 using (IDbConnection dbConnection = new SqlConnection(connectionString))
                 {
                     dbConnection.Open();
-                    var sql = $"UPDATE [{schema}].[MeetingAgenda] SET [IsComplete] = {value} WHERE Id = '{agendaId}'";
+                    var sql = $"UPDATE [{schema}].[MinutzAction] SET [IsComplete] = {value} WHERE Id = '{actionId}'";
                     var data = dbConnection.Execute(sql);
                     return data == 1
                         ? new MessageBase {Code = 200, Condition = true, Message = "Success"}
-                        : new MessageBase {Code = 404, Condition = false, Message = "Could not update agenda isComplete."};
+                        : new MessageBase {Code = 404, Condition = false, Message = "Could not update action isComplete."};
                 }
             }
             catch (Exception e)
@@ -37,9 +37,9 @@ namespace SqlRepository.Features.Meeting.Agenda
             }
         }
         
-        public MessageBase UpdateOrder(Guid agendaId, int order, string schema, string connectionString)
+        public MessageBase UpdateActionText(Guid actionId, string text, string schema, string connectionString)
         {
-            if (agendaId == Guid.Empty ||
+            if (actionId == Guid.Empty ||
                 string.IsNullOrEmpty(schema) ||
                 string.IsNullOrEmpty(connectionString))
                 throw new ArgumentException("Please provide a valid agenda identifier, schema or connection string.");
@@ -48,11 +48,11 @@ namespace SqlRepository.Features.Meeting.Agenda
                 using (IDbConnection dbConnection = new SqlConnection(connectionString))
                 {
                     dbConnection.Open();
-                    var sql = $"UPDATE [{schema}].[MeetingAgenda] SET [Order] = {order} WHERE Id = '{agendaId}'";
+                    var sql = $"UPDATE [{schema}].[MinutzAction] SET [ActionText] = '{text}' WHERE Id = '{actionId}'";
                     var data = dbConnection.Execute(sql);
                     return data == 1
                         ? new MessageBase {Code = 200, Condition = true, Message = "Success"}
-                        : new MessageBase {Code = 404, Condition = false, Message = "Could not update agenda order."};
+                        : new MessageBase {Code = 404, Condition = false, Message = "Could not update action text."};
                 }
             }
             catch (Exception e)
@@ -62,9 +62,9 @@ namespace SqlRepository.Features.Meeting.Agenda
             }
         }
         
-        public MessageBase UpdateDuration(Guid agendaId, int duration, string schema, string connectionString)
+        public MessageBase UpdateActionAssignedAttendee(Guid actionId, string email, string schema, string connectionString)
         {
-            if (agendaId == Guid.Empty ||
+            if (actionId == Guid.Empty ||
                 string.IsNullOrEmpty(schema) ||
                 string.IsNullOrEmpty(connectionString))
                 throw new ArgumentException("Please provide a valid agenda identifier, schema or connection string.");
@@ -73,11 +73,17 @@ namespace SqlRepository.Features.Meeting.Agenda
                 using (IDbConnection dbConnection = new SqlConnection(connectionString))
                 {
                     dbConnection.Open();
-                    var sql = $"UPDATE [{schema}].[MeetingAgenda] SET [Duration] = {duration} WHERE Id = '{agendaId}'";
-                    var data = dbConnection.Execute(sql);
-                    return data == 1
-                        ? new MessageBase {Code = 200, Condition = true, Message = "Success"}
-                        : new MessageBase {Code = 404, Condition = false, Message = "Could not update agenda duration."};
+                    var userSql = $@"SELECT * FROM [{schema}].[AvailibleAttendee] WHERE [Email] = '{email}'";
+                    var instanceData = dbConnection.Query<AvailibleAttendee>(userSql).FirstOrDefault();
+                    if (instanceData != null)
+                    {
+                        var sql = $"UPDATE [{schema}].[MinutzAction] SET [PersonId] = '{instanceData.Id}' WHERE Id = '{actionId}'";
+                        var data = dbConnection.Execute(sql);
+                        return data == 1
+                            ? new MessageBase {Code = 200, Condition = true, Message = "Success"}
+                            : new MessageBase {Code = 404, Condition = false, Message = "Could not update action assigned attendee."};
+                    }
+                    return new MessageBase {Code = 404, Condition = false, Message = "Could not update action assigned attendee as the attendee cannot be found."};
                 }
             }
             catch (Exception e)
@@ -87,9 +93,9 @@ namespace SqlRepository.Features.Meeting.Agenda
             }
         }
         
-        public MessageBase UpdateTitle(Guid agendaId, string title, string schema, string connectionString)
+        public MessageBase UpdateActionDueDate(Guid actionId, DateTime dueDate, string schema, string connectionString)
         {
-            if (agendaId == Guid.Empty ||
+            if (actionId == Guid.Empty ||
                 string.IsNullOrEmpty(schema) ||
                 string.IsNullOrEmpty(connectionString))
                 throw new ArgumentException("Please provide a valid agenda identifier, schema or connection string.");
@@ -98,11 +104,11 @@ namespace SqlRepository.Features.Meeting.Agenda
                 using (IDbConnection dbConnection = new SqlConnection(connectionString))
                 {
                     dbConnection.Open();
-                    var sql = $"UPDATE [{schema}].[MeetingAgenda] SET [AgendaHeading] = '{title}' WHERE Id = '{agendaId}'";
+                    var sql = $"UPDATE [{schema}].[MinutzAction] SET [DueDate] = '{dueDate}' WHERE Id = '{actionId}'";
                     var data = dbConnection.Execute(sql);
                     return data == 1
                         ? new MessageBase {Code = 200, Condition = true, Message = "Success"}
-                        : new MessageBase {Code = 404, Condition = false, Message = "Could not update agenda title."};
+                        : new MessageBase {Code = 404, Condition = false, Message = "Could not update action due date."};
                 }
             }
             catch (Exception e)
@@ -112,9 +118,9 @@ namespace SqlRepository.Features.Meeting.Agenda
             }
         }
         
-        public MessageBase UpdateText(Guid agendaId, string text, string schema, string connectionString)
+        public MessageBase UpdateActionOrder(Guid actionId, int order, string schema, string connectionString)
         {
-            if (agendaId == Guid.Empty ||
+            if (actionId == Guid.Empty ||
                 string.IsNullOrEmpty(schema) ||
                 string.IsNullOrEmpty(connectionString))
                 throw new ArgumentException("Please provide a valid agenda identifier, schema or connection string.");
@@ -123,11 +129,11 @@ namespace SqlRepository.Features.Meeting.Agenda
                 using (IDbConnection dbConnection = new SqlConnection(connectionString))
                 {
                     dbConnection.Open();
-                    var sql = $"UPDATE [{schema}].[MeetingAgenda] SET [AgendaText] = '{text}' WHERE Id = '{agendaId}'";
+                    var sql = $"UPDATE [{schema}].[MinutzAction] SET [Order] = {order} WHERE Id = '{actionId}'";
                     var data = dbConnection.Execute(sql);
                     return data == 1
                         ? new MessageBase {Code = 200, Condition = true, Message = "Success"}
-                        : new MessageBase {Code = 404, Condition = false, Message = "Could not update agenda text."};
+                        : new MessageBase {Code = 404, Condition = false, Message = "Could not update action order."};
                 }
             }
             catch (Exception e)
@@ -137,34 +143,9 @@ namespace SqlRepository.Features.Meeting.Agenda
             }
         }
         
-        public MessageBase UpdateAssignedAttendee(Guid agendaId, string attendeeEmail, string schema, string connectionString)
+        public ActionMessage QuickCreate(Guid meetingId, string actionText, int order, string schema, string connectionString)
         {
-            if (agendaId == Guid.Empty ||
-                string.IsNullOrEmpty(schema) ||
-                string.IsNullOrEmpty(connectionString))
-                throw new ArgumentException("Please provide a valid agenda identifier, schema or connection string.");
-            try
-            {
-                using (IDbConnection dbConnection = new SqlConnection(connectionString))
-                {
-                    dbConnection.Open();
-                    var sql = $"UPDATE [{schema}].[MeetingAgenda] SET [MeetingAttendeeId] = '{attendeeEmail}' WHERE Id = '{agendaId}'";
-                    var data = dbConnection.Execute(sql);
-                    return data == 1
-                        ? new MessageBase {Code = 200, Condition = true, Message = "Success"}
-                        : new MessageBase {Code = 404, Condition = false, Message = "Could not update agenda assigned attendee."};
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return new MessageBase {Code = 500, Condition = false, Message = e.Message};
-            }
-        }
-        
-        public AgendaMessage QuickCreate(string meetingId, string agendaTitle, int order, string schema, string connectionString)
-        {
-            if (string.IsNullOrEmpty(meetingId) ||
+            if (meetingId == Guid.Empty ||
                 string.IsNullOrEmpty(schema) ||
                 string.IsNullOrEmpty(connectionString))
                 throw new ArgumentException("Please provide a valid agenda identifier, schema or connection string.");
@@ -174,29 +155,29 @@ namespace SqlRepository.Features.Meeting.Agenda
                 {
                     var id = Guid.NewGuid();
                     dbConnection.Open();
-                    var insertSql = $@"INSERT INTO [{schema}].[MeetingAgenda]([Id],[ReferanceId],[AgendaHeading],[Order]) 
-                                 VALUES('{id}','{meetingId}','{agendaTitle}', {order} )";
+                    var insertSql = $@"INSERT INTO [{schema}].[MinutzAction]([Id],[ReferanceId],[AgendaHeading],[Order], [CreatedDate]) 
+                                 VALUES('{id}','{meetingId}','{actionText}', {order},'{DateTime.UtcNow}' )";
                     var insertData = dbConnection.Execute(insertSql);
                     if (insertData == 1)
                     {
-                        var instanceSql = $@"SELECT * FROM [{schema}].[MeetingAgenda] WHERE [Id] = '{id}'";
-                        var instanceData = dbConnection.Query<MeetingAgenda>(instanceSql).FirstOrDefault();
-                        if (instanceData == null) return  new AgendaMessage {Code = 404, Condition = false, Message = "Could not find quick create agenda item."};
-                        return new AgendaMessage {Code = 200, Condition = true, Message = "Success", Agenda = instanceData };
+                        var instanceSql = $@"SELECT * FROM [{schema}].[MinutzAction] WHERE [Id] = '{id}'";
+                        var instanceData = dbConnection.Query<MinutzAction>(instanceSql).FirstOrDefault();
+                        if (instanceData == null) return  new ActionMessage {Code = 404, Condition = false, Message = "Could not find quick create action item."};
+                        return new ActionMessage {Code = 200, Condition = true, Message = "Success", Action = instanceData };
                     }
-                    return  new AgendaMessage {Code = 404, Condition = false, Message = "Could not quick create agenda."};
+                    return  new ActionMessage {Code = 404, Condition = false, Message = "Could not quick create agenda."};
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return new AgendaMessage {Code = 500, Condition = false, Message = e.Message};
+                return new ActionMessage {Code = 500, Condition = false, Message = e.Message};
             }
         }
         
-        public MessageBase Delete(Guid agendaId, string schema, string connectionString)
+        public MessageBase Delete(Guid actionId, string schema, string connectionString)
         {
-            if (agendaId == Guid.Empty ||
+            if (actionId == Guid.Empty ||
                 string.IsNullOrEmpty(schema) ||
                 string.IsNullOrEmpty(connectionString))
                 throw new ArgumentException("Please provide a valid agenda identifier, schema or connection string.");
@@ -205,11 +186,11 @@ namespace SqlRepository.Features.Meeting.Agenda
                 using (IDbConnection dbConnection = new SqlConnection(connectionString))
                 {
                     dbConnection.Open();
-                    var sql = $@"DELETE FROM [{schema}].[MeetingAgenda] WHERE [Id] = '{agendaId}' ";
+                    var sql = $@"DELETE FROM [{schema}].[MinutzAction] WHERE [Id] = '{actionId}' ";
                     var data = dbConnection.Execute(sql);
                     return data == 1
                         ? new MessageBase {Code = 200, Condition = true, Message = "Success"}
-                        : new MessageBase {Code = 404, Condition = false, Message = "Could not delete agenda."};
+                        : new MessageBase {Code = 404, Condition = false, Message = "Could not delete action."};
                 }
             }
             catch (Exception e)

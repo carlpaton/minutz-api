@@ -7,6 +7,7 @@ using AuthenticationRepository;
 using Core;
 using Core.ExternalServices;
 using Core.Feature.Dashboard;
+using Core.Feature.Meeting.Action;
 using Core.Feature.Meeting.Agenda;
 using Core.Feature.Meeting.Header;
 using Core.LogProvider;
@@ -14,10 +15,12 @@ using Core.Validation;
 using Interface;
 using Interface.Repositories;
 using Interface.Repositories.Feature.Dashboard;
+using Interface.Repositories.Feature.Meeting.Action;
 using Interface.Repositories.Feature.Meeting.Agenda;
 using Interface.Repositories.Feature.Meeting.Header;
 using Interface.Services;
 using Interface.Services.Feature.Dashboard;
+using Interface.Services.Feature.Meeting.Action;
 using Interface.Services.Feature.Meeting.Agenda;
 using Interface.Services.Feature.Meeting.Header;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -33,6 +36,7 @@ using Notifications;
 using Reports;
 using SqlRepository;
 using SqlRepository.Features.Dashboard;
+using SqlRepository.Features.Meeting.Action;
 using SqlRepository.Features.Meeting.Agenda;
 using SqlRepository.Features.Meeting.Header;
 using Swashbuckle.AspNetCore.Swagger;
@@ -160,8 +164,11 @@ namespace Minutz.Api
             //*MinutzAgenda
             services.AddTransient<IMinutzAgendaRepository, MinutzAgendaRepository>();
             services.AddTransient<IMinutzAgendaService, MinutzAgendaService>();
+            //*MinutzAction
+            services.AddTransient<IMinutzActionRepository, MinutzActionRepository>();
+            services.AddTransient<IMinutzActionService, MinutzActionService>();
             
-
+            
             services.AddMemoryCache();
             services.AddMvc();
             var appSetting = new ApplicationSetting(new InstanceRepository(), new MinutzEncryption.Encryptor());

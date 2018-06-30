@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Minutz.Models.Entities;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Api.Controllers
+namespace Api.Controllers.Authentication
 {
   public class UserController : Controller
   {
