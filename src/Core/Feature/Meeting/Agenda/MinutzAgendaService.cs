@@ -18,6 +18,13 @@ namespace Core.Feature.Meeting.Agenda
             _minutzAgendaRepository = minutzAgendaRepository;
         }
 
+        public AgendaMessage GetMeetingAgendaCollection(Guid meetingId, AuthRestModel user)
+        {
+            var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+                _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
+            return _minutzAgendaRepository.GetMeetingAgendaCollection(meetingId, user.InstanceId, instanceConnectionString);
+        }
+
         public MessageBase UpdateComplete(Guid agendaId, bool isComplete, AuthRestModel user)
         {
             var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,

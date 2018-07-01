@@ -17,6 +17,16 @@ namespace Api.Controllers.Feature.Meeting.Agenda
         }
 
         [Authorize]
+        [HttpPut("api/feature/agenda/meeting", Name = "Get meeting agenda collection")]
+        public IActionResult GetMeetingAgendaCollectionResult(string meetingId)
+        {
+            if (string.IsNullOrEmpty(meetingId))
+                return StatusCode(401, "Request is missing values for the request");
+            var result = _minutzAgendaService.GetMeetingAgendaCollection(Guid.Parse(meetingId) ,User.ToRest());
+            return result.Condition ? Ok(result.Agenda) : StatusCode(result.Code, result.Message);
+        }
+
+        [Authorize]
         [HttpPut("api/feature/agenda/quick", Name = "Quick create agenda")]
         public IActionResult QuickCreateAgendaResult([FromBody]QuickAgendaRequest request)
         {

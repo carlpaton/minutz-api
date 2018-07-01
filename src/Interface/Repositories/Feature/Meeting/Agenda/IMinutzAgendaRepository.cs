@@ -11,7 +11,7 @@ namespace Interface.Repositories.Feature.Meeting.Agenda
         MessageBase UpdateTitle(Guid agendaId, string title, string schema, string connectionString);
         MessageBase UpdateText(Guid agendaId, string text, string schema, string connectionString);
         MessageBase UpdateAssignedAttendee(Guid agendaId, string attendeeEmail, string schema, string connectionString);
-
+        AgendaMessage GetMeetingAgendaCollection (Guid meetingId, string schema, string connectionString);
         AgendaMessage QuickCreate(string meetingId, string agendaTitle, int order, string schema, string connectionString);
         MessageBase Delete(Guid agendaId, string schema, string connectionString);
     }

@@ -6,6 +6,7 @@ namespace Interface.Services.Feature.Meeting.Agenda
 {
     public interface IMinutzAgendaService
     {
+        AgendaMessage GetMeetingAgendaCollection(Guid meetingId, AuthRestModel user);
         MessageBase UpdateComplete(Guid agendaId, bool isComplete, AuthRestModel user);
         MessageBase UpdateOrder(Guid agendaId, int order, AuthRestModel user);
         MessageBase UpdateDuration(Guid agendaId, int duration, AuthRestModel user);
