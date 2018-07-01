@@ -5,6 +5,7 @@ namespace Interface.Repositories.Feature.Meeting.Action
 {
     public interface IMinutzActionRepository
     {
+        ActionMessage GetMeetingActions(Guid meetingId, string schema, string connectionString);
         MessageBase UpdateActionComplete(Guid actionId, bool isComplete, string schema, string connectionString);
         MessageBase UpdateActionText(Guid actionId, string text, string schema, string connectionString);
         MessageBase UpdateActionAssignedAttendee(Guid actionId, string email, string schema, string connectionString);

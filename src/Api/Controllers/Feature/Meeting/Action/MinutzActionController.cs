@@ -17,6 +17,17 @@ namespace Api.Controllers.Feature.Meeting.Action
         }
 
         [Authorize]
+        [HttpGet("api/feature/actions", Name = "Get the actions for a meeting")]
+        public IActionResult GetMeetingActionsResult(string meetingId)
+        {
+            if (string.IsNullOrEmpty(meetingId))
+                return StatusCode(401, "Request is missing values for the request");
+            var result = _minutzActionService.GetMeetingActions
+                (Guid.Parse(meetingId) ,User.ToRest());
+            return result.Condition ? Ok(result.Action) : StatusCode(result.Code, result.Message);
+        }
+
+        [Authorize]
         [HttpPut("api/feature/action/quick", Name = "Quick create action")]
         public IActionResult QuickCreateActionResult([FromBody]QuickActionRequest request)
         {

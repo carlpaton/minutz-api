@@ -19,6 +19,13 @@ namespace Core.Feature.Meeting.Action
             _applicationSetting = applicationSetting;
         }
 
+        public ActionMessage GetMeetingActions(Guid meetingId, AuthRestModel user)
+        {
+            var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+                _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
+            return _minutzActionRepository.GetMeetingActions(meetingId, user.InstanceId,instanceConnectionString);
+        }
+
         public MessageBase UpdateActionComplete(Guid actionId, bool isComplete, AuthRestModel user)
         {
             var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,

@@ -6,5 +6,7 @@ namespace Interface.Services.Feature.Dashboard
     public interface IUserMeetingsService
     {
         MeetingMessage Meetings(AuthRestModel user);
+
+        MeetingMessage CreateEmptyUserMeeting (AuthRestModel user);
     }
 }

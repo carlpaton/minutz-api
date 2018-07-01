@@ -17,7 +17,14 @@ namespace Core.Feature.Dashboard
             _userMeetingsRepository = userMeetingsRepository;
             _applicationSetting = applicationSetting;
         }
-        
+
+        public MeetingMessage CreateEmptyUserMeeting(AuthRestModel user)
+        {
+            var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+                _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
+            return _userMeetingsRepository.CreateEmptyUserMeeting(user.Email, user.InstanceId, instanceConnectionString);
+        }
+
         public MeetingMessage Meetings(AuthRestModel user)
         {
             var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
