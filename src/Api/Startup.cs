@@ -7,6 +7,7 @@ using AuthenticationRepository;
 using Core;
 using Core.ExternalServices;
 using Core.Feature.Dashboard;
+using Core.Feature.Meeting;
 using Core.Feature.Meeting.Action;
 using Core.Feature.Meeting.Agenda;
 using Core.Feature.Meeting.Header;
@@ -15,6 +16,7 @@ using Core.Validation;
 using Interface;
 using Interface.Repositories;
 using Interface.Repositories.Feature.Dashboard;
+using Interface.Repositories.Feature.Meeting;
 using Interface.Repositories.Feature.Meeting.Action;
 using Interface.Repositories.Feature.Meeting.Agenda;
 using Interface.Repositories.Feature.Meeting.Header;
@@ -36,6 +38,7 @@ using Notifications;
 using Reports;
 using SqlRepository;
 using SqlRepository.Features.Dashboard;
+using SqlRepository.Features.Meeting;
 using SqlRepository.Features.Meeting.Action;
 using SqlRepository.Features.Meeting.Agenda;
 using SqlRepository.Features.Meeting.Header;
@@ -167,7 +170,9 @@ namespace Minutz.Api
             //*MinutzAction
             services.AddTransient<IMinutzActionRepository, MinutzActionRepository>();
             services.AddTransient<IMinutzActionService, MinutzActionService>();
-            
+            //User Meeting Manager 
+            services.AddTransient<IUserManageMeetingRepository, UserManageMeetingRepository>();
+            services.AddTransient<IUserManageMeetingService, UserManageMeetingService>();
             
             services.AddMemoryCache();
             services.AddMvc();

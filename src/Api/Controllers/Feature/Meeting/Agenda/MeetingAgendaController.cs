@@ -17,7 +17,7 @@ namespace Api.Controllers.Feature.Meeting.Agenda
         }
 
         [Authorize]
-        [HttpPut("api/feature/agenda/meeting", Name = "Get meeting agenda collection")]
+        [HttpGet("api/feature/agenda/meeting", Name = "Get meeting agenda collection")]
         public IActionResult GetMeetingAgendaCollectionResult(string meetingId)
         {
             if (string.IsNullOrEmpty(meetingId))
