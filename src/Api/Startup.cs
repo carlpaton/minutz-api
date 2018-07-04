@@ -22,6 +22,7 @@ using Interface.Repositories.Feature.Meeting.Agenda;
 using Interface.Repositories.Feature.Meeting.Header;
 using Interface.Services;
 using Interface.Services.Feature.Dashboard;
+using Interface.Services.Feature.Meeting;
 using Interface.Services.Feature.Meeting.Action;
 using Interface.Services.Feature.Meeting.Agenda;
 using Interface.Services.Feature.Meeting.Header;
@@ -173,6 +174,9 @@ namespace Minutz.Api
             //User Meeting Manager 
             services.AddTransient<IUserManageMeetingRepository, UserManageMeetingRepository>();
             services.AddTransient<IUserManageMeetingService, UserManageMeetingService>();
+            // Objective Purpose
+            services.AddTransient<IMeetingObjectivePurposeRepository, MeetingObjectivePurposeRepository>();
+            services.AddTransient<IMeetingObjectivePurposeService, MeetingObjectivePurposeService>();
             
             services.AddMemoryCache();
             services.AddMvc();

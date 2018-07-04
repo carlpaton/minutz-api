@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Api.Models.Feature.Meeting
 {
-    public class MeetingModel
+    public class MeetingUpdateRequest
     {
         [Required]
         public Guid id {get;set;}

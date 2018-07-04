@@ -35,7 +35,7 @@ namespace Api.Controllers.Feature.Meeting
 
         [Authorize]
         [HttpPost("api/feature/managemeeting/user", Name = "User Meeting Item")]
-        public IActionResult UserMeetingResult([FromBody] MeetingModel meeting)
+        public IActionResult UserMeetingResult([FromBody] MeetingUpdateRequest meeting)
         {
             var userInfo = User.ToRest();
             var meetingEntity = new Minutz.Models.Entities.Meeting {
