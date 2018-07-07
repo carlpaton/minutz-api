@@ -4,6 +4,7 @@ using Api.Models.Feature.Agenda;
 using Interface.Services.Feature.Meeting.Agenda;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Minutz.Models.Entities;
 
 namespace Api.Controllers.Feature.Meeting.Agenda
 {
@@ -24,94 +25,94 @@ namespace Api.Controllers.Feature.Meeting.Agenda
                 return StatusCode(401, "Request is missing values for the request");
             var result = _minutzAgendaService.GetMeetingAgendaCollection(Guid.Parse(meetingId) ,User.ToRest());
             return result.Condition ? Ok(result.Agenda) : StatusCode(result.Code, result.Message);
+        } 
+            
+         [Authorize]
+        [HttpGet("api/feature/agenda/collection", Name = "Get the collection of agenda items")]
+        public IActionResult GetCollectionAgendaResult(string refId)
+        {
+            if (string.IsNullOrEmpty(refId))
+                return StatusCode(401, "Request is missing values for the request");
+            var result = _minutzAgendaService.GetMeetingAgendaCollection
+                (Guid.Parse(refId),User.ToRest());
+            return result.Condition ? Ok(result.AgendaCollection) : StatusCode(result.Code, result.Message);
         }
 
+        
         [Authorize]
         [HttpPut("api/feature/agenda/quick", Name = "Quick create agenda")]
-        public IActionResult QuickCreateAgendaResult([FromBody]QuickAgendaRequest request)
+        public IActionResult QuickCreateAgendaResult([FromBody]MeetingAgenda request)
         {
             if (!ModelState.IsValid)
                 return StatusCode(401, "Request is missing values for the request");
             var result = _minutzAgendaService.QuickCreate
-                (request.MeetingId, request.AgendaTitle,request.Order ,User.ToRest());
+                (request.ReferenceId, request.AgendaHeading,request.Order ,User.ToRest());
             return result.Condition ? Ok(result.Agenda) : StatusCode(result.Code, result.Message);
         }
         
         [Authorize]
         [HttpPost("api/feature/agenda/complete", Name = "Update agenda complete status")]
-        public IActionResult UpdateCompleteResult([FromBody]AgendaUpdateRequest request)
+        public IActionResult UpdateCompleteResult([FromBody]MeetingAgenda request)
         {
             if (!ModelState.IsValid)
                 return StatusCode(401, "Request is missing values for the request");
-            bool? complete = request.Value as bool?;
-            if(complete == null) return StatusCode(401, "Request is missing complete value for the request");
             var result = _minutzAgendaService.UpdateComplete
-                (request.Id, (bool)complete ,User.ToRest());
+                (request.Id, request.IsComplete ,User.ToRest());
             return result.Condition ? (IActionResult) Ok() : StatusCode(result.Code, result.Message);
         }
         
         [Authorize]
         [HttpPost("api/feature/agenda/order", Name = "Update agenda order")]
-        public IActionResult UpdateOrderResult([FromBody]AgendaUpdateRequest request)
+        public IActionResult UpdateOrderResult([FromBody]MeetingAgenda request)
         {
             if (!ModelState.IsValid)
                 return StatusCode(401, "Request is missing values for the request");
-            int? order = request.Value as int?;
-            if(order == null) return StatusCode(401, "Request is missing order value for the request");
             var result = _minutzAgendaService.UpdateOrder
-                (request.Id, (int)order ,User.ToRest());
+                (request.Id, request.Order ,User.ToRest());
             return result.Condition ? (IActionResult) Ok() : StatusCode(result.Code, result.Message);
         }
         
         [Authorize]
         [HttpPost("api/feature/agenda/duration", Name = "Update agenda duration")]
-        public IActionResult UpdateDurationResult([FromBody]AgendaUpdateRequest request)
+        public IActionResult UpdateDurationResult([FromBody]MeetingAgenda request)
         {
             if (!ModelState.IsValid)
                 return StatusCode(401, "Request is missing values for the request");
-            int? duration = request.Value as int?;
-            if(duration == null) return StatusCode(401, "Request is missing duration value for the request");
             var result = _minutzAgendaService.UpdateDuration
-                (request.Id, (int)duration ,User.ToRest());
+                (request.Id, Convert.ToInt32(request.Duration) ,User.ToRest());
             return result.Condition ? (IActionResult) Ok() : StatusCode(result.Code, result.Message);
         }
         
         [Authorize]
         [HttpPost("api/feature/agenda/title", Name = "Update agenda title")]
-        public IActionResult UpdateTitleResult([FromBody]AgendaUpdateRequest request)
+        public IActionResult UpdateTitleResult([FromBody]MeetingAgenda request)
         {
             if (!ModelState.IsValid)
                 return StatusCode(401, "Request is missing values for the request");
-            string title = request.Value as string;
-            if(title == null) return StatusCode(401, "Request is missing title value for the request");
             var result = _minutzAgendaService.UpdateTitle
-                (request.Id, (string)title ,User.ToRest());
+                (request.Id, request.AgendaHeading ,User.ToRest());
             return result.Condition ? (IActionResult) Ok() : StatusCode(result.Code, result.Message);
         }
         
         [Authorize]
         [HttpPost("api/feature/agenda/text", Name = "Update agenda text")]
-        public IActionResult UpdateTextResult([FromBody]AgendaUpdateRequest request)
+        public IActionResult UpdateTextResult([FromBody]MeetingAgenda request)
         {
             if (!ModelState.IsValid)
                 return StatusCode(401, "Request is missing values for the request");
-            string text = request.Value as string;
-            if(text == null) return StatusCode(401, "Request is missing text value for the request");
             var result = _minutzAgendaService.UpdateText
-                (request.Id, (string)text ,User.ToRest());
+                (request.Id, request.AgendaText,User.ToRest());
             return result.Condition ? (IActionResult) Ok() : StatusCode(result.Code, result.Message);
         }
         
         [Authorize]
         [HttpPost("api/feature/agenda/attendee", Name = "Update attendee")]
-        public IActionResult UpdateAssignedAttendeeResult([FromBody]AgendaUpdateRequest request)
+        public IActionResult UpdateAssignedAttendeeResult([FromBody]MeetingAgenda request)
         {
             if (!ModelState.IsValid)
                 return StatusCode(401, "Request is missing values for the request");
-            string attendee = request.Value as string;
-            if(attendee == null) return StatusCode(401, "Request is missing attendee value for the request");
             var result = _minutzAgendaService.UpdateAssignedAttendee
-                (request.Id, (string)attendee ,User.ToRest());
+                (request.Id, request.MeetingAttendeeId ,User.ToRest());
             return result.Condition ? (IActionResult) Ok() : StatusCode(result.Code, result.Message);
         }
         

@@ -265,9 +265,8 @@ namespace SqlRepository.Features.Meeting.Agenda
             {
                 using (IDbConnection dbConnection = new SqlConnection(connectionString))
                 {
-                    var id = Guid.NewGuid();
                     dbConnection.Open();
-                    var instanceSql = $@"SELECT * FROM [{schema}].[MeetingAgenda] WHERE [ReferanceId] = '{id}'";
+                    var instanceSql = $@"SELECT * FROM [{schema}].[MeetingAgenda] WHERE [ReferanceId] = '{meetingId}'";
                     var instanceData = dbConnection.Query<MeetingAgenda>(instanceSql).ToList();
                     return new AgendaMessage
                            {

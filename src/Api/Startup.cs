@@ -178,6 +178,7 @@ namespace Minutz.Api
             services.AddTransient<IMeetingObjectivePurposeRepository, MeetingObjectivePurposeRepository>();
             services.AddTransient<IMeetingObjectivePurposeService, MeetingObjectivePurposeService>();
             
+            
             services.AddMemoryCache();
             services.AddMvc();
             var appSetting = new ApplicationSetting(new InstanceRepository(), new MinutzEncryption.Encryptor());

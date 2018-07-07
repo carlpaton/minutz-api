@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Interface.Repositories.Feature.Meeting.Agenda;
 using Interface.Services;
 using Interface.Services.Feature.Meeting.Agenda;
@@ -22,7 +24,25 @@ namespace Core.Feature.Meeting.Agenda
         {
             var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
                 _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
-            return _minutzAgendaRepository.GetMeetingAgendaCollection(meetingId, user.InstanceId, instanceConnectionString);
+            var data = _minutzAgendaRepository.GetMeetingAgendaCollection(meetingId, user.InstanceId, instanceConnectionString);
+            if (data.Condition)
+            {
+                if (data.AgendaCollection.Any())
+                {
+                    var updated = new List<MeetingAgenda>();
+                    foreach (var agenda in data.AgendaCollection)
+                    {
+                        if (agenda.Order == 0)
+                        {
+                            agenda.Order = updated.Count;
+                        }
+                        updated.Add(agenda);
+                    }
+                    data.AgendaCollection = updated;
+                    data.AgendaCollection = data.AgendaCollection.OrderBy(i => i.Order).ToList();
+                }
+            }
+            return new AgendaMessage{ Condition = data.Condition, Message = data.Message, AgendaCollection = data.AgendaCollection};
         }
 
         public MessageBase UpdateComplete(Guid agendaId, bool isComplete, AuthRestModel user)
