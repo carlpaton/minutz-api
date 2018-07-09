@@ -20,24 +20,30 @@ namespace SqlRepository.Features.Meeting.Attendee
         /// </summary>
         /// <param name="schema">Instance Schema for the account</param>
         /// <param name="connectionString">Built connection string for instance</param>
+        /// <param name="masterConnectionString"></param>
         /// <returns>Collection of MeetingAttendees</returns>
         /// <exception cref="ArgumentException"></exception>
-        public AttendeeMessage GetAvailableAttendees(string schema, string connectionString)
+        public AttendeeMessage GetAvailableAttendees(string schema, string connectionString, string masterConnectionString)
         {
             if (string.IsNullOrEmpty(schema) ||
                 string.IsNullOrEmpty(connectionString))
                 throw new ArgumentException("Please provide a valid agenda identifier, schema or connection string.");
             try
             {
+                List<Person> people;
+                using (IDbConnection masterDbConnection = new SqlConnection(masterConnectionString))
+                {
+                    var peopleSql = $@"SELECT * FROM [app].[Person]";
+                    var peopleData = masterDbConnection.Query<Minutz.Models.Entities.Person>(peopleSql).ToList();
+                    people = peopleData;
+                }
+
                 using (IDbConnection dbConnection = new SqlConnection(connectionString))
                 {
                     dbConnection.Open();
                     var instanceSql = $@"SELECT * FROM [{schema}].[AvailibleAttendee]";
                     var instanceData = dbConnection.Query<Minutz.Models.Entities.AvailibleAttendee>(instanceSql)
                         .ToList();
-
-                    var peopleSql = $@"SELECT * FROM [{schema}].[Person]";
-                    var peopleData = dbConnection.Query<Minutz.Models.Entities.Person>(peopleSql).ToList();
 
                     var attendees = new List<MeetingAttendee>();
                     foreach (var attendee in instanceData)
@@ -50,7 +56,7 @@ namespace SqlRepository.Features.Meeting.Attendee
                                       Status = attendee.Status,
                                       Email = attendee.Email
                                   };
-                        var person = peopleData.FirstOrDefault(i => i.Identityid == attendee.PersonIdentity);
+                        var person = people.FirstOrDefault(i => i.Identityid == attendee.PersonIdentity);
                         if (person != null)
                         {
                             att.Name = string.IsNullOrEmpty(person.FullName)

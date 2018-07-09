@@ -4,6 +4,6 @@ namespace Interface.Repositories.Feature.Meeting
 {
     public interface IMinutzAvailabilityRepository
     {
-        AttendeeMessage GetAvailableAttendees(string schema, string connectionString);
+        AttendeeMessage GetAvailableAttendees(string schema, string connectionString, string masterConnectionString);
     }
 }

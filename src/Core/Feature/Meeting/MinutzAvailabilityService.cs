@@ -30,7 +30,8 @@ namespace Core.Feature.Meeting
         {
             var instanceConnectionString = _applicationSetting.CreateConnectionString (_applicationSetting.Server,
                 _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword (user.InstanceId));
-            return _minutzAvailabilityRepository.GetAvailableAttendees(user.InstanceId, instanceConnectionString);
+            var masterConnectionString = _applicationSetting.CreateConnectionString();
+            return _minutzAvailabilityRepository.GetAvailableAttendees(user.InstanceId, instanceConnectionString, masterConnectionString);
         }
     }
 }
