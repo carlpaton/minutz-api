@@ -9,6 +9,6 @@ namespace Minutz.Models.Entities
         public string PersonIdentity { get; set; }
         public string Email { get; set; }
         public string Status { get; set; }
-        public string Roles { get; set; }
+        public string Role { get; set; }
     }
 }

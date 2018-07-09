@@ -42,6 +42,7 @@ using SqlRepository.Features.Dashboard;
 using SqlRepository.Features.Meeting;
 using SqlRepository.Features.Meeting.Action;
 using SqlRepository.Features.Meeting.Agenda;
+using SqlRepository.Features.Meeting.Attendee;
 using SqlRepository.Features.Meeting.Header;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -177,7 +178,12 @@ namespace Minutz.Api
             // Objective Purpose
             services.AddTransient<IMeetingObjectivePurposeRepository, MeetingObjectivePurposeRepository>();
             services.AddTransient<IMeetingObjectivePurposeService, MeetingObjectivePurposeService>();
+
+            services.AddTransient<IMinutzAvailabilityRepository, MinutzAvailabilityRepository>();
+            services.AddTransient<IMinutzAvailabilityService, MinutzAvailabilityService>();
             
+            services.AddTransient<IMinutzAttendeeRepository, MinutzAttendeeRepository>();
+            services.AddTransient<IMinutzAttendeeService, MinutzAttendeeService>();
             
             services.AddMemoryCache();
             services.AddMvc();
