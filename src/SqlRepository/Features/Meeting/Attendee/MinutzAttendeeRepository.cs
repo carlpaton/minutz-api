@@ -18,9 +18,10 @@ namespace SqlRepository.Features.Meeting.Attendee
         /// <param name="meetingId">Current meeting Id</param>
         /// <param name="schema">Current instance id</param>
         /// <param name="connectionString">Instance connection string</param>
+        /// <param name="masterConnectionString"></param>
         /// <returns>Collection of meeting attendees</returns>
         /// <exception cref="ArgumentException"></exception>
-        public AttendeeMessage GetAttendees(Guid meetingId, string schema, string connectionString)
+        public AttendeeMessage GetAttendees(Guid meetingId, string schema, string connectionString, string masterConnectionString)
         {
             if (meetingId == Guid.Empty ||
                 string.IsNullOrEmpty(schema) ||
@@ -28,14 +29,21 @@ namespace SqlRepository.Features.Meeting.Attendee
                 throw new ArgumentException("Please provide a valid agenda identifier, schema or connection string.");
             try
             {
+                List<Person> people;
+                using (IDbConnection dbConnection = new SqlConnection(masterConnectionString))
+                {
+                    var peopleSql = $@"SELECT * FROM [app].[Person]";
+                    var peopleData = dbConnection.Query<Person>(peopleSql).ToList();
+                    people = peopleData;
+                }
+
                 using (IDbConnection dbConnection = new SqlConnection(connectionString))
                 {
                     dbConnection.Open();
                     var instanceSql = $@"SELECT * FROM [{schema}].[MeetingAttendee] WHERE [referanceId] = '{meetingId}'";
                     var instanceData = dbConnection.Query<MeetingAttendee> (instanceSql).ToList();
                     
-                    var peopleSql = $@"SELECT * FROM [{schema}].[Person]";
-                    var peopleData = dbConnection.Query<Person>(peopleSql).ToList();
+                    
 
                     var attendees = new List<MeetingAttendee>();
                     foreach (var attendee in instanceData)
@@ -48,7 +56,7 @@ namespace SqlRepository.Features.Meeting.Attendee
                                       Status = attendee.Status,
                                       Email = attendee.Email
                                   };
-                        var person = peopleData.FirstOrDefault(i => i.Identityid == attendee.PersonIdentity);
+                        var person = people.FirstOrDefault(i => i.Identityid == attendee.PersonIdentity);
                         if (person != null)
                         {
                             att.Name = string.IsNullOrEmpty(person.FullName)

@@ -6,7 +6,7 @@ namespace Interface.Repositories.Feature.Meeting
 {
     public interface IMinutzAttendeeRepository
     {
-        AttendeeMessage GetAttendees(Guid meetingId, string schema, string connectionString);
+        AttendeeMessage GetAttendees(Guid meetingId, string schema, string connectionString, string masterConnectionString);
         
         AttendeeMessage AddAttendee(Guid meetingId, MeetingAttendee attendee, string schema, string connectionString);
 
