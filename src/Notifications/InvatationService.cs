@@ -4,6 +4,7 @@ using System.Text;
 using Interface.Services;
 using Interface.Services.Feature.Invite;
 using Minutz.Models.Entities;
+using Minutz.Models.Message;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
@@ -17,6 +18,11 @@ namespace Notifications
     public InvatationService(INotify notify)
     {
       this._notify = notify;
+    }
+
+    public MessageBase InviteUser(MeetingAttendee invitee, Meeting meeting)
+    {
+      throw new System.NotImplementedException();
     }
 
     public bool SendMeetingInvitation
