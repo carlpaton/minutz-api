@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using AspnetAuthenticationRespository.Interfaces;
+using AspnetAuthenticationRepository.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AspnetAuthenticationRespository
+namespace AspnetAuthenticationRepository
 {
     public class MinutzJwtSecurityTokenManager: IMinutzJwtSecurityTokenManager
     {

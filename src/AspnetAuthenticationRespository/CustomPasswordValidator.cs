@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using Interface;
 using Minutz.Models;
 
-namespace AspnetAuthenticationRespository
+namespace AspnetAuthenticationRepository
 {
     public class CustomPasswordValidator: ICustomPasswordValidator
     {

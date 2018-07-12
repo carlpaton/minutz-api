@@ -5,6 +5,7 @@ using System.Linq;
 using Core.Helper;
 using Interface.Repositories;
 using Interface.Services;
+using Interface.Services.Feature.Invite;
 using Minutz.Models;
 using Minutz.Models.Entities;
 
@@ -929,7 +930,7 @@ namespace Core
     }
 
     public KeyValuePair<bool, string> SendInvatations
-      (AuthRestModel user, Guid meetingId, IInvatationService invatationService)
+      (AuthRestModel user, Guid meetingId, IInvitationService invatationService)
     {
       var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
         _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
@@ -940,7 +941,7 @@ namespace Core
       var meeting = this.GetMeeting(user, meetingId.ToString());
       foreach (var attendee in meeting.MeetingAttendeeCollection)
       {
-        var invatation = invatationService.SendMeetingInvatation(attendee, meeting,"instanceId");
+        var invatation = invatationService.SendMeetingInvitation(attendee, meeting,"instanceId");
       }
       return new KeyValuePair<bool, string>(true, "successful");
     }

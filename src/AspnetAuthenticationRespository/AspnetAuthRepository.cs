@@ -5,8 +5,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using AspnetAuthenticationRespository.Extentions;
-using AspnetAuthenticationRespository.Interfaces;
+using AspnetAuthenticationRepository.Interfaces;
+using AspnetAuthenticationRepository.Extentions;
 using Interface;
 using Interface.Repositories;
 using Interface.Services;
@@ -19,7 +19,7 @@ using Minutz.Models.Entities;
 using Minutz.Models.Message;
 using Models.Auth0Models;
 
-namespace AspnetAuthenticationRespository
+namespace AspnetAuthenticationRepository
 {
     public class AspnetAuthRepository : IAuthRepository
     {

@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 using Interface.Services;
+using Interface.Services.Feature.Invite;
 using Minutz.Models.Entities;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
 namespace Notifications
 {
-  public class InvatationService : IInvatationService
+  public class InvatationService : IInvitationService
   {
     private readonly INotify _notify;
     private readonly string _invitationSubject = "You are invited to a Minutz Meeting.";
@@ -17,7 +19,7 @@ namespace Notifications
       this._notify = notify;
     }
 
-    public bool SendMeetingInvatation
+    public bool SendMeetingInvitation
       (MeetingAttendee attendee, Minutz.Models.ViewModels.MeetingViewModel meeting, string instanceId)
     {
       var to = new EmailAddress(attendee.Email, attendee.Name);

@@ -18,7 +18,7 @@ namespace Api.Controllers
   public class MeetingController : Controller
   {
     private readonly IMeetingService _meetingService;
-    private readonly IInvatationService _invatationService;
+    private readonly IInstanceService _invatationService;
     private readonly ILogService _logService;
     private readonly IAuthenticationService _authenticationService;
     private readonly IMeetingAttachmentService _meetingAttachmentService;
@@ -26,7 +26,7 @@ namespace Api.Controllers
 
     public MeetingController(
       IMeetingService meetingService,
-      IInvatationService invatationService,
+      IInstanceService invatationService,
       ILogService logService,
       ILoggerFactory logger,
       IAuthenticationService authenticationService,
@@ -233,7 +233,7 @@ namespace Api.Controllers
           //case InviteAttendees.allAttendess:
             foreach (var attendee in meeting.MeetingAttendeeCollection)
             {
-              var result = _invatationService.SendMeetingInvatation(attendee, meeting, "instanceId");
+              // var result = _invatationService.SendMeetingInvatation(attendee, meeting, "instanceId");
             }
             return Ok();
           //case InviteAttendees.custom:

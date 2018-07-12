@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Interface.Services.Feature.Invite;
 using Minutz.Models.Entities;
 
 namespace Interface.Services
@@ -35,7 +36,7 @@ namespace Interface.Services
       AuthRestModel user, Guid meetingId);
 
     KeyValuePair<bool, string> SendInvatations(
-      AuthRestModel user, Guid meetingId, IInvatationService invatationService);
+      AuthRestModel user, Guid meetingId, IInvitationService invitationService);
 
     KeyValuePair<bool, string> GetMinutesPreview
       (AuthRestModel user, Guid meetingId,string folderPath);

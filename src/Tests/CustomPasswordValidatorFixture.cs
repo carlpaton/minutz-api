@@ -1,5 +1,5 @@
 ﻿using System;
-using AspnetAuthenticationRespository;
+using AspnetAuthenticationRepository;
 using Minutz.Models;
 using NUnit.Framework;
 

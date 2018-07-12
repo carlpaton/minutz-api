@@ -1,9 +1,8 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using AspnetAuthenticationRespository;
-using AspnetAuthenticationRespository.Interfaces;
-using AuthenticationRepository;
+using AspnetAuthenticationRepository;
+using AspnetAuthenticationRepository.Interfaces;
 using Core;
 using Core.ExternalServices;
 using Core.Feature.Dashboard;
@@ -11,9 +10,11 @@ using Core.Feature.Meeting;
 using Core.Feature.Meeting.Action;
 using Core.Feature.Meeting.Agenda;
 using Core.Feature.Meeting.Header;
+using Core.Helper;
 using Core.LogProvider;
 using Core.Validation;
 using Interface;
+using Interface.Helper;
 using Interface.Repositories;
 using Interface.Repositories.Feature.Dashboard;
 using Interface.Repositories.Feature.Meeting;
@@ -22,6 +23,7 @@ using Interface.Repositories.Feature.Meeting.Agenda;
 using Interface.Repositories.Feature.Meeting.Header;
 using Interface.Services;
 using Interface.Services.Feature.Dashboard;
+using Interface.Services.Feature.Invite;
 using Interface.Services.Feature.Meeting;
 using Interface.Services.Feature.Meeting.Action;
 using Interface.Services.Feature.Meeting.Agenda;
@@ -45,6 +47,7 @@ using SqlRepository.Features.Meeting.Agenda;
 using SqlRepository.Features.Meeting.Attendee;
 using SqlRepository.Features.Meeting.Header;
 using Swashbuckle.AspNetCore.Swagger;
+using HttpService = AuthenticationRepository.HttpService;
 
 // ReSharper disable once CheckNamespace
 namespace Minutz.Api
@@ -71,6 +74,9 @@ namespace Minutz.Api
         public void ConfigureServices(IServiceCollection services)
         {
             // var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
+
+            services.AddTransient<IEmailValidationService, EmailValidationService>();
+            
             services.AddTransient<IEncryptor, MinutzEncryption.Encryptor>();
             services.AddTransient<ICustomPasswordValidator, CustomPasswordValidator>();
             services.AddTransient<IMinutzUserManager, MinuzUserManager>();
@@ -118,7 +124,8 @@ namespace Minutz.Api
             //Main meeting Service
             services.AddTransient<IMeetingService, MeetingService>();
 
-            services.AddTransient<IInvatationService, InvatationService>();
+            //todo: redo
+            //services.AddTransient<IInvitationService, InvatationService>();
             services.AddTransient<IStartupService, StartupService>();
             services.AddTransient<IReminderService, ReminderService>();
             services.AddTransient<INotificationRoleService, NotificationRoleService>();
@@ -184,6 +191,9 @@ namespace Minutz.Api
             
             services.AddTransient<IMinutzAttendeeRepository, MinutzAttendeeRepository>();
             services.AddTransient<IMinutzAttendeeService, MinutzAttendeeService>();
+
+            services.AddTransient<IGetMeetingRepository, GetMeetingRepository>();
+            services.AddTransient<IGetMeetingService, GetMeetingService>();
             
             services.AddMemoryCache();
             services.AddMvc();

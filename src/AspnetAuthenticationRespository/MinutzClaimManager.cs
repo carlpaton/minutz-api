@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using AspnetAuthenticationRespository.Interfaces;
+using AspnetAuthenticationRepository.Interfaces;
 
-namespace AspnetAuthenticationRespository
+namespace AspnetAuthenticationRepository
 {
     public class MinutzClaimManager: IMinutzClaimManager
     {

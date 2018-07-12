@@ -16,12 +16,12 @@ namespace Api.Controllers
   public class MeetingAttendeeController : Controller
   {
     private readonly IMeetingService _meetingService;
-    private readonly IInvatationService _invationService;
+    private readonly IInstanceService _invationService;
     private readonly IAuthenticationService _authenticationService;
 
     public MeetingAttendeeController(
       IMeetingService meetingService,
-      IInvatationService invatationService,
+      IInstanceService invatationService,
       IAuthenticationService authenticationService)
     {
       _meetingService = meetingService;
@@ -82,44 +82,44 @@ namespace Api.Controllers
     /// <returns>A newly-created TodoItem</returns>
     /// <response code="201">Returns the newly-created item</response>
     /// <response code="400">If the item is null</response>
-    [HttpPut("api/meetingAttendee/invite", Name = "Invite")]
-    [ProducesResponseType(typeof(MeetingAttendee),200)]
-    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingAttendee))]
-     [Authorize]
-     public IActionResult Invite([FromBody] MeetingAttendee invitee)
-     {
-       if (string.IsNullOrEmpty(invitee.Email))
-       {
-         return BadRequest("Please provide a valid email address");
-       }
-       if (string.IsNullOrEmpty(invitee.Name))
-       {
-         return BadRequest("Please provide a valid name.");
-       }
-       System.Guid meetingId;
-       if (invitee.ReferenceId == null || !System.Guid.TryParse(invitee.ReferenceId.ToString(), out meetingId))
-       {
-         return BadRequest("Please provide a valid meetingId");
-       }
-       var userInfo = Request.ExtractAuth(User, _authenticationService);
-       var meeting = _meetingService.GetMeeting(userInfo.InfoResponse, invitee.ReferenceId.ToString());
-       //var instance = _meetingService.GetInstance(token);
-       invitee.PersonIdentity = invitee.Email;
-       
-       invitee.Role = "Invited";
-       invitee.Status = "Invited";
-       var result = _invationService.SendMeetingInvatation(invitee, meeting,userInfo.InfoResponse.InstanceId);
-       if (result)
-       {
-         var savedUser = _meetingService.InviteUser(userInfo.InfoResponse, invitee,meeting.Id,invitee.Email);
-         if (savedUser)
-         {
-           return new ObjectResult(invitee);
-         }
-         return BadRequest("There was a issue saving the invited user.");
-       }
-       return BadRequest("There was a issue inviting the user.");
-     }
+//    [HttpPut("api/meetingAttendee/invite", Name = "Invite")]
+//    [ProducesResponseType(typeof(MeetingAttendee),200)]
+//    [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(MeetingAttendee))]
+//     [Authorize]
+//     public IActionResult Invite([FromBody] MeetingAttendee invitee)
+//     {
+//       if (string.IsNullOrEmpty(invitee.Email))
+//       {
+//         return BadRequest("Please provide a valid email address");
+//       }
+//       if (string.IsNullOrEmpty(invitee.Name))
+//       {
+//         return BadRequest("Please provide a valid name.");
+//       }
+//       System.Guid meetingId;
+//       if (invitee.ReferenceId == null || !System.Guid.TryParse(invitee.ReferenceId.ToString(), out meetingId))
+//       {
+//         return BadRequest("Please provide a valid meetingId");
+//       }
+//       var userInfo = Request.ExtractAuth(User, _authenticationService);
+//       var meeting = _meetingService.GetMeeting(userInfo.InfoResponse, invitee.ReferenceId.ToString());
+//       //var instance = _meetingService.GetInstance(token);
+//       invitee.PersonIdentity = invitee.Email;
+//       
+//       invitee.Role = "Invited";
+//       invitee.Status = "Invited";
+//       var result = _invationService.SendMeetingInvatation(invitee, meeting,userInfo.InfoResponse.InstanceId);
+//       if (result)
+//       {
+//         var savedUser = _meetingService.InviteUser(userInfo.InfoResponse, invitee,meeting.Id,invitee.Email);
+//         if (savedUser)
+//         {
+//           return new ObjectResult(invitee);
+//         }
+//         return BadRequest("There was a issue saving the invited user.");
+//       }
+//       return BadRequest("There was a issue inviting the user.");
+//     }
 
     /// <summary>
     /// 

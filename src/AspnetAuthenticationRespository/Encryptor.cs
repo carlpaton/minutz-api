@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Interface;
 
-namespace AspnetAuthenticationRespository
+namespace AspnetAuthenticationRepository
 {
     public class Encryptor : IEncryptor
     {

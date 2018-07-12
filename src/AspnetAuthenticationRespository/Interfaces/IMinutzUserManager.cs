@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace AspnetAuthenticationRespository.Interfaces
+namespace AspnetAuthenticationRepository.Interfaces
 {
     public interface IMinutzUserManager
     {

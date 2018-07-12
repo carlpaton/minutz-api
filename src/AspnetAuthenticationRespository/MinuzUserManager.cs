@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using AspnetAuthenticationRespository.Interfaces;
+using AspnetAuthenticationRepository.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
-namespace AspnetAuthenticationRespository
+namespace AspnetAuthenticationRepository
 {
     public class MinuzUserManager : IMinutzUserManager
     {

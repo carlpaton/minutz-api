@@ -1,6 +1,6 @@
 ﻿using Minutz.Models.Entities;
 
-namespace AspnetAuthenticationRespository.Extentions
+namespace AspnetAuthenticationRepository.Extentions
 {
     public static class AuthRestModelExtension
     {

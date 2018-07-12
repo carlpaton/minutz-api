@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 
-namespace AspnetAuthenticationRespository.Interfaces
+namespace AspnetAuthenticationRepository.Interfaces
 {
     public interface IMinutzRoleManager
     {

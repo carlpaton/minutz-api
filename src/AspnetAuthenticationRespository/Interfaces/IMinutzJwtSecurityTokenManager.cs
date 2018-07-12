@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace AspnetAuthenticationRespository.Interfaces
+namespace AspnetAuthenticationRepository.Interfaces
 {
     public interface IMinutzJwtSecurityTokenManager
     {

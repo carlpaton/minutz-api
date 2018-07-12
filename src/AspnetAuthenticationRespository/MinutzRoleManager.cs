@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Linq;
-using AspnetAuthenticationRespository.Interfaces;
+using AspnetAuthenticationRepository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace AspnetAuthenticationRespository
+namespace AspnetAuthenticationRepository
 {
     public class MinutzRoleManager : IMinutzRoleManager
     {
