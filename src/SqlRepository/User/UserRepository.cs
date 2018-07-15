@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -11,9 +12,8 @@ using Interface.Services;
 using Minutz.Models;
 using Minutz.Models.Entities;
 using Minutz.Models.Message;
-using SqlRepository.Extensions;
 
-namespace SqlRepository
+namespace SqlRepository.User
 {
   public class UserRepository : IUserRepository
   {
@@ -56,20 +56,112 @@ namespace SqlRepository
       return result;
     }
 
-    public bool CheckIfNewUser
-      ((string key, string reference) reference, string authUserId, string schema, string connectionString)
+    /// <summary>
+    /// Check if the user exists in the Person table and instance Available 
+    /// </summary>
+    /// <param name="reference"></param>
+    /// <param name="authUserId"></param>
+    /// <param name="schema"></param>
+    /// <param name="connectionString"></param>
+    /// <returns typeof="boolean"></returns>
+    [Obsolete("This will be replaced by: MessageBase CheckIfNewUser(string userEmail, string meetingId,string schema, string connectionString)")]
+    public bool CheckIfNewUser((string key, string reference) reference, string authUserId, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {
-        var sql = $"select Identityid FROM [{schema}].[Person]  WHERE Identityid = '{authUserId}' ";
+        var sql = $"select Identityid FROM [{schema}].[Person]  WHERE [Identityid] = '{authUserId}' ";
         //dbConnection.Open ();
         var user = dbConnection.Query<Person> (sql, new { Identityid = (string) authUserId });
         return user.Any ();
       }
     }
 
-    public MessageBase CreateNewUser
-      (AuthRestModel authUser, string connectionString)
+    /// <summary>
+    /// Check if the user exists in the Person table and instance Available 
+    /// </summary>
+    /// <param name="userEmail"></param>
+    /// <param name="meetingId"></param>
+    /// <param name="schema"></param>
+    /// <param name="connectionString"></param>
+    /// <param name="masterConnectionString"></param>
+    /// <returns></returns>
+    public MessageBase CheckIfNewUser(string userEmail, string meetingId,string schema, string connectionString, string masterConnectionString)
+    {
+      // Check if the person is in the Person Table
+      using (IDbConnection masterDbConnection = new SqlConnection(masterConnectionString))
+      {
+        var personSql = $"select * FROM [app].[Person]  WHERE [Identityid] = '{userEmail}' ";
+        masterDbConnection.Open ();
+        var personData = masterDbConnection.Query<Person> (personSql).FirstOrDefault();
+        if(personData == null) return new MessageBase
+                                        {
+                                          Condition = false,
+                                          Message = $"Person {userEmail} cannot be found",
+                                          Code = 1
+                                        };
+        
+      }
+      
+      // Check if the person is in the available table
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        var personSql = $"select * FROM [{schema}].[AvailibleAttendee]  WHERE [PersonIdentity] = '{userEmail}' ";
+        dbConnection.Open ();
+        var availableData = dbConnection.Query<AvailibleAttendee> (personSql).FirstOrDefault();
+        if(availableData == null) return new MessageBase
+                                        {
+                                          Condition = false,
+                                          Message = $"Available Attendee {userEmail} cannot be found",
+                                          Code = 2
+                                        };
+      }
+      
+      // Check if the person is in the meeting table
+      using (IDbConnection dbConnection = new SqlConnection(connectionString))
+      {
+        var personSql = $"select * FROM [{schema}].[MeetingAttendee]  WHERE [PersonIdentity] = '{userEmail}' ";
+        dbConnection.Open ();
+        var availableData = dbConnection.Query<MeetingAttendee> (personSql).FirstOrDefault();
+        if(availableData == null) return new MessageBase
+                                         {
+                                           Condition = false,
+                                           Message = $"Meeting Attendee {userEmail} cannot be found",
+                                           Code = 3
+                                         };
+      }
+      return new MessageBase
+                        {
+                          Condition = true,
+                          Message = $"Meeting Attendee {userEmail} cannot be found",
+                          Code = 4
+                        };
+    }
+    
+    
+    /// <summary>
+    /// Create a user in the person table.
+    /// </summary>
+    /// <param name="user" typeof="MeetingAttendee">The new user that needs to be added</param>
+    /// <param name="masterConnectionString" typeof="string">The main database connection</param>
+    /// <returns></returns>
+    public MessageBase CreatePerson(MeetingAttendee user, string masterConnectionString)
+    {
+      using (IDbConnection masterDbConnection = new SqlConnection(masterConnectionString))
+      {
+        masterDbConnection.Open();
+        var insertQuery = $@"INSERT INTO [app].[Person]
+                            ([Identityid], [FirstName], [LastName], [FullName], [ProfilePicture], [Email], [Role], [Active], [InstanceId])
+														 VALUES('{user.Email}', '{user.Name}', '{user.Name}', '{user.Name}', '{user.Picture}', '{user.Email}', '{user.Role}', 1, '{user.ReferenceId}')";
+        var insertData = masterDbConnection.Execute(insertQuery);
+        if (insertData == 1)
+        {
+          return new MessageBase {Condition = true, Message = "Successful", Code = 200};
+        }
+        return new MessageBase{Condition = false, Message = $"The person {user.Email} could not be added.", Code = 500};
+      }
+    }
+
+    public MessageBase CreateNewUser (AuthRestModel authUser, string connectionString)
     {
       var result = new MessageBase{ Condition = false, Message =  string.Empty };
       using (IDbConnection dbConnection = new SqlConnection (connectionString))
@@ -177,8 +269,7 @@ namespace SqlRepository
       }
     }
 
-    public AuthRestModel GetUser
-      (string authUserId, string schema, string connectionString)
+    public AuthRestModel GetUser(string authUserId, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {
@@ -210,8 +301,7 @@ namespace SqlRepository
       }
     }
     
-    public Person GetUserByEmail
-      (string email, string schema, string connectionString)
+    public Person GetUserByEmail(string email, string schema, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {
@@ -231,8 +321,7 @@ namespace SqlRepository
       }
     }
     
-    public string GetAuthUserIdByEmail
-      (string email, string connectionString)
+    public string GetAuthUserIdByEmail(string email, string connectionString)
     {
       using (IDbConnection dbConnection = new SqlConnection (connectionString))
       {
@@ -252,8 +341,7 @@ namespace SqlRepository
       }
     }
 
-    public string CreateNewSchema
-      (AuthRestModel authUser, string connectionString, string masterConnectionString)
+    public string CreateNewSchema(AuthRestModel authUser, string connectionString, string masterConnectionString)
     {
       //var id = authUser.Sub.Split ('|') [1];
       var username = $"A_{authUser.Sub.Replace("-", "_")}";

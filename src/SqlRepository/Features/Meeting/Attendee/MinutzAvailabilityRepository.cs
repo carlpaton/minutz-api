@@ -23,7 +23,8 @@ namespace SqlRepository.Features.Meeting.Attendee
         /// <param name="masterConnectionString"></param>
         /// <returns>Collection of MeetingAttendees</returns>
         /// <exception cref="ArgumentException"></exception>
-        public AttendeeMessage GetAvailableAttendees(string schema, string connectionString, string masterConnectionString)
+        public AttendeeMessage GetAvailableAttendees(string schema, string connectionString,
+                                                     string masterConnectionString)
         {
             if (string.IsNullOrEmpty(schema) ||
                 string.IsNullOrEmpty(connectionString))
@@ -75,6 +76,44 @@ namespace SqlRepository.Features.Meeting.Attendee
                                Message = "Success",
                                Attendees = attendees
                            };
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new AttendeeMessage {Code = 500, Condition = false, Message = e.Message};
+            }
+        }
+
+        public AttendeeMessage CreateAvailableAttendee(MeetingAttendee attendee, string schema, string connectionString)
+        {
+            if (string.IsNullOrEmpty(schema) ||
+                string.IsNullOrEmpty(connectionString))
+                throw new ArgumentException("Please provide a valid agenda identifier, schema or connection string.");
+            try
+            {
+                using (IDbConnection masterDbConnection = new SqlConnection(connectionString))
+                {
+                    masterDbConnection.Open();
+                    var id = Guid.NewGuid();
+                    var insertQuery = $@"INSERT INTO [{schema}].[AvailibleAttendee]
+                            (Id, ReferanceId, PersonIdentity, Email, Status, Role)
+							 VALUES('{id}', '', '{attendee.Email}', '{attendee.Email}', '{attendee.Status}', '{attendee.Role}')";
+                    var insertData = masterDbConnection.Execute(insertQuery);
+                    if (insertData == 1)
+                    {
+                        attendee.Id = id;
+                        return new AttendeeMessage
+                               {
+                                   Condition = true,
+                                   Message = "Successful",
+                                   Code = 200,
+                                   Attendee = attendee
+                               };
+                    }
+
+                    return new AttendeeMessage
+                           {Condition = false, Message = $"The available attendee {attendee.Email} could not be added.", Code = 500};
                 }
             }
             catch (Exception e)

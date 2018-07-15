@@ -46,6 +46,7 @@ using SqlRepository.Features.Meeting.Action;
 using SqlRepository.Features.Meeting.Agenda;
 using SqlRepository.Features.Meeting.Attendee;
 using SqlRepository.Features.Meeting.Header;
+using SqlRepository.User;
 using Swashbuckle.AspNetCore.Swagger;
 using HttpService = AuthenticationRepository.HttpService;
 

@@ -6,12 +6,14 @@ namespace Interface.Repositories
 {
   public interface IUserRepository
   {
-    bool CheckIfNewUser (
-      (string key, string reference) reference,
-      string authUserId, string schema, string connectionString);
+    [Obsolete("To replaced with: MessageBase CheckIfNewUser(string userEmail, string meetingId, string schema, string connectionString, string masterConnectionString);")]
+    bool CheckIfNewUser ((string key, string reference) reference, string authUserId, string schema, string connectionString);
 
-    MessageBase CreateNewUser (
-      AuthRestModel authUser, string connectionString);
+    MessageBase CheckIfNewUser(string userEmail, string meetingId, string schema, string connectionString, string masterConnectionString);
+    
+    MessageBase CreateNewUser(AuthRestModel authUser, string connectionString);
+
+    MessageBase CreatePerson(MeetingAttendee user, string masterConnectionString);
 
     string CreateNewUser (
       (string key, string reference) relationship,

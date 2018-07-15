@@ -1,10 +1,6 @@
-using System;
-using AuthenticationRepository;
-using Models.Auth0Models;
-using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using Interface.Services;
-using SqlRepository;
+using SqlRepository.User;
 
 namespace Tests.RepositoryTests
 {
