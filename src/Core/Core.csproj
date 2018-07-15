@@ -17,6 +17,7 @@
     <ProjectReference Include="..\SqlRepository\SqlRepository.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Feature\Notification" />
     <Folder Include="LogProvider\" />
   </ItemGroup>
 </Project>

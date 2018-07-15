@@ -28,6 +28,7 @@ using Interface.Services.Feature.Meeting;
 using Interface.Services.Feature.Meeting.Action;
 using Interface.Services.Feature.Meeting.Agenda;
 using Interface.Services.Feature.Meeting.Header;
+using Interface.Services.Feature.Notification;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -106,6 +107,7 @@ namespace Minutz.Api
             //Services
             services.AddTransient<IApplicationSetting, ApplicationSetting>();
             services.AddTransient<INotify, Notify>();
+            services.AddTransient<INotificationService, NotificationService>();
             services.AddTransient<ILogService, LogService>();
 
             //services.AddTransient< IAuthRepository,Auth0Repository>();

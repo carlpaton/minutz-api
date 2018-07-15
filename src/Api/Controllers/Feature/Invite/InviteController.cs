@@ -2,9 +2,11 @@ using Api.Extensions;
 using Interface.Services;
 using Interface.Services.Feature.Invite;
 using Interface.Services.Feature.Meeting;
+using Interface.Services.Feature.Notification;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Minutz.Models.Entities;
+using Minutz.Models.Message;
 
 namespace Api.Controllers.Feature.Invite
 {
@@ -13,12 +15,17 @@ namespace Api.Controllers.Feature.Invite
         private readonly IApplicationSetting _applicationSetting;
         private readonly IGetMeetingService _getMeetingService;
         private readonly IInvitationService _invitationService;
+        private readonly INotificationService _notificationService;
 
-        public InviteController(IApplicationSetting applicationSetting ,IGetMeetingService getMeetingService, IInvitationService invitationService)
+        public InviteController(IApplicationSetting applicationSetting,
+                                IGetMeetingService getMeetingService,
+                                IInvitationService invitationService,
+                                INotificationService notificationService)
         {
             _applicationSetting = applicationSetting;
             _getMeetingService = getMeetingService;
             _invitationService = invitationService;
+            _notificationService = notificationService;
         }
 
         /// <summary>
@@ -48,24 +55,29 @@ namespace Api.Controllers.Feature.Invite
             if (validate.Condition)
                 return new BadRequestObjectResult(validate.Message);
 
-            var meeting = _getMeetingService.GetMeeting(userInfo.InstanceId, attendee.ReferenceId);
-            
             attendee.PersonIdentity = attendee.Email;
-       
             attendee.Role = "Invited";
             attendee.Status = "Invited";
-            
-            //var result = _invationService.SendMeetingInvatation(invitee, meeting,userInfo.InfoResponse.InstanceId);
-//            if (result)
-//            {
-//                var savedUser = _meetingService.InviteUser(userInfo.InfoResponse, invitee,meeting.Id,invitee.Email);
-//                if (savedUser)
-//                {
-//                    return new ObjectResult(invitee);
-//                }
-//                return BadRequest("There was a issue saving the invited user.");
-//            }
-            return BadRequest("There was a issue inviting the user.");
+
+            var meeting = _getMeetingService.GetMeeting(userInfo.InstanceId, attendee.ReferenceId);
+            if (!meeting.Condition)
+            {
+                return BadRequest("There was a issue getting the meeting information.");
+            }
+
+            var inviteRecords = _invitationService.InviteUser(userInfo, attendee, meeting.Meeting);
+            if (!inviteRecords.Condition)
+            {
+                return StatusCode(inviteRecords.Code, inviteRecords.Message);
+            }
+
+            var notificationResult = _notificationService.SendMeetingInvitation(attendee, meeting.Meeting, userInfo.InstanceId);
+            if (notificationResult.Condition)
+            {
+                return Ok();
+            }
+
+            return StatusCode(notificationResult.Code, notificationResult.Message);
         }
     }
 }

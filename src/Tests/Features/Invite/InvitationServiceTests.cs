@@ -2,6 +2,9 @@ using System;
 using Core.Feature.Invite;
 using Core.Helper;
 using Interface.Helper;
+using Interface.Repositories;
+using Interface.Repositories.Feature.Meeting;
+using Interface.Services;
 using Interface.Services.Feature.Invite;
 using Minutz.Models.Entities;
 using Minutz.Models.Message;
@@ -24,13 +27,18 @@ namespace Tests.Features.Invite
         [Test]
         public void InviteUser_Given_MeetingAttendee_With_EmptyEmail_ReturnFalse()
         {
+            var availabilityRepository = Substitute.For<IMinutzAvailabilityRepository>();
+            var attendeeRepository = Substitute.For<IMinutzAttendeeRepository>();
+            var userRepository = Substitute.For<IUserRepository>();
+            var applicationSetting = Substitute.For<IApplicationSetting>();
             //Arrange
             var attendee = new MeetingAttendee {Email = string.Empty};
             var meeting = new Meeting {Name = "Foo", Id = Guid.NewGuid()};
+            var restAuthUser = new AuthRestModel{InstanceId = Guid.NewGuid().ToString(), Email = "foo@foo.com"};
 
-            var service = new InvitationService(_emailValidationService);
+            var service = new InvitationService(_emailValidationService, availabilityRepository, attendeeRepository, userRepository , applicationSetting);
 
-            var result = service.InviteUser(attendee, meeting);
+            var result = service.InviteUser(restAuthUser, attendee, meeting);
 
             Assert.IsFalse(result.Condition);
         }
@@ -38,23 +46,34 @@ namespace Tests.Features.Invite
         [Test]
         public void InviteUser_Given_MeetingAttendee_With_InvalidEmail_ReturnFalse()
         {
+            var availabilityRepository = Substitute.For<IMinutzAvailabilityRepository>();
+            var attendeeRepository = Substitute.For<IMinutzAttendeeRepository>();
+            var userRepository = Substitute.For<IUserRepository>();
+            var applicationSetting = Substitute.For<IApplicationSetting>();
+            var restAuthUser = new AuthRestModel{InstanceId = Guid.NewGuid().ToString(), Email = "foo@foo.com"};
+            
             var attendee = new MeetingAttendee {Email = "foo"};
             var meeting = new Meeting {Name = "Foo", Id = Guid.NewGuid()};
-            var service = new InvitationService(_emailValidationService);
+            var service = new InvitationService(_emailValidationService, availabilityRepository, attendeeRepository, userRepository , applicationSetting);
 
-            var result = service.InviteUser(attendee, meeting);
+            var result = service.InviteUser(restAuthUser, attendee, meeting);
 
             Assert.IsFalse(result.Condition);
         }
 
         [Test]
         public void InviteUser_Given_MeetingAttendee_With_Email_ReturnTrue()
-        {
+        {   var availabilityRepository = Substitute.For<IMinutzAvailabilityRepository>();
+            var attendeeRepository = Substitute.For<IMinutzAttendeeRepository>();
+            var userRepository = Substitute.For<IUserRepository>();
+            var applicationSetting = Substitute.For<IApplicationSetting>();
+            var restAuthUser = new AuthRestModel{InstanceId = Guid.NewGuid().ToString(), Email = "foo@foo.com"};
+            
             var attendee = new MeetingAttendee {Email = "leeroya@gmail.com"};
             var meeting = new Meeting {Name = "Foo", Id = Guid.NewGuid()};
-            var service = new InvitationService(_emailValidationService);
+            var service = new InvitationService(_emailValidationService, availabilityRepository, attendeeRepository, userRepository , applicationSetting);
 
-            var result = service.InviteUser(attendee, meeting);
+            var result = service.InviteUser(restAuthUser,attendee, meeting);
 
             Assert.IsTrue(result.Condition);
         }
@@ -62,11 +81,17 @@ namespace Tests.Features.Invite
         [Test]
         public void InviteUser_Given_Meeting_With_IdEmpty_ReturnFalse()
         {
+            var availabilityRepository = Substitute.For<IMinutzAvailabilityRepository>();
+            var attendeeRepository = Substitute.For<IMinutzAttendeeRepository>();
+            var userRepository = Substitute.For<IUserRepository>();
+            var applicationSetting = Substitute.For<IApplicationSetting>();
+            var restAuthUser = new AuthRestModel{InstanceId = Guid.NewGuid().ToString(), Email = "foo@foo.com"};
+            
             var attendee = new MeetingAttendee {Email = "leeroya@gmail.com"};
             var meeting = new Meeting {Name = "Foo", Id = Guid.Empty};
-            var service = new InvitationService(_emailValidationService);
+            var service = new InvitationService(_emailValidationService, availabilityRepository, attendeeRepository, userRepository , applicationSetting);
 
-            var result = service.InviteUser(attendee, meeting);
+            var result = service.InviteUser(restAuthUser,attendee, meeting);
 
             Assert.IsFalse(result.Condition);
         }
@@ -74,11 +99,17 @@ namespace Tests.Features.Invite
         [Test]
         public void InviteUser_Given_Meeting_With_IdButEmptyName_ReturnFalse()
         {
+            var availabilityRepository = Substitute.For<IMinutzAvailabilityRepository>();
+            var attendeeRepository = Substitute.For<IMinutzAttendeeRepository>();
+            var userRepository = Substitute.For<IUserRepository>();
+            var applicationSetting = Substitute.For<IApplicationSetting>();
+            var restAuthUser = new AuthRestModel{InstanceId = Guid.NewGuid().ToString(), Email = "foo@foo.com"};
+            
             var attendee = new MeetingAttendee {Email = "leeroya@gmail.com"};
             var meeting = new Meeting {Name = string.Empty, Id = Guid.NewGuid()};
-            var service = new InvitationService(_emailValidationService);
+            var service = new InvitationService(_emailValidationService, availabilityRepository, attendeeRepository, userRepository , applicationSetting);
 
-            var result = service.InviteUser(attendee, meeting);
+            var result = service.InviteUser(restAuthUser,attendee, meeting);
 
             Assert.IsFalse(result.Condition);
         }
@@ -86,11 +117,17 @@ namespace Tests.Features.Invite
         [Test]
         public void InviteUser_Given_Meeting_With_IdAndValidName_ReturnTrue()
         {
+            var availabilityRepository = Substitute.For<IMinutzAvailabilityRepository>();
+            var attendeeRepository = Substitute.For<IMinutzAttendeeRepository>();
+            var userRepository = Substitute.For<IUserRepository>();
+            var applicationSetting = Substitute.For<IApplicationSetting>();
+            var restAuthUser = new AuthRestModel{InstanceId = Guid.NewGuid().ToString(), Email = "foo@foo.com"};
+            
             var attendee = new MeetingAttendee {Email = "leeroya@gmail.com"};
             var meeting = new Meeting {Name = "Foo", Id = Guid.NewGuid()};
-            var service = new InvitationService(_emailValidationService);
+            var service = new InvitationService(_emailValidationService, availabilityRepository, attendeeRepository, userRepository , applicationSetting);
 
-            var result = service.InviteUser(attendee, meeting);
+            var result = service.InviteUser(restAuthUser, attendee, meeting);
 
             Assert.IsTrue(result.Condition);
         }
@@ -98,6 +135,12 @@ namespace Tests.Features.Invite
         //[Test]
         public void InviteUser_Given_Attendee_And_Meeting_IEmailValidationService_IsCalled()
         {
+            var availabilityRepository = Substitute.For<IMinutzAvailabilityRepository>();
+            var attendeeRepository = Substitute.For<IMinutzAttendeeRepository>();
+            var userRepository = Substitute.For<IUserRepository>();
+            var applicationSetting = Substitute.For<IApplicationSetting>();
+            var restAuthUser = new AuthRestModel{InstanceId = Guid.NewGuid().ToString(), Email = "foo@foo.com"};
+            
             Mock<IEmailValidationService> _emailValidationService = 
                 new Mock<IEmailValidationService>();
             
@@ -106,9 +149,9 @@ namespace Tests.Features.Invite
             var attendee = new MeetingAttendee {Email = "leeroya@gmail.com"};
             var meeting = new Meeting {Name = "Foo", Id = Guid.NewGuid()};
             
-            var service = new InvitationService(_emailValidationService.Object);
+            var service = new InvitationService(_emailValidationService.Object, availabilityRepository, attendeeRepository, userRepository , applicationSetting);
 
-            service.InviteUser(attendee, meeting);
+            service.InviteUser(restAuthUser, attendee, meeting);
             
             _emailValidationService.Verify(x=> x.Valid("leeroya@gmail.com"),Times.AtLeastOnce);
             

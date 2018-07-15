@@ -15,16 +15,19 @@ namespace Core.Feature.Invite
   {
     private readonly IEmailValidationService _emailValidationService;
     private readonly IMinutzAvailabilityRepository _availabilityRepository;
+    private readonly IMinutzAttendeeRepository _attendeeRepository;
     private readonly IUserRepository _userRepository;
     private readonly IApplicationSetting _applicationSetting;
 
     public InvitationService(IEmailValidationService emailValidationService,
                              IMinutzAvailabilityRepository availabilityRepository,
+                             IMinutzAttendeeRepository attendeeRepository,
                              IUserRepository userRepository,
                              IApplicationSetting applicationSetting)
     {
       _emailValidationService = emailValidationService;
       _availabilityRepository = availabilityRepository;
+      _attendeeRepository = attendeeRepository;
       _userRepository = userRepository;
       _applicationSetting = applicationSetting;
     }
@@ -41,7 +44,11 @@ namespace Core.Feature.Invite
     {
       var validEmail = _emailValidationService.Valid(invitee.Email);
       if (!validEmail) return new MessageBase{Condition = false, Message = $"{invitee.Email} is a invalid email address."};
-      if(meeting.Id == Guid.Empty || string.IsNullOrEmpty(meeting.Name)) return new MessageBase { Condition = false, Message = "Meeting is invalid."};
+      if(meeting.Id == Guid.Empty || string.IsNullOrEmpty(meeting.Name)) return new MessageBase
+                                                                                {
+                                                                                  Condition = false,
+                                                                                  Message = "Meeting is invalid."
+                                                                                };
       
       var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
         _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
@@ -55,14 +62,61 @@ namespace Core.Feature.Invite
         case 1:
           //create person
           var createPersonResult = _userRepository.CreatePerson(invitee, masterConnectionString);
+          if (!createPersonResult.Condition)
+          {
+            return new MessageBase{Condition = createPersonResult.Condition, Message = createPersonResult.Message, Code = createPersonResult.Code};
+          }
+
+          var createPersonAvailableResult  = _availabilityRepository.CreateAvailableAttendee(invitee, user.InstanceId, instanceConnectionString);
+          if (!createPersonAvailableResult.Condition)
+          {
+            var message = $"Person was created but there was a issue with creating available attendee. \n {createPersonAvailableResult.Message}"; 
+            return new MessageBase{
+                                    Condition = createPersonAvailableResult.Condition,
+                                    Message = message,
+                                    Code = createPersonAvailableResult.Code};
+          }
+
+          var createPersonAttendeeResult =  _attendeeRepository.AddAttendee(invitee.ReferenceId, invitee, user.InstanceId, instanceConnectionString);
+          if (!createPersonAttendeeResult.Condition)
+          {
+            var message = $"Person was created, and available attendee was created, but there was a issue with adding to meeting attendee. \n {createPersonAttendeeResult.Message}"; 
+            return new MessageBase{
+                                    Condition = createPersonAttendeeResult.Condition,
+                                    Message = message,
+                                    Code = createPersonAttendeeResult.Code};
+          }
+
           break;
         case 2:
           //create available
-          var createAvailableResult =
-            _availabilityRepository.CreateAvailableAttendee(invitee, user.InstanceId, instanceConnectionString);
+          var createAvailableResult = _availabilityRepository.CreateAvailableAttendee(invitee, user.InstanceId, instanceConnectionString);
+          if (!createAvailableResult.Condition)
+          {
+            return new MessageBase{Condition = createAvailableResult.Condition, Message = createAvailableResult.Message, Code = createAvailableResult.Code};
+          }
+          
+          var createAvailableAttendeeResult = _attendeeRepository.AddAttendee(invitee.ReferenceId, invitee, user.InstanceId, instanceConnectionString);
+          if (!createAvailableAttendeeResult.Condition)
+          {
+            var message = $"Available attendee was created, but there was a issue with adding to meeting attendee. \n {createAvailableAttendeeResult.Message}"; 
+            return new MessageBase{
+                                    Condition = createAvailableAttendeeResult.Condition,
+                                    Message = message,
+                                    Code = createAvailableAttendeeResult.Code};
+          }
           break;
         case  3:
           //create meeting attendee
+          var createAttendeeResult = _attendeeRepository.AddAttendee(invitee.ReferenceId, invitee, user.InstanceId, instanceConnectionString);
+          if (!createAttendeeResult.Condition)
+          {
+            var message = $"There was a issue with adding to meeting attendee. \n {createAttendeeResult.Message}"; 
+            return new MessageBase{
+                                    Condition = createAttendeeResult.Condition,
+                                    Message = message,
+                                    Code = createAttendeeResult.Code};
+          }
           break;
       }
 
