@@ -68,10 +68,15 @@ namespace Tests.Features.Invite
             var userRepository = Substitute.For<IUserRepository>();
             var applicationSetting = Substitute.For<IApplicationSetting>();
             var restAuthUser = new AuthRestModel{InstanceId = Guid.NewGuid().ToString(), Email = "foo@foo.com"};
+
+            userRepository.CheckIfNewUser("foo", "foo", "foo", "foo", "foo").ReturnsForAnyArgs(new MessageBase { Condition = true, Code = 4});
             
             var attendee = new MeetingAttendee {Email = "leeroya@gmail.com"};
             var meeting = new Meeting {Name = "Foo", Id = Guid.NewGuid()};
-            var service = new InvitationService(_emailValidationService, availabilityRepository, attendeeRepository, userRepository , applicationSetting);
+            var service = new InvitationService(_emailValidationService,
+                availabilityRepository,
+                attendeeRepository,
+                userRepository , applicationSetting);
 
             var result = service.InviteUser(restAuthUser,attendee, meeting);
 
@@ -122,6 +127,7 @@ namespace Tests.Features.Invite
             var userRepository = Substitute.For<IUserRepository>();
             var applicationSetting = Substitute.For<IApplicationSetting>();
             var restAuthUser = new AuthRestModel{InstanceId = Guid.NewGuid().ToString(), Email = "foo@foo.com"};
+            userRepository.CheckIfNewUser("foo", "foo", "foo", "foo", "foo").ReturnsForAnyArgs(new MessageBase { Condition = true, Code = 4});
             
             var attendee = new MeetingAttendee {Email = "leeroya@gmail.com"};
             var meeting = new Meeting {Name = "Foo", Id = Guid.NewGuid()};
