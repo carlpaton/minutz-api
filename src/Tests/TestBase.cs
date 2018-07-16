@@ -6,6 +6,7 @@ namespace Tests
     {
         public TestBase ()
         {
+            Environment.SetEnvironmentVariable("UI_BASE_URL", "http://localhost:4200");
             Environment.SetEnvironmentVariable ("CLIENTID", "WDzuh9escySpPeAF5V0t2HdC3Lmo68a-");
             Environment.SetEnvironmentVariable ("DOMAIN", "minutz.eu.auth0.com");
             Environment.SetEnvironmentVariable ("CLIENTSECRET", "_kVUASQWVawA2pwYry-xP53kQpOALkEj_IGLWCSspXkpUFRtE_W-Gg74phrxZkz8");

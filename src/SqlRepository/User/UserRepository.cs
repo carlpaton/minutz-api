@@ -119,7 +119,7 @@ namespace SqlRepository.User
       // Check if the person is in the meeting table
       using (IDbConnection dbConnection = new SqlConnection(connectionString))
       {
-        var personSql = $"select * FROM [{schema}].[MeetingAttendee]  WHERE [PersonIdentity] = '{userEmail}' ";
+        var personSql = $"SELECT * FROM [{schema}].[MeetingAttendee] WHERE [PersonIdentity] = '{userEmail}' AND [ReferanceId] = '{meetingId}' ";
         dbConnection.Open ();
         var availableData = dbConnection.Query<MeetingAttendee> (personSql).FirstOrDefault();
         if(availableData == null) return new MessageBase
