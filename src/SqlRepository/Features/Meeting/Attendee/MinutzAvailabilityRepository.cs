@@ -98,7 +98,7 @@ namespace SqlRepository.Features.Meeting.Attendee
                     var id = Guid.NewGuid();
                     var insertQuery = $@"INSERT INTO [{schema}].[AvailibleAttendee]
                             (Id, ReferanceId, PersonIdentity, Email, Status, Role)
-							 VALUES('{id}', '', '{attendee.Email}', '{attendee.Email}', '{attendee.Status}', '{attendee.Role}')";
+							 VALUES('{id}', '{attendee.ReferenceId}', '{attendee.Email}', '{attendee.Email}', '{attendee.Status}', '{attendee.Role}')";
                     var insertData = masterDbConnection.Execute(insertQuery);
                     if (insertData == 1)
                     {

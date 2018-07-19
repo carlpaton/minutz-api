@@ -52,7 +52,7 @@ namespace Api.Controllers.Feature.Invite
         {
             var userInfo = User.ToRest();
             var validate = attendee.Validate();
-            if (validate.Condition)
+            if (!validate.Condition)
                 return new BadRequestObjectResult(validate.Message);
 
             attendee.PersonIdentity = attendee.Email;

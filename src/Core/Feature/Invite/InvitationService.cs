@@ -55,8 +55,7 @@ namespace Core.Feature.Invite
 
       var masterConnectionString = _applicationSetting.CreateConnectionString();
 
-      var userValidation = _userRepository.CheckIfNewUser(invitee.Email, user.InstanceId,
-        invitee.ReferenceId.ToString(), instanceConnectionString, masterConnectionString);
+      var userValidation = _userRepository.CheckIfNewUser(invitee.Email, invitee.ReferenceId.ToString(),user.InstanceId, instanceConnectionString, masterConnectionString);
       switch (userValidation.Code)
       {
         case 1:

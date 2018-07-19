@@ -121,7 +121,7 @@ namespace SqlRepository.User
       {
         var personSql = $"SELECT * FROM [{schema}].[MeetingAttendee] WHERE [PersonIdentity] = '{userEmail}' AND [ReferanceId] = '{meetingId}' ";
         dbConnection.Open ();
-        var availableData = dbConnection.Query<MeetingAttendee> (personSql).FirstOrDefault();
+        var availableData = dbConnection.Query<AvailibleAttendee> (personSql).FirstOrDefault();
         if(availableData == null) return new MessageBase
                                          {
                                            Condition = false,
