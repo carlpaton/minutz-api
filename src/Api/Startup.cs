@@ -6,6 +6,7 @@ using AspnetAuthenticationRepository.Interfaces;
 using Core;
 using Core.ExternalServices;
 using Core.Feature.Dashboard;
+using Core.Feature.Invite;
 using Core.Feature.Meeting;
 using Core.Feature.Meeting.Action;
 using Core.Feature.Meeting.Agenda;
@@ -138,6 +139,7 @@ namespace Minutz.Api
             services.AddTransient<IReportService, JsReportService>();
 
             
+            
             //*
             // Features
             // ---- Meeting
@@ -197,6 +199,8 @@ namespace Minutz.Api
 
             services.AddTransient<IGetMeetingRepository, GetMeetingRepository>();
             services.AddTransient<IGetMeetingService, GetMeetingService>();
+
+            services.AddTransient<IInvitationService, InvitationService>();
             
             services.AddMemoryCache();
             services.AddMvc();
