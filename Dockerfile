@@ -1,5 +1,6 @@
 FROM microsoft/aspnetcore-build:2 AS build-env
 ARG UPDATE_DLL
+RUN apt-get install libgdiplus
 WORKDIR /tmp
 COPY src/Interface/Interface.csproj .
 RUN dotnet restore
