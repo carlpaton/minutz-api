@@ -197,10 +197,17 @@ namespace Minutz.Api
             services.AddTransient<IMinutzAttendeeRepository, MinutzAttendeeRepository>();
             services.AddTransient<IMinutzAttendeeService, MinutzAttendeeService>();
 
+            services.AddTransient<IMeetingRecurrenceRepository, MeetingRecurrenceRepository>();
+            services.AddTransient<IMinutzRecurrenceService, MinutzRecurrenceService>();
+
+            
             services.AddTransient<IGetMeetingRepository, GetMeetingRepository>();
             services.AddTransient<IGetMeetingService, GetMeetingService>();
 
+            
             services.AddTransient<IInvitationService, InvitationService>();
+            
+            
             
             services.AddMemoryCache();
             services.AddMvc();
