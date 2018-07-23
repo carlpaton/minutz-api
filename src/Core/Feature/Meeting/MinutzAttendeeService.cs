@@ -39,7 +39,7 @@ namespace Core.Feature.Meeting
         {
             var instanceConnectionString = _applicationSetting.CreateConnectionString (_applicationSetting.Server,
                 _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword (user.InstanceId));
-            return _minutzAttendeeRepository.AddAttendee(meetingId, attendee, user.InstanceId,
+            return _minutzAttendeeRepository.UpdateAttendee(meetingId, attendee, user.InstanceId,
                 instanceConnectionString);
         }
 
