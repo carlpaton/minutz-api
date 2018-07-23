@@ -36,7 +36,7 @@ namespace Api.Controllers.Feature.Meeting
         
         [Authorize]
         [HttpPost("api/feature/attendee/add", Name = "Add Attendee to Meeting")]
-        public IActionResult AddMeetingAttendeeResult([FromBody] MeetingAttendee attendee)
+        public IActionResult AddMeetingAttendeeResult([FromBody] MeetingAttendee attendee) 
         {
             var userInfo = User.ToRest();
             var result = _minutzAttendeeService.AddAttendee(attendee.ReferenceId,attendee,userInfo);
