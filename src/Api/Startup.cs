@@ -11,6 +11,7 @@ using Core.Feature.Meeting;
 using Core.Feature.Meeting.Action;
 using Core.Feature.Meeting.Agenda;
 using Core.Feature.Meeting.Header;
+using Core.Feature.Meeting.Status;
 using Core.Helper;
 using Core.LogProvider;
 using Core.Validation;
@@ -24,6 +25,7 @@ using Interface.Repositories.Feature.Meeting;
 using Interface.Repositories.Feature.Meeting.Action;
 using Interface.Repositories.Feature.Meeting.Agenda;
 using Interface.Repositories.Feature.Meeting.Header;
+using Interface.Repositories.Feature.Meeting.Status;
 using Interface.Services;
 using Interface.Services.Feature.Dashboard;
 using Interface.Services.Feature.Invite;
@@ -31,6 +33,7 @@ using Interface.Services.Feature.Meeting;
 using Interface.Services.Feature.Meeting.Action;
 using Interface.Services.Feature.Meeting.Agenda;
 using Interface.Services.Feature.Meeting.Header;
+using Interface.Services.Feature.Meeting.Status;
 using Interface.Services.Feature.Notification;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -50,6 +53,7 @@ using SqlRepository.Features.Meeting.Action;
 using SqlRepository.Features.Meeting.Agenda;
 using SqlRepository.Features.Meeting.Attendee;
 using SqlRepository.Features.Meeting.Header;
+using SqlRepository.Features.Meeting.Status;
 using SqlRepository.User;
 using Swashbuckle.AspNetCore.Swagger;
 using HttpService = AuthenticationRepository.HttpService;
@@ -128,6 +132,9 @@ namespace Minutz.Api
             services.AddTransient<IMeetingActionService, MeetingActionService>();
             services.AddTransient<IMeetingDecisionService, MeetingDecisionService>();
 
+            services.AddTransient<IMeetingStatusRepository, MeetingStatusRepository>();
+            services.AddTransient<IMeetingStatusService, MeetingStatusService>();
+            
             //Main meeting Service
             services.AddTransient<IMeetingService, MeetingService>();
 
