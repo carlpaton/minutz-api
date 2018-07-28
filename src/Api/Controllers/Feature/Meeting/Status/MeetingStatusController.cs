@@ -17,12 +17,12 @@ namespace Api.Controllers.Feature.Meeting.Status
 
         [Authorize]
         [HttpPost("api/feature/status/update", Name = "Update meeting Status Update")]
-        public IActionResult UpdateMeetingStatusResult(string meetingId, string status)
+        public IActionResult UpdateMeetingStatusResult(string id, string status)
         {
-            if (string.IsNullOrEmpty(meetingId))
+            if (string.IsNullOrEmpty(id))
                 return StatusCode(401, "Request is missing values for the request");
             var result = _meetingStatusService.UpdateMeetingStatus
-                (Guid.Parse(meetingId), status, User.ToRest());
+                (Guid.Parse(id), status, User.ToRest());
             return result.Condition ? (IActionResult) Ok() : StatusCode(result.Code, result.Message);
         }
     }
