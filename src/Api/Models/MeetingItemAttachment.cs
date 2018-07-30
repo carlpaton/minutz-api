@@ -13,5 +13,6 @@ namespace Api.Models
     public string MeetingAttendeeId { get; set; }
     public DateTime Date { get; set; }
     public byte[] FileData { get; set; }
+    public int Order { get; set; }
   }
 }

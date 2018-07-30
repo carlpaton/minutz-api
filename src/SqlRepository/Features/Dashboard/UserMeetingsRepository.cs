@@ -4,7 +4,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
 using Interface.Repositories.Feature.Dashboard;
-using Minutz.Models.Entities;
 using Minutz.Models.Message;
 
 namespace SqlRepository.Features.Dashboard {
