@@ -11,7 +11,9 @@ using Core.Feature.Meeting;
 using Core.Feature.Meeting.Action;
 using Core.Feature.Meeting.Agenda;
 using Core.Feature.Meeting.Attachment;
+using Core.Feature.Meeting.Decision;
 using Core.Feature.Meeting.Header;
+using Core.Feature.Meeting.Note;
 using Core.Feature.Meeting.Status;
 using Core.Helper;
 using Core.LogProvider;
@@ -26,7 +28,9 @@ using Interface.Repositories.Feature.Meeting;
 using Interface.Repositories.Feature.Meeting.Action;
 using Interface.Repositories.Feature.Meeting.Agenda;
 using Interface.Repositories.Feature.Meeting.Attachment;
+using Interface.Repositories.Feature.Meeting.Decision;
 using Interface.Repositories.Feature.Meeting.Header;
+using Interface.Repositories.Feature.Meeting.Note;
 using Interface.Repositories.Feature.Meeting.Status;
 using Interface.Services;
 using Interface.Services.Feature.Dashboard;
@@ -35,7 +39,9 @@ using Interface.Services.Feature.Meeting;
 using Interface.Services.Feature.Meeting.Action;
 using Interface.Services.Feature.Meeting.Agenda;
 using Interface.Services.Feature.Meeting.Attachment;
+using Interface.Services.Feature.Meeting.Decision;
 using Interface.Services.Feature.Meeting.Header;
+using Interface.Services.Feature.Meeting.Note;
 using Interface.Services.Feature.Meeting.Status;
 using Interface.Services.Feature.Notification;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -56,7 +62,9 @@ using SqlRepository.Features.Meeting.Action;
 using SqlRepository.Features.Meeting.Agenda;
 using SqlRepository.Features.Meeting.Attachment;
 using SqlRepository.Features.Meeting.Attendee;
+using SqlRepository.Features.Meeting.Decision;
 using SqlRepository.Features.Meeting.Header;
+using SqlRepository.Features.Meeting.Note;
 using SqlRepository.Features.Meeting.Status;
 using SqlRepository.User;
 using Swashbuckle.AspNetCore.Swagger;
@@ -220,9 +228,14 @@ namespace Minutz.Api
 
             services.AddTransient<IMinutzMeetingAttachmentRepository, MinutzMeetingAttachmentRepository>();
             services.AddTransient<IMinutzMeetingAttachmentService, MinutzMeetingAttachmentService>();
+
+            services.AddTransient<IMinutzDecisionRepository, MinutzDecisionRepository>();
+            services.AddTransient<IMinutzDecisionService, MinutzDecisionService>();
+
+            services.AddTransient<IMinutzNoteRepository, MinutzNoteRepository>();
+            services.AddTransient<IMinutzNoteService, MinutzNoteService>();
             
             services.AddTransient<IInvitationService, InvitationService>();
-            
             
             
             services.AddMemoryCache();

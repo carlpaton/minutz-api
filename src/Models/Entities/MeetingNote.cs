@@ -9,5 +9,6 @@ namespace Minutz.Models.Entities
     public string NoteText { get; set; }
     public string MeetingAttendeeId { get; set; }
     public DateTime CreatedDate { get; set; }
+    public int Order { get; set; }
   }
 }

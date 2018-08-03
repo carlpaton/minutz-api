@@ -12,5 +12,6 @@ namespace Minutz.Models.Entities
     public string PersonId { get; set; }
     public DateTime CreatedDate { get; set; }
     public bool IsOverturned { get; set; }
+    public int Order { get; set; }
   }
 }

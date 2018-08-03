@@ -1,17 +1,18 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
-using Interface.Repositories.Feature.Meeting.Decision;
+using Interface.Repositories.Feature.Meeting.Note;
 using Minutz.Models.Entities;
 using Minutz.Models.Message;
 
-namespace SqlRepository.Features.Meeting.Decision
+namespace SqlRepository.Features.Meeting.Note
 {
-    public class MinutzDecisionRepository : IMinutzDecisionRepository
+    /// <inheritdoc />
+    public class MinutzNoteRepository : IMinutzNoteRepository
     {
-        public DecisionMessage GetDecisionCollection(Guid meetingId, string schema, string connectionString)
+        public NoteMessage GetNoteCollection(Guid meetingId, string schema, string connectionString)
         {
             if (meetingId == Guid.Empty ||string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
                 throw new ArgumentException("Please provide a valid meeting identifier, schema or connection string.");
@@ -20,25 +21,25 @@ namespace SqlRepository.Features.Meeting.Decision
                 using (IDbConnection dbConnection = new SqlConnection(connectionString))
                 {
                     dbConnection.Open();
-                    var sql = $"SELECT * FROM [{schema}].[MinutzDecision] WHERE [ReferanceId] = '{meetingId}'";
-                    var instanceData = dbConnection.Query<MinutzDecision> (sql).ToList();
-                    return new DecisionMessage
+                    var sql = $"SELECT * FROM [{schema}].[MeetingNote] WHERE [ReferanceId] = '{meetingId}'";
+                    var instanceData = dbConnection.Query<MeetingNote> (sql).ToList();
+                    return new NoteMessage
                            {
                                Code = 200,
                                Condition = true,
                                Message = "Success",
-                               DecisionCollection = instanceData
+                               NoteCollection = instanceData
                            };
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return new DecisionMessage {Code = 500, Condition = false, Message = e.Message};
+                return new NoteMessage {Code = 500, Condition = false, Message = e.Message};
             }
         }
         
-        public DecisionMessage QuickCreateDecision(Guid meetingId, string decisionText, int order, string schema, string connectionString)
+        public NoteMessage QuickCreateNote(Guid meetingId, string noteText, int order, string schema, string connectionString)
         {
             if (meetingId == Guid.Empty ||string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
                 throw new ArgumentException("Please provide a valid meeting identifier, schema or connection string.");
@@ -49,29 +50,30 @@ namespace SqlRepository.Features.Meeting.Decision
                     dbConnection.Open();
                     var id = Guid.NewGuid();
                     var insertSql =
-                        $@"INSERT INTO [{schema}].[MinutzDecision]([Id],[ReferanceId],[DescisionText],[CreatedDate],[IsOverturned],[Order]) 
-                                 VALUES('{id}','{meetingId}','{decisionText}','{DateTime.UtcNow}', 0 ,{order} )";
+                        $@"INSERT INTO [{schema}].[MeetingNote]
+                          (Id, ReferanceId, NoteText, MeetingAttendeeId, CreatedDate, [Order]) 
+                          VALUES('{id}','{meetingId}','{noteText}','','{DateTime.UtcNow}',{order} )";
                     var insertData = dbConnection.Execute(insertSql);
                     if (insertData == 1)
                     {
-                        var instanceSql = $@"SELECT * FROM [{schema}].[MinutzDecision] WHERE [Id] = '{id}'";
-                        var instanceData = dbConnection.Query<MinutzDecision>(instanceSql).FirstOrDefault();
+                        var instanceSql = $@"SELECT * FROM [{schema}].[MeetingNote] WHERE [Id] = '{id}'";
+                        var instanceData = dbConnection.Query<MeetingNote>(instanceSql).FirstOrDefault();
                         if (instanceData == null)
-                            return new DecisionMessage
+                            return new NoteMessage
                                    {
                                        Code = 404,
                                        Condition = false,
                                        Message = "Could not find quick create decision item."
                                    };
-                        return new DecisionMessage
+                        return new NoteMessage
                                {
                                    Code = 200,
                                    Condition = true,
                                    Message = "Success",
-                                   Decision = instanceData
+                                   Note = instanceData
                                };
                     }
-                    return new DecisionMessage
+                    return new NoteMessage
                            {
                                Code = 404,
                                Condition = false,
@@ -82,11 +84,11 @@ namespace SqlRepository.Features.Meeting.Decision
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return new DecisionMessage {Code = 500, Condition = false, Message = e.Message};
+                return new NoteMessage {Code = 500, Condition = false, Message = e.Message};
             }
         }
         
-        public DecisionMessage UpdateDecision(Guid meetingId, MinutzDecision decision, string schema, string connectionString)
+        public NoteMessage UpdateNote(Guid meetingId, MeetingNote note, string schema, string connectionString)
         {
             if (meetingId == Guid.Empty ||string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
                 throw new ArgumentException("Please provide a valid meeting identifier, schema or connection string.");
@@ -95,49 +97,44 @@ namespace SqlRepository.Features.Meeting.Decision
                 using (IDbConnection dbConnection = new SqlConnection(connectionString))
                 {
                     dbConnection.Open();
-                    var overturned = Convert.ToByte(decision.IsOverturned);
                     var sql = $@"UPDATE [{schema}].[MinutzDecision] SET
-                                   [DescisionText] = '{decision.DescisionText}',
-                                   [Descisioncomment] = '{decision.Descisioncomment}',
-                                   [AgendaId] = '{decision.AgendaId}',
-                                   [PersonId] = '{decision.PersonId}',
-                                   [CreatedDate] = '{decision.CreatedDate}',
-                                   [IsOverturned] = {overturned},
-                                   [Order] = {decision.Order} 
+                                   [NoteText] = '{note.NoteText}',
+                                   [MeetingAttendeeId] = '{note.MeetingAttendeeId}',
+                                   [Order] = {note.Order}
                                  WHERE Id = '{meetingId}'";
                     var data = dbConnection.Execute(sql);
                     return data == 1 
-                        ? new DecisionMessage{ Code = 200, Condition =  true, Message = "Success"} 
-                        : new DecisionMessage{ Code = 404, Condition =  false, Message = "Could not update meeting."};
+                        ? new NoteMessage{ Code = 200, Condition =  true, Message = "Success"} 
+                        : new NoteMessage{ Code = 404, Condition =  false, Message = "Could not update meeting."};
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return new DecisionMessage {Code = 500, Condition = false, Message = e.Message};
+                return new NoteMessage {Code = 500, Condition = false, Message = e.Message};
             }
         }
         
-        public MessageBase DeleteDecision(Guid decisionId, string schema, string connectionString)
+        public MessageBase DeleteNote(Guid noteId, string schema, string connectionString)
         {
-            if (decisionId == Guid.Empty  ||string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
+            if (noteId == Guid.Empty  ||string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
                 throw new ArgumentException("Please provide a valid meeting identifier, schema or connection string.");
             try
             {
                 using (IDbConnection dbConnection = new SqlConnection(connectionString))
                 {
                     dbConnection.Open();
-                    var sql = $"DELETE FROM [{schema}].[MinutzDecision] WHERE Id = '{decisionId}'";
+                    var sql = $"DELETE FROM [{schema}].[MeetingNote] WHERE Id = '{noteId}'";
                     var data = dbConnection.Execute(sql);
                     return data == 1 
-                        ? new DecisionMessage{ Code = 200, Condition =  true, Message = "Success"} 
-                        : new DecisionMessage{ Code = 404, Condition =  false, Message = "Could not update meeting."};
+                        ? new MessageBase{ Code = 200, Condition =  true, Message = "Success"} 
+                        : new MessageBase{ Code = 404, Condition =  false, Message = "Could not update meeting."};
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return new DecisionMessage {Code = 500, Condition = false, Message = e.Message};
+                return new MessageBase {Code = 500, Condition = false, Message = e.Message};
             }
         }
     }
