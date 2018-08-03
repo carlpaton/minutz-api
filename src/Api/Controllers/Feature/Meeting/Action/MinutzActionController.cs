@@ -24,7 +24,7 @@ namespace Api.Controllers.Feature.Meeting.Action
                 return StatusCode(401, "Request is missing values for the request");
             var result = _minutzActionService.GetMeetingActions
                 (Guid.Parse(meetingId) ,User.ToRest());
-            return result.Condition ? Ok(result.Action) : StatusCode(result.Code, result.Message);
+            return result.Condition ? Ok(result.Actions) : StatusCode(result.Code, result.Message);
         }
 
         [Authorize]

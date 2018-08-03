@@ -14,7 +14,7 @@ namespace Api.Controllers
         public IActionResult Index()
         {
             // ReSharper disable once Mvc.ViewNotResolved
-            return View();
+            return Redirect("/swagger");
         }
 
         public ActionResult Calendar()

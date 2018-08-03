@@ -79,7 +79,7 @@ namespace SqlRepository
           var instance = dbConnection.Execute(insertSql, new
           {
             action.Id,
-            action.referenceId,
+            action.referanceId,
             action.ActionText,
             action.PersonId,
             action.DueDate,

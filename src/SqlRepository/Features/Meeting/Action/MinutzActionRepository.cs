@@ -8,7 +8,9 @@ using Minutz.Models.Entities;
 using Minutz.Models.Message;
 
 namespace SqlRepository.Features.Meeting.Action {
+
     public class MinutzActionRepository : IMinutzActionRepository {
+
         public ActionMessage GetMeetingActions (Guid meetingId, string schema, string connectionString) {
             if (meetingId == Guid.Empty ||
                 string.IsNullOrEmpty (schema) ||
@@ -19,6 +21,12 @@ namespace SqlRepository.Features.Meeting.Action {
                     dbConnection.Open ();
                     var instanceSql = $@"SELECT * FROM [{schema}].[MinutzAction] WHERE [ReferanceId] = '{meetingId}'";
                     var instanceData = dbConnection.Query<MinutzAction> (instanceSql);
+                    foreach (var action in instanceData)
+                    {
+                        action.ActionTitle = action.ActionText.Length < 5 ? 
+                            $"{action.ActionText.Substring(0, action.ActionText.Length)}..." 
+                            : $"{action.ActionText.Substring(0, 5)}...";
+                    }
                     return new ActionMessage { Code = 200, Condition = true, Message = "Success", Actions = instanceData };
                 }
             } catch (Exception e) {
@@ -142,13 +150,15 @@ namespace SqlRepository.Features.Meeting.Action {
                 using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
                     var id = Guid.NewGuid ();
                     dbConnection.Open ();
-                    var insertSql = $@"INSERT INTO [{schema}].[MinutzAction]([Id],[ReferanceId],[AgendaHeading],[Order], [CreatedDate]) 
-                                 VALUES('{id}','{meetingId}','{actionText}', {order},'{DateTime.UtcNow}' )";
+                    var insertSql = $@"INSERT INTO [{schema}].[MinutzAction]
+                                 ([Id],[ReferanceId],[ActionText],[Order], [CreatedDate], [IsComplete]) 
+                                 VALUES('{id}','{meetingId}','{actionText}', {order},'{DateTime.UtcNow}', 0 )";
                     var insertData = dbConnection.Execute (insertSql);
                     if (insertData == 1) {
                         var instanceSql = $@"SELECT * FROM [{schema}].[MinutzAction] WHERE [Id] = '{id}'";
                         var instanceData = dbConnection.Query<MinutzAction> (instanceSql).FirstOrDefault ();
                         if (instanceData == null) return new ActionMessage { Code = 404, Condition = false, Message = "Could not find quick create action item." };
+                        instanceData.ActionTitle = $"{instanceData.ActionText.Substring(0, 5)}...";
                         return new ActionMessage { Code = 200, Condition = true, Message = "Success", Action = instanceData };
                     }
                     return new ActionMessage { Code = 404, Condition = false, Message = "Could not quick create agenda." };

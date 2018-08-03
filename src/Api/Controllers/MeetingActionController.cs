@@ -53,7 +53,7 @@ namespace Api.Controllers
        _logService.Log(Minutz.Models.LogLevel.Info, "GetMeetings called.");
        var userInfo = Request.ExtractAuth(User, _authenticationService);
        var result = _meetingActionService.CreateMinutzAction
-         (action.referenceId.ToString(), action, userInfo.InfoResponse);
+         (action.referanceId.ToString(), action, userInfo.InfoResponse);
        return result.condition ? Ok(action) : StatusCode(500 ,result.message);
      }
 
@@ -66,7 +66,7 @@ namespace Api.Controllers
      public IActionResult Post([FromBody] MinutzAction action)
      {
        var userInfo = Request.ExtractAuth(User, _authenticationService);
-       var result = _meetingActionService.UpdateMinutzAction(action.referenceId.ToString(), action, userInfo.InfoResponse);
+       var result = _meetingActionService.UpdateMinutzAction(action.referanceId.ToString(), action, userInfo.InfoResponse);
        return result.condition ? Ok(action) : StatusCode(500, result.message);
      }
 
