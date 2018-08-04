@@ -10,6 +10,7 @@ namespace Minutz.Models.Entities
     public string ActionText { get; set; }
     public Guid PersonId { get; set; }
     public DateTime DueDate { get; set; }
+    public DateTime CreatedDate { get; set; }
     public bool IsComplete { get; set; }
     public string Type { get; set; }
     public int Order { get; set; }
