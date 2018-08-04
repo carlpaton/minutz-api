@@ -6,7 +6,9 @@ namespace Api.Models.Feature.Decision
     public class QuickDecisionRequest
     {
         [Required]
-        public Guid Id { get; set; }
-        public dynamic Value { get; set; }
+        public Guid MeetingId { get; set; }
+        [Required]
+        public string DescisionText { get; set; }
+        public int Order { get; set; }
     }
 }

@@ -76,7 +76,7 @@ namespace SqlRepository.Features.Meeting.Action {
             }
         }
 
-        public MessageBase UpdateActionAssignedAttendee (Guid actionId, string email, string schema, string connectionString) {
+        public MessageBase UpdateActionAssignedAttendee (Guid actionId, string personId, string schema, string connectionString) {
             if (actionId == Guid.Empty ||
                 string.IsNullOrEmpty (schema) ||
                 string.IsNullOrEmpty (connectionString))
@@ -84,16 +84,11 @@ namespace SqlRepository.Features.Meeting.Action {
             try {
                 using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
                     dbConnection.Open ();
-                    var userSql = $@"SELECT * FROM [{schema}].[AvailibleAttendee] WHERE [Email] = '{email}'";
-                    var instanceData = dbConnection.Query<AvailibleAttendee> (userSql).FirstOrDefault ();
-                    if (instanceData != null) {
-                        var sql = $"UPDATE [{schema}].[MinutzAction] SET [PersonId] = '{instanceData.Id}' WHERE Id = '{actionId}'";
-                        var data = dbConnection.Execute (sql);
-                        return data == 1 ?
-                            new MessageBase { Code = 200, Condition = true, Message = "Success" } :
-                            new MessageBase { Code = 404, Condition = false, Message = "Could not update action assigned attendee." };
-                    }
-                    return new MessageBase { Code = 404, Condition = false, Message = "Could not update action assigned attendee as the attendee cannot be found." };
+                    var sql = $"UPDATE [{schema}].[MinutzAction] SET [PersonId] = '{personId}' WHERE Id = '{actionId}'";
+                    var data = dbConnection.Execute (sql);
+                    return data == 1 ?
+                        new MessageBase { Code = 200, Condition = true, Message = "Success" } :
+                        new MessageBase { Code = 404, Condition = false, Message = "Could not update action assigned attendee." };
                 }
             } catch (Exception e) {
                 Console.WriteLine (e);

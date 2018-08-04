@@ -36,13 +36,13 @@ namespace Api.Controllers.Feature.Meeting.Note
             if (!ModelState.IsValid)
                 return StatusCode(401, "Request is missing values for the request");
             var result = _noteService.QuickNoteCreate
-                (request.Id, request.Value.DescisionText,request.Value.Order ,User.ToRest());
+                (request.MeetingId, request.NoteText,request.Order ,User.ToRest());
             return result.Condition ? Ok(result.Note) : StatusCode(result.Code, result.Message);
         }
         
         [Authorize]
         [HttpPost("api/feature/note/update", Name = "Update note for a meeting")]
-        public IActionResult UpdateNoteResult([FromBody] QuickNoteRequest request)
+        public IActionResult UpdateNoteResult([FromBody] UpdateNoteRequest request)
         {
             if (!ModelState.IsValid)
                 return StatusCode(401, "Request is missing values for the request");

@@ -36,13 +36,13 @@ namespace Api.Controllers.Feature.Meeting.Decision
             if (!ModelState.IsValid)
                 return StatusCode(401, "Request is missing values for the request");
             var result = _minutzDecisionService.QuickDecisionCreate
-                (request.Id, request.Value.DescisionText,request.Value.Order ,User.ToRest());
+                (request.MeetingId, request.DescisionText,request.Order ,User.ToRest());
             return result.Condition ? Ok(result.Decision) : StatusCode(result.Code, result.Message);
         }
         
         [Authorize]
         [HttpPost("api/feature/decision/update", Name = "Update decision for a meeting")]
-        public IActionResult UpdateDecisionResult([FromBody] QuickDecisionRequest request)
+        public IActionResult UpdateDecisionResult([FromBody] UpdateDecisionRequest request)
         {
             if (!ModelState.IsValid)
                 return StatusCode(401, "Request is missing values for the request");
