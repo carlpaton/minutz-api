@@ -51,8 +51,8 @@ namespace SqlRepository.Features.Meeting.Note
                     var id = Guid.NewGuid();
                     var insertSql =
                         $@"INSERT INTO [{schema}].[MeetingNote]
-                          (Id, ReferanceId, NoteText, MeetingAttendeeId, CreatedDate, [Order]) 
-                          VALUES('{id}','{meetingId}','{noteText}','','{DateTime.UtcNow}',{order} )";
+                          (Id, ReferanceId, NoteText, CreatedDate, [Order]) 
+                          VALUES('{id}','{meetingId}','{noteText}','{DateTime.UtcNow}',{order} )";
                     var insertData = dbConnection.Execute(insertSql);
                     if (insertData == 1)
                     {
@@ -97,11 +97,26 @@ namespace SqlRepository.Features.Meeting.Note
                 using (IDbConnection dbConnection = new SqlConnection(connectionString))
                 {
                     dbConnection.Open();
-                    var sql = $@"UPDATE [{schema}].[MinutzDecision] SET
+                    var sql = string.Empty;
+                    if (string.IsNullOrEmpty(note.MeetingAttendeeId))
+                    {
+                        sql = $@"UPDATE [{schema}].[MeetingNote] SET
+                                   [CreatedDate] = '{note.CreatedDate}',
+                                   [NoteText] = '{note.NoteText}',
+                                   [Order] = {note.Order}
+                                 WHERE Id = '{meetingId}'";
+                    }
+                    else
+                    {
+                        sql = $@"UPDATE [{schema}].[MeetingNote] SET
+                                   [CreatedDate] = '{note.CreatedDate}',
                                    [NoteText] = '{note.NoteText}',
                                    [MeetingAttendeeId] = '{note.MeetingAttendeeId}',
                                    [Order] = {note.Order}
                                  WHERE Id = '{meetingId}'";
+                    }
+
+                    
                     var data = dbConnection.Execute(sql);
                     return data == 1 
                         ? new NoteMessage{ Code = 200, Condition =  true, Message = "Success"} 

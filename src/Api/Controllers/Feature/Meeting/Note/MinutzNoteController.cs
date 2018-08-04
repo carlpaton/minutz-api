@@ -42,13 +42,13 @@ namespace Api.Controllers.Feature.Meeting.Note
         
         [Authorize]
         [HttpPost("api/feature/note/update", Name = "Update note for a meeting")]
-        public IActionResult UpdateNoteResult([FromBody] UpdateNoteRequest request)
+        public IActionResult UpdateNoteResult([FromBody] MeetingNote request)
         {
             if (!ModelState.IsValid)
                 return StatusCode(401, "Request is missing values for the request");
-            var model = JsonConvert.DeserializeObject<MeetingNote>(request.Value);
+            //var model = JsonConvert.DeserializeObject<MeetingNote>(request.Value);
             var result = _noteService.UpdateNote
-                (request.Id, model ,User.ToRest());
+                (request.Id, request ,User.ToRest());
             return result.Condition ? Ok(result.Note) : StatusCode(result.Code, result.Message);
         }
         

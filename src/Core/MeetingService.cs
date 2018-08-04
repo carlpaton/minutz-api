@@ -504,8 +504,8 @@ namespace Core
 
           foreach (var note in notes)
           {
-            note.Id = Guid.NewGuid().ToString();
-            note.ReferanceId = meeting.Id.ToString();
+            note.Id = Guid.NewGuid();
+            note.ReferanceId = meeting.Id;
             var noteSaved = _meetingNoteRepository.Add(note, instanceId,  _applicationSetting.CreateConnectionString(
               _applicationSetting.Server,_applicationSetting.Catalogue,instanceId,_applicationSetting.GetInstancePassword(instanceId)));
             if (!noteSaved)
@@ -732,11 +732,11 @@ namespace Core
         foreach (var note in meetingViewModel.MeetingNoteCollection)
         {
           var savedNote =
-            _meetingNoteRepository.Get(Guid.Parse(note.Id), user.InstanceId, instanceConnectionString);
-          if (savedNote == null || Guid.Parse(savedNote.Id) == Guid.Empty)
+            _meetingNoteRepository.Get(note.Id, user.InstanceId, instanceConnectionString);
+          if (savedNote == null || savedNote.Id == Guid.Empty)
           {
-            note.Id = Guid.NewGuid().ToString();
-            note.ReferanceId = meetingViewModel.Id;
+            note.Id = Guid.NewGuid();
+            note.ReferanceId = Guid.Parse(meetingViewModel.Id);
              _meetingNoteRepository.Add(note, user.InstanceId, instanceConnectionString);
           }
           else
