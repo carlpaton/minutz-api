@@ -57,6 +57,14 @@ namespace Core.Feature.Meeting.Action
                 instanceConnectionString);
         }
 
+        public MessageBase UpdateActionRaisedDate(Guid actionId, DateTime dueDate, AuthRestModel user)
+        {
+            var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+                _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
+            return _minutzActionRepository.UpdateActionRaisedDate(actionId, dueDate, user.InstanceId,
+                instanceConnectionString);
+        }
+
         public MessageBase UpdateActionOrder(Guid actionId, int order, AuthRestModel user)
         {
             var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,

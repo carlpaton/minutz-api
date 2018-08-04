@@ -104,6 +104,19 @@ namespace Api.Controllers.Feature.Meeting.Action
         }
         
         [Authorize]
+        [HttpPost("api/feature/action/raised", Name = "Update action raised date")]
+        public IActionResult UpdateActionRaisedDateResult([FromBody]UpdateActionRequest request)
+        {
+            if (!ModelState.IsValid)
+                return StatusCode(401, "Request is missing values for the request");
+            DateTime? due = request.Value as DateTime?;
+            if(due == null) return StatusCode(401, "Request is missing due date value for the request");
+            var result = _minutzActionService.UpdateActionDueDate
+                (request.Id, (DateTime)due ,User.ToRest());
+            return result.Condition ? (IActionResult) Ok() : StatusCode(result.Code, result.Message);
+        }
+        
+        [Authorize]
         [HttpDelete("api/feature/action", Name = "Delete action")]
         public IActionResult DeleteActionResult(Guid id)
         {

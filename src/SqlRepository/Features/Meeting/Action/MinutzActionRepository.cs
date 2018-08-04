@@ -8,7 +8,7 @@ using Minutz.Models.Entities;
 using Minutz.Models.Message;
 
 namespace SqlRepository.Features.Meeting.Action {
-
+    /// <inheritdoc />
     public class MinutzActionRepository : IMinutzActionRepository {
 
         public ActionMessage GetMeetingActions (Guid meetingId, string schema, string connectionString) {
@@ -110,6 +110,26 @@ namespace SqlRepository.Features.Meeting.Action {
                 using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
                     dbConnection.Open ();
                     var sql = $"UPDATE [{schema}].[MinutzAction] SET [DueDate] = '{dueDate}' WHERE Id = '{actionId}'";
+                    var data = dbConnection.Execute (sql);
+                    return data == 1 ?
+                        new MessageBase { Code = 200, Condition = true, Message = "Success" } :
+                        new MessageBase { Code = 404, Condition = false, Message = "Could not update action due date." };
+                }
+            } catch (Exception e) {
+                Console.WriteLine (e);
+                return new MessageBase { Code = 500, Condition = false, Message = e.Message };
+            }
+        }
+        
+        public MessageBase UpdateActionRaisedDate (Guid actionId, DateTime raisedDate, string schema, string connectionString) {
+            if (actionId == Guid.Empty ||
+                string.IsNullOrEmpty (schema) ||
+                string.IsNullOrEmpty (connectionString))
+                throw new ArgumentException ("Please provide a valid agenda identifier, schema or connection string.");
+            try {
+                using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
+                    dbConnection.Open ();
+                    var sql = $"UPDATE [{schema}].[MinutzAction] SET [CreatedDate] = '{raisedDate}' WHERE Id = '{actionId}'";
                     var data = dbConnection.Execute (sql);
                     return data == 1 ?
                         new MessageBase { Code = 200, Condition = true, Message = "Success" } :
