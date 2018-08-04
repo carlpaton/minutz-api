@@ -49,9 +49,12 @@ namespace SqlRepository.Features.Meeting.Decision
                     dbConnection.Open();
                     var id = Guid.NewGuid();
                     var insertSql =
-                        $@"INSERT INTO [{schema}].[MinutzDecision]([Id],[ReferanceId],[DescisionText],[CreatedDate],[IsOverturned],[Order]) 
-                                 VALUES('{id}','{meetingId}','{decisionText}','{DateTime.UtcNow}', 0 ,{order} )";
+                        $@"INSERT INTO [{schema}].[MinutzDecision]
+                           ([Id],[ReferanceId],[DescisionText],[CreatedDate],[IsOverturned],[Order]) 
+                           VALUES('{id}','{meetingId}','{decisionText}','{DateTime.UtcNow}', 0 ,{order} )";
+                    
                     var insertData = dbConnection.Execute(insertSql);
+                    
                     if (insertData == 1)
                     {
                         var instanceSql = $@"SELECT * FROM [{schema}].[MinutzDecision] WHERE [Id] = '{id}'";
@@ -96,7 +99,21 @@ namespace SqlRepository.Features.Meeting.Decision
                 {
                     dbConnection.Open();
                     var overturned = Convert.ToByte(decision.IsOverturned);
-                    var sql = $@"UPDATE [{schema}].[MinutzDecision] SET
+                    var sql = string.Empty;
+                    if (string.IsNullOrEmpty(decision.PersonId))
+                    {
+                        sql = $@"UPDATE [{schema}].[MinutzDecision] SET
+                                   [DescisionText] = '{decision.DescisionText}',
+                                   [Descisioncomment] = '{decision.Descisioncomment}',
+                                   [AgendaId] = '{decision.AgendaId}',
+                                   [CreatedDate] = '{decision.CreatedDate}',
+                                   [IsOverturned] = {overturned},
+                                   [Order] = {decision.Order} 
+                                 WHERE Id = '{meetingId}'";
+                    }
+                    else
+                    {
+                        sql = $@"UPDATE [{schema}].[MinutzDecision] SET
                                    [DescisionText] = '{decision.DescisionText}',
                                    [Descisioncomment] = '{decision.Descisioncomment}',
                                    [AgendaId] = '{decision.AgendaId}',
@@ -105,6 +122,7 @@ namespace SqlRepository.Features.Meeting.Decision
                                    [IsOverturned] = {overturned},
                                    [Order] = {decision.Order} 
                                  WHERE Id = '{meetingId}'";
+                    }
                     var data = dbConnection.Execute(sql);
                     return data == 1 
                         ? new DecisionMessage{ Code = 200, Condition =  true, Message = "Success"} 

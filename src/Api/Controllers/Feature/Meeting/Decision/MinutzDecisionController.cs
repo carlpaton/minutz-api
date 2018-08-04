@@ -42,13 +42,12 @@ namespace Api.Controllers.Feature.Meeting.Decision
         
         [Authorize]
         [HttpPost("api/feature/decision/update", Name = "Update decision for a meeting")]
-        public IActionResult UpdateDecisionResult([FromBody] UpdateDecisionRequest request)
+        public IActionResult UpdateDecisionResult([FromBody] MinutzDecision request)
         {
             if (!ModelState.IsValid)
                 return StatusCode(401, "Request is missing values for the request");
-            var model = JsonConvert.DeserializeObject<MinutzDecision>(request.Value);
             var result = _minutzDecisionService.UpdateDecision
-                (request.Id, model ,User.ToRest());
+                (request.Id, request ,User.ToRest());
             return result.Condition ? Ok(result.Decision) : StatusCode(result.Code, result.Message);
         }
         
