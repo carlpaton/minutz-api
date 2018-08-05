@@ -25,7 +25,8 @@ namespace Minutz.Models.ViewModels
     public string MeetingOwnerId { get; set; }
     public string Outcome { get; set; }
     
-
+    public List<Entities.MeetingAgenda> Agenda { get; set; }
+    
     public List<Entities.MeetingAgenda> MeetingAgendaCollection { get; set; }
     public List<Entities.MeetingAttachment> MeetingAttachmentCollection { get; set; }
     public List<Entities.MeetingAttendee> MeetingAttendeeCollection { get; set; }

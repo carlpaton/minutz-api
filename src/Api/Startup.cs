@@ -44,6 +44,9 @@ using Interface.Services.Feature.Meeting.Header;
 using Interface.Services.Feature.Meeting.Note;
 using Interface.Services.Feature.Meeting.Status;
 using Interface.Services.Feature.Notification;
+using jsreport.AspNetCore;
+using jsreport.Local;
+using jsreport.Binary;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -240,6 +243,10 @@ namespace Minutz.Api
             
             services.AddMemoryCache();
             services.AddMvc();
+            services.AddJsReport(new LocalReporting()
+                .UseBinary(JsReportBinary.GetBinary())
+                .AsUtility()
+                .Create());
             var appSetting = new ApplicationSetting(new InstanceRepository(), new MinutzEncryption.Encryptor());
 
             var version = Configuration.GetSection("Version").Value;
