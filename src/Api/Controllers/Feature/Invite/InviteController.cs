@@ -1,4 +1,6 @@
+using System;
 using Api.Extensions;
+using Interface.Repositories;
 using Interface.Services;
 using Interface.Services.Feature.Invite;
 using Interface.Services.Feature.Meeting;
@@ -16,16 +18,19 @@ namespace Api.Controllers.Feature.Invite
         private readonly IGetMeetingService _getMeetingService;
         private readonly IInvitationService _invitationService;
         private readonly INotificationService _notificationService;
+        private readonly IMeetingAttendeeRepository _attendeeRepository;
 
         public InviteController(IApplicationSetting applicationSetting,
                                 IGetMeetingService getMeetingService,
                                 IInvitationService invitationService,
-                                INotificationService notificationService)
+                                INotificationService notificationService,
+                                IMeetingAttendeeRepository attendeeRepository)
         {
             _applicationSetting = applicationSetting;
             _getMeetingService = getMeetingService;
             _invitationService = invitationService;
             _notificationService = notificationService;
+            _attendeeRepository = attendeeRepository;
         }
 
         /// <summary>
@@ -78,6 +83,52 @@ namespace Api.Controllers.Feature.Invite
             }
 
             return StatusCode(notificationResult.Code, notificationResult.Message);
+        }
+
+        [Authorize]
+        [HttpPost("api/feature/attendee/invites", Name = "Invite Attendees for meeting")]
+        public IActionResult SendInvitesResult(Guid meetingId)
+        {
+            var userInfo = User.ToRest();
+            
+            if (meetingId == Guid.Empty)
+                return new BadRequestObjectResult("Meeting id is incorrect");
+            var meeting = _getMeetingService.GetMeeting(userInfo.InstanceId, meetingId);
+            var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+                _applicationSetting.Catalogue, userInfo.InstanceId, _applicationSetting.GetInstancePassword(userInfo.InstanceId));
+            var master = _applicationSetting.CreateConnectionString();
+
+            var attendees =
+                _attendeeRepository.GetMeetingAttendees(meetingId, userInfo.InstanceId, instanceConnectionString,
+                    master);
+            foreach (var meetingAttendee in attendees)
+            {
+                var notificationResult = _notificationService.SendMeetingInvitation(meetingAttendee, meeting.Meeting, userInfo.InstanceId);
+            }
+            return Ok();
+        }
+        
+        [Authorize]
+        [HttpPost("api/feature/attendee/minutes", Name = "Send minutes for meeting")]
+        public IActionResult SendMinutesResult(Guid meetingId)
+        {
+            var userInfo = User.ToRest();
+            
+            if (meetingId == Guid.Empty)
+                return new BadRequestObjectResult("Meeting id is incorrect");
+            var meeting = _getMeetingService.GetMeeting(userInfo.InstanceId, meetingId);
+            var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+                _applicationSetting.Catalogue, userInfo.InstanceId, _applicationSetting.GetInstancePassword(userInfo.InstanceId));
+            var master = _applicationSetting.CreateConnectionString();
+
+            var attendees =
+                _attendeeRepository.GetMeetingAttendees(meetingId, userInfo.InstanceId, instanceConnectionString,
+                    master);
+            foreach (var meetingAttendee in attendees)
+            {
+                var notificationResult = _notificationService.SendMeetingInvitation(meetingAttendee, meeting.Meeting, userInfo.InstanceId);
+            }
+            return Ok();
         }
     }
 }

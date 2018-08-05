@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using Interface.Repositories.Feature.Meeting;
+using Interface.Repositories.Feature.Meeting.Agenda;
 using Interface.Services;
 using Microsoft.AspNetCore.Mvc;
 using Minutz.Models.Entities;
@@ -15,11 +16,16 @@ namespace Api.Controllers.Feature.Reports
     {
         private readonly IApplicationSetting _applicationSetting;
         private readonly IGetMeetingRepository _getMeetingRepository;
+        private readonly IMinutzAgendaRepository _agendaRepository;
+        private readonly IMinutzAgendaRepository _minutzAgendaRepository;
         
-        public MinutesController(IApplicationSetting applicationSetting, IGetMeetingRepository getMeetingRepository)
+        public MinutesController(IApplicationSetting applicationSetting,
+                                 IGetMeetingRepository getMeetingRepository,
+                                 IMinutzAgendaRepository agendaRepository)
         {
             _applicationSetting = applicationSetting;
             _getMeetingRepository = getMeetingRepository;
+            _agendaRepository = agendaRepository;
         }
 
         public ActionResult Invoice(Guid m, string i)
@@ -27,6 +33,18 @@ namespace Api.Controllers.Feature.Reports
             var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
                 _applicationSetting.Catalogue, i, _applicationSetting.GetInstancePassword(i));
             var meeting = _getMeetingRepository.Get(m, i, instanceConnectionString).Meeting;
+
+            var agendaCollection = _agendaRepository.GetMeetingAgendaCollection(m, i, instanceConnectionString);
+            var agendaItems = new List<JsReportAgenda>();
+            foreach (var meetingAgenda in agendaCollection.AgendaCollection)
+            {
+                agendaItems.Add(new JsReportAgenda
+                                {
+                                    agendaHeading = meetingAgenda.AgendaHeading,
+                                    agendaText = meetingAgenda.AgendaText.Replace("<p>","").Replace("</p>","")
+                                        .Replace("<b>","").Replace("</b>","").Replace("&nbsp;","&")
+                                });
+            }
             
             var client = new HttpClient();
             var url = "https://minutz.jsreportonline.net/api/report";
@@ -39,8 +57,10 @@ namespace Api.Controllers.Feature.Reports
                            outcome = meeting.Outcome.Replace("<p>","").Replace("</p>","")
                                .Replace("<b>","").Replace("</b>","").Replace("&nbsp;","&"),
                            purpose = meeting.Purpose.Replace("<p>","").Replace("</p>","")
-                               .Replace("<b>","").Replace("</b>","").Replace("&nbsp;","&")
+                               .Replace("<b>","").Replace("</b>","").Replace("&nbsp;","&"),
+                           agenda = agendaItems
                        };
+            
             var model = new SendData
                         {
                             options = new options{timeout = 60000},
@@ -112,10 +132,17 @@ namespace Api.Controllers.Feature.Reports
         public string purpose { get; set; }
         public string outcome { get; set; }
         public List<JsReportAgenda> agenda { get; set; }
+        public List<JsReportAttendee> attendees { get; set; }
         public List<JsReportNote> notes { get; set; }
     }
 
     public class JsReportAgenda
+    {
+        public string agendaHeading { get; set; }
+        public string agendaText { get; set; }
+    }
+    
+    public class JsReportAttendee
     {
         public string name { get; set; }
         public string role { get; set; }
@@ -134,6 +161,4 @@ namespace Api.Controllers.Feature.Reports
         }
     }
 }
-
-// {"template":{"shortid":"shortid"},"data":{"aProperty":"value"}}
 
