@@ -59,6 +59,7 @@ namespace Api.Controllers.Feature.Reports
             {
                 foreach (var meetingAgenda in agendaCollection.AgendaCollection)
                 {
+                    if (string.IsNullOrEmpty(meetingAgenda.AgendaText)) meetingAgenda.AgendaText = string.Empty;
                     agendaItems.Add(new JsReportAgenda
                     {
                         agendaHeading = meetingAgenda.AgendaHeading,
