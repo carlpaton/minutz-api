@@ -82,19 +82,27 @@ namespace Api.Controllers.Feature.Reports
                 }
             }
 
-            var attendeeResult = _minutzAttendeeRepository.GetAttendees(m, i, instanceConnectionString, masterConnectionString);
             var attendees = new List<JsReportAttendee>();
-            if (attendeeResult.Condition)
+            try
             {
-                foreach (var attendee in attendeeResult.Attendees)
+                var attendeeResult = _minutzAttendeeRepository.GetAttendees(m, i, instanceConnectionString, masterConnectionString);
+                if (attendeeResult.Condition)
                 {
-                    attendees.Add(new JsReportAttendee
+                    foreach (var attendee in attendeeResult.Attendees)
                     {
-                        name =  attendee.Name,
-                        role = attendee.Role
-                    });
+                        attendees.Add(new JsReportAttendee
+                        {
+                            name =  attendee.Name,
+                            role = attendee.Role
+                        });
+                    }
                 }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            
 
 
             var client = new HttpClient();
