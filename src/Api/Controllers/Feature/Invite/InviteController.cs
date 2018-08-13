@@ -1,5 +1,6 @@
 using System;
 using Api.Extensions;
+using Api.Models.Feature.Invite;
 using Interface.Repositories;
 using Interface.Services;
 using Interface.Services.Feature.Invite;
@@ -101,6 +102,30 @@ namespace Api.Controllers.Feature.Invite
             var attendees =
                 _attendeeRepository.GetMeetingAttendees(meetingId, userInfo.InstanceId, instanceConnectionString,
                     master);
+            foreach (var meetingAttendee in attendees)
+            {
+                var notificationResult = _notificationService.SendMeetingInvitation(meetingAttendee, meeting.Meeting, userInfo.InstanceId);
+            }
+            return Ok();
+        }
+        
+        [Authorize]
+        [HttpPost("api/feature/attendee/invitation", Name = "Invite Attendees for meeting with message body")]
+        public IActionResult SendInvitesWithMessageResult([FromBody] InviteRequestMessage request)
+        {
+            var userInfo = User.ToRest();
+            
+            if (request.MeetingId == Guid.Empty)
+                return new BadRequestObjectResult("Meeting id is incorrect");
+            var meeting = _getMeetingService.GetMeeting(userInfo.InstanceId, request.MeetingId);
+            var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+                _applicationSetting.Catalogue, userInfo.InstanceId, _applicationSetting.GetInstancePassword(userInfo.InstanceId));
+            var master = _applicationSetting.CreateConnectionString();
+
+            var attendees =
+                _attendeeRepository.GetMeetingAttendees(request.MeetingId, userInfo.InstanceId, instanceConnectionString,
+                    master);
+            attendees.Add(new MeetingAttendee{Email = userInfo.Email,Name = userInfo.Name,Role = userInfo.Role,PersonIdentity = userInfo.Email});
             foreach (var meetingAttendee in attendees)
             {
                 var notificationResult = _notificationService.SendMeetingInvitation(meetingAttendee, meeting.Meeting, userInfo.InstanceId);

@@ -24,6 +24,7 @@ namespace Api.Controllers.Feature.Dashboard.Action
             {
                 return Ok(result.Actions);
             }
+            
             return StatusCode(result.Code, result.Message);
         }
     }
