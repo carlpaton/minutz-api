@@ -151,7 +151,7 @@ namespace Api.Controllers.Feature.Invite
                     master);
             foreach (var meetingAttendee in attendees)
             {
-                var notificationResult = _notificationService.SendMeetingInvitation(meetingAttendee, meeting.Meeting, userInfo.InstanceId);
+                var notificationResult = _notificationService.SendMeetingMinutes(meetingAttendee, meeting.Meeting, userInfo.InstanceId);
             }
             return Ok();
         }
