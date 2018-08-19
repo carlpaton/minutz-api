@@ -75,6 +75,26 @@ namespace SqlRepository.Features.Meeting.Action {
                 return new MessageBase { Code = 500, Condition = false, Message = e.Message };
             }
         }
+        
+        public MessageBase UpdateActionTitle (Guid actionId, string text, string schema, string connectionString) {
+            if (actionId == Guid.Empty ||
+                string.IsNullOrEmpty (schema) ||
+                string.IsNullOrEmpty (connectionString))
+                throw new ArgumentException ("Please provide a valid agenda identifier, schema or connection string.");
+            try {
+                using (IDbConnection dbConnection = new SqlConnection (connectionString)) {
+                    dbConnection.Open ();
+                    var sql = $"UPDATE [{schema}].[MinutzAction] SET [ActionText] = '{text}' WHERE Id = '{actionId}'";
+                    var data = dbConnection.Execute (sql);
+                    return data == 1 ?
+                        new MessageBase { Code = 200, Condition = true, Message = "Success" } :
+                        new MessageBase { Code = 404, Condition = false, Message = "Could not update action text." };
+                }
+            } catch (Exception e) {
+                Console.WriteLine (e);
+                return new MessageBase { Code = 500, Condition = false, Message = e.Message };
+            }
+        }
 
         public MessageBase UpdateActionAssignedAttendee (Guid actionId, string personId, string schema, string connectionString) {
             if (actionId == Guid.Empty ||

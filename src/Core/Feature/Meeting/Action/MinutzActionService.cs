@@ -40,6 +40,13 @@ namespace Core.Feature.Meeting.Action
                 _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
             return _minutzActionRepository.UpdateActionText(actionId, text, user.InstanceId, instanceConnectionString);
         }
+        
+        public MessageBase UpdateActionTitle(Guid actionId, string text, AuthRestModel user)
+        {
+            var instanceConnectionString = _applicationSetting.CreateConnectionString(_applicationSetting.Server,
+                _applicationSetting.Catalogue, user.InstanceId, _applicationSetting.GetInstancePassword(user.InstanceId));
+            return _minutzActionRepository.UpdateActionText(actionId, text, user.InstanceId, instanceConnectionString);
+        }
 
         public MessageBase UpdateActionAssignedAttendee(Guid actionId, string email, AuthRestModel user)
         {

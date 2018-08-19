@@ -41,7 +41,7 @@ namespace Api.Controllers.Feature.Meeting.Note
         }
         
         [Authorize]
-        [HttpPost("api/feature/note/update", Name = "Update note for a meeting")]
+        [HttpPost("api/feature/note", Name = "Update note for a meeting")]
         public IActionResult UpdateNoteResult([FromBody] MeetingNote request)
         {
             if (!ModelState.IsValid)

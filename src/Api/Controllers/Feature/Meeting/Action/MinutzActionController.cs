@@ -52,6 +52,19 @@ namespace Api.Controllers.Feature.Meeting.Action
         }
         
         [Authorize]
+        [HttpPost("api/feature/action/title", Name = "Update action title")]
+        public IActionResult UpdateActionUpdateTitleResult([FromBody]UpdateActionRequest request)
+        {
+            if (!ModelState.IsValid)
+                return StatusCode(401, "Request is missing values for the request");
+            string text = request.Value as string;
+            if(string.IsNullOrEmpty(text)) return StatusCode(401, "Request is missing complete value for the request");
+            var result = _minutzActionService.UpdateActionText
+                (request.Id, text ,User.ToRest());
+            return result.Condition ? (IActionResult) Ok() : StatusCode(result.Code, result.Message);
+        }
+        
+        [Authorize]
         [HttpPost("api/feature/action/complete", Name = "Update action complete status")]
         public IActionResult UpdateActionCompleteResult([FromBody]UpdateActionRequest request)
         {
