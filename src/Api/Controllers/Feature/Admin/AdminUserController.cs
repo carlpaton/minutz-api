@@ -1,51 +1,44 @@
 ﻿using System.Collections.Generic;
 using Api.Extensions;
 using Api.Models;
-using Interface;
-using Interface.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Minutz.Models.Entities;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Api.Controllers
+namespace Api.Controllers.Feature.Admin
 {
-    public class AdminController : Controller
+    public class AdminUserController : Controller
     {
+        public AdminUserController()
+        {
+        }
+
         [Authorize]
-        [HttpGet("api/admin/users")]
+        [HttpGet("api/feature/admin/users")]
         public IActionResult GetUsers()
         {
+            var user = User.ToRest();
             return Ok(new List<PersonViewModel>());
         }
-        
+
         [Authorize]
-        [HttpPut("api/admin/user")]
+        [HttpPut("api/feature/admin/user")]
         public IActionResult CreateUser([FromBody] PersonViewModel person)
         {
             return Ok(person);
         }
-        
+
         [Authorize]
-        [HttpPost("api/admin/user")]
+        [HttpPost("api/feature/admin/user")]
         public IActionResult UpdateUser([FromBody] PersonViewModel person)
         {
             return Ok(person);
         }
 
         [Authorize]
-        [HttpDelete("api/admin/user")]
+        [HttpDelete("api/feature/admin/user")]
         public IActionResult DeleteUser(string email)
         {
             return Ok();
         }
-        
-        [Authorize]
-        [HttpGet("api/admin/cal")]
-        public IActionResult GetCal()
-        {
-            return Ok(10);
-        }
-        
     }
 }

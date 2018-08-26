@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using AspnetAuthenticationRepository.Interfaces;
 using AspnetAuthenticationRepository.Extentions;
 using Interface;
@@ -12,7 +9,6 @@ using Interface.Repositories;
 using Interface.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using Minutz.Models;
 using Minutz.Models.Auth0Models;
 using Minutz.Models.Entities;

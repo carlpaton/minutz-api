@@ -19,11 +19,11 @@
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
                 "CLIENTSECRET": "_kVUASQWVawA2pwYry-xP53kQpOALkEj_IGLWCSspXkpUFRtE_W-Gg74phrxZkz8",
-                "DEFAULT_PASSWORD": "2r31QYenF!aw",
+                "DEFAULT_PASSWORD": "Alaska2017",
                 "NOTIFY-DEFAULT-TEMPLATE-KEY": "716b366a-5d7f-4e19-a07c-bb32762903e5",
                 "DOMAIN": "minutz.eu.auth0.com",
                 "DEFAULT_CATALOGUE": "minutz",
-                "SERVER_ADDRESS": "db.minutz.net,1450",
+                "SERVER_ADDRESS": "tcp:127.0.0.1,1450",
                 "DEFAULT_SCHEMA": "app",
                 "DEFAULT_USER": "sa",
                 "NOTIFY-KEY": "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",

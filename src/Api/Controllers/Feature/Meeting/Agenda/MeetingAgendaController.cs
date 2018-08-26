@@ -77,7 +77,7 @@ namespace Api.Controllers.Feature.Meeting.Agenda
         [HttpPost("api/feature/agenda/duration", Name = "Update agenda duration")]
         public IActionResult UpdateDurationResult([FromBody]MeetingAgenda request)
         {
-            if (!ModelState.IsValid)
+                if (!ModelState.IsValid)
                 return StatusCode(401, "Request is missing values for the request");
             var result = _minutzAgendaService.UpdateDuration
                 (request.Id, Convert.ToInt32(request.Duration) ,User.ToRest());

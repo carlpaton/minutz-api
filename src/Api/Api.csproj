@@ -90,4 +90,9 @@
   <ItemGroup>
     <Content Remove="version.json" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Controllers\MeetingAgendaController.cs" />
+    <Compile Remove="Controllers\MeetingActionController.cs" />
+    <Compile Remove="Controllers\MeetingAttendeeController.cs" />
+  </ItemGroup>
 </Project>
