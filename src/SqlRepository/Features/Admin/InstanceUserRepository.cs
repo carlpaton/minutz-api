@@ -88,5 +88,53 @@ namespace SqlRepository.Features.Admin
                 return new PersonResponse {Code = 500, Condition = false, Message = e.Message};
             }
         }
+
+        public PersonResponse UpdateInstancePerson(Person person, string schema, string connectionString)
+        {
+            if (string.IsNullOrEmpty(schema) || string.IsNullOrEmpty(connectionString))
+                throw new ArgumentException("Please provide a valid agenda identifier, schema or connection string.");
+            try
+            {
+                using (IDbConnection dbConnection = new SqlConnection(connectionString))
+                {
+                    dbConnection.Open();
+                    var instanceSql = $@"UPDATE [APP].[Person] SET [Related] = {person.Related} WHERE [Email] = '{person.Email}'";
+                    var insertData = dbConnection.Execute(instanceSql);
+                    if (insertData == 1)
+                    {
+                        var selectInstanceSql = $@"SELECT * FROM [APP].[Person] WHERE [IdentityId] = '{person.Identityid}'";
+                        var instanceData = dbConnection.Query<Person>(selectInstanceSql).FirstOrDefault();
+                        if (instanceData == null)
+                        {
+                            return new PersonResponse
+                                   {
+                                       Code = 404,
+                                       Condition = false,
+                                       Message = "Could not find user that was updated."
+                                   };
+                        }
+                        return new PersonResponse
+                               {
+                                   Code = 200,
+                                   Condition = true,
+                                   Message = "Success",
+                                   Person = instanceData
+                               };
+                    }
+
+                    return new PersonResponse
+                           {
+                               Code = 404,
+                               Condition = false,
+                               Message = "Could not update user."
+                           };
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new PersonResponse {Code = 500, Condition = false, Message = e.Message};
+            }
+        }
     }
 }

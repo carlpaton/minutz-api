@@ -20,5 +20,6 @@ namespace Minutz.Models.Entities
     public int NotificationRoleId { get; set; }
     public int ReminderId { get; set; }
     public string Company { get; set; }
+    public int Cal { get; set; }
   }
 }

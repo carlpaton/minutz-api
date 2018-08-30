@@ -5,6 +5,7 @@ using AspnetAuthenticationRepository;
 using AspnetAuthenticationRepository.Interfaces;
 using Core;
 using Core.ExternalServices;
+using Core.Feature.Admin;
 using Core.Feature.Dashboard;
 using Core.Feature.Invite;
 using Core.Feature.Meeting;
@@ -23,6 +24,7 @@ using DinkToPdf.Contracts;
 using Interface;
 using Interface.Helper;
 using Interface.Repositories;
+using Interface.Repositories.Feature.Admin;
 using Interface.Repositories.Feature.Dashboard;
 using Interface.Repositories.Feature.Meeting;
 using Interface.Repositories.Feature.Meeting.Action;
@@ -33,6 +35,7 @@ using Interface.Repositories.Feature.Meeting.Header;
 using Interface.Repositories.Feature.Meeting.Note;
 using Interface.Repositories.Feature.Meeting.Status;
 using Interface.Services;
+using Interface.Services.Admin;
 using Interface.Services.Feature.Dashboard;
 using Interface.Services.Feature.Invite;
 using Interface.Services.Feature.Meeting;
@@ -59,6 +62,7 @@ using Microsoft.IdentityModel.Tokens;
 using Notifications;
 using Reports;
 using SqlRepository;
+using SqlRepository.Features.Admin;
 using SqlRepository.Features.Dashboard;
 using SqlRepository.Features.Meeting;
 using SqlRepository.Features.Meeting.Action;
@@ -239,7 +243,9 @@ namespace Minutz.Api
             services.AddTransient<IMinutzNoteService, MinutzNoteService>();
             
             services.AddTransient<IInvitationService, InvitationService>();
-            
+
+            services.AddTransient<IInstanceUserRepository, InstanceUserRepository>();
+            services.AddTransient<IInstanceUserService, InstanceUserService>();
             
             services.AddMemoryCache();
             services.AddMvc();

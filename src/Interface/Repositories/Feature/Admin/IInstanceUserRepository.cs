@@ -8,5 +8,7 @@ namespace Interface.Repositories.Feature.Admin
         PersonResponse GetInstancePeople(string schema, string connectionString);
 
         PersonResponse AddInstancePerson(Person person, string schema, string connectionString);
+
+        PersonResponse UpdateInstancePerson(Person person, string schema, string connectionString);
     }
 }
