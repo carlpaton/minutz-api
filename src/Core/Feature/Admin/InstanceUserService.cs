@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Interface.Repositories;
 using Interface.Repositories.Feature.Admin;
 using Interface.Services;
 using Interface.Services.Admin;
+using Interface.Services.Feature.Notification;
 using Minutz.Models;
 using Minutz.Models.Entities;
 using Minutz.Models.Extensions;
@@ -14,11 +17,19 @@ namespace Core.Feature.Admin
     {
         private readonly IApplicationSetting _applicationSetting;
         private readonly IInstanceUserRepository _instanceUserRepository;
+        private readonly INotificationService _notificationService;
+        private readonly IInstanceRepository _instanceRepository;
 
-        public InstanceUserService(IApplicationSetting applicationSetting, IInstanceUserRepository instanceUserRepository)
+        public InstanceUserService(
+            IApplicationSetting applicationSetting,
+            IInstanceUserRepository instanceUserRepository,
+            INotificationService notificationService,
+            IInstanceRepository instanceRepository)
         {
             _applicationSetting = applicationSetting;
             _instanceUserRepository = instanceUserRepository;
+            _notificationService = notificationService;
+            _instanceRepository = instanceRepository;
         }
 
         public PersonResponse GetInstancePeople(AuthRestModel user)
@@ -63,6 +74,19 @@ namespace Core.Feature.Admin
                 .GetInstancePeople(user.InstanceId, masterConnectionString)
                 .People
                 .FirstOrDefault(i=> i.Email == person.Email);
+            if (p != null)
+            {
+                try
+                {
+                    _notificationService.SendInstanceInvatation(p, user.InstanceId, user.Company);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("NOTE: Trying to send instance invatation.");
+                    Console.WriteLine(e);
+                }
+            }
+
             if (p != null)
             {
                 result.Code = 200;

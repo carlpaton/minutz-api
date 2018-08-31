@@ -8,5 +8,7 @@ namespace Interface.Services.Feature.Notification
         MessageBase SendMeetingInvitation(MeetingAttendee attendee, Minutz.Models.Entities.Meeting meeting, string instanceId);
 
         MessageBase SendMeetingMinutes(MeetingAttendee attendee, Minutz.Models.Entities.Meeting meeting, string instanceId);
+
+        MessageBase SendInstanceInvatation(Person person, string instanceId, string instanceName);
     }
 }

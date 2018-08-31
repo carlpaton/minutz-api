@@ -27,8 +27,7 @@ namespace SqlRepository
       }
     }
 
-    public InstanceResponse GetByUsername 
-      (string username, string connectionString)
+    public InstanceResponse GetByUsername(string username, string connectionString)
     {
       var result = new InstanceResponse
       {
