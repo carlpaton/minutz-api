@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Interface.Repositories.Feature.Admin;
 using Interface.Services;
@@ -75,6 +75,10 @@ namespace Core.Feature.Admin
                 result.Message = "The user cannot be found.";
             }
 
+            if (result.Condition)
+            {
+              // send email of addition to the system
+            }
             return result;
         }
     }
